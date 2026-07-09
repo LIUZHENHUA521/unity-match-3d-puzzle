@@ -14,7 +14,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     {
         int currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
         UIManager.Instance.SetLevelText("Level "+currentLevel);
-        if (currentLevel > 10) // I will create 10 level for the CaseStudy. Then repeat levels.
+        if (currentLevel > 10) // Ten authored levels are bundled; continue by replaying a random level.
         {
             currentLevel = Random.Range(1, 11);
         }

@@ -119,11 +119,11 @@ public class LevelEditorTab : EditorTab
     {
         GUILayout.BeginHorizontal(GUILayout.Width(600)); 
         EditorGUILayout.HelpBox(
-            "Nasıl kullanılır?" + "\n" + "İlk olarak düzenlenen assetin hangi level'a ait olduğunu belirlemek için Level Number'a değer girin." +
-            " Sonrasında bu levelda kaç çeşit toplanabilir obje olacağını belirleyin ve bu değeri Type Count'a girin." +
-            "Type Count'a girdiğiniz değer kadar boş kutu oluşacaktır. Bu kutuları hangi objelerle doldurmak istiyorsanız Object Type kısmından o objeyi seçin." +
-            "Boş kutulara tıkladığınızda seçmiş olduğunuz obje ile doldurulacaktır. Doldurulan kutunun sol tarafında objenin sahnede kaç adet olacağını seçin." +
-            " Hepsi bu kadar. Seçtiğiniz objelere ve sayılara göre level otomatik oluşturulacak.",
+            "How to use" + "\n" + "Set Level Number to choose which level this asset represents. " +
+            "Set Type Count to define how many collectable object types the level contains. " +
+            "The editor creates that many empty slots. Select an Object Type, then click a slot to assign it. " +
+            "Use the count selector next to each filled slot to choose how many instances spawn in the scene. " +
+            "The level is generated from these object selections and counts.",
             MessageType.Info);
         GUILayout.EndHorizontal();
     }
@@ -222,4 +222,3 @@ public class LevelEditorTab : EditorTab
         }
     }
 }
-
