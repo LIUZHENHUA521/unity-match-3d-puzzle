@@ -75,6 +75,11 @@ for reference_file in [stage / 'Assets/GooseReplica/OriginalModels/models.json',
         shutil.move(str(reference_file), str(excluded / reference_file.name))
 replica_resources = stage / 'Assets/GooseReplica/Resources/Replica'
 for reference_file in replica_resources.glob('Source*'):
+    # SourceLevelCatalog is runtime data, not authoring evidence. It contains
+    # the first/second-stage prefab references used by ReplicaSourceLevelPlan;
+    # moving it out makes the theme challenge callback throw in WeChat builds.
+    if reference_file.name == 'SourceLevelCatalog.asset':
+        continue
     target = excluded / reference_file.name
     if target.exists():
         if target.is_dir(): shutil.rmtree(target)
