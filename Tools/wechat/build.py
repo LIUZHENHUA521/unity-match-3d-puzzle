@@ -52,11 +52,6 @@ for sprite in sprites.glob('*.png'):
 # Keep source/reference exports out of Unity Resources. The WeChat exporter packs
 # Resources wholesale even when no runtime code loads these authoring assets.
 reference_dirs = [
-    stage / 'Assets/GooseReplica/Resources/SourceTools',
-    stage / 'Assets/GooseReplica/Resources/Replica/SourceAudio',
-    stage / 'Assets/GooseReplica/Resources/Replica/Scenes',
-    stage / 'Assets/GooseReplica/Resources/Replica/Environments',
-    stage / 'Assets/GooseReplica/Resources/Replica/Highlight',
     stage / 'Assets/GooseReplica/OriginalModels/Prefabs/Legacy',
     # Authoring-only source exports are kept in the project for iteration but
     # must not enter the runtime WebGL package.
@@ -78,7 +73,7 @@ for reference_file in replica_resources.glob('Source*'):
     # SourceLevelCatalog is runtime data, not authoring evidence. It contains
     # the first/second-stage prefab references used by ReplicaSourceLevelPlan;
     # moving it out makes the theme challenge callback throw in WeChat builds.
-    if reference_file.name == 'SourceLevelCatalog.asset':
+    if reference_file.name in {'SourceLevelCatalog.asset','SourceColliders.json','SourceSizes.json'}:
         continue
     target = excluded / reference_file.name
     if target.exists():
