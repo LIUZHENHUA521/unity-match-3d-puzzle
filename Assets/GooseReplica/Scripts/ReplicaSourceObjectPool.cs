@@ -92,6 +92,7 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
         foreach (var child in obj.GetComponentsInChildren<Transform>(true)) child.gameObject.SetActive(true);
         foreach (var r in obj.GetComponentsInChildren<Renderer>(true)) r.enabled = true;
         obj.SetActive(true);
+        obj.GetComponent<ReplicaSourceColliders>()?.RestoreConfiguredColliderState();
         var body = obj.GetComponent<Rigidbody>();
         if (body) body.detectCollisions = true;
         return obj;

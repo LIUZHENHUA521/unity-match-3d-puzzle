@@ -20,6 +20,20 @@ public sealed class ReplicaSourceColliders : MonoBehaviour {
     // pass while retaining the exact baked shape/layer/material state.
     public bool IsConfiguredFor(string name)=>pickObject&&configuredSourceName==name;
     public void SetVisible(bool visible){if(pickObject)pickObject.SetActive(visible);}
+    public void RestoreConfiguredColliderState(){
+        if(string.IsNullOrEmpty(configuredSourceName))return;
+        if(profiles==null){profiles=new Dictionary<string,Profile>();var data=Resources.Load<TextAsset>("Replica/SourceColliders");if(data)foreach(var p in JsonUtility.FromJson<Data>(data.text).items)profiles[p.name]=p;}
+        if(!profiles.TryGetValue(configuredSourceName,out var profile)||!pickObject)return;
+        var visual=pickObject.transform.root.GetChild(0);
+        foreach(var node in profile.nodes){
+            var target=Resolve(visual,node.indices);if(!target)continue;
+            var existing=target.GetComponents<Collider>();
+            for(int i=0;i<node.colliders.Length&&i<existing.Length;i++){
+                existing[i].enabled=node.colliders[i].enabled;
+                existing[i].isTrigger=node.colliders[i].trigger;
+            }
+        }
+    }
     static Transform Resolve(Transform root,int[] path){if(path==null)return null;foreach(int i in path){if(i>=root.childCount)return null;root=root.GetChild(i);}return root;}
     public static void ConfigureLayers(){
         for(int i=0;i<32;i++){
