@@ -15,7 +15,11 @@ public sealed class ReplicaThemePresentation : MonoBehaviour {
   End();var prefab=Resources.Load<GameObject>("Replica/Scenes/"+theme);if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
   visual=Instantiate(prefab);visual.name=theme+" source visuals";
   if(!lighting)lighting=GetComponent<ReplicaSourceLighting>();if(!lighting)lighting=gameObject.AddComponent<ReplicaSourceLighting>();lighting.Begin();
-  var pot=GameObject.Find("Cooking Pot");if(pot){legacy=pot.GetComponentsInChildren<Renderer>(true);enabledStates=legacy.Select(r=>r.enabled).ToArray();foreach(var r in legacy)r.enabled=false;}
+  // The recovered theme prefabs contain the theme props and food models, but
+  // do not contain the main bowl/pot backdrop. Keep the scene's Cooking Pot
+  // renderers visible so the board is not presented over the transparent
+  // camera clear color (which appears as a black screen in WebGL).
+  var pot=GameObject.Find("Cooking Pot");if(pot){legacy=pot.GetComponentsInChildren<Renderer>(true);enabledStates=legacy.Select(r=>r.enabled).ToArray();}
   camera=Camera.main;if(!camera)return;position=camera.transform.position;rotation=camera.transform.rotation;size=camera.orthographicSize;orthographic=camera.orthographic;near=camera.nearClipPlane;far=camera.farClipPlane;fov=camera.fieldOfView;rect=camera.rect;clear=camera.clearFlags;background=camera.backgroundColor;hdr=camera.allowHDR;culling=camera.cullingMask;
   fitter=camera.GetComponent<CameraFitter>();if(fitter){fitted=fitter.enabled;fitter.enabled=false;}
   camera.transform.SetPositionAndRotation(SourcePosition,SourceRotation);camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.clear;camera.allowHDR=false;camera.cullingMask=503;camera.orthographic=true;camera.nearClipPlane=.3f;camera.farClipPlane=1000;camera.rect=new Rect(0,0,1,1);Fit();
