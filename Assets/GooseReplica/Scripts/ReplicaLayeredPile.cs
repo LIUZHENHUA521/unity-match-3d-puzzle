@@ -33,22 +33,32 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
     void Awake(){Instance=this;}
     void OnDestroy(){Clear();if(Instance==this)Instance=null;}
     public static float Radius(float y)=>ReplicaSourceProfile.HalfExtent(y);
-    public void Begin(bool creating=false){
+    public void Begin(bool creating=false,ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null){
         Clear();optimizationElapsed=0;Running=true;Creating=creating;creationGrowthRunning=creating;creationGrowthElapsed=0;
         // LoopCreateObj j65137: scene-independent first-row LimitHeight seeds both trackers.
         maxHeight=ReplicaSourceLevelPlan.Get(ReplicaSourceEnvironment.CurrentName).limitHeight;
         touchHeight=maxHeight-ReplicaSourceProfile.VisibleMin*.25f;
         initialVisibleThreshold=maxHeight-ReplicaSourceProfile.VisibleMin*1.5f;
         Threshold=initialVisibleThreshold;UpdatePhysicsThreshold();
-        if(!presentation)presentation=gameObject.AddComponent<ReplicaThemePresentation>();
-        presentation.Begin(ReplicaSourceEnvironment.CurrentName);
+        if(reusedPresentation){
+            // MainLevel and the layered challenge use the same source theme.
+            // Keep the already-rendered presentation and camera pose alive
+            // across the stage transition instead of synchronously instantiating
+            // the complete theme prefab a second time.
+            presentation=reusedPresentation;
+            presentation.Fit();
+        }else{
+            if(!presentation)presentation=gameObject.AddComponent<ReplicaThemePresentation>();
+            presentation.Begin(ReplicaSourceEnvironment.CurrentName);
+        }
         pot=GameObject.Find("Cooking Pot")?.transform;
         if(pot){
             oldWalls=pot.GetComponentsInChildren<Collider>();
             wallStates=oldWalls.Select(c=>c.enabled).ToArray();foreach(var c in oldWalls)c.enabled=false;
         }
-        boundary=ReplicaSourceEnvironment.CreateBoundary();
+        boundary=reusedBoundary??ReplicaSourceEnvironment.CreateBoundary();
         boundary.name=ReplicaSourceEnvironment.CurrentName+" source collision reference";
+        boundary.SetActive(true);
         if(creating)creationGrowthRoutine=StartCoroutine(LoopCreationGrowth());
     }
     public static List<Vector3> Positions(int count,float minHeight,float maxHeight,System.Random random){

@@ -152,8 +152,18 @@ public class ReplicaFlow : MonoBehaviour {
         if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=Today;StartStage();
     }
     public void RestartStage(){StopBoard();StartStage();}
-    public void NextStage(){Stage=2;StopBoard();StartStage();}
-    void StartStage(){
+    public void NextStage(){
+        // The source keeps the theme presentation alive while MainLevel rolls
+        // into the layered challenge. Rebuilding the same scene and collision
+        // shell here caused a synchronous hitch before the creation coroutine
+        // could show its first batch.
+        var reusedPresentation=sourceTutorialPresentation;
+        var reusedBoundary=sourceTutorialBoundary;
+        sourceTutorialPresentation=null;
+        sourceTutorialBoundary=null;
+        Stage=2;StopBoard();StartStage(reusedPresentation,reusedBoundary);
+    }
+    void StartStage(ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null){
         var date=DateTime.ParseExact(runDate,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture).AddHours(4);
         TodaySeed=ChallengePlan.DailySeed(CurrentTheme.id,Stage,date);
         bool sourceTutorial=!IsPvp&&Stage==1;
@@ -161,7 +171,7 @@ public class ReplicaFlow : MonoBehaviour {
         var prefabs=source!=null?source.prefabs:CurrentTheme.prefabs;
         IReplicaSourceRandom sourceRandom=source!=null?ReplicaSourceGlobalRandom.Instance:null;
         var tiles=source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
-        Spawn(tiles,TodaySeed,source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial);HUD();Music(library.gameMusic);
+        Spawn(tiles,TodaySeed,source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);
 
     }
     public const float BoardItemScale = 1.5f;
@@ -169,7 +179,7 @@ public class ReplicaFlow : MonoBehaviour {
     public const int SourceFrameCreateCount=3;
     public const float SourceCreateSeconds=2f,SourceMaximumCreateInterval=.03f;
     public static float SourceCreateInterval(int count)=>Mathf.Min(SourceCreateSeconds/Mathf.Max(1,count)*SourceFrameCreateCount,SourceMaximumCreateInterval);
-    void Spawn(List<ChallengeTile> tiles,int seed,int seconds,GameObject[] sourcePrefabs=null,IReplicaSourceRandom sourceRandom=null,bool sourceTutorial=false){
+    void Spawn(List<ChallengeTile> tiles,int seed,int seconds,GameObject[] sourcePrefabs=null,IReplicaSourceRandom sourceRandom=null,bool sourceTutorial=false,ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null){
         var prefabs=sourcePrefabs??CurrentTheme.prefabs;
         LastResult="";InitialCount=tiles.Count;
         bool layered=!IsPvp&&Stage==2;
@@ -178,7 +188,7 @@ public class ReplicaFlow : MonoBehaviour {
         GameManager.Instance.currentLevelTime=seconds;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(layered){
             AppliedModelSize=ReplicaSourceProfile.ModelSizeMultiplier;
-            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true);
+            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true,reusedPresentation,reusedBoundary);
             var random=sourceRandom??ReplicaSourceGlobalRandom.Instance;
             // LoopCreateObj builds all descriptions bottom-to-top, then List.Sort compares Y.
             // Rotation is sampled later, at CreateUnitObj, in the sorted creation order.
