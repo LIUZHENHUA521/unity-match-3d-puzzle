@@ -56,7 +56,6 @@ reference_dirs = [
     # Authoring-only source exports are kept in the project for iteration but
     # must not enter the runtime WebGL package.
     stage / 'Assets/GooseReplica/OriginalModels/Animations',
-    stage / 'Assets/GooseReplica/SourceScenes',
     stage / 'Assets/FoodPile/Editor',
 ]
 for reference_dir in reference_dirs:
@@ -81,6 +80,11 @@ for reference_file in replica_resources.glob('Source*'):
         # asset directly during layered item creation, so moving these makes
         # the creation coroutine abort with a NullReferenceException.
         'SourceAudioItems.json',
+        # Runtime second-stage material/selection/combine audio.  ReplicaSourceAudio
+        # loads these clips by Resources path (Replica/SourceAudio/<name>) while
+        # creating and selecting layered items.  Treating the directory as
+        # authoring evidence leaves a valid-looking build with silent stage 2.
+        'SourceAudio',
         'SourceFlightItems.json',
         'SourceEnvironment.json',
     }:
@@ -90,6 +94,17 @@ for reference_file in replica_resources.glob('Source*'):
         if target.is_dir(): shutil.rmtree(target)
         else: target.unlink()
     shutil.move(str(reference_file), str(target))
+
+# The imported theme prefabs under Resources/Replica/Scenes reference the
+# generated materials, meshes and textures in SourceScenes.  That directory
+# is runtime data even though its contents originated as source-scene exports;
+# removing it leaves the theme object instantiable but visually untextured.
+source_scene_runtime = stage / 'Assets/GooseReplica/SourceScenes'
+if not source_scene_runtime.exists():
+    raise SystemExit('Missing runtime theme dependencies: Assets/GooseReplica/SourceScenes')
+runtime_audio = replica_resources / 'SourceAudio'
+if not runtime_audio.exists() or not any(runtime_audio.glob('*.wav')):
+    raise SystemExit('Missing runtime second-stage audio: Resources/Replica/SourceAudio')
 # The source models carry authoring-quality 1K/2K textures.  The experience
 # build uses the same models but can safely import these at 512px with Unity's
 # platform compression, keeping the initial WeChat package under its limit.
