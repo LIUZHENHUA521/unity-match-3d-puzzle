@@ -87,6 +87,7 @@ public static class ReplicaSourceCatalog {
 
     public static bool TryGet(string id, out Item item) {
         Load();
+        item = null;
         return !string.IsNullOrEmpty(id) && items.TryGetValue(id, out item);
     }
     public static bool TryGetSize(string id, out float normalizedToSource) {

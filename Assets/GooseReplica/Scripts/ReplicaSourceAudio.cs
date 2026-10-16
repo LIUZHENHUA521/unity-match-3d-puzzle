@@ -26,7 +26,7 @@ public sealed class ReplicaSourceAudio : MonoBehaviour {
     void Awake(){LoadCatalog();effects=new AudioSource[3];for(int i=0;i<3;i++){effects[i]=gameObject.AddComponent<AudioSource>();effects[i].playOnAwake=false;effects[i].volume=1;effects[i].pitch=1+i*.15f;effects[i].spatialBlend=0;}goose=gameObject.AddComponent<AudioSource>();goose.playOnAwake=false;goose.volume=.4f;goose.pitch=1;goose.spatialBlend=0;}
     public static bool TryBoundProfile(GameObject obj,out Item item)=>bound.TryGetValue(obj,out item);
     public static bool TryProfile(string name,out Item item){LoadCatalog();return items.TryGetValue(name,out item);}
-    public AudioClip Clip(int id){LoadCatalog();if(id<=0||id>=catalog.names.Length)return null;if(!clips.TryGetValue(id,out var clip)){clip=Resources.Load<AudioClip>("Replica/SourceAudio/"+catalog.names[id]);clips[id]=clip;}return clip;}
+    public AudioClip Clip(int id){LoadCatalog();if(catalog.names==null||id<=0||id>=catalog.names.Length)return null;if(!clips.TryGetValue(id,out var clip)){clip=Resources.Load<AudioClip>("Replica/SourceAudio/"+catalog.names[id]);clips[id]=clip;}return clip;}
     public bool PlayEffect(int id,bool usePitch,string objectName){
         if(!Enabled)return false;
         // Original updates its throttle before checking the loaded clip dictionary.
