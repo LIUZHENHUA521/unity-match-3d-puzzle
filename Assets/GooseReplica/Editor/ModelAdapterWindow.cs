@@ -73,3 +73,17 @@ public sealed class ModelAdapterWindow : EditorWindow {
         Repaint();
     }
 }
+
+[InitializeOnLoad]
+static class ModelAdapterEditorHooks {
+    static ModelAdapterEditorHooks() {
+        AssemblyReloadEvents.afterAssemblyReload += ClearRuntimeCatalogCaches;
+        EditorApplication.playModeStateChanged += state => { if (state == PlayModeStateChange.EnteredPlayMode || state == PlayModeStateChange.EnteredEditMode) ClearRuntimeCatalogCaches(); };
+    }
+    static void ClearRuntimeCatalogCaches() {
+        ReplicaSourceCatalog.ClearCache();
+        ReplicaSourceProfile.ClearCache();
+        ReplicaSourceColliders.ClearCache();
+        ReplicaSourceAudio.ClearCache();
+    }
+}
