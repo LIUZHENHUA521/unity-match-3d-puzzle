@@ -15,6 +15,7 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
 
     static ReplicaSourceObjectPool instance;
     readonly Dictionary<string, Bucket> buckets = new Dictionary<string, Bucket>();
+    readonly Dictionary<string, GameObject> preparedTemplates = new Dictionary<string, GameObject>();
     readonly HashSet<GameObject> pooled = new HashSet<GameObject>();
 
     public static int PooledCount => instance ? instance.pooled.Count : 0;
@@ -28,6 +29,34 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
     }
 
     void Awake() { instance = this; }
+
+    GameObject PreparedTemplate(GameObject prefab, string sourceName)
+    {
+        if (preparedTemplates.TryGetValue(sourceName, out var existing) && existing)
+            return existing;
+
+        // Source ObjectUnit prefabs carry their colliders. The replica starts
+        // from the recovered geometry JSON, so prepare one hidden template per
+        // type and let Instantiate clone the already-built native collider
+        // hierarchy. Only the first copy of a type pays the JSON/AddComponent
+        // cost; every later copy avoids rebuilding it on the gameplay frame.
+        var template = Instantiate(prefab);
+        template.name = "__SourceColliderTemplate_" + sourceName;
+        ReplicaSourceColliders.Apply(template, sourceName, true);
+        template.transform.SetParent(transform, false);
+        template.transform.localPosition = new Vector3(0, -1000, 0);
+        template.transform.localRotation = Quaternion.identity;
+        foreach (var r in template.GetComponentsInChildren<Renderer>(true)) r.enabled = false;
+        var body = template.GetComponent<Rigidbody>();
+        if (body)
+        {
+            body.isKinematic = true;
+            body.useGravity = false;
+            body.detectCollisions = false;
+        }
+        preparedTemplates[sourceName] = template;
+        return template;
+    }
 
     public static GameObject Get(GameObject prefab, string sourceName)
     {
@@ -44,7 +73,11 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
             }
         }
 
-        if (!obj) obj = Instantiate(prefab);
+        if (!obj)
+        {
+            var template = owner && !string.IsNullOrEmpty(sourceName) ? owner.PreparedTemplate(prefab, sourceName) : null;
+            obj = template ? Instantiate(template) : Instantiate(prefab);
+        }
         var token = obj.GetComponent<ReplicaSourcePoolToken>() ?? obj.AddComponent<ReplicaSourcePoolToken>();
         token.sourceName = sourceName;
         if (!token.hasPrefabScale)
@@ -118,7 +151,10 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
                 var obj = bucket.items.Pop();
                 if (obj) Destroy(obj);
             }
+        foreach (var template in owner.preparedTemplates.Values)
+            if (template) Destroy(template);
         owner.buckets.Clear();
+        owner.preparedTemplates.Clear();
         owner.pooled.Clear();
     }
 
