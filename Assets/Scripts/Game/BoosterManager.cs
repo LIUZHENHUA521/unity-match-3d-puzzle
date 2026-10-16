@@ -15,12 +15,26 @@ public class BoosterManager : Singleton<BoosterManager>
     #region Hint Booster
     public void HintButton()
     {
+        if (!GameManager.Instance.GameIsPlaying() || InputController.Instance.IsResolving || !hintButton.interactable) return;
+        if (ReplicaSourceTools.Enabled) {
+            if (ReplicaSourceTools.Shuffling || !ReplicaSourceTools.CanUse(1)) return;
+            var items=ReplicaSourceTools.AutoFindCandidates(InputController.Instance.objectsOnStack,LevelGenerator.Instance.objectsOnScene);
+            if(items.Count==0)return;
+            ReplicaSourceTools.MarkUsed(1);ReplicaSourceAudio.Tool(25);
+            if(Camera.main)ReplicaSourceHighlight.For(Camera.main).ShowAutoFind(items);
+            foreach(var item in items){
+                var stack=InputController.Instance.objectsOnStack;int index=stack.FindLastIndex(x=>x&&x.name==item.name);index=index<0?stack.Count:index+1;
+                var slot=ReplicaTray.Instance?ReplicaTray.Instance.SlotPosition(index):new Vector3(-1+index*.333f,.3f,-1.62f);
+                InputController.Instance.AddObjectOnStack(item,false);ReplicaSourceToolVisual.AutoFind(item,slot);
+            }
+            CheckHintInteractibility();return;
+        }
         StartCoroutine(FindPossibleMatch());
     }
     private IEnumerator FindPossibleMatch()
     {
         hintButton.interactable = false;
-        if (InputController.Instance.arrivedObject.Count > 0) // Stack is not empty.
+        if (InputController.Instance.objectsOnStack.Count > 0) // Stack is not empty.
         {
             FindMatchForAlreadyCollectedObjects();
         }
@@ -35,7 +49,7 @@ public class BoosterManager : Singleton<BoosterManager>
     {
         List<List<GameObject>> groupedList = new List<List<GameObject>>();
         List<GameObject> notCollectedObjects = new List<GameObject>();
-        groupedList = InputController.Instance.arrivedObject.GroupBy(x => x.name).OrderByDescending(g => g.Count()).Select(v => v.ToList()).ToList();
+        groupedList = InputController.Instance.objectsOnStack.GroupBy(x => x.name).OrderByDescending(g => g.Count()).Select(v => v.ToList()).ToList();
         notCollectedObjects = LevelGenerator.Instance.objectsOnScene.Except(InputController.Instance.objectsOnStack).ToList();
         notCollectedObjects = notCollectedObjects.Where(n => n.name.Contains(groupedList[0][0].name)).ToList();
         for (int i = 0; i < 3 - groupedList[0].Count; i++)
@@ -51,9 +65,16 @@ public class BoosterManager : Singleton<BoosterManager>
             InputController.Instance.AddObjectOnStack(firstMatchedList[i]);
         }
     }
+    public void ResetBoosters()
+    {
+        StopAllCoroutines(); timeFreezed = false; FrostEffect.FrostAmount = 0;
+        BoostersInteractibility(false);
+    }
     public void CheckHintInteractibility() // If there is one box and all object are same in stack, player cant use this booster.
     {
-        if (InputController.Instance.arrivedObject.Count == 6)
+        hintButton.interactable = GameManager.Instance.GameIsPlaying();
+        if(ReplicaSourceTools.Enabled){hintButton.interactable=hintButton.interactable&&ReplicaSourceTools.CanUse(1)&&ReplicaSourceTools.CanAutoFind(InputController.Instance.objectsOnStack);return;}
+        if (InputController.Instance.arrivedObject.Count >= 6)
         {
             bool allObjectsDifferent = true;
             for (int i = 0; i < InputController.Instance.arrivedObject.Count; i++)
@@ -79,15 +100,8 @@ public class BoosterManager : Singleton<BoosterManager>
     #region Undo Booster
     public void Undo() // Remove the most recently collected object from the stack.
     {
-        GameObject lastObjectOnStack = InputController.Instance.arrivedObject.OrderByDescending(x => x.transform.position.x).FirstOrDefault();
-        InputController.Instance.arrivedObject.Remove(lastObjectOnStack);
-        InputController.Instance.objectsOnStack.Remove(lastObjectOnStack);
-        lastObjectOnStack.transform.DOMove(LevelGenerator.Instance.CreateRandomPosition(), 0.35f).SetEase(Ease.Linear).OnComplete(() =>
-        {
-            lastObjectOnStack.GetComponent<Rigidbody>().isKinematic = false;
-            lastObjectOnStack.GetComponent<Collider>().enabled = true;
-        });
-        CheckHintInteractibility();
+        if(ReplicaSourceTools.Enabled)InputController.Instance.MoveSourceItemsToStore();
+        else InputController.Instance.UndoLast();
     }
     private void CheckUndoInteractibility() // Check for undo button interactibility.
     {
@@ -99,6 +113,7 @@ public class BoosterManager : Singleton<BoosterManager>
     #region Freeze Booster
     public void Freeze() // Freeze the timer.
     {
+        if (!GameManager.Instance.GameIsPlaying() || timeFreezed) return;
         StartCoroutine(FreezeTimer());
     }
     private IEnumerator FreezeTimer()

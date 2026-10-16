@@ -1,0 +1,234 @@
+#include <metal_stdlib>
+#include <metal_texture>
+using namespace metal;
+#ifndef XLT_REMAP_O
+	#define XLT_REMAP_O {0, 1, 2, 3, 4, 5, 6, 7}
+#endif
+constexpr constant uint xlt_remap_o[] = XLT_REMAP_O;
+struct FGlobals_Type
+{
+    float3 _WorldSpaceCameraPos;
+    float4 unity_OrthoParams;
+    half4 _WorldSpaceLightPos0;
+    float4 hlslcc_mtx4x4unity_MatrixV[4];
+    float4 hlslcc_mtx4x4unity_MatrixInvV[4];
+    half4 _LightColor0;
+    float4 _IndirectColor;
+    float4 _NormalMap_ST;
+    float _NormalScale;
+    float _BaseCellOffset;
+    float _BaseCellSharpness;
+    float4 _LightColor;
+    float4 _BaseColor_ST;
+    float4 _BaseTint;
+    float4 _AOTex_ST;
+    float _AOScale;
+    float4 _AlphaTex_ST;
+    float4 _ShadowAddColor;
+    float _HighLightOffset;
+    float _HighLightSmooth;
+    float _HighLightPing;
+    float4 _HighLightColor;
+    float _MetcapShadowMask;
+    float _ReflectScale;
+    float2 _ReflectOffset;
+    float _MatcapScale;
+    float4 _MatcapColor;
+    float4 _RoughnessMap_ST;
+    float _RoughnessScale;
+    float _MatcapAlphaScale;
+    float _RimOffset;
+    float _RimPower;
+    float _RimShadowScale;
+    float4 _RimColor;
+    float _RimLightMul;
+    float _RimAlphaMul;
+    float _RimColorMul;
+};
+
+struct UnityDrawCallInfo_Type
+{
+    int unity_BaseInstanceID;
+    int unity_InstanceCount;
+};
+
+struct unity_Builtins2Array_Type
+{
+    half4 unity_SHArArray;
+    half4 unity_SHAgArray;
+    half4 unity_SHAbArray;
+    half4 unity_SHBrArray;
+    half4 unity_SHBgArray;
+    half4 unity_SHBbArray;
+    half4 unity_SHCArray;
+};
+
+struct UnityInstancing_PerDraw2_Type
+{
+    unity_Builtins2Array_Type unity_Builtins2Array[2];
+};
+
+struct Mtl_FragmentIn
+{
+    float2 TEXCOORD0 [[ user(TEXCOORD0) ]] ;
+    float4 TEXCOORD1 [[ user(TEXCOORD1) ]] ;
+    float4 TEXCOORD2 [[ user(TEXCOORD2) ]] ;
+    float4 TEXCOORD3 [[ user(TEXCOORD3) ]] ;
+    uint SV_InstanceID0 [[ user(SV_InstanceID0) ]]  [[ flat ]];
+};
+
+struct Mtl_FragmentOut
+{
+    half4 SV_Target0 [[ color(xlt_remap_o[0]) ]];
+};
+
+fragment Mtl_FragmentOut xlatMtlMain(
+    constant FGlobals_Type& FGlobals [[ buffer(0) ]],
+    constant UnityDrawCallInfo_Type& UnityDrawCallInfo [[ buffer(1) ]],
+    const constant unity_Builtins2Array_Type* UnityInstancing_PerDraw2 [[ buffer(2) ]],
+    sampler sampler_NormalMap [[ sampler (0) ]],
+    sampler sampler_BaseColor [[ sampler (1) ]],
+    sampler sampler_AOTex [[ sampler (2) ]],
+    sampler sampler_AlphaTex [[ sampler (3) ]],
+    sampler sampler_Matcap [[ sampler (4) ]],
+    sampler sampler_RoughnessMap [[ sampler (5) ]],
+    texture2d<half, access::sample > _NormalMap [[ texture(0) ]] ,
+    texture2d<half, access::sample > _BaseColor [[ texture(1) ]] ,
+    texture2d<half, access::sample > _AOTex [[ texture(2) ]] ,
+    texture2d<half, access::sample > _AlphaTex [[ texture(3) ]] ,
+    texture2d<half, access::sample > _Matcap [[ texture(4) ]] ,
+    texture2d<half, access::sample > _RoughnessMap [[ texture(5) ]] ,
+    Mtl_FragmentIn input [[ stage_in ]])
+{
+    Mtl_FragmentOut output;
+    float4 u_xlat0;
+    float4 u_xlat1;
+    half4 u_xlat16_1;
+    float4 u_xlat2;
+    half3 u_xlat16_2;
+    half3 u_xlat16_3;
+    float3 u_xlat4;
+    half3 u_xlat16_4;
+    float3 u_xlat5;
+    float3 u_xlat6;
+    half2 u_xlat16_6;
+    float2 u_xlat12;
+    half u_xlat16_12;
+    int u_xlati12;
+    half u_xlat16_14;
+    float u_xlat18;
+    bool u_xlatb18;
+    half u_xlat16_20;
+    float u_xlat22;
+    u_xlat0.x = dot(FGlobals._WorldSpaceLightPos0.xyz, FGlobals._WorldSpaceLightPos0.xyz);
+    u_xlat0.x = rsqrt(u_xlat0.x);
+    u_xlat0.xyz = u_xlat0.xxx * float3(FGlobals._WorldSpaceLightPos0.xyz);
+    u_xlat1.xy = fma(input.TEXCOORD0.xy, FGlobals._NormalMap_ST.xy, FGlobals._NormalMap_ST.zw);
+    u_xlat16_1.xy = _NormalMap.sample(sampler_NormalMap, u_xlat1.xy).yw;
+    u_xlat16_2.xy = fma(u_xlat16_1.yx, half2(2.0, 2.0), half2(-1.0, -1.0));
+    u_xlat16_14 = dot(u_xlat16_2.xy, u_xlat16_2.xy);
+    u_xlat16_3.xy = half2(float2(u_xlat16_2.xy) * float2(FGlobals._NormalScale));
+    u_xlat16_2.x = min(u_xlat16_14, half(1.0));
+    u_xlat16_2.x = (-u_xlat16_2.x) + half(1.0);
+    u_xlat16_3.z = sqrt(u_xlat16_2.x);
+    u_xlat16_2.x = dot(input.TEXCOORD1.xyz, float3(u_xlat16_3.xyz));
+    u_xlat16_2.y = dot(input.TEXCOORD2.xyz, float3(u_xlat16_3.xyz));
+    u_xlat16_2.z = dot(input.TEXCOORD3.xyz, float3(u_xlat16_3.xyz));
+    u_xlat16_20 = dot(u_xlat16_2.xyz, u_xlat16_2.xyz);
+    u_xlat16_20 = rsqrt(u_xlat16_20);
+    u_xlat16_2.xyz = half3(u_xlat16_20) * u_xlat16_2.xyz;
+    u_xlat0.x = dot(float3(u_xlat16_2.xyz), u_xlat0.xyz);
+    u_xlat6.x = u_xlat0.x + FGlobals._HighLightOffset;
+    u_xlat0.x = u_xlat0.x + FGlobals._BaseCellOffset;
+    u_xlat0.x = u_xlat0.x / FGlobals._BaseCellSharpness;
+    u_xlat0.x = clamp(u_xlat0.x, 0.0f, 1.0f);
+    u_xlat6.x = u_xlat6.x / FGlobals._HighLightSmooth;
+    u_xlat6.x = clamp(u_xlat6.x, 0.0f, 1.0f);
+    u_xlat12.x = fma(u_xlat6.x, u_xlat6.x, (-u_xlat6.x));
+    u_xlat6.x = fma(FGlobals._HighLightPing, u_xlat12.x, u_xlat6.x);
+    u_xlat12.xy = fma(input.TEXCOORD0.xy, FGlobals._AOTex_ST.xy, FGlobals._AOTex_ST.zw);
+    u_xlat16_12 = _AOTex.sample(sampler_AOTex, u_xlat12.xy).x;
+    u_xlat18 = fma(float(u_xlat16_12), 0.305306017, 0.682171106);
+    u_xlat18 = fma(float(u_xlat16_12), u_xlat18, 0.0125228781);
+    u_xlat12.x = fma(float(u_xlat16_12), u_xlat18, -1.0);
+    u_xlat12.x = fma(FGlobals._AOScale, u_xlat12.x, 1.0);
+    u_xlat1.xy = fma(input.TEXCOORD0.xy, FGlobals._BaseColor_ST.xy, FGlobals._BaseColor_ST.zw);
+    u_xlat16_1 = _BaseColor.sample(sampler_BaseColor, u_xlat1.xy);
+    u_xlat1 = float4(u_xlat16_1) * FGlobals._BaseTint;
+    u_xlat1.xyz = u_xlat12.xxx * u_xlat1.xyz;
+    u_xlati12 = int(input.SV_InstanceID0) + UnityDrawCallInfo.unity_BaseInstanceID;
+    u_xlati12 = u_xlati12 * 0x7;
+    u_xlatb18 = FGlobals._LightColor0.w==half(0.0);
+    u_xlat12.x = (u_xlatb18) ? 0.0 : float(UnityInstancing_PerDraw2[u_xlati12 / 7].unity_SHCArray.w);
+    u_xlat18 = u_xlat12.x * u_xlat0.x;
+    u_xlat4.xyz = fma(float3(u_xlat18), FGlobals._LightColor.xyz, FGlobals._IndirectColor.xyz);
+    u_xlat18 = fma((-u_xlat0.x), u_xlat12.x, 1.0);
+    u_xlat0.x = fma(u_xlat0.x, u_xlat12.x, -1.0);
+    u_xlat12.x = u_xlat12.x + -1.0;
+    u_xlat12.x = fma(FGlobals._RimShadowScale, u_xlat12.x, 1.0);
+    u_xlat0.x = fma(FGlobals._MetcapShadowMask, u_xlat0.x, 1.0);
+    u_xlat5.xyz = float3(u_xlat18) * FGlobals._ShadowAddColor.xyz;
+    u_xlat1.xyz = fma(u_xlat4.xyz, u_xlat1.xyz, u_xlat5.xyz);
+    u_xlat1.xyz = fma(u_xlat6.xxx, FGlobals._HighLightColor.xyz, u_xlat1.xyz);
+    u_xlat6.xz = float2(u_xlat16_2.yy) * FGlobals.hlslcc_mtx4x4unity_MatrixV[1].xy;
+    u_xlat6.xz = fma(FGlobals.hlslcc_mtx4x4unity_MatrixV[0].xy, float2(u_xlat16_2.xx), u_xlat6.xz);
+    u_xlat6.xz = fma(FGlobals.hlslcc_mtx4x4unity_MatrixV[2].xy, float2(u_xlat16_2.zz), u_xlat6.xz);
+    u_xlat6.xz = u_xlat6.xz * float2(FGlobals._ReflectScale);
+    u_xlat6.xz = fma(u_xlat6.xz, float2(0.5, 0.5), FGlobals._ReflectOffset.xyxx.xy);
+    u_xlat6.xz = u_xlat6.xz + float2(0.5, 0.5);
+    u_xlat16_4.xyz = _Matcap.sample(sampler_Matcap, u_xlat6.xz).xyz;
+    u_xlat5.xyz = fma(float3(u_xlat16_4.xyz), float3(0.305306017, 0.305306017, 0.305306017), float3(0.682171106, 0.682171106, 0.682171106));
+    u_xlat5.xyz = fma(float3(u_xlat16_4.xyz), u_xlat5.xyz, float3(0.0125228781, 0.0125228781, 0.0125228781));
+    u_xlat4.xyz = float3(u_xlat16_4.xyz) * u_xlat5.xyz;
+    u_xlat4.xyz = u_xlat4.xyz * float3(FGlobals._MatcapScale);
+    u_xlat0.xyw = u_xlat0.xxx * u_xlat4.xyz;
+    u_xlat0.xyw = u_xlat0.xyw * FGlobals._MatcapColor.xyz;
+    u_xlat4.xy = fma(input.TEXCOORD0.xy, FGlobals._RoughnessMap_ST.xy, FGlobals._RoughnessMap_ST.zw);
+    u_xlat16_4.x = _RoughnessMap.sample(sampler_RoughnessMap, u_xlat4.xy).x;
+    u_xlat4.x = fma(FGlobals._RoughnessScale, (-float(u_xlat16_4.x)), 1.0);
+    u_xlat1.xyz = fma(u_xlat0.xyw, u_xlat4.xxx, u_xlat1.xyz);
+    u_xlat0.xyw = u_xlat0.xyw * u_xlat4.xxx;
+    u_xlat1.xyz = u_xlat1.xyz + u_xlat1.xyz;
+    u_xlat16_2.xyz = half3(max(u_xlat1.xyz, float3(0.0, 0.0, 0.0)));
+    u_xlat1.xyz = log2(float3(u_xlat16_2.xyz));
+    u_xlat1.xyz = u_xlat1.xyz * float3(0.416666657, 0.416666657, 0.416666657);
+    u_xlat1.xyz = exp2(u_xlat1.xyz);
+    u_xlat1.xyz = fma(u_xlat1.xyz, float3(1.05499995, 1.05499995, 1.05499995), float3(-0.0549999997, -0.0549999997, -0.0549999997));
+    u_xlat1.xyz = max(u_xlat1.xyz, float3(0.0, 0.0, 0.0));
+    u_xlat4.x = input.TEXCOORD1.w;
+    u_xlat4.y = input.TEXCOORD2.w;
+    u_xlat4.z = input.TEXCOORD3.w;
+    u_xlat4.xyz = (-u_xlat4.xyz) + FGlobals._WorldSpaceCameraPos.xyzx.xyz;
+    u_xlat22 = dot(u_xlat4.xyz, u_xlat4.xyz);
+    u_xlat22 = rsqrt(u_xlat22);
+    u_xlat5.xyz = float3(u_xlat22) * u_xlat4.xyz;
+    u_xlat4.xyz = fma((-u_xlat4.xyz), float3(u_xlat22), FGlobals.hlslcc_mtx4x4unity_MatrixInvV[2].xyz);
+    u_xlat4.xyz = fma(FGlobals.unity_OrthoParams.www, u_xlat4.xyz, u_xlat5.xyz);
+    u_xlat5.x = input.TEXCOORD1.z;
+    u_xlat5.y = input.TEXCOORD2.z;
+    u_xlat5.z = input.TEXCOORD3.z;
+    u_xlat4.x = dot(u_xlat5.xyz, u_xlat4.xyz);
+    u_xlat4.x = u_xlat4.x + FGlobals._RimOffset;
+    u_xlat4.x = clamp(u_xlat4.x, 0.0f, 1.0f);
+    u_xlat4.x = (-u_xlat4.x) + 1.0;
+    u_xlat4.x = log2(u_xlat4.x);
+    u_xlat4.x = u_xlat4.x * FGlobals._RimPower;
+    u_xlat4.x = exp2(u_xlat4.x);
+    u_xlat12.x = u_xlat12.x * u_xlat4.x;
+    u_xlat4.xyz = u_xlat12.xxx * FGlobals._RimColor.xyz;
+    u_xlat4.xyz = u_xlat4.xyz * float3(FGlobals._RimLightMul);
+    u_xlat2.xyz = fma(u_xlat4.xyz, float3(FGlobals._RimColorMul), u_xlat1.xyz);
+    u_xlat0.x = max(u_xlat0.y, u_xlat0.x);
+    u_xlat0.x = max(u_xlat0.w, u_xlat0.x);
+    u_xlat0.x = clamp(u_xlat0.x, 0.0f, 1.0f);
+    u_xlat0.x = u_xlat0.x * FGlobals._MatcapAlphaScale;
+    u_xlat6.xy = fma(input.TEXCOORD0.xy, FGlobals._AlphaTex_ST.xy, FGlobals._AlphaTex_ST.zw);
+    u_xlat16_6.xy = _AlphaTex.sample(sampler_AlphaTex, u_xlat6.xy).xw;
+    u_xlat6.x = u_xlat1.w * float(u_xlat16_6.x);
+    u_xlat0.x = fma(u_xlat6.x, float(u_xlat16_6.y), u_xlat0.x);
+    u_xlat6.x = max(u_xlat4.y, u_xlat4.x);
+    u_xlat6.x = max(u_xlat4.z, u_xlat6.x);
+    u_xlat2.w = fma(u_xlat6.x, FGlobals._RimAlphaMul, u_xlat0.x);
+    output.SV_Target0 = half4(u_xlat2);
+    return output;
+}

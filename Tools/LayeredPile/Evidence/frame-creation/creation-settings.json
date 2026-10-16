@@ -1,0 +1,34 @@
+{
+  "source": "iOS 1.11.03 serialized LevelManager; WX 2.1.12 control flow; not live-server evidence",
+  "values": {
+    "_level2CreateCompeletTime": 2.0,
+    "_maxCreateInterval": 0.029999999329447746,
+    "_frameMaxCreateCount": 3,
+    "_createGrowSpeed": 0.10000000149011612,
+    "_physicCreateTime": 3.5,
+    "_physicMaxCreateInterval": 0.03999999910593033,
+    "_physicFrameCreateCount": 3,
+    "_physicCreateGrowSpeed": 0.20000000298023224,
+    "_isUseRealPhysicSpace": false,
+    "_maxPhysicObjCount": 70,
+    "_gravitySpeed": [
+      -19.809999465942383,
+      -50.0
+    ],
+    "_layerMinDistance": 0.0
+  },
+  "growUpInCreate": {
+    "source": "WX LevelManager constructor j83392, offset552",
+    "value": true,
+    "serialized": false
+  },
+  "icall": {
+    "j6539": "UnityEngine.Rigidbody::set_isKinematic(System.Boolean)",
+    "memoryCStringAddress": 1262101
+  },
+  "stringTokens": {
+    "0xa00022c9": "LoopCrowObjSize",
+    "0xa00022d1": "LoopOptimization",
+    "0xa0001477": "CountDownTime"
+  }
+}

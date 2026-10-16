@@ -1,0 +1,1004 @@
+{
+  "name": "",
+  "class": "HighlightEffect",
+  "values": {
+    "profile": {
+      "file_id": 0,
+      "path_id": 724
+    },
+    "profileSync": false,
+    "previewInEditor": true,
+    "camerasLayerMask": -1,
+    "effectGroup": 0,
+    "effectGroupLayer": -1,
+    "effectNameFilter": "",
+    "combineMeshes": false,
+    "alphaCutOff": 0.0,
+    "cullBackFaces": true,
+    "ignoreObjectVisibility": false,
+    "reflectionProbes": false,
+    "GPUInstancing": true,
+    "depthClip": false,
+    "normalsOption": 0,
+    "ignore": false,
+    "_highlighted": true,
+    "fadeInDuration": 0.0,
+    "fadeOutDuration": 0.0,
+    "flipY": false,
+    "constantWidth": true,
+    "subMeshMask": -1,
+    "overlay": 0.0,
+    "overlayColor": [
+      1.0,
+      0.9215686321258545,
+      0.01568627543747425,
+      1.0
+    ],
+    "overlayAnimationSpeed": 1.0,
+    "overlayMinIntensity": 0.5,
+    "overlayBlending": 1.0,
+    "overlayTexture": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "overlayTextureScale": 1.0,
+    "outline": 1.0,
+    "outlineColor": [
+      0.9866247177124023,
+      1.0,
+      0.0,
+      1.0
+    ],
+    "outlineWidth": 1.409999966621399,
+    "outlineQuality": 3,
+    "outlineDownsampling": 2,
+    "outlineVisibility": 0,
+    "outlineOptimalBlit": true,
+    "outlineBlitDebug": false,
+    "outlineIndependent": false,
+    "glow": 3.0,
+    "glowWidth": 1.090000033378601,
+    "glowQuality": 3,
+    "glowDownsampling": 1,
+    "glowHQColor": [
+      0.9797272682189941,
+      1.0,
+      0.0,
+      1.0
+    ],
+    "glowDithering": false,
+    "glowMagicNumber1": 0.75,
+    "glowMagicNumber2": 0.5,
+    "glowAnimationSpeed": 2.0,
+    "glowVisibility": 1,
+    "glowOptimalBlit": false,
+    "glowBlitDebug": false,
+    "glowBlendPasses": true,
+    "glowPasses": [
+      {
+        "offset": 2.0,
+        "alpha": 0.5,
+        "color": [
+          0.9921569228172302,
+          1.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "innerGlow": 0.0,
+    "innerGlowWidth": 1.0,
+    "innerGlowColor": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "innerGlowVisibility": 0,
+    "targetFX": false,
+    "targetFXTexture": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "targetFXColor": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "targetFXCenter": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "targetFXRotationSpeed": 50.0,
+    "targetFXInitialScale": 4.0,
+    "targetFXEndScale": 1.5,
+    "targetFXScaleToRenderBounds": true,
+    "targetFXAlignToGround": false,
+    "targetFXFadePower": 32.0,
+    "targetFXGroundMaxDistance": 10.0,
+    "targetFXGroundLayerMask": -1,
+    "targetFXTransitionDuration": 0.5,
+    "targetFXStayDuration": 1.5,
+    "targetFXVisibility": 1,
+    "seeThrough": 0,
+    "seeThroughOccluderMask": -1,
+    "seeThroughOccluderThreshold": 0.30000001192092896,
+    "seeThroughOccluderMaskAccurate": false,
+    "seeThroughOccluderCheckInterval": 1.0,
+    "seeThroughOccluderCheckIndividualObjects": false,
+    "seeThroughDepthOffset": 0.0,
+    "seeThroughMaxDepth": 0.0,
+    "seeThroughIntensity": 2.619999885559082,
+    "seeThroughTintAlpha": 1.0,
+    "seeThroughTintColor": [
+      1.0,
+      0.8169586658477783,
+      0.0,
+      1.0
+    ],
+    "seeThroughNoise": 0.4699999988079071,
+    "seeThroughBorder": 0.0,
+    "seeThroughBorderColor": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "seeThroughBorderWidth": 0.44999998807907104,
+    "seeThroughOrdered": false,
+    "rmsCount": 0,
+    "hitFxInitialIntensity": 0.0,
+    "hitFxMode": 0,
+    "hitFxFadeOutDuration": 0.25,
+    "hitFxColor": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "hitFxRadius": 0.5
+  },
+  "ranges": [
+    {
+      "name": "profile",
+      "start": 32,
+      "end": 44,
+      "descriptor": [
+        "pptr",
+        "HighlightProfile"
+      ]
+    },
+    {
+      "name": "profileSync",
+      "start": 44,
+      "end": 48,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "previewInEditor",
+      "start": 48,
+      "end": 52,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "camerasLayerMask",
+      "start": 52,
+      "end": 56,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "effectGroup",
+      "start": 56,
+      "end": 60,
+      "descriptor": [
+        "enum",
+        "TargetOptions"
+      ]
+    },
+    {
+      "name": "effectGroupLayer",
+      "start": 60,
+      "end": 64,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "effectNameFilter",
+      "start": 64,
+      "end": 68,
+      "descriptor": [
+        "simple",
+        "string"
+      ]
+    },
+    {
+      "name": "combineMeshes",
+      "start": 68,
+      "end": 72,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "alphaCutOff",
+      "start": 72,
+      "end": 76,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "cullBackFaces",
+      "start": 76,
+      "end": 80,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "ignoreObjectVisibility",
+      "start": 80,
+      "end": 84,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "reflectionProbes",
+      "start": 84,
+      "end": 88,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "GPUInstancing",
+      "start": 88,
+      "end": 92,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "depthClip",
+      "start": 92,
+      "end": 96,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "normalsOption",
+      "start": 96,
+      "end": 100,
+      "descriptor": [
+        "enum",
+        "NormalsOption"
+      ]
+    },
+    {
+      "name": "ignore",
+      "start": 100,
+      "end": 104,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "_highlighted",
+      "start": 104,
+      "end": 108,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "fadeInDuration",
+      "start": 108,
+      "end": 112,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "fadeOutDuration",
+      "start": 112,
+      "end": 116,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "flipY",
+      "start": 116,
+      "end": 120,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "constantWidth",
+      "start": 120,
+      "end": 124,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "subMeshMask",
+      "start": 124,
+      "end": 128,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "overlay",
+      "start": 128,
+      "end": 132,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "overlayColor",
+      "start": 132,
+      "end": 148,
+      "descriptor": [
+        "vector",
+        "Color"
+      ]
+    },
+    {
+      "name": "overlayAnimationSpeed",
+      "start": 148,
+      "end": 152,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "overlayMinIntensity",
+      "start": 152,
+      "end": 156,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "overlayBlending",
+      "start": 156,
+      "end": 160,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "overlayTexture",
+      "start": 160,
+      "end": 172,
+      "descriptor": [
+        "pptr",
+        "Texture2D"
+      ]
+    },
+    {
+      "name": "overlayTextureScale",
+      "start": 172,
+      "end": 176,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "outline",
+      "start": 176,
+      "end": 180,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "outlineColor",
+      "start": 180,
+      "end": 196,
+      "descriptor": [
+        "vector",
+        "Color"
+      ]
+    },
+    {
+      "name": "outlineWidth",
+      "start": 196,
+      "end": 200,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "outlineQuality",
+      "start": 200,
+      "end": 204,
+      "descriptor": [
+        "enum",
+        "QualityLevel"
+      ]
+    },
+    {
+      "name": "outlineDownsampling",
+      "start": 204,
+      "end": 208,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "outlineVisibility",
+      "start": 208,
+      "end": 212,
+      "descriptor": [
+        "enum",
+        "Visibility"
+      ]
+    },
+    {
+      "name": "outlineOptimalBlit",
+      "start": 212,
+      "end": 216,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "outlineBlitDebug",
+      "start": 216,
+      "end": 220,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "outlineIndependent",
+      "start": 220,
+      "end": 224,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "glow",
+      "start": 224,
+      "end": 228,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "glowWidth",
+      "start": 228,
+      "end": 232,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "glowQuality",
+      "start": 232,
+      "end": 236,
+      "descriptor": [
+        "enum",
+        "QualityLevel"
+      ]
+    },
+    {
+      "name": "glowDownsampling",
+      "start": 236,
+      "end": 240,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "glowHQColor",
+      "start": 240,
+      "end": 256,
+      "descriptor": [
+        "vector",
+        "Color"
+      ]
+    },
+    {
+      "name": "glowDithering",
+      "start": 256,
+      "end": 260,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "glowMagicNumber1",
+      "start": 260,
+      "end": 264,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "glowMagicNumber2",
+      "start": 264,
+      "end": 268,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "glowAnimationSpeed",
+      "start": 268,
+      "end": 272,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "glowVisibility",
+      "start": 272,
+      "end": 276,
+      "descriptor": [
+        "enum",
+        "Visibility"
+      ]
+    },
+    {
+      "name": "glowOptimalBlit",
+      "start": 276,
+      "end": 280,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "glowBlitDebug",
+      "start": 280,
+      "end": 284,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "glowBlendPasses",
+      "start": 284,
+      "end": 288,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "glowPasses",
+      "start": 288,
+      "end": 316,
+      "descriptor": [
+        "list",
+        [
+          "custom",
+          2901
+        ]
+      ]
+    },
+    {
+      "name": "innerGlow",
+      "start": 316,
+      "end": 320,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "innerGlowWidth",
+      "start": 320,
+      "end": 324,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "innerGlowColor",
+      "start": 324,
+      "end": 340,
+      "descriptor": [
+        "vector",
+        "Color"
+      ]
+    },
+    {
+      "name": "innerGlowVisibility",
+      "start": 340,
+      "end": 344,
+      "descriptor": [
+        "enum",
+        "Visibility"
+      ]
+    },
+    {
+      "name": "targetFX",
+      "start": 344,
+      "end": 348,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "targetFXTexture",
+      "start": 348,
+      "end": 360,
+      "descriptor": [
+        "pptr",
+        "Texture2D"
+      ]
+    },
+    {
+      "name": "targetFXColor",
+      "start": 360,
+      "end": 376,
+      "descriptor": [
+        "vector",
+        "Color"
+      ]
+    },
+    {
+      "name": "targetFXCenter",
+      "start": 376,
+      "end": 388,
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ]
+    },
+    {
+      "name": "targetFXRotationSpeed",
+      "start": 388,
+      "end": 392,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "targetFXInitialScale",
+      "start": 392,
+      "end": 396,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "targetFXEndScale",
+      "start": 396,
+      "end": 400,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "targetFXScaleToRenderBounds",
+      "start": 400,
+      "end": 404,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "targetFXAlignToGround",
+      "start": 404,
+      "end": 408,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "targetFXFadePower",
+      "start": 408,
+      "end": 412,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "targetFXGroundMaxDistance",
+      "start": 412,
+      "end": 416,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "targetFXGroundLayerMask",
+      "start": 416,
+      "end": 420,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "targetFXTransitionDuration",
+      "start": 420,
+      "end": 424,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "targetFXStayDuration",
+      "start": 424,
+      "end": 428,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "targetFXVisibility",
+      "start": 428,
+      "end": 432,
+      "descriptor": [
+        "enum",
+        "Visibility"
+      ]
+    },
+    {
+      "name": "seeThrough",
+      "start": 432,
+      "end": 436,
+      "descriptor": [
+        "enum",
+        "SeeThroughMode"
+      ]
+    },
+    {
+      "name": "seeThroughOccluderMask",
+      "start": 436,
+      "end": 440,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "seeThroughOccluderThreshold",
+      "start": 440,
+      "end": 444,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughOccluderMaskAccurate",
+      "start": 444,
+      "end": 448,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "seeThroughOccluderCheckInterval",
+      "start": 448,
+      "end": 452,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughOccluderCheckIndividualObjects",
+      "start": 452,
+      "end": 456,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "seeThroughDepthOffset",
+      "start": 456,
+      "end": 460,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughMaxDepth",
+      "start": 460,
+      "end": 464,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughIntensity",
+      "start": 464,
+      "end": 468,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughTintAlpha",
+      "start": 468,
+      "end": 472,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughTintColor",
+      "start": 472,
+      "end": 488,
+      "descriptor": [
+        "vector",
+        "Color"
+      ]
+    },
+    {
+      "name": "seeThroughNoise",
+      "start": 488,
+      "end": 492,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughBorder",
+      "start": 492,
+      "end": 496,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughBorderColor",
+      "start": 496,
+      "end": 512,
+      "descriptor": [
+        "vector",
+        "Color"
+      ]
+    },
+    {
+      "name": "seeThroughBorderWidth",
+      "start": 512,
+      "end": 516,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "seeThroughOrdered",
+      "start": 516,
+      "end": 520,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "rmsCount",
+      "start": 520,
+      "end": 524,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "hitFxInitialIntensity",
+      "start": 524,
+      "end": 528,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "hitFxMode",
+      "start": 528,
+      "end": 532,
+      "descriptor": [
+        "enum",
+        "HitFxMode"
+      ]
+    },
+    {
+      "name": "hitFxFadeOutDuration",
+      "start": 532,
+      "end": 536,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "hitFxColor",
+      "start": 536,
+      "end": 552,
+      "descriptor": [
+        "vector",
+        "Color"
+      ]
+    },
+    {
+      "name": "hitFxRadius",
+      "start": 552,
+      "end": 556,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,794 @@
+[
+  {
+    "name": "profile",
+    "offset": 12
+  },
+  {
+    "name": "profileSync",
+    "offset": 16
+  },
+  {
+    "name": "previewInEditor",
+    "offset": 17
+  },
+  {
+    "name": "camerasLayerMask",
+    "offset": 20
+  },
+  {
+    "name": "effectGroup",
+    "offset": 24
+  },
+  {
+    "name": "effectGroupLayer",
+    "offset": 28
+  },
+  {
+    "name": "effectNameFilter",
+    "offset": 32
+  },
+  {
+    "name": "combineMeshes",
+    "offset": 36
+  },
+  {
+    "name": "alphaCutOff",
+    "offset": 40
+  },
+  {
+    "name": "cullBackFaces",
+    "offset": 44
+  },
+  {
+    "name": "ignoreObjectVisibility",
+    "offset": 45
+  },
+  {
+    "name": "reflectionProbes",
+    "offset": 46
+  },
+  {
+    "name": "GPUInstancing",
+    "offset": 47
+  },
+  {
+    "name": "depthClip",
+    "offset": 48
+  },
+  {
+    "name": "normalsOption",
+    "offset": 52
+  },
+  {
+    "name": "ignore",
+    "offset": 56
+  },
+  {
+    "name": "_highlighted",
+    "offset": 57
+  },
+  {
+    "name": "fadeInDuration",
+    "offset": 60
+  },
+  {
+    "name": "fadeOutDuration",
+    "offset": 64
+  },
+  {
+    "name": "flipY",
+    "offset": 68
+  },
+  {
+    "name": "constantWidth",
+    "offset": 69
+  },
+  {
+    "name": "subMeshMask",
+    "offset": 72
+  },
+  {
+    "name": "overlay",
+    "offset": 76
+  },
+  {
+    "name": "overlayColor",
+    "offset": 80
+  },
+  {
+    "name": "overlayAnimationSpeed",
+    "offset": 96
+  },
+  {
+    "name": "overlayMinIntensity",
+    "offset": 100
+  },
+  {
+    "name": "overlayBlending",
+    "offset": 104
+  },
+  {
+    "name": "overlayTexture",
+    "offset": 108
+  },
+  {
+    "name": "overlayTextureScale",
+    "offset": 112
+  },
+  {
+    "name": "outline",
+    "offset": 116
+  },
+  {
+    "name": "outlineColor",
+    "offset": 120
+  },
+  {
+    "name": "outlineWidth",
+    "offset": 136
+  },
+  {
+    "name": "outlineQuality",
+    "offset": 140
+  },
+  {
+    "name": "outlineDownsampling",
+    "offset": 144
+  },
+  {
+    "name": "outlineVisibility",
+    "offset": 148
+  },
+  {
+    "name": "outlineOptimalBlit",
+    "offset": 152
+  },
+  {
+    "name": "outlineBlitDebug",
+    "offset": 153
+  },
+  {
+    "name": "outlineIndependent",
+    "offset": 154
+  },
+  {
+    "name": "glow",
+    "offset": 156
+  },
+  {
+    "name": "glowWidth",
+    "offset": 160
+  },
+  {
+    "name": "glowQuality",
+    "offset": 164
+  },
+  {
+    "name": "glowDownsampling",
+    "offset": 168
+  },
+  {
+    "name": "glowHQColor",
+    "offset": 172
+  },
+  {
+    "name": "glowDithering",
+    "offset": 188
+  },
+  {
+    "name": "glowMagicNumber1",
+    "offset": 192
+  },
+  {
+    "name": "glowMagicNumber2",
+    "offset": 196
+  },
+  {
+    "name": "glowAnimationSpeed",
+    "offset": 200
+  },
+  {
+    "name": "glowVisibility",
+    "offset": 204
+  },
+  {
+    "name": "glowOptimalBlit",
+    "offset": 208
+  },
+  {
+    "name": "glowBlitDebug",
+    "offset": 209
+  },
+  {
+    "name": "glowBlendPasses",
+    "offset": 210
+  },
+  {
+    "name": "glowPasses",
+    "offset": 212
+  },
+  {
+    "name": "innerGlow",
+    "offset": 216
+  },
+  {
+    "name": "innerGlowWidth",
+    "offset": 220
+  },
+  {
+    "name": "innerGlowColor",
+    "offset": 224
+  },
+  {
+    "name": "innerGlowVisibility",
+    "offset": 240
+  },
+  {
+    "name": "targetFX",
+    "offset": 244
+  },
+  {
+    "name": "targetFXTexture",
+    "offset": 248
+  },
+  {
+    "name": "targetFXColor",
+    "offset": 252
+  },
+  {
+    "name": "targetFXCenter",
+    "offset": 268
+  },
+  {
+    "name": "targetFXRotationSpeed",
+    "offset": 272
+  },
+  {
+    "name": "targetFXInitialScale",
+    "offset": 276
+  },
+  {
+    "name": "targetFXEndScale",
+    "offset": 280
+  },
+  {
+    "name": "targetFXScaleToRenderBounds",
+    "offset": 284
+  },
+  {
+    "name": "targetFXAlignToGround",
+    "offset": 285
+  },
+  {
+    "name": "targetFXFadePower",
+    "offset": 288
+  },
+  {
+    "name": "targetFXGroundMaxDistance",
+    "offset": 292
+  },
+  {
+    "name": "targetFXGroundLayerMask",
+    "offset": 296
+  },
+  {
+    "name": "targetFXTransitionDuration",
+    "offset": 300
+  },
+  {
+    "name": "targetFXStayDuration",
+    "offset": 304
+  },
+  {
+    "name": "targetFXVisibility",
+    "offset": 308
+  },
+  {
+    "name": "OnObjectHighlightStart",
+    "offset": 312
+  },
+  {
+    "name": "OnObjectHighlightEnd",
+    "offset": 316
+  },
+  {
+    "name": "OnRendererHighlightStart",
+    "offset": 320
+  },
+  {
+    "name": "OnTargetAnimates",
+    "offset": 324
+  },
+  {
+    "name": "seeThrough",
+    "offset": 328
+  },
+  {
+    "name": "seeThroughOccluderMask",
+    "offset": 332
+  },
+  {
+    "name": "seeThroughOccluderThreshold",
+    "offset": 336
+  },
+  {
+    "name": "seeThroughOccluderMaskAccurate",
+    "offset": 340
+  },
+  {
+    "name": "seeThroughOccluderCheckInterval",
+    "offset": 344
+  },
+  {
+    "name": "seeThroughOccluderCheckIndividualObjects",
+    "offset": 348
+  },
+  {
+    "name": "seeThroughDepthOffset",
+    "offset": 352
+  },
+  {
+    "name": "seeThroughMaxDepth",
+    "offset": 356
+  },
+  {
+    "name": "seeThroughIntensity",
+    "offset": 360
+  },
+  {
+    "name": "seeThroughTintAlpha",
+    "offset": 364
+  },
+  {
+    "name": "seeThroughTintColor",
+    "offset": 368
+  },
+  {
+    "name": "seeThroughNoise",
+    "offset": 384
+  },
+  {
+    "name": "seeThroughBorder",
+    "offset": 388
+  },
+  {
+    "name": "seeThroughBorderColor",
+    "offset": 392
+  },
+  {
+    "name": "seeThroughBorderWidth",
+    "offset": 408
+  },
+  {
+    "name": "seeThroughOrdered",
+    "offset": 412
+  },
+  {
+    "name": "rms",
+    "offset": 416
+  },
+  {
+    "name": "rmsCount",
+    "offset": 420
+  },
+  {
+    "name": "target",
+    "offset": 424
+  },
+  {
+    "name": "highlightStartTime",
+    "offset": 428
+  },
+  {
+    "name": "targetFxStartTime",
+    "offset": 432
+  },
+  {
+    "name": "isSelected",
+    "offset": 436
+  },
+  {
+    "name": "previousSettings",
+    "offset": 440
+  },
+  {
+    "name": "TAU",
+    "offset": 0
+  },
+  {
+    "name": "fxMatMask",
+    "offset": 0
+  },
+  {
+    "name": "fxMatSolidColor",
+    "offset": 4
+  },
+  {
+    "name": "fxMatSeeThroughInner",
+    "offset": 8
+  },
+  {
+    "name": "fxMatSeeThroughBorder",
+    "offset": 12
+  },
+  {
+    "name": "fxMatOverlay",
+    "offset": 16
+  },
+  {
+    "name": "fxMatClearStencil",
+    "offset": 20
+  },
+  {
+    "name": "fxMatGlowRef",
+    "offset": 24
+  },
+  {
+    "name": "fxMatInnerGlow",
+    "offset": 28
+  },
+  {
+    "name": "fxMatOutlineRef",
+    "offset": 32
+  },
+  {
+    "name": "fxMatTargetRef",
+    "offset": 36
+  },
+  {
+    "name": "fxMatComposeGlowRef",
+    "offset": 40
+  },
+  {
+    "name": "fxMatComposeOutlineRef",
+    "offset": 44
+  },
+  {
+    "name": "fxMatBlurGlowRef",
+    "offset": 48
+  },
+  {
+    "name": "fxMatBlurOutlineRef",
+    "offset": 52
+  },
+  {
+    "name": "fxMatSeeThroughMask",
+    "offset": 56
+  },
+  {
+    "name": "_fxMatOutline",
+    "offset": 444
+  },
+  {
+    "name": "_fxMatGlow",
+    "offset": 448
+  },
+  {
+    "name": "_fxMatTarget",
+    "offset": 452
+  },
+  {
+    "name": "_fxMatComposeGlow",
+    "offset": 456
+  },
+  {
+    "name": "_fxMatComposeOutline",
+    "offset": 460
+  },
+  {
+    "name": "_fxMatBlurGlow",
+    "offset": 464
+  },
+  {
+    "name": "_fxMatBlurOutline",
+    "offset": 468
+  },
+  {
+    "name": "offsets",
+    "offset": 60
+  },
+  {
+    "name": "fadeStartTime",
+    "offset": 472
+  },
+  {
+    "name": "fading",
+    "offset": 476
+  },
+  {
+    "name": "cbMask",
+    "offset": 480
+  },
+  {
+    "name": "cbSeeThrough",
+    "offset": 484
+  },
+  {
+    "name": "cbGlow",
+    "offset": 488
+  },
+  {
+    "name": "cbOutline",
+    "offset": 492
+  },
+  {
+    "name": "cbOverlay",
+    "offset": 496
+  },
+  {
+    "name": "cbInnerGlow",
+    "offset": 500
+  },
+  {
+    "name": "cbSmoothBlend",
+    "offset": 504
+  },
+  {
+    "name": "mipGlowBuffers",
+    "offset": 508
+  },
+  {
+    "name": "mipOutlineBuffers",
+    "offset": 512
+  },
+  {
+    "name": "glowRT",
+    "offset": 516
+  },
+  {
+    "name": "outlineRT",
+    "offset": 520
+  },
+  {
+    "name": "quadMesh",
+    "offset": 64
+  },
+  {
+    "name": "cubeMesh",
+    "offset": 68
+  },
+  {
+    "name": "sourceRT",
+    "offset": 524
+  },
+  {
+    "name": "quadGlowMatrix",
+    "offset": 528
+  },
+  {
+    "name": "quadOutlineMatrix",
+    "offset": 592
+  },
+  {
+    "name": "corners",
+    "offset": 656
+  },
+  {
+    "name": "sourceDesc",
+    "offset": 660
+  },
+  {
+    "name": "debugColor",
+    "offset": 712
+  },
+  {
+    "name": "blackColor",
+    "offset": 728
+  },
+  {
+    "name": "lastOutlineVisibility",
+    "offset": 744
+  },
+  {
+    "name": "requireUpdateMaterial",
+    "offset": 748
+  },
+  {
+    "name": "usingPipeline",
+    "offset": 749
+  },
+  {
+    "name": "occlusionCheckLastTime",
+    "offset": 752
+  },
+  {
+    "name": "occlusionRenderFrame",
+    "offset": 756
+  },
+  {
+    "name": "lastOcclusionTestResult",
+    "offset": 760
+  },
+  {
+    "name": "useGPUInstancing",
+    "offset": 761
+  },
+  {
+    "name": "glowPropertyBlock",
+    "offset": 764
+  },
+  {
+    "name": "outlinePropertyBlock",
+    "offset": 768
+  },
+  {
+    "name": "matDataDirection",
+    "offset": 72
+  },
+  {
+    "name": "matDataGlow",
+    "offset": 76
+  },
+  {
+    "name": "matDataColor",
+    "offset": 80
+  },
+  {
+    "name": "matrices",
+    "offset": 84
+  },
+  {
+    "name": "effects",
+    "offset": 88
+  },
+  {
+    "name": "skipThisFrame",
+    "offset": 772
+  },
+  {
+    "name": "outlineOffsetsMin",
+    "offset": 776
+  },
+  {
+    "name": "outlineOffsetsMax",
+    "offset": 780
+  },
+  {
+    "name": "glowOffsetsMin",
+    "offset": 784
+  },
+  {
+    "name": "glowOffsetsMax",
+    "offset": 788
+  },
+  {
+    "name": "combineInstances",
+    "offset": 92
+  },
+  {
+    "name": "matrix4X4Identity",
+    "offset": 792
+  },
+  {
+    "name": "maskRequired",
+    "offset": 856
+  },
+  {
+    "name": "tempRR",
+    "offset": 860
+  },
+  {
+    "name": "vertices",
+    "offset": 96
+  },
+  {
+    "name": "normals",
+    "offset": 100
+  },
+  {
+    "name": "newNormals",
+    "offset": 104
+  },
+  {
+    "name": "matches",
+    "offset": 108
+  },
+  {
+    "name": "vv",
+    "offset": 112
+  },
+  {
+    "name": "smoothMeshes",
+    "offset": 116
+  },
+  {
+    "name": "reorientedMeshes",
+    "offset": 120
+  },
+  {
+    "name": "combinedMeshes",
+    "offset": 124
+  },
+  {
+    "name": "rendererSharedMaterials",
+    "offset": 128
+  },
+  {
+    "name": "combinedMeshesHashId",
+    "offset": 864
+  },
+  {
+    "name": "MAX_VERTEX_COUNT",
+    "offset": 0
+  },
+  {
+    "name": "hitFxInitialIntensity",
+    "offset": 868
+  },
+  {
+    "name": "hitFxMode",
+    "offset": 872
+  },
+  {
+    "name": "hitFxFadeOutDuration",
+    "offset": 876
+  },
+  {
+    "name": "hitFxColor",
+    "offset": 880
+  },
+  {
+    "name": "hitFxRadius",
+    "offset": 896
+  },
+  {
+    "name": "hitInitialIntensity",
+    "offset": 900
+  },
+  {
+    "name": "hitStartTime",
+    "offset": 904
+  },
+  {
+    "name": "hitFadeOutDuration",
+    "offset": 908
+  },
+  {
+    "name": "hitColor",
+    "offset": 912
+  },
+  {
+    "name": "hitActive",
+    "offset": 928
+  },
+  {
+    "name": "hitPosition",
+    "offset": 932
+  },
+  {
+    "name": "hitRadius",
+    "offset": 944
+  },
+  {
+    "name": "occluders",
+    "offset": 132
+  },
+  {
+    "name": "occludersFrameCount",
+    "offset": 136
+  },
+  {
+    "name": "cbOccluder",
+    "offset": 140
+  },
+  {
+    "name": "fxMatOccluder",
+    "offset": 144
+  },
+  {
+    "name": "hits",
+    "offset": 148
+  },
+  {
+    "name": "MAX_OCCLUDER_HITS",
+    "offset": 0
+  },
+  {
+    "name": "occluderHits",
+    "offset": 152
+  },
+  {
+    "name": "cachedOccludersPerCamera",
+    "offset": 948
+  }
+]

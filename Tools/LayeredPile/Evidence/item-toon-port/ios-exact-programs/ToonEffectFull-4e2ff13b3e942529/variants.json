@@ -1,0 +1,506 @@
+[
+  {
+    "subshader": 0,
+    "pass": 0,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 1,
+    "keywords": [
+      "DIRECTIONAL"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 0,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 2,
+    "keywords": [
+      "DIRECTIONAL",
+      "LIGHTPROBE_SH"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 0,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 4,
+    "keywords": [
+      "DIRECTIONAL"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 0,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 5,
+    "keywords": [
+      "DIRECTIONAL",
+      "LIGHTPROBE_SH"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 9,
+    "keywords": [
+      "DIRECTIONAL"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 10,
+    "keywords": [
+      "DIRECTIONAL",
+      "LIGHTPROBE_SH"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 11,
+    "keywords": [
+      "DIRECTIONAL",
+      "SHADOWS_SCREEN"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 12,
+    "keywords": [
+      "DIRECTIONAL",
+      "LIGHTPROBE_SH",
+      "SHADOWS_SCREEN"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 13,
+    "keywords": [
+      "DIRECTIONAL",
+      "VERTEXLIGHT_ON"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 14,
+    "keywords": [
+      "DIRECTIONAL",
+      "LIGHTPROBE_SH",
+      "VERTEXLIGHT_ON"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 15,
+    "keywords": [
+      "DIRECTIONAL",
+      "SHADOWS_SCREEN",
+      "VERTEXLIGHT_ON"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 16,
+    "keywords": [
+      "DIRECTIONAL",
+      "LIGHTPROBE_SH",
+      "SHADOWS_SCREEN",
+      "VERTEXLIGHT_ON"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 19,
+    "keywords": [
+      "DIRECTIONAL"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 20,
+    "keywords": [
+      "DIRECTIONAL",
+      "LIGHTPROBE_SH"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 21,
+    "keywords": [
+      "DIRECTIONAL",
+      "SHADOWS_SCREEN"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 1,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 22,
+    "keywords": [
+      "DIRECTIONAL",
+      "LIGHTPROBE_SH",
+      "SHADOWS_SCREEN"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 25,
+    "keywords": [
+      "POINT"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 26,
+    "keywords": [
+      "DIRECTIONAL"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 27,
+    "keywords": [
+      "SPOT"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 28,
+    "keywords": [
+      "POINT_COOKIE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 29,
+    "keywords": [
+      "DIRECTIONAL_COOKIE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 30,
+    "keywords": [
+      "SPOT",
+      "SHADOWS_DEPTH"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 31,
+    "keywords": [
+      "SPOT",
+      "SHADOWS_DEPTH",
+      "SHADOWS_SOFT"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 32,
+    "keywords": [
+      "DIRECTIONAL",
+      "SHADOWS_SCREEN"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 33,
+    "keywords": [
+      "SHADOWS_SCREEN",
+      "DIRECTIONAL_COOKIE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 34,
+    "keywords": [
+      "POINT",
+      "SHADOWS_CUBE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 35,
+    "keywords": [
+      "POINT",
+      "SHADOWS_SOFT",
+      "SHADOWS_CUBE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 36,
+    "keywords": [
+      "POINT_COOKIE",
+      "SHADOWS_CUBE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progVertex",
+    "index": 37,
+    "keywords": [
+      "POINT_COOKIE",
+      "SHADOWS_SOFT",
+      "SHADOWS_CUBE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 49,
+    "keywords": [
+      "POINT"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 50,
+    "keywords": [
+      "DIRECTIONAL"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 51,
+    "keywords": [
+      "SPOT"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 52,
+    "keywords": [
+      "POINT_COOKIE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 53,
+    "keywords": [
+      "DIRECTIONAL_COOKIE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 54,
+    "keywords": [
+      "SPOT",
+      "SHADOWS_DEPTH"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 55,
+    "keywords": [
+      "SPOT",
+      "SHADOWS_DEPTH",
+      "SHADOWS_SOFT"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 56,
+    "keywords": [
+      "DIRECTIONAL",
+      "SHADOWS_SCREEN"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 57,
+    "keywords": [
+      "SHADOWS_SCREEN",
+      "DIRECTIONAL_COOKIE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 58,
+    "keywords": [
+      "POINT",
+      "SHADOWS_CUBE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 59,
+    "keywords": [
+      "POINT",
+      "SHADOWS_SOFT",
+      "SHADOWS_CUBE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 60,
+    "keywords": [
+      "POINT_COOKIE",
+      "SHADOWS_CUBE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 2,
+    "passName": "FORWARD",
+    "stage": "progFragment",
+    "index": 61,
+    "keywords": [
+      "POINT_COOKIE",
+      "SHADOWS_SOFT",
+      "SHADOWS_CUBE"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 3,
+    "passName": "ShadowCaster",
+    "stage": "progVertex",
+    "index": 63,
+    "keywords": [
+      "SHADOWS_DEPTH",
+      "UNITY_PASS_SHADOWCASTER"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 3,
+    "passName": "ShadowCaster",
+    "stage": "progVertex",
+    "index": 64,
+    "keywords": [
+      "SHADOWS_CUBE",
+      "UNITY_PASS_SHADOWCASTER"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 3,
+    "passName": "ShadowCaster",
+    "stage": "progFragment",
+    "index": 66,
+    "keywords": [
+      "SHADOWS_DEPTH",
+      "UNITY_PASS_SHADOWCASTER"
+    ]
+  },
+  {
+    "subshader": 0,
+    "pass": 3,
+    "passName": "ShadowCaster",
+    "stage": "progFragment",
+    "index": 67,
+    "keywords": [
+      "SHADOWS_CUBE",
+      "UNITY_PASS_SHADOWCASTER"
+    ]
+  }
+]

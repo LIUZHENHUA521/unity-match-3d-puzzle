@@ -1,7 +1,15 @@
 using UnityEngine;
 public class FrostEffect : MonoBehaviour
 {
-    public static float FrostAmount; //0-1 (0=minimum Frost, 1=maximum frost)
+    private static float frostAmount;
+    private static FrostEffect activeEffect;
+    public static float FrostAmount {
+        get => frostAmount;
+        set {
+            frostAmount = Mathf.Clamp01(value);
+            if (activeEffect) activeEffect.enabled = frostAmount > 0;
+        }
+    }
     private float EdgeSharpness; //>=1
     private float minFrost; //0-1
     private float maxFrost; //0-1
@@ -15,6 +23,8 @@ public class FrostEffect : MonoBehaviour
 
 	private void Awake()
 	{
+        activeEffect = this;
+        enabled = FrostAmount > 0;
         material = new Material(Shader);
         material.SetTexture("_BlendTex", Frost);
         material.SetTexture("_BumpMap", FrostNormals);
@@ -27,6 +37,8 @@ public class FrostEffect : MonoBehaviour
         seeThroughness = 0.6f;
         distortion = 0.5f;
     }
+
+    private void OnDestroy(){if(activeEffect==this)activeEffect=null;if(material)Destroy(material);}
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {

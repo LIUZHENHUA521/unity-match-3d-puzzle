@@ -1,0 +1,593 @@
+{
+  "name": "ObjectAnimConfig3",
+  "source": "WeChat2.1.12 data.unity3d sharedassets0.assets path_id668; fields byte-identical iOS1.11.03 path_id766",
+  "values": {
+    "isDedebug": true,
+    "useVibration": true,
+    "_objUIPartYLenghTime": 0.02800000086426735,
+    "_objUIPartXLenghTime": 0.014999999664723873,
+    "_objMoveBaseTime": 0.11999999731779099,
+    "_objMoveMinTime": 0.25999999046325684,
+    "_objMoveMaxTime": 0.3499999940395355,
+    "_objPickYOffsetDir": [
+      0.0,
+      0.10000000149011612,
+      0.05000000074505806
+    ],
+    "_objPickYOffsetHeightMul": [
+      0.0,
+      0.029999999329447746,
+      0.029999999329447746
+    ],
+    "_objPickYOffsetTime": 0.10000000149011612,
+    "_storeObjYOffsetScale": 0.5,
+    "_isObjPickYOffsetUseCusCurve": false,
+    "_objPickYOffsetEase": 3,
+    "_objPickYOffsetCurve": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+    },
+    "_isObjPickMoveXZUseCusCurve": false,
+    "_objPickMoveXZEase": 2,
+    "_objPickMoveXZCurve": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+    },
+    "_isObjPickMoveYUseCusCurve": false,
+    "_objPickMoveYEase": 3,
+    "_objPickMoveYCurve": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+    },
+    "_objRotaMaxTime": 0.30000001192092896,
+    "_isObjPickRotaUseCusCurve": false,
+    "_objPickRotaEase": 3,
+    "_objPickRotaCurve": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+    },
+    "_plateDropDir": [
+      0.0,
+      0.0,
+      -0.11999999731779099
+    ],
+    "_plateDropTime": 0.15000000596046448,
+    "_plateLightTime": 0.10000000149011612,
+    "_plateLightFadeTime": 0.10000000149011612,
+    "_vibratoCount": 10,
+    "_isPlateDropUseCusCurve": false,
+    "_plateDropEase": 2,
+    "_plateDropCurve": {
+      "keys": [
+        {
+          "time": 0.0,
+          "value": 0.0,
+          "inSlope": 2.6875,
+          "outSlope": 2.6875,
+          "weightedMode": 0,
+          "inWeight": 0.0,
+          "outWeight": 0.025369979441165924
+        },
+        {
+          "time": 1.0,
+          "value": 1.0,
+          "inSlope": 2.68749737739563,
+          "outSlope": 2.68749737739563,
+          "weightedMode": 0,
+          "inWeight": 0.025370001792907715,
+          "outWeight": 0.0
+        }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+    },
+    "_pickScaleCurve1": 6,
+    "_pickScaleCurve2": 2,
+    "_pickScaleMaxLerp": 0.30000001192092896,
+    "_pickScaleAllLimitTime": 0.4000000059604645,
+    "_pickMaxScale": 1.2999999523162842,
+    "_plateObjMoveTime": 0.20000000298023224,
+    "_isPlateObjMoveUseCusCurve": false,
+    "_plateObjMoveEase": 7,
+    "_plateObjMoveCurve": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+    },
+    "_objCombineDelayTime": 0.05000000074505806,
+    "_objPickTriToSortTime": 0.3499999940395355,
+    "_objCombineAnimMoveTime": 0.15000000596046448,
+    "_objCombineAnimZoomTime": 0.10000000149011612,
+    "_objCombineOffset": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "_objCombineYZMoveEase": 15,
+    "_objCombineXMoveEase": 2,
+    "_objCombineMoveMaxScale": 1.2000000476837158,
+    "_objCombineZoomMaxScale": 1.600000023841858,
+    "_objCombineScaleEase1": 3,
+    "_objCombineScaleEase2": 9
+  },
+  "ranges": [
+    {
+      "name": "isDedebug",
+      "start": 92,
+      "end": 96,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "useVibration",
+      "start": 96,
+      "end": 100,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "_objUIPartYLenghTime",
+      "start": 100,
+      "end": 104,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objUIPartXLenghTime",
+      "start": 104,
+      "end": 108,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objMoveBaseTime",
+      "start": 108,
+      "end": 112,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objMoveMinTime",
+      "start": 112,
+      "end": 116,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objMoveMaxTime",
+      "start": 116,
+      "end": 120,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objPickYOffsetDir",
+      "start": 120,
+      "end": 132,
+      "descriptor": [
+        "vector",
+        "Vector3"
+      ]
+    },
+    {
+      "name": "_objPickYOffsetHeightMul",
+      "start": 132,
+      "end": 144,
+      "descriptor": [
+        "vector",
+        "Vector3"
+      ]
+    },
+    {
+      "name": "_objPickYOffsetTime",
+      "start": 144,
+      "end": 148,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_storeObjYOffsetScale",
+      "start": 148,
+      "end": 152,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_isObjPickYOffsetUseCusCurve",
+      "start": 152,
+      "end": 156,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "_objPickYOffsetEase",
+      "start": 156,
+      "end": 160,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_objPickYOffsetCurve",
+      "start": 160,
+      "end": 176,
+      "descriptor": [
+        "nonserialized",
+        "AnimationCurve"
+      ]
+    },
+    {
+      "name": "_isObjPickMoveXZUseCusCurve",
+      "start": 176,
+      "end": 180,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "_objPickMoveXZEase",
+      "start": 180,
+      "end": 184,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_objPickMoveXZCurve",
+      "start": 184,
+      "end": 200,
+      "descriptor": [
+        "nonserialized",
+        "AnimationCurve"
+      ]
+    },
+    {
+      "name": "_isObjPickMoveYUseCusCurve",
+      "start": 200,
+      "end": 204,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "_objPickMoveYEase",
+      "start": 204,
+      "end": 208,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_objPickMoveYCurve",
+      "start": 208,
+      "end": 224,
+      "descriptor": [
+        "nonserialized",
+        "AnimationCurve"
+      ]
+    },
+    {
+      "name": "_objRotaMaxTime",
+      "start": 224,
+      "end": 228,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_isObjPickRotaUseCusCurve",
+      "start": 228,
+      "end": 232,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "_objPickRotaEase",
+      "start": 232,
+      "end": 236,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_objPickRotaCurve",
+      "start": 236,
+      "end": 252,
+      "descriptor": [
+        "nonserialized",
+        "AnimationCurve"
+      ]
+    },
+    {
+      "name": "_plateDropDir",
+      "start": 252,
+      "end": 264,
+      "descriptor": [
+        "vector",
+        "Vector3"
+      ]
+    },
+    {
+      "name": "_plateDropTime",
+      "start": 264,
+      "end": 268,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_plateLightTime",
+      "start": 268,
+      "end": 272,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_plateLightFadeTime",
+      "start": 272,
+      "end": 276,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_vibratoCount",
+      "start": 276,
+      "end": 280,
+      "descriptor": [
+        "simple",
+        "int"
+      ]
+    },
+    {
+      "name": "_isPlateDropUseCusCurve",
+      "start": 280,
+      "end": 284,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "_plateDropEase",
+      "start": 284,
+      "end": 288,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_plateDropCurve",
+      "start": 288,
+      "end": 360,
+      "descriptor": [
+        "nonserialized",
+        "AnimationCurve"
+      ]
+    },
+    {
+      "name": "_pickScaleCurve1",
+      "start": 360,
+      "end": 364,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_pickScaleCurve2",
+      "start": 364,
+      "end": 368,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_pickScaleMaxLerp",
+      "start": 368,
+      "end": 372,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_pickScaleAllLimitTime",
+      "start": 372,
+      "end": 376,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_pickMaxScale",
+      "start": 376,
+      "end": 380,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_plateObjMoveTime",
+      "start": 380,
+      "end": 384,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_isPlateObjMoveUseCusCurve",
+      "start": 384,
+      "end": 388,
+      "descriptor": [
+        "simple",
+        "bool"
+      ]
+    },
+    {
+      "name": "_plateObjMoveEase",
+      "start": 388,
+      "end": 392,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_plateObjMoveCurve",
+      "start": 392,
+      "end": 408,
+      "descriptor": [
+        "nonserialized",
+        "AnimationCurve"
+      ]
+    },
+    {
+      "name": "_objCombineDelayTime",
+      "start": 408,
+      "end": 412,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objPickTriToSortTime",
+      "start": 412,
+      "end": 416,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objCombineAnimMoveTime",
+      "start": 416,
+      "end": 420,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objCombineAnimZoomTime",
+      "start": 420,
+      "end": 424,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objCombineOffset",
+      "start": 424,
+      "end": 436,
+      "descriptor": [
+        "vector",
+        "Vector3"
+      ]
+    },
+    {
+      "name": "_objCombineYZMoveEase",
+      "start": 436,
+      "end": 440,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_objCombineXMoveEase",
+      "start": 440,
+      "end": 444,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_objCombineMoveMaxScale",
+      "start": 444,
+      "end": 448,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objCombineZoomMaxScale",
+      "start": 448,
+      "end": 452,
+      "descriptor": [
+        "simple",
+        "float"
+      ]
+    },
+    {
+      "name": "_objCombineScaleEase1",
+      "start": 452,
+      "end": 456,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    },
+    {
+      "name": "_objCombineScaleEase2",
+      "start": 456,
+      "end": 460,
+      "descriptor": [
+        "enum",
+        "Ease"
+      ]
+    }
+  ]
+}

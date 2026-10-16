@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GreenPepperMa
+  m_Shader: {fileID: 4800000, guid: 9398af31886c947e3a1214cdd84c1e3e, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AOTex:
+        m_Texture: {fileID: 2800000, guid: 7ecb82a4a0af84182b79553bf7ee4fb9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColor:
+        m_Texture: {fileID: 2800000, guid: d485eb7cdc62945149d0e95cd880e16f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap:
+        m_Texture: {fileID: 2800000, guid: a32a88bc78ce24f878a763f49f3d90b8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: b0c5ac8fbbc914149aea645ab5f29bae, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
+        m_Texture: {fileID: 2800000, guid: 09666340c6f6a4f6c855f78f4be939cd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AOScale: 0.966
+    - _BaseCellOffset: 0
+    - _BaseCellSharpness: 1
+    - _CustomInvertLightDir: 0
+    - _FadeColorDirY: 0
+    - _FadeColorOffset: 0
+    - _FadeColorScale: 0
+    - _HighLightOffset: -0.98
+    - _HighLightPing: 0
+    - _HighLightShadowMask: 0
+    - _HighLightSmooth: 1
+    - _IsSingleColor: 1
+    - _IsUseNormalMap: 0
+    - _IsUseWorldMatcap: 0
+    - _MatcapScale: 0.73
+    - _MetcapShadowMask: 0.76
+    - _NormalScale: 2
+    - _OutlinePixels: 1.2
+    - _OutlineW: 0.5
+    - _ReflectScale: 1
+    - _RimLightMul: -1
+    - _RimOffset: 0.37
+    - _RimPower: 1
+    - _RimShadowScale: 0
+    - _RoughnessScale: 1
+    - _SelectionGlow: 0
+    - _SelectionPulse: 1
+    - __dirty: 1
+    - _ground1: 0
+    - _ground2: 0
+    - _ground3: 0
+    - _ground4: 0
+    - _ground5: 0
+    - _ground6: 0
+    - _ground7: 0
+    - _ground8: 0
+    - _inverseLightOffset: 0
+    - _inverseLightSmooth: 1
+    m_Colors:
+    - _BaseTint: {r: 1, g: 1, b: 1, a: 0}
+    - _CustomInverseDir: {r: 1, g: 0, b: 0, a: 0}
+    - _FadeColorB: {r: 1, g: 1, b: 1, a: 1}
+    - _FadeColorF: {r: 1, g: 1, b: 1, a: 1}
+    - _HighLightColor: {r: 0, g: 0, b: 0, a: 0}
+    - _IndirectColor: {r: 0.085, g: 0.085, b: 0.085, a: 0}
+    - _LightColor: {r: 1, g: 1, b: 1, a: 0}
+    - _MatcapColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 0}
+    - _OutlineColor: {r: 0, g: 0.254717, b: 0.033962294, a: 0}
+    - _ReflectOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _RimColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
+    - _ShadowAddColor: {r: 0, g: 0, b: 0, a: 0}
+    - _inverseColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

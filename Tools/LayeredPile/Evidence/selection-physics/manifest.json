@@ -1,0 +1,4833 @@
+[
+  {
+    "j": "889",
+    "names": [
+      "ContractionComparer..ctor",
+      "<>c..ctor",
+      "PrimeGeneratorBase..ctor",
+      "SequentialSearchPrimeGeneratorBase..ctor",
+      "ReflectionExecutionDomainCallbacks..ctor",
+      "CachedData..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "DBNull..ctor",
+      "EventArgs..ctor",
+      "FlagsAttribute..ctor",
+      "FormattableString..ctor",
+      "Gen2GcCallback..ctor",
+      "<>c..ctor",
+      "NonSerializedAttribute..ctor",
+      "ParamArrayAttribute..ctor",
+      "SerializableAttribute..ctor",
+      "StringComparer..ctor",
+      "STAThreadAttribute..ctor",
+      "ThreadStaticAttribute..ctor",
+      "TimeZone..ctor",
+      "Type..ctor",
+      "Array..ctor",
+      "Array.Initialize",
+      "MonoTODOAttribute..ctor",
+      "Attribute..ctor",
+      "ContextBoundObject..ctor",
+      "ContextStaticAttribute..ctor",
+      "<>c..ctor",
+      "DefaultBinder..ctor",
+      "Empty..ctor",
+      "Enum..ctor",
+      "GC.KeepAlive",
+      "SharedStatics..ctor",
+      "AppDomain..ctor",
+      "MonoTypeInfo..ctor",
+      "AppDomainSetup..ctor",
+      "DelegateData..ctor",
+      "MarshalByRefObject..ctor",
+      "MonoAsyncCall..ctor",
+      "MonoListItem..ctor",
+      "NullConsoleDriver..ctor",
+      "Object..ctor",
+      "Object.Finalize",
+      "ByteMatcher.Sort",
+      "ATypeName..ctor",
+      "TypeSpec..ctor",
+      "ValueType..ctor",
+      "WeakReference..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "ExecutionContext..ctor",
+      "ExecutionContext.Dispose",
+      "SynchronizationContext..ctor",
+      "SynchronizationContext.OperationStarted",
+      "SynchronizationContext.OperationCompleted",
+      "<>c..ctor",
+      "Timer.KeepRootedWhileScheduled",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "StackGuard..ctor",
+      "TaskContinuation..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "TaskScheduler.NotifyWorkItemProgress",
+      "TaskScheduler..ctor",
+      "<>c..ctor",
+      "Decoder..ctor",
+      "DecoderExceptionFallback..ctor",
+      "DecoderExceptionFallbackBuffer..ctor",
+      "DecoderFallback..ctor",
+      "DecoderFallbackBuffer..ctor",
+      "Encoder..ctor",
+      "EncoderExceptionFallback..ctor",
+      "EncoderExceptionFallbackBuffer..ctor",
+      "EncoderFallback..ctor",
+      "EncoderFallbackBuffer..ctor",
+      "DecoderUTF7Fallback..ctor",
+      "SecureString.Encrypt",
+      "SecureString.Decrypt",
+      "Evidence..ctor",
+      "<>c..ctor",
+      "CryptoStream.Flush",
+      "HashAlgorithm..ctor",
+      "AsymmetricAlgorithm..ctor",
+      "AsymmetricSignatureDeformatter..ctor",
+      "AsymmetricSignatureFormatter..ctor",
+      "DSA..ctor",
+      "KeyedHashAlgorithm..ctor",
+      "TailStream.Flush",
+      "RandomNumberGenerator..ctor",
+      "RSA..ctor",
+      "SignatureDescription..ctor",
+      "RNGCryptoServiceProvider.RngClose",
+      "RSAPKCS1SignatureDeformatter..ctor",
+      "RSAPKCS1SignatureFormatter..ctor",
+      "X509CertificateImpl..ctor",
+      "CACD..ctor",
+      "TypeInfo..ctor",
+      "TypeEntry..ctor",
+      "TransparentProxy..ctor",
+      "DynamicPropertyReg..ctor",
+      "ContextCallbackObject..ctor",
+      "CrossContextChannel..ctor",
+      "CrossAppDomainChannel..ctor",
+      "ConstructionLevelActivator..ctor",
+      "SoapAttribute..ctor",
+      "SoapFieldAttribute..ctor",
+      "SoapMethodAttribute..ctor",
+      "SoapParameterAttribute..ctor",
+      "SoapTypeAttribute..ctor",
+      "CallContext..ctor",
+      "IllogicalCallContext..ctor",
+      "LogicalCallContext..ctor",
+      "CallContextSecurityData..ctor",
+      "CallContextRemotingData..ctor",
+      "AsyncResult..ctor",
+      "EnvoyTerminatorSink..ctor",
+      "MethodCall..ctor",
+      "MethodCall.Init",
+      "RemotingSurrogate..ctor",
+      "ObjRefSurrogate..ctor",
+      "RemotingSurrogateSelector..ctor",
+      "ServerContextTerminatorSink..ctor",
+      "NonVersionableAttribute..ctor",
+      "FormatterConverter..ctor",
+      "SerializationBinder..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "SafeSerializationManager..ctor",
+      "OnSerializingAttribute..ctor",
+      "OnSerializedAttribute..ctor",
+      "OnDeserializingAttribute..ctor",
+      "OnDeserializedAttribute..ctor",
+      "SerializationHeaderRecord.Dump",
+      "BinaryAssembly..ctor",
+      "BinaryAssembly.Dump",
+      "BinaryCrossAppDomainAssembly..ctor",
+      "BinaryCrossAppDomainAssembly.Dump",
+      "BinaryObject..ctor",
+      "BinaryObject.Dump",
+      "BinaryMethodCall.Dump",
+      "BinaryMethodReturn.Dump",
+      "BinaryObjectString..ctor",
+      "BinaryObjectString.Dump",
+      "BinaryCrossAppDomainString..ctor",
+      "BinaryCrossAppDomainString.Dump",
+      "BinaryCrossAppDomainMap..ctor",
+      "BinaryCrossAppDomainMap.Dump",
+      "MemberPrimitiveTyped..ctor",
+      "MemberPrimitiveTyped.Dump",
+      "BinaryObjectWithMap..ctor",
+      "BinaryObjectWithMap.Dump",
+      "BinaryObjectWithMapTyped..ctor",
+      "BinaryArray..ctor",
+      "MemberPrimitiveUnTyped..ctor",
+      "MemberPrimitiveUnTyped.Dump",
+      "MemberReference..ctor",
+      "MemberReference.Dump",
+      "ObjectNull..ctor",
+      "ObjectNull.Dump",
+      "MessageEnd..ctor",
+      "MessageEnd.Dump",
+      "__BinaryWriter.WriteBegin",
+      "WriteObjectInfo..ctor",
+      "ReadObjectInfo..ctor",
+      "ReadObjectInfo.ObjectEnd",
+      "TypeNAssembly..ctor",
+      "__BinaryParser.ReadBegin",
+      "__BinaryParser.ReadEnd",
+      "ParseRecord..ctor",
+      "NameCache..ctor",
+      "InternalFE..ctor",
+      "NameInfo..ctor",
+      "ComImportAttribute..ctor",
+      "PreserveSigAttribute..ctor",
+      "InAttribute..ctor",
+      "OutAttribute..ctor",
+      "OptionalAttribute..ctor",
+      "MarshalerInstanceKeyComparer..ctor",
+      "<>c..ctor",
+      "HandleProcessCorruptedStateExceptionsAttribute..ctor",
+      "PrePrepareMethodAttribute..ctor",
+      "CriticalFinalizerObject..ctor",
+      "CallerMemberNameAttribute..ctor",
+      "CompilerGeneratedAttribute..ctor",
+      "CustomConstantAttribute..ctor",
+      "ExtensionAttribute..ctor",
+      "IntrinsicAttribute..ctor",
+      "IsByRefLikeAttribute..ctor",
+      "IsReadOnlyAttribute..ctor",
+      "RuntimeCompatibilityAttribute..ctor",
+      "StringFreezingAttribute..ctor",
+      "UnsafeValueTypeAttribute..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "ReflectionBlockedAttribute..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "<>c..ctor",
+      "FriendAccessAllowedAttribute..ctor",
+      "FastResourceComparer..ctor",
+      "CultureNameResourceSetPair..ctor",
+      "Binder..ctor",
+      "ConstructorInfo..ctor",
+      "EventInfo..ctor",
+      "FieldInfo..ctor",
+      "MemberInfo..ctor",
+      "MethodBase..ctor",
+      "MethodInfo..ctor",
+      "Missing..ctor",
+      "Module..ctor",
+      "ParameterInfo..ctor",
+      "PropertyInfo..ctor",
+      "ResolveEventHolder..ctor",
+      "Assembly..ctor",
+      "LazyCAttrData..ctor",
+      "CustomAttributeData..ctor",
+      "ExceptionHandlingClause..ctor",
+      "LocalVariableInfo..ctor",
+      "RuntimeEventInfo..ctor",
+      "RtFieldInfo..ctor",
+      "RuntimeFieldInfo..ctor",
+      "RuntimeMethodInfo..ctor",
+      "RuntimePropertyInfo..ctor",
+      "UnmanagedMarshal..ctor",
+      "MemoryStream.Flush",
+      "TextReader..ctor",
+      "NullStream.Flush",
+      "<>c..ctor",
+      "<>c..ctor",
+      "Stream..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "CultureInfo.CheckNeutral",
+      "StackTraceHiddenAttribute..ctor",
+      "DebuggerStepThroughAttribute..ctor",
+      "DebuggerHiddenAttribute..ctor",
+      "DebuggerNonUserCodeAttribute..ctor",
+      "EventSourceAttribute..ctor",
+      "NonEventAttribute..ctor",
+      "DictionaryNode..ctor",
+      "ListDictionaryInternal..ctor",
+      "CollectionBase.OnClear",
+      "CollectionBase.OnClearComplete",
+      "URPASPVersionInfo..ctor",
+      "MoveMe.Start",
+      "NewScene.Start",
+      "NewScene.Update",
+      "TAExample.Awake",
+      "TAExample.Start",
+      "ABPackManager.set_ABType",
+      "ABPackManager.set_TimeABType",
+      "ABPackManager.set_LevelABType",
+      "ABPackManager.set_PrograssUIABType",
+      "ABPackManager.set_EnergyStartABType",
+      "ABPackManager.set_GameToolABType",
+      "ABPackManager.set_EnergyShareRateABType",
+      "ABPackManager.set_MoreFreeLevelABType",
+      "ABPackManager.set_DaliyOffsetABIndex",
+      "ABPackManager.set_TeachHasShakeABType",
+      "ABPackManager.set_ShowSubmitABType",
+      "ABPackManager.set_NewPlayerGuideABType",
+      "ABPackManager.set_GetNewAnimABType",
+      "ActionManager..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "ADSupportDataData..ctor",
+      "AreaNameDataData..ctor",
+      "BattlePassDataData..ctor",
+      "CollectCardActivityDataData..ctor",
+      "CollectCardDataData..ctor",
+      "CollectCardPackDataData..ctor",
+      "CollectCardTypePrizeData..ctor",
+      "CommonTimeDataData..ctor",
+      "DailyChallengeDataData..ctor",
+      "DailyNetRewardDataData..ctor",
+      "DaliyRewardDateDataData..ctor",
+      "DaliyRewardProgressDataData..ctor",
+      "DYDiamondPayDataData..ctor",
+      "EndAnimDataData..ctor",
+      "ErrorCodeDataData..ctor",
+      "GameToolDataData..ctor",
+      "GuildWarSeasonDataData..ctor",
+      "ItemDataData..ctor",
+      "LevelActivityTimeDataData..ctor",
+      "LevelDetailDataData..ctor",
+      "LevelRewardDataData..ctor",
+      "LibraryDataData..ctor",
+      "MonopolyEventDataData..ctor",
+      "MonopolyFakeDiceDataData..ctor",
+      "NetResourceDataData..ctor",
+      "NewPassDataData..ctor",
+      "NewYearLevelDataData..ctor",
+      "ObjectInfoDataData..ctor",
+      "ObjNameDataData..ctor",
+      "ObjNetPriceDataData..ctor",
+      "OnlineBaseNetDataData..ctor",
+      "OnlineBaseRewardDataData..ctor",
+      "PassSeasonDataData..ctor",
+      "RelationDataData..ctor",
+      "ResTimeRecoverDataData..ctor",
+      "ShareRewardDataData..ctor",
+      "ShareURLDataData..ctor",
+      "SlotActivityDataData..ctor",
+      "SlotActivityObjDataData..ctor",
+      "SlotActivityPathDataData..ctor",
+      "SlotPrizeShowData..ctor",
+      "SmallInfoDataData..ctor",
+      "SpLevelDataData..ctor",
+      "SportActionDataData..ctor",
+      "SportLevelDataData..ctor",
+      "StoreDataData..ctor",
+      "StoreRewardJsonDataData..ctor",
+      "UpgradeDataData..ctor",
+      "YearReportGooseDataData..ctor",
+      "BoxItemInfo..ctor",
+      "<RandomAnim>d__7.System.IDisposable.Dispose",
+      "ChangeObjVisibleMod.OnDisable",
+      "<DelayToMove>d__8.System.IDisposable.Dispose",
+      "<DelayToPlay>d__5.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "Archive.OnReset",
+      "Archive.OnCrossDay",
+      "Archive.ConfigPrimary",
+      "<>c..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<UploadArchivesCoroutine>d__10.System.IDisposable.Dispose",
+      "<>c__DisplayClass12_0..ctor",
+      "MiniArchiveManager..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "MonoPolyArchive.ConfigPrimary",
+      "CostTimeData..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "RedPointManager..ctor",
+      "<>c..ctor",
+      "RewardFunctionData..ctor",
+      "SaveManager..ctor",
+      "<WaitToEnterMainScene>d__23.System.IDisposable.Dispose",
+      "<CheckSceneCreate>d__25.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<CheckLevel1Finish>d__26.System.IDisposable.Dispose",
+      "<DelayToLoadSound>d__27.System.IDisposable.Dispose",
+      "<>c__DisplayClass31_0..ctor",
+      "<LoopMainSceneMusic>d__45.System.IDisposable.Dispose",
+      "<LoopMusicHitAction>d__46.System.IDisposable.Dispose",
+      "SoundPiece..ctor",
+      "SportManager..ctor",
+      "<>c..ctor",
+      "<UpdateBoxTime>d__40.System.IDisposable.Dispose",
+      "<TickTock>d__44.System.IDisposable.Dispose",
+      "<>c__DisplayClass49_0..ctor",
+      "<>c__DisplayClass50_0..ctor",
+      "TimerManager.OnDestroy",
+      "<>c__DisplayClass1_0..ctor",
+      "<>c__DisplayClass208_0..ctor",
+      "<>c__DisplayClass209_0..ctor",
+      "<>c__DisplayClass214_0..ctor",
+      "<>c__DisplayClass222_0..ctor",
+      "ConfigManager.Awake",
+      "<DelayToChangePause>d__30.System.IDisposable.Dispose",
+      "GameManager.TestSaveManager",
+      "GameManager.Update",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass36_0..ctor",
+      "<>c__DisplayClass48_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass56_0..ctor",
+      "<>c__DisplayClass63_0..ctor",
+      "<>c__DisplayClass63_1..ctor",
+      "GMListData..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c..ctor",
+      "<>c.<GetToken>b__33_0",
+      "<>c__DisplayClass30_0..ctor",
+      "IntegralWallHelper..ctor",
+      "IntegralWallGameData..ctor",
+      "KuaiShouAdManager..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<FPS>d__12.System.IDisposable.Dispose",
+      "ExcelExampleData..ctor",
+      "ExposePropertyAttribute..ctor",
+      "<DelayToEnter>d__14.System.IDisposable.Dispose",
+      "<LoopShowPrograss>d__15.System.IDisposable.Dispose",
+      "<recheckVersion>d__48.System.IDisposable.Dispose",
+      "<updateLoadPercent>d__49.System.IDisposable.Dispose",
+      "<updateDownloadPercent>d__50.System.IDisposable.Dispose",
+      "LaunchLoading.Update",
+      "LaunchLoading.OnHide",
+      "<>c..ctor",
+      "<LoopLoginWX>d__104.System.IDisposable.Dispose",
+      "<LoopLoginServer>d__106.System.IDisposable.Dispose",
+      "<DelayToLoadCompelet>d__114.System.IDisposable.Dispose",
+      "<>c__DisplayClass135_0..ctor",
+      "<>c__DisplayClass136_0..ctor",
+      "<DelayReture>d__140.System.IDisposable.Dispose",
+      "<>c__DisplayClass141_0..ctor",
+      "<>c__DisplayClass141_1..ctor",
+      "<>c__DisplayClass142_0..ctor",
+      "<>c__DisplayClass142_1..ctor",
+      "<>c__DisplayClass143_0..ctor",
+      "<OverlayTime>d__146.System.IDisposable.Dispose",
+      "<>c__DisplayClass148_0..ctor",
+      "<>c__DisplayClass150_0..ctor",
+      "<>c__DisplayClass153_0..ctor",
+      "SaveDic..ctor",
+      "TempLevelData..ctor",
+      "<SoundAnim>d__2.System.IDisposable.Dispose",
+      "ObjCustomModBase.OnInit",
+      "ObjCustomModBase.OnShow",
+      "ObjCustomModBase.OnSelect",
+      "ObjCustomModBase.OnClick",
+      "ObjCustomModBase.OnComine",
+      "<DelayToLoad>d__22.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c__DisplayClass100_0..ctor",
+      "<DelayToShowHand>d__105.System.IDisposable.Dispose",
+      "<>c__DisplayClass108_0..ctor",
+      "<>c__DisplayClass112_0..ctor",
+      "<>c__DisplayClass120_0..ctor",
+      "<LoopCreateObj>d__182.System.IDisposable.Dispose",
+      "<LoopCrowObjSize>d__185.System.IDisposable.Dispose",
+      "<LoopOptimization>d__189.System.IDisposable.Dispose",
+      "<LoopCheckLoseObj>d__192.System.IDisposable.Dispose",
+      "<CountDownTime>d__195.System.IDisposable.Dispose",
+      "<EndlessTime>d__196.System.IDisposable.Dispose",
+      "<DelayToCheckContent>d__220.System.IDisposable.Dispose",
+      "<DestroyAnim>d__221.System.IDisposable.Dispose",
+      "<DelayToLose>d__265.System.IDisposable.Dispose",
+      "<ClawObj>d__280.System.IDisposable.Dispose",
+      "<FingHighlight>d__283.System.IDisposable.Dispose",
+      "<>c__DisplayClass288_0..ctor",
+      "<MessObjPosAnim>d__288.System.IDisposable.Dispose",
+      "<MessObjRotaAnim>d__292.System.IDisposable.Dispose",
+      "<LoopCheckTip>d__317.System.IDisposable.Dispose",
+      "<NewGuideLevel1EndAnim>d__331.System.IDisposable.Dispose",
+      "<WaitTimeAndClick>d__332.System.IDisposable.Dispose",
+      "CreateInfo..ctor",
+      "BattleResult..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c..ctor",
+      "<>c.<ClickObj>b__15_18",
+      "<CombieAnim>d__21.System.IDisposable.Dispose",
+      "<DelayToMoveOtherObj>d__22.System.IDisposable.Dispose",
+      "<RandomAnim>d__33.System.IDisposable.Dispose",
+      "<>c__DisplayClass44_0..ctor",
+      "<DelayToHideCol>d__47.System.IDisposable.Dispose",
+      "<ThrowAnim>d__50.System.IDisposable.Dispose",
+      "ObjectUnit.SetBaseValue",
+      "<>c..ctor",
+      "<>c.<SetPunchAnim>b__12_0",
+      "<SetLight>d__13.System.IDisposable.Dispose",
+      "<>c__DisplayClass16_0..ctor",
+      "SpLevelWindowData..ctor",
+      "<DelayToCheckContent>d__29.System.IDisposable.Dispose",
+      "<DestroyAnim>d__30.System.IDisposable.Dispose",
+      "<TeachEndAnim>d__32.System.IDisposable.Dispose",
+      "<Anim>d__12.System.IDisposable.Dispose",
+      "<Anim>d__9.System.IDisposable.Dispose",
+      "<Anim>d__5.System.IDisposable.Dispose",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "LoadManager.Awake",
+      "<LoopCheckDay>d__22.System.IDisposable.Dispose",
+      "<>c__DisplayClass30_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass60_0..ctor",
+      "<>c__DisplayClass62_0..ctor",
+      "<>c__DisplayClass63_0..ctor",
+      "<>c__DisplayClass67_0..ctor",
+      "<>c__DisplayClass68_0..ctor",
+      "<>c__DisplayClass69_0..ctor",
+      "<>c__DisplayClass70_0..ctor",
+      "<>c__DisplayClass74_0..ctor",
+      "<>c__DisplayClass74_1..ctor",
+      "<>c__DisplayClass78_0..ctor",
+      "<>c__DisplayClass93_0..ctor",
+      "<>c__DisplayClass101_0..ctor",
+      "<>c__DisplayClass102_0..ctor",
+      "<>c__DisplayClass103_0..ctor",
+      "TeamDetailInfoData..ctor",
+      "TeamInfoListData..ctor",
+      "SearchTeamInfoData..ctor",
+      "TeamMemberData..ctor",
+      "FriendNetworkData..ctor",
+      "SaveDataCommonStep..ctor",
+      "UserRecord..ctor",
+      "SeasonDetailData..ctor",
+      "SpLevelSaveData..ctor",
+      "NetworkConfig..ctor",
+      "TimeHelper..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c..ctor",
+      "<GetServerTime>d__6.System.IDisposable.Dispose",
+      "<>c__DisplayClass9_0..ctor",
+      "<GetUserPos>d__14.System.IDisposable.Dispose",
+      "<>c__DisplayClass18_0..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<ExchangeCDKey>d__20.System.IDisposable.Dispose",
+      "<HelpMyFriend>d__21.System.IDisposable.Dispose",
+      "<TodayHelpMeFriendList>d__22.System.IDisposable.Dispose",
+      "<CheckBindTimes>d__23.System.IDisposable.Dispose",
+      "<DoBindArchive>d__24.System.IDisposable.Dispose",
+      "<>c__DisplayClass25_0..ctor",
+      "<>c__DisplayClass26_0..ctor",
+      "<>c__DisplayClass27_0..ctor",
+      "<>c__DisplayClass28_0..ctor",
+      "<>c__DisplayClass29_0..ctor",
+      "<>c__DisplayClass30_0..ctor",
+      "<>c__DisplayClass31_0..ctor",
+      "<>c__DisplayClass32_0..ctor",
+      "<>c__DisplayClass40_0..ctor",
+      "<>c__DisplayClass41_0..ctor",
+      "LevelSettleUpload..ctor",
+      "PlayerServerDataUpload..ctor",
+      "PvpRoomUpload..ctor",
+      "PvpRoomJoinUpload..ctor",
+      "PvpGameRoomLoad..ctor",
+      "PvpGameRoomUpload..ctor",
+      "NetArchiveData..ctor",
+      "CountrySimpleRankData..ctor",
+      "AllTeamListData..ctor",
+      "NotifyServerSubscribeData..ctor",
+      "PrivinceRankData..ctor",
+      "TXPosData..ctor",
+      "ServerPosData..ctor",
+      "PvpRoomUserData..ctor",
+      "NetArchiveGetBody..ctor",
+      "CountrySimpleDataGetBody..ctor",
+      "ProvinceDataGetBody..ctor",
+      "CreateRoomGetBody..ctor",
+      "UploadData..ctor",
+      "InviteData..ctor",
+      "SubscribeStateData..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass21_0..ctor",
+      "<>c__DisplayClass22_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass25_0..ctor",
+      "<>c__DisplayClass26_0..ctor",
+      "<>c__DisplayClass27_0..ctor",
+      "<>c__DisplayClass33_0..ctor",
+      "OnlineLevelManager..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "<>c..ctor",
+      "OnlineShareManager..ctor",
+      "<ShowReturnPop>d__8.System.IDisposable.Dispose",
+      "ReturnPlayerMa..ctor",
+      "<LoopAnim>d__13.System.IDisposable.Dispose",
+      "NewPackSplitScript.Update",
+      "<GrowObjSize>d__8.System.IDisposable.Dispose",
+      "OldSc.hasLocalFile",
+      "OldSc.LevelTouch",
+      "OldSc..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "WechatLog..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "TencentAdManager..ctor",
+      "TencentOtherAdManager..ctor",
+      "<>c..ctor",
+      "<Countdown>d__38.System.IDisposable.Dispose",
+      "<>c__DisplayClass14_0..ctor",
+      "<DelayToClose>d__32.System.IDisposable.Dispose",
+      "<DelayToShowLoad>d__14.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<LoopAnim>d__16.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<LoopShakeAnim>d__19.System.IDisposable.Dispose",
+      "<DelayToShowClose>d__20.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<DelayToDes>d__6.System.IDisposable.Dispose",
+      "UIADAndShareBtn.LoadComplete",
+      "<>c__DisplayClass19_0..ctor",
+      "<Anim>d__19.System.IDisposable.Dispose",
+      "UIBaseAnimAwardItem.StartActive",
+      "<Anim>d__12.System.IDisposable.Dispose",
+      "UIAwardUnitItem.EndAnim",
+      "<AnimDelay>d__21.System.IDisposable.Dispose",
+      "UIEndlessInfoItem.Init",
+      "<DelayToClose>d__2.System.IDisposable.Dispose",
+      "LevelEffectData..ctor",
+      "UISpShareBtn.Start",
+      "UISpShareBtn.Update",
+      "<MoveAnim>d__11.System.IDisposable.Dispose",
+      "<CreatePieces>d__7.System.IDisposable.Dispose",
+      "<CommonCreatePieces>d__8.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<ShowAnim>d__24.System.IDisposable.Dispose",
+      "<>c__DisplayClass12_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c..ctor",
+      "ActivityHelperBase.OnInit",
+      "ActivityHelperBase.IsInit",
+      "ActivityHelperBase..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<>c__DisplayClass22_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass24_0..ctor",
+      "<>c__DisplayClass26_0..ctor",
+      "StoreGooseBaseItem.ShowGoose",
+      "<>c..ctor",
+      "<>c.<EndBuyGoose>b__14_0",
+      "UIStoreActivityBtn.OnDestroy",
+      "<>c__DisplayClass22_0..ctor",
+      "<>c__DisplayClass42_0..ctor",
+      "DiceFakeRateRecord..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c.<EndBuyGoose>b__23_0",
+      "<UIAnim>d__10.System.IDisposable.Dispose",
+      "UIMonopolyEndAnimPop.SetEndData",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<EndGoosePop>d__10.System.IDisposable.Dispose",
+      "<LoopCheckTime>d__52.System.IDisposable.Dispose",
+      "<DiceAnim>d__57.System.IDisposable.Dispose",
+      "<>c__DisplayClass58_0..ctor",
+      "<DiceJumpAnim>d__58.System.IDisposable.Dispose",
+      "<>c__DisplayClass66_0..ctor",
+      "<AnimDelay>d__17.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<AddToolAnim>d__15.System.IDisposable.Dispose",
+      "<Anim>d__31.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<ChangeAreaAnim>d__20.System.IDisposable.Dispose",
+      "<ChangeObjAnim>d__21.System.IDisposable.Dispose",
+      "<>c__DisplayClass12_0..ctor",
+      "<EndGoosePop>d__10.System.IDisposable.Dispose",
+      "<LoopPlayAnim>d__7.System.IDisposable.Dispose",
+      "<AnimDelay>d__28.System.IDisposable.Dispose",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c..ctor",
+      "<>c.<Anim>b__17_0",
+      "<Anim>d__17.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<AddToolAnim>d__20.System.IDisposable.Dispose",
+      "<Anim>d__43.System.IDisposable.Dispose",
+      "<>c__DisplayClass11_0..ctor",
+      "<AnimTask>d__10.System.IDisposable.Dispose",
+      "<LevelUpAnimTask>d__20.System.IDisposable.Dispose",
+      "<LoopCreate>d__2.System.IDisposable.Dispose",
+      "<ThrowAnim>d__16.System.IDisposable.Dispose",
+      "<DelayTime>d__17.System.IDisposable.Dispose",
+      "BattleToolItem.OneTimeInit",
+      "BattleToolItem.PlayTool",
+      "<DelayToClose>d__3.System.IDisposable.Dispose",
+      "<DelayToShowBtn>d__23.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<CheckLoad>d__18.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<Anim>d__7.System.IDisposable.Dispose",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "CDKeyHelper..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c__DisplayClass18_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<WaitHotFixEnd>d__26.System.IDisposable.Dispose",
+      "<>c__DisplayClass28_0..ctor",
+      "<WaitRefreshToken>d__29.System.IDisposable.Dispose",
+      "<>c__DisplayClass31_0..ctor",
+      "<>c__DisplayClass32_0..ctor",
+      "<NetError>d__33.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass42_0..ctor",
+      "<>c__DisplayClass46_0..ctor",
+      "<LoopChangeSprite>d__8.System.IDisposable.Dispose",
+      "<DoTask>d__3.System.IDisposable.Dispose",
+      "<DoTaskCount>d__4.System.IDisposable.Dispose",
+      "<DoTaskLoop>d__5.System.IDisposable.Dispose",
+      "Timer..ctor",
+      "<>c..ctor",
+      "DaliyRewardManager..ctor",
+      "<AnimDelay>d__13.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<CheckInteractable>d__17.System.IDisposable.Dispose",
+      "<AddToolAnim>d__20.System.IDisposable.Dispose",
+      "<HandClickAnim>d__36.System.IDisposable.Dispose",
+      "<HardWarnAnim>d__46.System.IDisposable.Dispose",
+      "UIGamePage.InitLevelInfo",
+      "<LoopShakeAnim>d__12.System.IDisposable.Dispose",
+      "<DelayToClose>d__13.System.IDisposable.Dispose",
+      "<DelayToClose>d__11.System.IDisposable.Dispose",
+      "<AnimDelay>d__21.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c..ctor",
+      "UIGooseWordItem.InitItem",
+      "<CheckEnergyTime>d__56.System.IDisposable.Dispose",
+      "<Anim>d__61.System.IDisposable.Dispose",
+      "UILevelRewardPop.CreateLevelResource",
+      "<>c__DisplayClass20_0..ctor",
+      "<PlayTimeline>d__7.System.IDisposable.Dispose",
+      "<HandClickAnim>d__12.System.IDisposable.Dispose",
+      "MailConditionHelper..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "MailHelper..ctor",
+      "NetRewardData..ctor",
+      "UIMailStatusData..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "GameClubHelper..ctor",
+      "<>c..ctor",
+      "MainCarItem.Awake",
+      "<LoopCheckIdel>d__5.System.IDisposable.Dispose",
+      "<RandomAnim>d__6.System.IDisposable.Dispose",
+      "<PlaySingleDance>d__8.System.IDisposable.Dispose",
+      "<LoopUIAnim>d__13.System.IDisposable.Dispose",
+      "MainSceneGooseItem.SetBaseValue",
+      "<DelayToBuild>d__50.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c.<CreateMainSceneType>b__52_0",
+      "MainSceneMa.OnDestroy",
+      "MainSceneMa.ClearGooseAsset",
+      "<DelayToCreate>d__30.System.IDisposable.Dispose",
+      "<CreateGooseAnim>d__39.System.IDisposable.Dispose",
+      "UIBaseActiveItem.OnReveal",
+      "UIBaseActiveItem.ClickBtn",
+      "<>c..ctor",
+      "<NextFrameMove>d__9.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<DelayToShow>d__15.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "LongLevelActiveMa..ctor",
+      "<ShowNoticePop>d__6.System.IDisposable.Dispose",
+      "<AnimDelay>d__23.System.IDisposable.Dispose",
+      "<>c__DisplayClass7_0..ctor",
+      "<EndGoosePop>d__30.System.IDisposable.Dispose",
+      "<>c__DisplayClass3_0..ctor",
+      "<OpenBoxAnim>d__19.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<OpenBoxAnim>d__24.System.IDisposable.Dispose",
+      "<ADRewardAnim>d__30.System.IDisposable.Dispose",
+      "PayConfigData..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass33_0..ctor",
+      "<DelayRefresh>d__35.System.IDisposable.Dispose",
+      "<DelayRefreshTagPanel>d__36.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c..ctor",
+      "LevelSlotMa..ctor",
+      "<EndGoosePop>d__7.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<StartSelectProcess>d__57.System.IDisposable.Dispose",
+      "<ShuffleCardAnim>d__60.System.IDisposable.Dispose",
+      "<ShuffleAnim2>d__68.System.IDisposable.Dispose",
+      "<ShowEnsurePanel>d__71.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c..ctor",
+      "UIMainGooseItem.OnClick",
+      "<>c..ctor",
+      "<LoopCheckStartPage>d__31.System.IDisposable.Dispose",
+      "<CheckEnergyTime>d__37.System.IDisposable.Dispose",
+      "<InfoTipFade>d__50.System.IDisposable.Dispose",
+      "<LoopShowOtherGameGif>d__53.System.IDisposable.Dispose",
+      "UIMainPage.Update",
+      "UIMainPage.InitAreaData",
+      "UIMainPage.RefreshAreaData",
+      "UIMainPage.SetVoteBtn",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass10_1..ctor",
+      "<>c__DisplayClass10_2..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "SubmitBtn.Update",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass33_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c..ctor",
+      "UIVotePop.<OnInit>b__33_0",
+      "UIVotePop.<OnInit>b__33_1",
+      "<>c..ctor",
+      "<>c__DisplayClass44_0..ctor",
+      "<>c..ctor",
+      "<>c.<ChangePageAnim>b__45_1",
+      "<ScreenShoot>d__55.System.IDisposable.Dispose",
+      "YearReportPageData..ctor",
+      "<>c..ctor",
+      "<ShowNetLoadOutTime>d__26.System.IDisposable.Dispose",
+      "UIManager.OnDestroy",
+      "<SetData>d__11.System.IDisposable.Dispose",
+      "<SetData>d__3.System.IDisposable.Dispose",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c..ctor",
+      "<ShowNoticePop>d__12.System.IDisposable.Dispose",
+      "NoticeHelper..ctor",
+      "<WaitLoad>d__14.System.IDisposable.Dispose",
+      "<SetData>d__15.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c..ctor",
+      "<>c.<ClickJoinBtn>b__13_1",
+      "<>c..ctor",
+      "<CountDown>d__31.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<GetServerData>d__18.System.IDisposable.Dispose",
+      "<AddToolAnim>d__25.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<CountDown>d__26.System.IDisposable.Dispose",
+      "<EnterGame>d__28.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "<>c..ctor",
+      "<LoopShareCheck>d__17.System.IDisposable.Dispose",
+      "<>c__DisplayClass27_0..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "SimpleCoroutineAwaiter..ctor",
+      "<ReturnVoid>d__0.System.IDisposable.Dispose",
+      "<AssetBundleCreateRequest>d__1.System.IDisposable.Dispose",
+      "<AssetBundleRequest>d__3.System.IDisposable.Dispose",
+      "<ResourceRequest>d__4.System.IDisposable.Dispose",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<AsIEnumerator>d__0.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c.<GetAwaiter>b__0_0",
+      "WaitForBackgroundThread..ctor",
+      "WaitForUpdate..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass25_0..ctor",
+      "<>c__DisplayClass26_0..ctor",
+      "<>c__DisplayClass38_0..ctor",
+      "<>c__DisplayClass39_0..ctor",
+      "<>c__DisplayClass46_0..ctor",
+      "<>c__DisplayClass49_0..ctor",
+      "<>c__DisplayClass52_0..ctor",
+      "<>c__DisplayClass53_0..ctor",
+      "<>c__DisplayClass54_0..ctor",
+      "<>c__DisplayClass55_0..ctor",
+      "<>c__DisplayClass56_0..ctor",
+      "<>c__DisplayClass58_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "WebGLInputMobilePlugin..ctor",
+      "<RegisterOnFocusOut>d__5.System.IDisposable.Dispose",
+      "<ExecFocusOut>d__7.System.IDisposable.Dispose",
+      "WebGLInputMobile.Awake",
+      "WebGLInputPlugin..ctor",
+      "<Blur>d__21.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c.<.cctor>b__0_0",
+      "<>c.<.cctor>b__0_1",
+      "<>c.<.cctor>b__0_2",
+      "<>c..ctor",
+      "<>c__DisplayClass60_0..ctor",
+      "<>c__DisplayClass63_0..ctor",
+      "<>c__DisplayClass64_0..ctor",
+      "<>c__DisplayClass68_0..ctor",
+      "<>c__DisplayClass69_0..ctor",
+      "<>c__DisplayClass69_1..ctor",
+      "<>c__DisplayClass71_0..ctor",
+      "<>c__DisplayClass72_0..ctor",
+      "<>c__DisplayClass73_0..ctor",
+      "<>c__DisplayClass75_0..ctor",
+      "<>c__DisplayClass79_0..ctor",
+      "<>c__DisplayClass83_0..ctor",
+      "<>c__DisplayClass85_0..ctor",
+      "<>c__DisplayClass86_0..ctor",
+      "<>c__DisplayClass86_1..ctor",
+      "<>c__DisplayClass88_0..ctor",
+      "<>c__DisplayClass88_1..ctor",
+      "CardActivityHelper..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<WaitShowCardActivity>d__38.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<>c__DisplayClass25_0..ctor",
+      "<ShowSingleCard>d__22.System.IDisposable.Dispose",
+      "<ShowPackageSpine>d__23.System.IDisposable.Dispose",
+      "<PlaySpine>d__24.System.IDisposable.Dispose",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass22_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass25_0..ctor",
+      "MonopolyInviteHelper..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c__DisplayClass18_0..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<>c__DisplayClass21_0..ctor",
+      "<>c__DisplayClass22_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "MonopolyStoreHelper..ctor",
+      "StoreBuyRecordData..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c__DisplayClass18_0..ctor",
+      "<>c__DisplayClass18_1..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass31_0..ctor",
+      "<LoopEggAnim>d__33.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<>c__DisplayClass64_0..ctor",
+      "<>c__DisplayClass68_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass71_0..ctor",
+      "<>c__DisplayClass72_0..ctor",
+      "<>c__DisplayClass73_0..ctor",
+      "<>c__DisplayClass75_0..ctor",
+      "<>c__DisplayClass76_0..ctor",
+      "<>c__DisplayClass80_0..ctor",
+      "<>c__DisplayClass80_1..ctor",
+      "<>c__DisplayClass81_0..ctor",
+      "<>c__DisplayClass84_0..ctor",
+      "<>c__DisplayClass86_0..ctor",
+      "<>c__DisplayClass87_0..ctor",
+      "<>c__DisplayClass87_1..ctor",
+      "<>c__DisplayClass89_0..ctor",
+      "<>c__DisplayClass89_1..ctor",
+      "<>c__DisplayClass91_0..ctor",
+      "<>c__DisplayClass92_0..ctor",
+      "<>c__DisplayClass92_1..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c..ctor",
+      "<WaitShowCardActivity>d__38.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "<ShowSingleCard>d__22.System.IDisposable.Dispose",
+      "<ShowPackageSpine>d__23.System.IDisposable.Dispose",
+      "<PlaySpine>d__24.System.IDisposable.Dispose",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass18_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<>c__DisplayClass24_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass15_1..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "ConvertExt..ctor",
+      "TestData..ctor",
+      "CodeGuide.Initial",
+      "CodeGuide..ctor",
+      "KComponent..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c..ctor",
+      "KUnityUtils.SelectInEditor",
+      "KUnityUtils.SelectInEditor",
+      "KUnityUtils.SetObjectDirty",
+      "ABaseSignal..ctor",
+      "ASignal..ctor",
+      "<HoldingTime>d__7.System.IDisposable.Dispose",
+      "KUIPrefabCreate..ctor",
+      "<EndShowOnNextFrame>d__40.System.IDisposable.Dispose",
+      "<EndCloseOnNextFrame>d__46.System.IDisposable.Dispose",
+      "<EndHideOnNextFrame>d__49.System.IDisposable.Dispose",
+      "<>c__DisplayClass55_0..ctor",
+      "KUIHelper..ctor",
+      "<>c__DisplayClass55_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass92_0..ctor",
+      "<>c__DisplayClass93_0..ctor",
+      "WInputData..ctor",
+      "WRecognizerUTS..ctor",
+      "DouyinPlatformImpl.Init",
+      "DouyinPlatformImpl..ctor",
+      "DummyPlatformImpl.Init",
+      "DummyPlatformImpl..ctor",
+      "WechatPlatformImpl.Init",
+      "WechatPlatformImpl..ctor",
+      "KPlatform.Update",
+      "OrderInfo..ctor",
+      "GoodInfo..ctor",
+      "<>c__DisplayClass12_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c__DisplayClass18_0..ctor",
+      "PayProxy.LoadGoodInfo",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass24_0..ctor",
+      "<>c__DisplayClass25_0..ctor",
+      "<>c__DisplayClass26_0..ctor",
+      "NYDRewardData..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c..ctor",
+      "IntegralWallUI.Start",
+      "SubscribeItem.OnClickSubscribe",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c..ctor",
+      "SpecialResourceHelper..ctor",
+      "<>c..ctor",
+      "SpecialResourceManager..ctor",
+      "SpTimeCoinResource..ctor",
+      "My_Half_edge_index..ctor",
+      "Vector3Comparer..ctor",
+      "Lod_Mesh..ctor",
+      "Lod_Mesh_Table..ctor",
+      "ProgressiveMeshRuntime.Start",
+      "<DoRayCast>d__30.System.IDisposable.Dispose",
+      "EasyColliderCreator..ctor",
+      "EasyColliderData..ctor",
+      "SphereColliderData..ctor",
+      "CapsuleColliderData..ctor",
+      "BoxColliderData..ctor",
+      "MeshColliderData..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass38_0..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "<>c__DisplayClass2_0..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "<>c__DisplayClass2_0..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "<>c__DisplayClass2_0..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "<>c__DisplayClass2_0..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "<>c__DisplayClass12_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c__DisplayClass18_0..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<>c__DisplayClass21_0..ctor",
+      "<>c__DisplayClass22_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass24_0..ctor",
+      "<>c__DisplayClass25_0..ctor",
+      "<>c__DisplayClass26_0..ctor",
+      "<>c__DisplayClass27_0..ctor",
+      "<>c__DisplayClass28_0..ctor",
+      "<>c__DisplayClass29_0..ctor",
+      "<>c__DisplayClass30_0..ctor",
+      "<>c__DisplayClass31_0..ctor",
+      "<>c__DisplayClass32_0..ctor",
+      "<>c__DisplayClass33_0..ctor",
+      "<>c__DisplayClass34_0..ctor",
+      "<>c__DisplayClass35_0..ctor",
+      "<>c__DisplayClass36_0..ctor",
+      "<>c__DisplayClass37_0..ctor",
+      "<>c__DisplayClass38_0..ctor",
+      "<>c__DisplayClass39_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "ASPBlock..ctor",
+      "HDRPASPVersionInfo..ctor",
+      "VersionInfo..ctor",
+      "EmbeddedAttribute..ctor",
+      "IsReadOnlyAttribute..ctor",
+      "AtlasBase.Reset",
+      "ButtonClickStatus..ctor",
+      "CursorManager..ctor",
+      "Input..ctor",
+      "NoInput..ctor",
+      "<>c..ctor",
+      "DropdownMenuItem..ctor",
+      "FocusChangeDirection.Dispose",
+      "Manipulator..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "ScheduledItem.OnItemUnscheduled",
+      "CustomStyleAccess..ctor",
+      "<>c__DisplayClass313_0..ctor",
+      "VisualElement.OnViewDataReady",
+      "EqualityComparer..ctor",
+      "Values..ctor",
+      "<>c..ctor",
+      "<>c.<.cctor>b__9_0",
+      "<>c..ctor",
+      "<>c..ctor",
+      "UQueryMatcher..ctor",
+      "SingleQueryMatcher..ctor",
+      "FirstQueryMatcher..ctor",
+      "FocusRingRecord..ctor",
+      "<>c..ctor",
+      "BaseVisualTreeUpdater..ctor",
+      "BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnBeforeSerialize",
+      "<>c__DisplayClass38_0..ctor",
+      "MenuItem..ctor",
+      "MinMaxSlider.UpdateMixedValueContent",
+      "<GetAllItems>d__64.System.IDisposable.Dispose",
+      "DefaultDragAndDropClient..ctor",
+      "ListViewDraggerAnimated.ClearDragAndDropUI",
+      "CommandEventDispatchingStrategy..ctor",
+      "DefaultDispatchingStrategy..ctor",
+      "EventBase.PreDispatch",
+      "EventBase.PostDispatch",
+      "CallbackEventHandler..ctor",
+      "IMGUIEventDispatchingStrategy..ctor",
+      "KeyboardEventDispatchingStrategy..ctor",
+      "MouseCaptureDispatchingStrategy..ctor",
+      "MouseEventDispatchingStrategy..ctor",
+      "NavigationEventDispatchingStrategy..ctor",
+      "PointerCaptureDispatchingStrategy..ctor",
+      "PointerEventDispatchingStrategy..ctor",
+      "Enumerator.Reset",
+      "DynamicAtlasSettings..ctor",
+      "PanelSettings.Reset",
+      "Row..ctor",
+      "AreaNode..ctor",
+      "UIRLayoutUpdater..ctor",
+      "MeshWriteData..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "StyleComplexSelector..ctor",
+      "StyleProperty..ctor",
+      "StyleRule..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "UxmlTypeRestriction..ctor",
+      "VisualElementAsset.OnBeforeSerialize",
+      "UsingEntryComparer..ctor",
+      "<>c__DisplayClass45_0..ctor",
+      "CollectionViewController..ctor",
+      "ListViewController..ctor",
+      "<GetAllItems>d__64.System.IDisposable.Dispose",
+      "EventDebuggerLogCall.Dispose",
+      "EventDebuggerLogIMGUICall.Dispose",
+      "EventDebuggerLogExecuteDefaultAction.Dispose",
+      "<>c..ctor",
+      "BaseShaderInfoStorage..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "BlockPool.ResetBlock",
+      "HierarchyTraversal..ctor",
+      "SheetHandleKeyComparer..ctor",
+      "Il2CppEagerStaticClassConstructionAttribute..ctor",
+      "PostNormalizeAttribute..ctor",
+      "DoNotNormalizeAttribute..ctor",
+      "Random.CheckInitState",
+      "Random.CheckState",
+      "ObjectRes.Reset",
+      "ObjectRes..ctor",
+      "ObjectResWithEntityLink..ctor",
+      "BlendModeUtils..ctor",
+      "DescendantsEnumerator.Dispose",
+      "PaintingInfo..ctor",
+      "DisplayObject.EnsureSizeCorrect",
+      "<>c..ctor",
+      "ColliderHitTest..ctor",
+      "HitTestContext..ctor",
+      "PixelHitTestData..ctor",
+      "RectHitTest..ctor",
+      "MaterialRef..ctor",
+      "Frame..ctor",
+      "VertexMatrix..ctor",
+      "CursorDef..ctor",
+      "<>c..ctor",
+      "Stats..ctor",
+      "BaseFont.Dispose",
+      "BaseFont..ctor",
+      "FontManager..ctor",
+      "RTLSupport..ctor",
+      "LineInfo..ctor",
+      "TouchScreenKeyboard..ctor",
+      "<Print>d__19.System.IDisposable.Dispose",
+      "EventDispatcher..ctor",
+      "BlurFilter.Update",
+      "ColorFilter.Update",
+      "<>c..ctor",
+      "GTween..ctor",
+      "TweenPropTypeUtils..ctor",
+      "TweenValue..ctor",
+      "ChangePageAction..ctor",
+      "ControllerAction..ctor",
+      "<_CreateObject>d__1.System.IDisposable.Dispose",
+      "AsyncCreationHelper..ctor",
+      "EMRenderSupport..ctor",
+      "<>c__DisplayClass66_0..ctor",
+      "<>c__DisplayClass127_0..ctor",
+      "GearColorValue..ctor",
+      "GearDisplay.UpdateState",
+      "GearDisplay2.UpdateState",
+      "<>c__DisplayClass26_0..ctor",
+      "ItemInfo..ctor",
+      "GLoader3D.LoadExternal",
+      "GObject.CreateDisplayObject",
+      "GObject.ConstructFromResource",
+      "<>c__DisplayClass35_0..ctor",
+      "PackageItem..ctor",
+      "RelationDef..ctor",
+      "<>c__DisplayClass78_0..ctor",
+      "TValue_Visible..ctor",
+      "TValue_Animation..ctor",
+      "TValue_Sound..ctor",
+      "TValue_Transition..ctor",
+      "TValue_Shake..ctor",
+      "TValue_Text..ctor",
+      "TranslationHelper..ctor",
+      "ConfigValue..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "UIObjectFactory..ctor",
+      "AtlasSprite..ctor",
+      "<>c__DisplayClass96_0..ctor",
+      "<>c..ctor",
+      "Window.OnInit",
+      "Window.OnShown",
+      "Window.OnHide",
+      "Anymous_T..ctor",
+      "XML..ctor",
+      "XMLIterator..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "XMLUtils..ctor",
+      "ZipEntry..ctor",
+      "EEDataLoaderResources..ctor",
+      "<>c..ctor",
+      "EERowData..ctor",
+      "EEKeyFieldAttribute..ctor",
+      "<>c..ctor",
+      "AsyncTask.Coroutine",
+      "AsyncTaskCompletionSource..ctor",
+      "AsyncVoid.Coroutine",
+      "AsyncVoidMethodBuilder.SetResult",
+      "TaskCompletionSource..ctor",
+      "<>c__DisplayClass21_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass33_0..ctor",
+      "AssetRequest..ctor",
+      "<>c__DisplayClass26_0..ctor",
+      "<>c__DisplayClass29_0..ctor",
+      "<>c..ctor",
+      "DefaultLogger..ctor",
+      "<>c..ctor",
+      "GameEntry.OnInit",
+      "GameEntry.OnUpdate",
+      "KunpoReadOnlyAttribute..ctor",
+      "BaseLoader.Destroy",
+      "BaseLoader.OnInit",
+      "BaseLoader.OnShow",
+      "BaseLoader.OnHide",
+      "BaseLoader.OnCheckUpdate",
+      "BaseLoader.OnDownLoadOrUpdateApk",
+      "BaseLoader.OnCheckVersion",
+      "BaseLoader.OnUpdateCatalog",
+      "BaseLoader.OnUpdateCatalogError",
+      "BaseLoader.OnUpdateSucceed",
+      "BaseLoader.OnUpdateFailed",
+      "BaseLoader.OnStartLoadResources",
+      "BaseLoader.OnLoadResourceComplete",
+      "ArchiveHelper..ctor",
+      "EmbeddedAttribute..ctor",
+      "IsReadOnlyAttribute..ctor",
+      "Il2CppEagerStaticClassConstructionAttribute..ctor",
+      "NativeContainerAttribute..ctor",
+      "NativeContainerSupportsMinMaxWriteRestrictionAttribute..ctor",
+      "NativeContainerSupportsDeallocateOnJobCompletionAttribute..ctor",
+      "NativeContainerSupportsDeferredConvertListToArray..ctor",
+      "WriteAccessRequiredAttribute..ctor",
+      "NativeDisableUnsafePtrRestrictionAttribute..ctor",
+      "BurstDiscardAttribute..ctor",
+      "NotNullAttribute..ctor",
+      "PureAttribute..ctor",
+      "Camera.OnlyUsedForTesting1",
+      "Camera.OnlyUsedForTesting2",
+      "DebugLogHandler..ctor",
+      "LightingSettings.LightingSettingsDontStripMe",
+      "ImageEffectAllowedInSceneView..ctor",
+      "MeshFilter.DontStripMeshFilter",
+      "MeshRenderer.DontStripMeshRenderer",
+      "RenderTexture.set_enabled",
+      "PlayerConnectionInternal..ctor",
+      "PropertyAttribute..ctor",
+      "NonReorderableAttribute..ctor",
+      "ResourceRequest..ctor",
+      "ResourcesAPI..ctor",
+      "AsyncOperation..ctor",
+      "DisallowMultipleComponent..ctor",
+      "CreateAssetMenuAttribute..ctor",
+      "ExecuteInEditMode..ctor",
+      "ExecuteAlways..ctor",
+      "HideInInspector..ctor",
+      "ExcludeFromPresetAttribute..ctor",
+      "Coroutine..ctor",
+      "CustomYieldInstruction.Reset",
+      "CustomYieldInstruction..ctor",
+      "ExcludeFromObjectFactoryAttribute..ctor",
+      "ExtensionOfNativeClassAttribute..ctor",
+      "SelectionBaseAttribute..ctor",
+      "<>c..ctor",
+      "Object..ctor",
+      "WaitForEndOfFrame..ctor",
+      "WaitForFixedUpdate..ctor",
+      "YieldInstruction..ctor",
+      "SerializeField..ctor",
+      "SerializeReference..ctor",
+      "LowerResBlitTexture.LowerResBlitTextureDontStripMe",
+      "PreloadData.PreloadDataDontStripMe",
+      "DrivenRectTransformTracker.Clear",
+      "MetaData..ctor",
+      "MessageEventArgs..ctor",
+      "<>c__DisplayClass12_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "ArgumentCache..ctor",
+      "BaseInvokableCall..ctor",
+      "PreserveAttribute..ctor",
+      "SceneManagerAPI..ctor",
+      "ExcludeFromDocsAttribute..ctor",
+      "PlayableBehaviour..ctor",
+      "<>c..ctor",
+      "BuiltinRuntimeReflectionSystem.Dispose",
+      "BuiltinRuntimeReflectionSystem..ctor",
+      "ScriptableRuntimeReflectionSystemWrapper..ctor",
+      "IncrementalReadDecoder..ctor",
+      "IncrementalReadDummyDecoder..ctor",
+      "XmlReader.Close",
+      "XmlReader..ctor",
+      "NoNamespaceManager..ctor",
+      "NoNamespaceManager.PushScope",
+      "DtdDefaultAttributeInfoToNodeDataComparer..ctor",
+      "XmlLoader..ctor",
+      "XmlNode..ctor",
+      "XmlNodeList.PrivateDisposeNodeList",
+      "XmlNodeList..ctor",
+      "EmptyEnumerator.System.Collections.IEnumerator.Reset",
+      "EmptyEnumerator..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "XmlDownloadManager..ctor",
+      "OpenedHost..ctor",
+      "SafeAsciiDecoder..ctor",
+      "XmlNameTable..ctor",
+      "XmlNamespaceManager..ctor",
+      "XmlResolver..ctor",
+      "XmlUrlResolver..ctor",
+      "XPathExpression..ctor",
+      "XPathItem..ctor",
+      "XPathNavigator..ctor",
+      "XPathNavigatorKeyComparer..ctor",
+      "XmlIgnoreAttribute..ctor",
+      "BitSet..ctor",
+      "SyntaxTreeNode..ctor",
+      "InteriorNode..ctor",
+      "SequenceNode..ctor",
+      "ChoiceNode..ctor",
+      "PlusNode..ctor",
+      "QmarkNode..ctor",
+      "StarNode..ctor",
+      "DatatypeImplementation..ctor",
+      "NamespaceManager..ctor",
+      "FacetsChecker..ctor",
+      "Numeric2FacetsChecker..ctor",
+      "DurationFacetsChecker..ctor",
+      "DateTimeFacetsChecker..ctor",
+      "StringFacetsChecker..ctor",
+      "QNameFacetsChecker..ctor",
+      "MiscFacetsChecker..ctor",
+      "BinaryFacetsChecker..ctor",
+      "ListFacetsChecker..ctor",
+      "UnionFacetsChecker..ctor",
+      "NamespaceList..ctor",
+      "XmlSchemaAnnotated..ctor",
+      "XmlSchemaAnyAttribute..ctor",
+      "XmlSchemaDatatype..ctor",
+      "XmlSchemaObject..ctor",
+      "XmlSchemaSimpleTypeContent..ctor",
+      "XmlValueConverter..ctor",
+      "AstNode..ctor",
+      "EmptyQuery.Reset",
+      "QueryBuilder..ctor",
+      "Root..ctor",
+      "ValueQuery.Reset",
+      "XPathEmptyIterator.Reset",
+      "TextContainer.OnDisable",
+      "TextMeshPro.CalculateLayoutInputHorizontal",
+      "TextMeshPro.CalculateLayoutInputVertical",
+      "<DelayedGraphicRebuild>d__18.System.IDisposable.Dispose",
+      "<DelayedMaterialRebuild>d__19.System.IDisposable.Dispose",
+      "TextMeshProUGUI.CalculateLayoutInputHorizontal",
+      "TextMeshProUGUI.CalculateLayoutInputVertical",
+      "TextMeshProUGUI.DisableMasking",
+      "TMP_DefaultControls.SetDefaultColorTransitionValues",
+      "OptionData..ctor",
+      "<>c__DisplayClass69_0..ctor",
+      "<DelayedDestroyDropdownList>d__81.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "TMP_FontAsset.TryAddGlyphsToAtlasTextures",
+      "FaceInfo_Legacy..ctor",
+      "TMP_Glyph..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "<>c..ctor",
+      "TMP_FontAssetUtilities..ctor",
+      "<>c..ctor",
+      "<CaretBlink>d__276.System.IDisposable.Dispose",
+      "<MouseDragOutsideRect>d__294.System.IDisposable.Dispose",
+      "TMP_InputField.UpdateMaskRegions",
+      "TMP_InputField.LayoutComplete",
+      "TMP_InputField.GraphicUpdateComplete",
+      "TMP_InputField.OnControlClick",
+      "TMP_InputField.CalculateLayoutInputHorizontal",
+      "TMP_InputField.CalculateLayoutInputVertical",
+      "FallbackMaterial..ctor",
+      "MaskingMaterial..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "<>c__DisplayClass12_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "TMP_ResourceManager..ctor",
+      "TMP_SelectionCaret.UpdateGeometry",
+      "LineBreakingTable..ctor",
+      "TMP_Sprite..ctor",
+      "<DoSpriteAnimationInternal>d__7.System.IDisposable.Dispose",
+      "TMP_SpriteAnimator.OnEnable",
+      "TMP_SpriteAnimator.OnDisable",
+      "<>c..ctor",
+      "TMP_SubMeshUI.SetAllDirty",
+      "TMP_SubMeshUI.SetLayoutDirty",
+      "TMP_SubMeshUI.UpdateGeometry",
+      "<>c..ctor",
+      "TMP_Text.LoadFontAsset",
+      "TMP_Text.SetShaderDepth",
+      "TMP_Text.SetCulling",
+      "TMP_Text.UpdateCulling",
+      "TMP_Text.UpdateVertexData",
+      "TMP_Text.UpdateMeshPadding",
+      "TMP_Text.ComputeMarginSize",
+      "TMP_Text.DestroySubMeshObjects",
+      "TMP_Text.ClearMesh",
+      "TMP_Text.InternalUpdate",
+      "TMP_TextElement..ctor",
+      "TMP_TextElement_Legacy..ctor",
+      "TMP_TextParsingUtilities..ctor",
+      "SpriteDataObject..ctor",
+      "TexturePacker_JsonArray..ctor",
+      "SerializedBehaviour.OnAfterDeserialize",
+      "SerializedBehaviour.OnBeforeSerialize",
+      "SerializedComponent.OnAfterDeserialize",
+      "SerializedComponent.OnBeforeSerialize",
+      "SerializedMonoBehaviour.OnAfterDeserialize",
+      "SerializedMonoBehaviour.OnBeforeSerialize",
+      "SerializedScriptableObject.OnAfterDeserialize",
+      "SerializedScriptableObject.OnBeforeSerialize",
+      "SerializedStateMachineBehaviour.OnAfterDeserialize",
+      "SerializedStateMachineBehaviour.OnBeforeSerialize",
+      "SerializedUnityObject.OnAfterDeserialize",
+      "SerializedUnityObject.OnBeforeSerialize",
+      "<>c..ctor",
+      "BinaryDataReader.Dispose",
+      "<>c..ctor",
+      "JsonDataWriter.Dispose",
+      "JsonTextReader.Dispose",
+      "SerializationNodeDataWriter.FlushToStream",
+      "ArrayFormatterLocator..ctor",
+      "DelegateFormatterLocator..ctor",
+      "<>c..ctor",
+      "GenericCollectionFormatterLocator..ctor",
+      "ISerializableFormatterLocator..ctor",
+      "SelfFormatterLocator..ctor",
+      "TypeFormatterLocator..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "EmittedFormatterAttribute..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass2_0..ctor",
+      "AllowDeserializeInvalidDataAttribute..ctor",
+      "AlwaysFormatsSelfAttribute..ctor",
+      "<>c..ctor",
+      "DeserializationContext.Sirenix.Serialization.Utilities.ICacheNotificationReceiver.OnClaimed",
+      "EmittedAssemblyAttribute..ctor",
+      "ExcludeDataFromInspectorAttribute..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "OdinSerializeAttribute..ctor",
+      "<>c..ctor",
+      "PrefabModification..ctor",
+      "SerializationContext.Sirenix.Serialization.Utilities.ICacheNotificationReceiver.OnClaimed",
+      "<>c..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "TwoWaySerializationBinder..ctor",
+      "Serializer.FireOnSerializedType",
+      "Serializer..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass12_0..ctor",
+      "ColorBlockFormatterLocator..ctor",
+      "CoroutineFormatter..ctor",
+      "UnityReferenceResolver.Sirenix.Serialization.Utilities.ICacheNotificationReceiver.OnClaimed",
+      "<>c..ctor",
+      "<>c__DisplayClass39_0..ctor",
+      "<>c__DisplayClass40_0..ctor",
+      "<>c__DisplayClass31_0..ctor",
+      "<>c__DisplayClass47_0..ctor",
+      "<>c__DisplayClass48_0..ctor",
+      "<GetAllMembers>d__49.System.IDisposable.Dispose",
+      "<GetBaseClasses>d__55.System.IDisposable.Dispose",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "FastTypeComparer..ctor",
+      "AnimationPairComparer..ctor",
+      "AtlasPage..ctor",
+      "AtlasRegion..ctor",
+      "IInterpolation..ctor",
+      "Vertices..ctor",
+      "SkinEntryComparer..ctor",
+      "ReplacementMaterial..ctor",
+      "RegionlessAttachmentLoader..ctor",
+      "VersionInfo..ctor",
+      "CompatibilityProblemInfo..ctor",
+      "SavedRegionInfo..ctor",
+      "AnimationClipEqualityComparer..ctor",
+      "IntEqualityComparer..ctor",
+      "<>c__DisplayClass75_0..ctor",
+      "WXAssetBundleRequest.Dispose",
+      "A.A",
+      "A..ctor",
+      "OnCameraFrameCallbackResult..ctor",
+      "CreateCameraOption..ctor",
+      "WXCanvas..ctor",
+      "WXSharedCanvas..ctor",
+      "WXChatOnCallback..ctor",
+      "WXChatOnCallbackRes..ctor",
+      "WXEnv..ctor",
+      "CleanFileCacheParams..ctor",
+      "FileCacheCommonParams..ctor",
+      "WXFileSystemManager..ctor",
+      "WXFont..ctor",
+      "GameRecorderCallbackRes..ctor",
+      "GameRecorderCallback..ctor",
+      "LaunchProgressParams..ctor",
+      "a..ctor",
+      "WXJSTypeCallback..ctor",
+      "WXBaseResponse..ctor",
+      "WXInnerAudioResponse..ctor",
+      "WXTextResponse..ctor",
+      "WXReadFileResponse..ctor",
+      "WXUserInfoResponse..ctor",
+      "WXADErrorResponse..ctor",
+      "WXADLoadResponse..ctor",
+      "WXADResizeResponse..ctor",
+      "WXRewardedVideoAdOnCloseResponse..ctor",
+      "RequestAdReportShareBehaviorParam..ctor",
+      "WXRewardedVideoAdReportShareBehaviorResponse..ctor",
+      "WXAccountInfo..ctor",
+      "TemplateInfo..ctor",
+      "TemplateInfoItem..ctor",
+      "WXShareAppMessageParam..ctor",
+      "WXCreateBannerAdParam..ctor",
+      "WXCreateRewardedVideoAdParam..ctor",
+      "WXCreateInterstitialAdParam..ctor",
+      "WXCreateCustomAdParam..ctor",
+      "ToTempFilePathParamSuccessCallbackResult..ctor",
+      "TouchEvent..ctor",
+      "NetworkStatus..ctor",
+      "GetFontResponse..ctor",
+      "WXGetFontCallback..ctor",
+      "WXStatInfo..ctor",
+      "WXStat..ctor",
+      "WXStatResponse..ctor",
+      "WXVideoCallback..ctor",
+      "WXVideoProgress..ctor",
+      "WXVideoTimeUpdate..ctor",
+      "WXCreateGameClubButtonParam..ctor",
+      "LaunchEvent..ctor",
+      "InnerAudioContextOnErrorListenerResult..ctor",
+      "ReadCompressedFileSyncOption..ctor",
+      "FileError..ctor",
+      "CopyFileOption..ctor",
+      "FstatSuccessCallbackResult..ctor",
+      "Stats..ctor",
+      "GetFileInfoSuccessCallbackResult..ctor",
+      "GetSavedFileListSuccessCallbackResult..ctor",
+      "FileItem..ctor",
+      "OpenSuccessCallbackResult..ctor",
+      "ReadSuccessCallbackResult..ctor",
+      "ReadCompressedFileSuccessCallbackResult..ctor",
+      "EntryItem..ctor",
+      "ReadZipEntrySuccessCallbackResult..ctor",
+      "ZipFileItem..ctor",
+      "ReaddirSuccessCallbackResult..ctor",
+      "SaveFileSuccessCallbackResult..ctor",
+      "StatSuccessCallbackResult..ctor",
+      "WriteSuccessCallbackResult..ctor",
+      "ReadSyncOption..ctor",
+      "FstatSyncOption..ctor",
+      "WriteSyncOption..ctor",
+      "WriteSyncStringOption..ctor",
+      "OpenSyncOption..ctor",
+      "CloseSyncOption..ctor",
+      "FtruncateSyncOption..ctor",
+      "TruncateSyncOption..ctor",
+      "ReadResult..ctor",
+      "WriteResult..ctor",
+      "PrivacyAuthorizeResolveOption..ctor",
+      "TCPSocketBindWifiOption..ctor",
+      "TCPSocketConnectOption..ctor",
+      "TCPSocketOnMessageListenerResult..ctor",
+      "LocalInfo..ctor",
+      "RemoteInfo..ctor",
+      "UDPSocketConnectOption..ctor",
+      "UDPSocketOnMessageListenerResult..ctor",
+      "UDPSocketSendOption..ctor",
+      "UDPSocketSendParam..ctor",
+      "UDPSocketBindParam..ctor",
+      "OnTouchStartListenerResult..ctor",
+      "Touch..ctor",
+      "OnBLECharacteristicValueChangeListenerResult..ctor",
+      "OnGyroscopeChangeListenerResult..ctor",
+      "StartGyroscopeOption..ctor",
+      "StopGyroscopeOption..ctor",
+      "ICloudConfig..ctor",
+      "ICloudInstanceOptions..ctor",
+      "ICloudInstanceOptionsConfig..ctor",
+      "ICloudInstanceOptionsConfigDatabase..ctor",
+      "ICloudInstanceOptionsConfigDatabaseRealtime..ctor",
+      "CallFunctionResult..ctor",
+      "CallContainerResult..ctor",
+      "UploadFileResult..ctor",
+      "DownloadFileResult..ctor",
+      "GetTempFileURLResult..ctor",
+      "GetTempFileURLResultItem..ctor",
+      "DeleteFileResult..ctor",
+      "DeleteFileResultItem..ctor",
+      "ICDNFilePathSpec..ctor",
+      "RequestMidasPaymentGameItemOption..ctor",
+      "ReserveChannelsLiveSuccessCallbackResult..ctor",
+      "ReserveChannelsLiveOption..ctor",
+      "WXJSCallback..ctor",
+      "AccountInfo..ctor",
+      "MiniProgram..ctor",
+      "Plugin..ctor",
+      "AppAuthorizeSetting..ctor",
+      "AppBaseInfo..ctor",
+      "AppBaseInfoHost..ctor",
+      "GetBatteryInfoSyncResult..ctor",
+      "DeviceInfo..ctor",
+      "EnterOptionsGame..ctor",
+      "EnterOptionsGameReferrerInfo..ctor",
+      "GameLiveInfo..ctor",
+      "LaunchOptionsGame..ctor",
+      "ClientRect..ctor",
+      "GetStorageInfoSyncOption..ctor",
+      "SystemInfo..ctor",
+      "SystemInfoHost..ctor",
+      "SafeArea..ctor",
+      "SystemSetting..ctor",
+      "WindowInfo..ctor",
+      "DownloadFileOption..ctor",
+      "GeneralCallbackResult..ctor",
+      "DownloadFileSuccessCallbackResult..ctor",
+      "RequestProfile..ctor",
+      "DownloadTaskOnHeadersReceivedListenerResult..ctor",
+      "DownloadTaskOnProgressUpdateListenerResult..ctor",
+      "CreateOpenSettingButtonOption..ctor",
+      "OptionStyle..ctor",
+      "ImageData..ctor",
+      "GetLogManagerOption..ctor",
+      "Path2D..ctor",
+      "OnCheckForUpdateListenerResult..ctor",
+      "VideoDecoderStartOption..ctor",
+      "SetMessageToFriendQueryOption..ctor",
+      "GetTextLineHeightOption..ctor",
+      "AddCardOption..ctor",
+      "AddCardRequestInfo..ctor",
+      "AddCardSuccessCallbackResult..ctor",
+      "AddCardResponseInfo..ctor",
+      "AuthPrivateMessageOption..ctor",
+      "AuthPrivateMessageSuccessCallbackResult..ctor",
+      "AuthorizeOption..ctor",
+      "CheckIsAddedToMyMiniProgramOption..ctor",
+      "CheckIsAddedToMyMiniProgramSuccessCallbackResult..ctor",
+      "CheckSessionOption..ctor",
+      "ChooseImageOption..ctor",
+      "ChooseImageSuccessCallbackResult..ctor",
+      "ImageFile..ctor",
+      "ChooseMediaOption..ctor",
+      "ChooseMediaSuccessCallbackResult..ctor",
+      "MediaFile..ctor",
+      "ChooseMessageFileOption..ctor",
+      "ChooseMessageFileSuccessCallbackResult..ctor",
+      "ChooseFile..ctor",
+      "CloseBLEConnectionOption..ctor",
+      "BluetoothError..ctor",
+      "CloseBluetoothAdapterOption..ctor",
+      "CompressImageOption..ctor",
+      "CompressImageSuccessCallbackResult..ctor",
+      "CreateBLEConnectionOption..ctor",
+      "CreateBLEPeripheralServerOption..ctor",
+      "CreateBLEPeripheralServerSuccessCallbackResult..ctor",
+      "BLEPeripheralServer..ctor",
+      "AddServiceOption..ctor",
+      "BLEPeripheralService..ctor",
+      "Characteristic..ctor",
+      "Descriptor..ctor",
+      "DescriptorPermission..ctor",
+      "CharacteristicPermission..ctor",
+      "CharacteristicProperties..ctor",
+      "OnCharacteristicReadRequestListenerResult..ctor",
+      "OnCharacteristicSubscribedListenerResult..ctor",
+      "OnCharacteristicWriteRequestListenerResult..ctor",
+      "RemoveServiceOption..ctor",
+      "StartAdvertisingObject..ctor",
+      "AdvertiseReqObj..ctor",
+      "BeaconInfoObj..ctor",
+      "ManufacturerData..ctor",
+      "StopAdvertisingOption..ctor",
+      "WriteCharacteristicValueObject..ctor",
+      "ExitMiniProgramOption..ctor",
+      "ExitVoIPChatOption..ctor",
+      "FaceDetectOption..ctor",
+      "FaceDetectSuccessCallbackResult..ctor",
+      "FaceAngel..ctor",
+      "FaceConf..ctor",
+      "GetAvailableAudioSourcesOption..ctor",
+      "GetAvailableAudioSourcesSuccessCallbackResult..ctor",
+      "GetBLEDeviceCharacteristicsOption..ctor",
+      "GetBLEDeviceCharacteristicsSuccessCallbackResult..ctor",
+      "BLECharacteristic..ctor",
+      "BLECharacteristicProperties..ctor",
+      "GetBLEDeviceRSSIOption..ctor",
+      "GetBLEDeviceRSSISuccessCallbackResult..ctor",
+      "GetBLEDeviceServicesOption..ctor",
+      "GetBLEDeviceServicesSuccessCallbackResult..ctor",
+      "BLEService..ctor",
+      "GetBLEMTUOption..ctor",
+      "GetBLEMTUSuccessCallbackResult..ctor",
+      "GetBackgroundFetchDataOption..ctor",
+      "GetBackgroundFetchDataSuccessCallbackResult..ctor",
+      "GetBackgroundFetchTokenOption..ctor",
+      "GetBackgroundFetchTokenSuccessCallbackResult..ctor",
+      "GetBatteryInfoOption..ctor",
+      "GetBatteryInfoSuccessCallbackResult..ctor",
+      "GetBeaconsOption..ctor",
+      "BeaconError..ctor",
+      "GetBeaconsSuccessCallbackResult..ctor",
+      "BeaconInfo..ctor",
+      "GetBluetoothAdapterStateOption..ctor",
+      "GetBluetoothAdapterStateSuccessCallbackResult..ctor",
+      "GetBluetoothDevicesOption..ctor",
+      "GetBluetoothDevicesSuccessCallbackResult..ctor",
+      "BlueToothDevice..ctor",
+      "GetChannelsLiveInfoOption..ctor",
+      "GetChannelsLiveInfoSuccessCallbackResult..ctor",
+      "GetChannelsLiveNoticeInfoOption..ctor",
+      "GetChannelsLiveNoticeInfoSuccessCallbackResult..ctor",
+      "GetClipboardDataOption..ctor",
+      "GetClipboardDataSuccessCallbackOption..ctor",
+      "GetConnectedBluetoothDevicesOption..ctor",
+      "GetConnectedBluetoothDevicesSuccessCallbackResult..ctor",
+      "BluetoothDeviceInfo..ctor",
+      "GetDeviceBenchmarkInfoOption..ctor",
+      "GetDeviceBenchmarkInfoSuccessCallbackResult..ctor",
+      "GetExtConfigOption..ctor",
+      "GetExtConfigSuccessCallbackResult..ctor",
+      "GetFuzzyLocationOption..ctor",
+      "GetFuzzyLocationSuccessCallbackResult..ctor",
+      "GetGameClubDataOption..ctor",
+      "DataType..ctor",
+      "GetGameClubDataSuccessCallbackResult..ctor",
+      "GetGroupEnterInfoOption..ctor",
+      "GetGroupEnterInfoError..ctor",
+      "GetGroupEnterInfoSuccessCallbackResult..ctor",
+      "GetInferenceEnvInfoOption..ctor",
+      "GetInferenceEnvInfoSuccessCallbackResult..ctor",
+      "GetLocalIPAddressOption..ctor",
+      "GetLocalIPAddressSuccessCallbackResult..ctor",
+      "GetNetworkTypeOption..ctor",
+      "GetNetworkTypeSuccessCallbackResult..ctor",
+      "GetPhoneNumberOption..ctor",
+      "GetPrivacySettingOption..ctor",
+      "GetPrivacySettingSuccessCallbackResult..ctor",
+      "GetScreenBrightnessOption..ctor",
+      "GetScreenBrightnessSuccessCallbackOption..ctor",
+      "GetScreenRecordingStateOption..ctor",
+      "GetScreenRecordingStateSuccessCallbackResult..ctor",
+      "GetSettingOption..ctor",
+      "GetSettingSuccessCallbackResult..ctor",
+      "SubscriptionsSetting..ctor",
+      "GetShareInfoOption..ctor",
+      "GetStorageInfoOption..ctor",
+      "GetStorageInfoSuccessCallbackOption..ctor",
+      "GetSystemInfoOption..ctor",
+      "GetSystemInfoAsyncOption..ctor",
+      "GetUserInfoOption..ctor",
+      "GetUserInfoSuccessCallbackResult..ctor",
+      "UserInfo..ctor",
+      "GetUserInteractiveStorageOption..ctor",
+      "GetUserInteractiveStorageFailCallbackResult..ctor",
+      "GetUserInteractiveStorageSuccessCallbackResult..ctor",
+      "GetWeRunDataOption..ctor",
+      "GetWeRunDataSuccessCallbackResult..ctor",
+      "HideKeyboardOption..ctor",
+      "HideLoadingOption..ctor",
+      "HideShareMenuOption..ctor",
+      "HideToastOption..ctor",
+      "InitFaceDetectOption..ctor",
+      "IsBluetoothDevicePairedOption..ctor",
+      "JoinVoIPChatOption..ctor",
+      "JoinVoIPChatError..ctor",
+      "MuteConfig..ctor",
+      "JoinVoIPChatSuccessCallbackResult..ctor",
+      "LoginOption..ctor",
+      "RequestFailCallbackErr..ctor",
+      "LoginSuccessCallbackResult..ctor",
+      "MakeBluetoothPairOption..ctor",
+      "NavigateBackMiniProgramOption..ctor",
+      "NavigateToMiniProgramOption..ctor",
+      "NotifyBLECharacteristicValueChangeOption..ctor",
+      "OnAccelerometerChangeListenerResult..ctor",
+      "OnAddToFavoritesListenerResult..ctor",
+      "OnBLEConnectionStateChangeListenerResult..ctor",
+      "OnBLEMTUChangeListenerResult..ctor",
+      "OnBLEPeripheralConnectionStateChangedListenerResult..ctor",
+      "OnBackgroundFetchDataListenerResult..ctor",
+      "OnBeaconServiceChangeListenerResult..ctor",
+      "OnBeaconUpdateListenerResult..ctor",
+      "OnBluetoothAdapterStateChangeListenerResult..ctor",
+      "OnBluetoothDeviceFoundListenerResult..ctor",
+      "OnCompassChangeListenerResult..ctor",
+      "OnCopyUrlListenerResult..ctor",
+      "OnDeviceMotionChangeListenerResult..ctor",
+      "OnDeviceOrientationChangeListenerResult..ctor",
+      "Error..ctor",
+      "OnHandoffListenerResult..ctor",
+      "OnKeyDownListenerResult..ctor",
+      "OnKeyboardInputListenerResult..ctor",
+      "OnKeyboardHeightChangeListenerResult..ctor",
+      "OnMemoryWarningListenerResult..ctor",
+      "OnMenuButtonBoundingClientRectWeightChangeListenerResult..ctor",
+      "OnMouseDownListenerResult..ctor",
+      "OnMouseMoveListenerResult..ctor",
+      "OnNetworkStatusChangeListenerResult..ctor",
+      "OnNetworkWeakChangeListenerResult..ctor",
+      "OnScreenRecordingStateChangedListenerResult..ctor",
+      "OnShareMessageToFriendListenerResult..ctor",
+      "OnShareTimelineListenerResult..ctor",
+      "OnShowListenerResult..ctor",
+      "ResultReferrerInfo..ctor",
+      "OnUnhandledRejectionListenerResult..ctor",
+      "OnUserCaptureScreenListenerResult..ctor",
+      "OnVoIPChatInterruptedListenerResult..ctor",
+      "OnVoIPChatMembersChangedListenerResult..ctor",
+      "OnVoIPChatSpeakersChangedListenerResult..ctor",
+      "OnVoIPChatStateChangedListenerResult..ctor",
+      "OnWheelListenerResult..ctor",
+      "OnWindowResizeListenerResult..ctor",
+      "OpenAppAuthorizeSettingOption..ctor",
+      "OpenBluetoothAdapterOption..ctor",
+      "OpenCardOption..ctor",
+      "OpenCardRequestInfo..ctor",
+      "OpenChannelsActivityOption..ctor",
+      "OpenChannelsEventOption..ctor",
+      "OpenChannelsLiveOption..ctor",
+      "OpenChannelsUserProfileOption..ctor",
+      "OpenCustomerServiceChatOption..ctor",
+      "ExtInfoOption..ctor",
+      "OpenCustomerServiceConversationOption..ctor",
+      "OpenCustomerServiceConversationSuccessCallbackResult..ctor",
+      "OpenPrivacyContractOption..ctor",
+      "OpenSettingOption..ctor",
+      "OpenSettingSuccessCallbackResult..ctor",
+      "OpenSystemBluetoothSettingOption..ctor",
+      "OperateGameRecorderVideoOption..ctor",
+      "PreviewImageOption..ctor",
+      "PreviewMediaOption..ctor",
+      "MediaSource..ctor",
+      "ReadBLECharacteristicValueOption..ctor",
+      "RemoveStorageOption..ctor",
+      "RemoveUserCloudStorageOption..ctor",
+      "ReportSceneOption..ctor",
+      "ReportSceneError..ctor",
+      "ReportSceneFailCallbackErr..ctor",
+      "ReportSceneSuccessCallbackResult..ctor",
+      "ReportUserBehaviorBranchAnalyticsOption..ctor",
+      "RequestMidasFriendPaymentOption..ctor",
+      "MidasFriendPaymentError..ctor",
+      "RequestMidasFriendPaymentSuccessCallbackResult..ctor",
+      "RequestMidasPaymentOption..ctor",
+      "MidasPaymentError..ctor",
+      "RequestMidasPaymentFailCallbackErr..ctor",
+      "RequestMidasPaymentSuccessCallbackResult..ctor",
+      "RequestSubscribeMessageOption..ctor",
+      "RequestSubscribeMessageFailCallbackResult..ctor",
+      "RequestSubscribeSystemMessageOption..ctor",
+      "RequirePrivacyAuthorizeOption..ctor",
+      "RestartMiniProgramOption..ctor",
+      "SaveFileToDiskOption..ctor",
+      "SaveImageToPhotosAlbumOption..ctor",
+      "ScanCodeOption..ctor",
+      "ScanCodeSuccessCallbackResult..ctor",
+      "SetBLEMTUOption..ctor",
+      "SetBLEMTUFailCallbackResult..ctor",
+      "SetBLEMTUSuccessCallbackResult..ctor",
+      "SetBackgroundFetchTokenOption..ctor",
+      "SetClipboardDataOption..ctor",
+      "SetDeviceOrientationOption..ctor",
+      "SetEnableDebugOption..ctor",
+      "SetInnerAudioOption..ctor",
+      "SetKeepScreenOnOption..ctor",
+      "SetMenuStyleOption..ctor",
+      "SetScreenBrightnessOption..ctor",
+      "SetStatusBarStyleOption..ctor",
+      "SetUserCloudStorageOption..ctor",
+      "KVData..ctor",
+      "SetVisualEffectOnCaptureOption..ctor",
+      "ShareAppMessageOption..ctor",
+      "ShowActionSheetOption..ctor",
+      "ShowActionSheetSuccessCallbackResult..ctor",
+      "ShowKeyboardOption..ctor",
+      "ShowLoadingOption..ctor",
+      "ShowModalOption..ctor",
+      "ShowModalSuccessCallbackResult..ctor",
+      "ShowShareImageMenuOption..ctor",
+      "ShowShareMenuOption..ctor",
+      "ShowToastOption..ctor",
+      "StartAccelerometerOption..ctor",
+      "StartBeaconDiscoveryOption..ctor",
+      "StartBluetoothDevicesDiscoveryOption..ctor",
+      "StartCompassOption..ctor",
+      "StartDeviceMotionListeningOption..ctor",
+      "StopAccelerometerOption..ctor",
+      "StopBeaconDiscoveryOption..ctor",
+      "StopBluetoothDevicesDiscoveryOption..ctor",
+      "StopCompassOption..ctor",
+      "StopDeviceMotionListeningOption..ctor",
+      "StopFaceDetectOption..ctor",
+      "UpdateKeyboardOption..ctor",
+      "UpdateShareMenuOption..ctor",
+      "UpdatableMessageFrontEndTemplateInfo..ctor",
+      "UpdatableMessageFrontEndParameter..ctor",
+      "UpdateVoIPChatMuteConfigOption..ctor",
+      "UpdateWeChatAppOption..ctor",
+      "VibrateLongOption..ctor",
+      "VibrateShortOption..ctor",
+      "VibrateShortFailCallbackResult..ctor",
+      "WriteBLECharacteristicValueOption..ctor",
+      "StartGameLiveOption..ctor",
+      "CheckGameLiveEnabledOption..ctor",
+      "CheckGameLiveEnabledSuccessCallbackOption..ctor",
+      "OnGameLiveStateChangeCallbackResult..ctor",
+      "OnGameLiveStateChangeCallbackResponse..ctor",
+      "GameLiveState..ctor",
+      "GetUserCurrentGameliveInfoOption..ctor",
+      "GetUserCurrentGameliveInfoSuccessCallbackOption..ctor",
+      "GetUserRecentGameLiveInfoOption..ctor",
+      "GetUserGameLiveDetailsSuccessCallbackOption..ctor",
+      "GetUserGameLiveDetailsOption..ctor",
+      "OpenChannelsLiveCollectionOption..ctor",
+      "OpenPageOption..ctor",
+      "RequestSubscribeLiveActivityOption..ctor",
+      "RequestSubscribeLiveActivitySuccessCallbackResult..ctor",
+      "OpenBusinessViewOption..ctor",
+      "FrameDataOptions..ctor",
+      "OpenDataContextOption..ctor",
+      "OnFrameRecordedCallbackResult..ctor",
+      "OnFrameRecordedBufferCallbackResult..ctor",
+      "OnStopCallbackResult..ctor",
+      "RecorderManagerStartOption..ctor",
+      "WXRuntimeExtEnvDef..ctor",
+      "f..ctor",
+      "UploadFileOption..ctor",
+      "UploadFileSuccessCallbackResult..ctor",
+      "OnHeadersReceivedCallbackResult..ctor",
+      "UploadTaskOnProgressUpdateCallbackResult..ctor",
+      "<OnFinishSubmit>d__9.System.IDisposable.Dispose",
+      "DefaultRuntimeFactory..ctor",
+      "DefaultControls.SetDefaultColorTransitionValues",
+      "OptionData..ctor",
+      "<>c__DisplayClass63_0..ctor",
+      "<DelayedDestroyDropdownList>d__75.System.IDisposable.Dispose",
+      "FontData.UnityEngine.ISerializationCallbackReceiver.OnBeforeSerialize",
+      "FontData..ctor",
+      "Graphic.LayoutComplete",
+      "Graphic.GraphicUpdateComplete",
+      "Graphic.SetNativeSize",
+      "<>c..ctor",
+      "Image.OnBeforeSerialize",
+      "Image.CalculateLayoutInputHorizontal",
+      "Image.CalculateLayoutInputVertical",
+      "<CaretBlink>d__170.System.IDisposable.Dispose",
+      "<MouseDragOutsideRect>d__192.System.IDisposable.Dispose",
+      "InputField.LayoutComplete",
+      "InputField.GraphicUpdateComplete",
+      "InputField.CalculateLayoutInputHorizontal",
+      "InputField.CalculateLayoutInputVertical",
+      "AspectRatioFitter.SetLayoutHorizontal",
+      "AspectRatioFitter.SetLayoutVertical",
+      "LayoutElement.CalculateLayoutInputHorizontal",
+      "LayoutElement.CalculateLayoutInputVertical",
+      "<DelayedSetDirty>d__56.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "LayoutRebuilder.GraphicUpdateComplete",
+      "LayoutRebuilder..ctor",
+      "<>c..ctor",
+      "Mask.OnSiblingGraphicEnabledDisabled",
+      "MaskableGraphic.ParentMaskStateChanged",
+      "MaskUtilities..ctor",
+      "<ClickRepeat>d__58.System.IDisposable.Dispose",
+      "Scrollbar.LayoutComplete",
+      "Scrollbar.GraphicUpdateComplete",
+      "ScrollRect.LayoutComplete",
+      "ScrollRect.GraphicUpdateComplete",
+      "ScrollRect.CalculateLayoutInputHorizontal",
+      "ScrollRect.CalculateLayoutInputVertical",
+      "Slider.LayoutComplete",
+      "Slider.GraphicUpdateComplete",
+      "Text.CalculateLayoutInputHorizontal",
+      "Text.CalculateLayoutInputVertical",
+      "Toggle.LayoutComplete",
+      "Toggle.GraphicUpdateComplete",
+      "<>c..ctor",
+      "VertexHelper..ctor",
+      "BaseVertexEffect..ctor",
+      "PointerEvent..ctor",
+      "AbstractEventData..ctor",
+      "<>c__DisplayClass52_0..ctor",
+      "BaseInputModule.DeactivateModule",
+      "BaseInputModule.ActivateModule",
+      "BaseInputModule.UpdateModule",
+      "ButtonState..ctor",
+      "MouseButtonEventData..ctor",
+      "RaycastHitComparer..ctor",
+      "UIBehaviour.Awake",
+      "UIBehaviour.OnEnable",
+      "UIBehaviour.Start",
+      "UIBehaviour.OnDisable",
+      "UIBehaviour.OnDestroy",
+      "UIBehaviour.OnRectTransformDimensionsChange",
+      "UIBehaviour.OnBeforeTransformParentChanged",
+      "UIBehaviour.OnTransformParentChanged",
+      "UIBehaviour.OnDidApplyAnimationProperties",
+      "UIBehaviour.OnCanvasGroupChanged",
+      "UIBehaviour.OnCanvasHierarchyChanged",
+      "AnimancerComponent.System.Collections.IEnumerator.Reset",
+      "FastComparer..ctor",
+      "FastReferenceComparer..ctor",
+      "<>c..ctor",
+      "Serializable..ctor",
+      "Sequence.OnSequenceModified",
+      "AnimancerLayer.SetMaxStateDepth",
+      "AnimancerNode.System.Collections.IEnumerator.Reset",
+      "PostUpdate..ctor",
+      "AnimancerPlayable.SetNextGraphName",
+      "AnimancerPlayable.System.Collections.IEnumerator.Reset",
+      "EventDispatcher.ValidateBeforeEndEvent",
+      "AnimancerState.OnSetIsPlaying",
+      "AnimancerUtilities.SetDirty",
+      "DefaultValueAttribute..ctor",
+      "DrawAfterEventsAttribute..ctor",
+      "SelfDrawerAttribute..ctor",
+      "Validate.Disable",
+      "Validate.Enable",
+      "Validate.AssertNotLegacy",
+      "Validate.AssertPlayable",
+      "PolymorphicAttribute..ctor",
+      "MixerState.ForceRecalculateWeights",
+      "DontAllowFade.Assert",
+      "DirectionalAnimationSet.AssertCanSetClips",
+      "<>c__DisplayClass6_0..ctor",
+      "ClipTransitionSequence.UnityEngine.ISerializationCallbackReceiver.OnBeforeSerialize",
+      "AnimationSpeedAttribute..ctor",
+      "UnitsAttribute..ctor",
+      "<>c..ctor",
+      "FontAsset.Awake",
+      "FontAsset.TryAddGlyphsToAtlasTextures",
+      "<>c..ctor",
+      "<>c..ctor",
+      "SpriteAsset.Awake",
+      "TextElement..ctor",
+      "UnicodeLineBreakingRules..ctor",
+      "<>c__DisplayClass55_0..ctor",
+      "DOTween..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c__DisplayClass2_0..ctor",
+      "EaseFactory..ctor",
+      "<>c__DisplayClass0_0..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "<>c__DisplayClass2_0..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass4_0..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "<>c__DisplayClass12_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c__DisplayClass18_0..ctor",
+      "<>c__DisplayClass19_0..ctor",
+      "<>c__DisplayClass20_0..ctor",
+      "<>c__DisplayClass21_0..ctor",
+      "<>c__DisplayClass22_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass24_0..ctor",
+      "<>c__DisplayClass25_0..ctor",
+      "<>c__DisplayClass26_0..ctor",
+      "<>c__DisplayClass27_0..ctor",
+      "<>c__DisplayClass28_0..ctor",
+      "<>c__DisplayClass29_0..ctor",
+      "<>c__DisplayClass30_0..ctor",
+      "<>c__DisplayClass31_0..ctor",
+      "<>c__DisplayClass32_0..ctor",
+      "<>c__DisplayClass33_0..ctor",
+      "<>c__DisplayClass34_0..ctor",
+      "<>c__DisplayClass35_0..ctor",
+      "<>c__DisplayClass36_0..ctor",
+      "<>c__DisplayClass37_0..ctor",
+      "<>c__DisplayClass38_0..ctor",
+      "<>c__DisplayClass39_0..ctor",
+      "<>c__DisplayClass40_0..ctor",
+      "<>c__DisplayClass41_0..ctor",
+      "<>c__DisplayClass42_0..ctor",
+      "<>c__DisplayClass43_0..ctor",
+      "<>c__DisplayClass44_0..ctor",
+      "<>c__DisplayClass45_0..ctor",
+      "<>c__DisplayClass46_0..ctor",
+      "<>c__DisplayClass47_0..ctor",
+      "<>c__DisplayClass48_0..ctor",
+      "<>c__DisplayClass49_0..ctor",
+      "<>c__DisplayClass50_0..ctor",
+      "<>c__DisplayClass51_0..ctor",
+      "<>c__DisplayClass52_0..ctor",
+      "<>c__DisplayClass53_0..ctor",
+      "<>c__DisplayClass54_0..ctor",
+      "<>c__DisplayClass55_0..ctor",
+      "<>c__DisplayClass56_0..ctor",
+      "<>c__DisplayClass57_0..ctor",
+      "<>c__DisplayClass58_0..ctor",
+      "<>c__DisplayClass59_0..ctor",
+      "<>c__DisplayClass60_0..ctor",
+      "<>c__DisplayClass61_0..ctor",
+      "<>c__DisplayClass62_0..ctor",
+      "<>c__DisplayClass63_0..ctor",
+      "<>c__DisplayClass64_0..ctor",
+      "<>c__DisplayClass65_0..ctor",
+      "<>c__DisplayClass66_0..ctor",
+      "<>c__DisplayClass67_0..ctor",
+      "<>c__DisplayClass68_0..ctor",
+      "<>c__DisplayClass69_0..ctor",
+      "<>c__DisplayClass70_0..ctor",
+      "<>c__DisplayClass71_0..ctor",
+      "<>c__DisplayClass72_0..ctor",
+      "<>c__DisplayClass73_0..ctor",
+      "<>c__DisplayClass74_0..ctor",
+      "<>c__DisplayClass75_0..ctor",
+      "NoOptions.Reset",
+      "CubicBezierDecoder..ctor",
+      "ABSPathDecoder..ctor",
+      "CatmullRomDecoder..ctor",
+      "LinearDecoder..ctor",
+      "ABSSequentiable..ctor",
+      "<WaitForCompletion>d__14.System.IDisposable.Dispose",
+      "<WaitForRewind>d__15.System.IDisposable.Dispose",
+      "<WaitForKill>d__16.System.IDisposable.Dispose",
+      "<WaitForElapsedLoops>d__17.System.IDisposable.Dispose",
+      "<WaitForPosition>d__18.System.IDisposable.Dispose",
+      "<WaitForStart>d__19.System.IDisposable.Dispose",
+      "SafeModeOptions..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass31_0..ctor",
+      "<>c__DisplayClass47_0..ctor",
+      "<>c__DisplayClass48_0..ctor",
+      "<GetAllMembers>d__49.System.IDisposable.Dispose",
+      "<GetBaseClasses>d__55.System.IDisposable.Dispose",
+      "<>c__DisplayClass21_0..ctor",
+      "<>c__DisplayClass22_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "<>c__DisplayClass14_0..ctor",
+      "<>c__DisplayClass15_0..ctor",
+      "<>c__DisplayClass23_0..ctor",
+      "<>c__DisplayClass5_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "GUILayoutOptionsInstance..ctor",
+      "OdinDefineSymbols..ctor",
+      "PersistentAssemblyAttribute..ctor",
+      "<>c__DisplayClass12_0..ctor",
+      "AttributeBonus..ctor",
+      "SingleAttribute.Reuse",
+      "BuffBase.OnAdd",
+      "BuffBase.OnRemove",
+      "BuffBase.DoAffect",
+      "BuffBase.OnDestroy",
+      "Accumulator..ctor",
+      "<GetEnumerator>d__0.System.IDisposable.Dispose",
+      "HeapNode..ctor",
+      "ObjectBase.Recycle",
+      "ObjectBase.Reuse",
+      "ObjectBase..ctor",
+      "TimerNode..ctor",
+      "AssemblyHelper..ctor",
+      "ArchiveData.OnInit",
+      "SaveDataJson..ctor",
+      "Data.Reset",
+      "Data..ctor",
+      "PropsItem..ctor",
+      "EventArgs.Recycle",
+      "EventArgs.Reuse",
+      "EventArgs.TryRecycle",
+      "EventArgs..ctor",
+      "CallbackInfo..ctor",
+      "Logger..ctor",
+      "GameNetTask..ctor",
+      "<>c__DisplayClass9_0..ctor",
+      "<>c__DisplayClass12_0..ctor",
+      "<>c__DisplayClass13_0..ctor",
+      "HttpManager..ctor",
+      "EmptyHttpResponse..ctor",
+      "NotifyNodeBase.OnDestroy",
+      "UIEventArgs..ctor",
+      "UIInitializerBase.RegisterUI",
+      "UIInitializerBase..ctor",
+      "WindowEventArgs..ctor",
+      "WindowGroup.OnReveal",
+      "WindowHeaderInfo..ctor",
+      "<>c__DisplayClass17_0..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "DontGenerateAttribute..ctor",
+      "DontSerializeAttribute..ctor",
+      "BaseComponent.OnAdd",
+      "BaseComponent.OnEnter",
+      "BaseComponent.OnRemove",
+      "BaseComponent.OnDestroy",
+      "BaseComponent.OnUpdate",
+      "BaseComponent.OnEnable",
+      "BaseComponent.OnDisable",
+      "Entity.Recycle",
+      "Entity.Reuse",
+      "EntityConfig..ctor",
+      "EntityManager.OnDestroy",
+      "DontDrawAttribute..ctor",
+      "DrawAttribute..ctor",
+      "DeriveBytes..ctor",
+      "X509Extension.Decode",
+      "X509Extension.Encode",
+      "MonoTlsConnectionInfo..ctor",
+      "MonoTlsProvider..ctor",
+      "EncryptedPrivateKeyInfo..ctor",
+      "PrimeGeneratorBase..ctor",
+      "SequentialSearchPrimeGeneratorBase..ctor",
+      "EmbeddedAttribute..ctor",
+      "IsReadOnlyAttribute..ctor",
+      "GUILayoutEntry.CalcWidth",
+      "GUILayoutEntry.CalcHeight",
+      "ScrollViewState..ctor",
+      "SliderState..ctor",
+      "TextEditor.OnCursorIndexChange",
+      "TextEditor.OnSelectIndexChange",
+      "PlatformUtilities..ctor",
+      "DefaultAllocationStrategy..ctor",
+      "SerializedTypeRestrictionAttribute..ctor",
+      "UnityWebRequestUtilities..ctor",
+      "AssetBundleResource..ctor",
+      "AssetBundleProvider..ctor",
+      "AtlasSpriteProvider..ctor",
+      "InternalOp..ctor",
+      "BundledAssetProvider..ctor",
+      "JsonAssetProvider..ctor",
+      "InternalOp..ctor",
+      "LegacyResourcesProvider..ctor",
+      "<>c__DisplayClass10_0..ctor",
+      "ResourceProviderBase..ctor",
+      "ProviderLoadRequestOptions..ctor",
+      "SceneProvider..ctor",
+      "InternalOp..ctor",
+      "TextDataProvider..ctor",
+      "<>c..ctor",
+      "AsyncOperationHandle.System.Collections.IEnumerator.Reset",
+      "AssetReferenceUIRestriction..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass62_0..ctor",
+      "<>c__DisplayClass71_0..ctor",
+      "<>c__DisplayClass81_0..ctor",
+      "<>c__DisplayClass83_0..ctor",
+      "<>c__DisplayClass96_0..ctor",
+      "<>c__DisplayClass97_0..ctor",
+      "<>c__DisplayClass100_0..ctor",
+      "<>c__DisplayClass104_0..ctor",
+      "<>c__DisplayClass106_0..ctor",
+      "<>c__DisplayClass113_0..ctor",
+      "<>c__DisplayClass114_0..ctor",
+      "<>c__DisplayClass115_0..ctor",
+      "<>c__DisplayClass120_0..ctor",
+      "<>c__DisplayClass122_0..ctor",
+      "<>c__DisplayClass125_0..ctor",
+      "<>c__DisplayClass131_0..ctor",
+      "<>c__DisplayClass132_0..ctor",
+      "<>c__DisplayClass136_0..ctor",
+      "<>c__DisplayClass140_0..ctor",
+      "<>c__DisplayClass145_0..ctor",
+      "<>c__DisplayClass146_0..ctor",
+      "AddressablesImpl.QueueEditorUpdateIfNeeded",
+      "AssetLabelReference..ctor",
+      "<>c..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass11_0..ctor",
+      "PlatformMappingService..ctor",
+      "DiagnosticInfo..ctor",
+      "InternalOp..ctor",
+      "LegacyResourcesLocator..ctor",
+      "<>c__DisplayClass1_0..ctor",
+      "CacheInitialization..ctor",
+      "<>c..ctor",
+      "<>c__DisplayClass16_0..ctor",
+      "<>c__DisplayClass18_0..ctor",
+      "<>c..ctor",
+      "AssetsOnlyAttribute..ctor",
+      "DelayedPropertyAttribute..ctor",
+      "DisableInEditorModeAttribute..ctor",
+      "DisableInInlineEditorsAttribute..ctor",
+      "DisableInNonPrefabsAttribute..ctor",
+      "DisableInPlayModeAttribute..ctor",
+      "DisableInPrefabAssetsAttribute..ctor",
+      "DisableInPrefabInstancesAttribute..ctor",
+      "DisableInPrefabsAttribute..ctor",
+      "DoNotDrawAsReferenceAttribute..ctor",
+      "DontApplyToListElementsAttribute..ctor",
+      "DontValidateAttribute..ctor",
+      "DrawWithUnityAttribute..ctor",
+      "EnableGUIAttribute..ctor",
+      "EnumPagingAttribute..ctor",
+      "EnumToggleButtonsAttribute..ctor",
+      "FilePathAttribute..ctor",
+      "FolderPathAttribute..ctor",
+      "HideDuplicateReferenceBoxAttribute..ctor",
+      "HideInEditorModeAttribute..ctor",
+      "HideInInlineEditorsAttribute..ctor",
+      "HideInNonPrefabsAttribute..ctor",
+      "HideInPlayModeAttribute..ctor",
+      "HideInPrefabAssetsAttribute..ctor",
+      "HideInPrefabInstancesAttribute..ctor",
+      "HideInPrefabsAttribute..ctor",
+      "HideInTablesAttribute..ctor",
+      "HideLabelAttribute..ctor",
+      "HideMonoScriptAttribute..ctor",
+      "HideNetworkBehaviourFieldsAttribute..ctor",
+      "HideReferenceObjectPickerAttribute..ctor",
+      "InlinePropertyAttribute..ctor",
+      "ListDrawerSettingsAttribute..ctor",
+      "OnCollectionChangedAttribute..ctor",
+      "OnInspectorDisposeAttribute..ctor",
+      "OnInspectorGUIAttribute..ctor",
+      "OnInspectorInitAttribute..ctor",
+      "OptionalAttribute..ctor",
+      "PropertyOrderAttribute..ctor",
+      "ReadOnlyAttribute..ctor",
+      "SceneObjectsOnlyAttribute..ctor",
+      "ShowDrawerChainAttribute..ctor",
+      "ShowInInlineEditorsAttribute..ctor",
+      "ShowInInspectorAttribute..ctor",
+      "ShowOdinSerializedPropertiesInInspectorAttribute..ctor",
+      "ShowPropertyResolverAttribute..ctor",
+      "SuppressInvalidAttributeErrorAttribute..ctor",
+      "ToggleLeftAttribute..ctor",
+      "IncludeMyAttributesAttribute..ctor",
+      "<>c__DisplayClass6_0..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c__DisplayClass8_0..ctor",
+      "SelfValidationResult..ctor",
+      "HybridBasics.Awake",
+      "CharacterMovement.MeleeAttackEnd",
+      "CharacterParameters..ctor",
+      "CharacterParameters..ctor",
+      "<>c..ctor",
+      "<RangeIterator>d__115.System.IDisposable.Dispose",
+      "JsonData..ctor",
+      "<>c..ctor",
+      "JsonMapper..ctor",
+      "JsonMockWrapper.System.Collections.IList.Clear",
+      "JsonMockWrapper.System.Collections.IDictionary.Clear",
+      "JsonMockWrapper..ctor",
+      "WriterContext..ctor",
+      "FsmContext..ctor",
+      "ThinkingSDKAutoTrack.Start",
+      "ThinkingSDKAppInfo..ctor",
+      "ThinkingSDKDeviceInfo..ctor",
+      "ThinkingSDKJSON..ctor",
+      "ThinkingSDKLogger..ctor",
+      "ThinkingSDKTimeUtil..ctor",
+      "ThinkingSDKUtil..ctor",
+      "<_wait>d__4.System.IDisposable.Dispose",
+      "TDTimeout.Start",
+      "TDTimeout.Update",
+      "ThinkingSDKTimeCalibration..ctor",
+      "<SendData>d__17.System.IDisposable.Dispose",
+      "ThinkingSDKTask.Start",
+      "ThinkingSDKTask.SyncInvokeAllTask",
+      "ThinkingSDKFile..ctor",
+      "ThinkingSDKFileJson..ctor",
+      "LightThinkingSDKInstance.Flush",
+      "ThinkingPCSDK..ctor",
+      "<WaitAndFlush>d__49.System.IDisposable.Dispose",
+      "ThinkingSDKConstant..ctor",
+      "<GetWithFORM>d__29.System.IDisposable.Dispose",
+      "TouchData..ctor",
+      "<>c..ctor",
+      "WX..ctor",
+      "<>c__DisplayClass72_0..ctor",
+      "WXBase..ctor",
+      "<>c..ctor",
+      "WXRuntimeExtDef..ctor",
+      "ThinkingAnalyticsAPI.Start",
+      "ThinkingAnalyticsAPI.OnApplicationQuit",
+      "ThinkingAnalyticsWrapper.setNetworkType",
+      "ThinkingAnalyticsWrapper..ctor",
+      "TD_Log..ctor",
+      "TD_MiniJSON..ctor",
+      "TD_PropertiesChecker..ctor",
+      "TD_PublicConfig..ctor",
+      "ThinkingSDKExceptionHandler..ctor",
+      "AndroidJavaObject..ctor",
+      "MatEntry..ctor",
+      "ModifiedMaterial..ctor",
+      "<>c__DisplayClass7_0..ctor",
+      "<>c..ctor",
+      "AnimatableProperty.UnityEngine.ISerializationCallbackReceiver.OnBeforeSerialize",
+      "<get_materials>d__63.System.IDisposable.Dispose",
+      "<>c..ctor",
+      "UIParticle.OnDidApplyAnimationProperties",
+      "UIParticle.UnityEngine.ISerializationCallbackReceiver.OnBeforeSerialize",
+      "UIParticle.UpdateMaterial",
+      "UIParticle.UpdateGeometry",
+      "UIParticleRenderer.UpdateGeometry",
+      "UnityWebRequestAsyncOperation..ctor",
+      "DownloadHandler..ctor",
+      "DownloadHandler.CompleteContent",
+      "UploadHandler..ctor",
+      "EmbeddedAttribute..ctor",
+      "IsReadOnlyAttribute..ctor",
+      "a..ctor",
+      "d..ctor",
+      "UnityFontABTool..ctor",
+      "DelegateState..ctor",
+      "State.OnEnterState",
+      "State.OnExitState",
+      "State..ctor",
+      "EmbeddedAttribute..ctor",
+      "IsReadOnlyAttribute..ctor",
+      "<>c__DisplayClass3_0..ctor",
+      "<>c__DisplayClass2_0..ctor",
+      "<>c__DisplayClass2_1..ctor",
+      "ThreadAndSerializationSafeAttribute..ctor",
+      "WritableAttribute..ctor",
+      "UnityEngineModuleAssembly..ctor",
+      "VisibleToOtherModulesAttribute..ctor",
+      "NativeMethodAttribute..ctor",
+      "NativePropertyAttribute..ctor",
+      "NativeAsStructAttribute..ctor",
+      "UnmarshalledAttribute..ctor",
+      "IgnoreAttribute..ctor",
+      "PreventReadOnlyInstanceModificationAttribute..ctor",
+      "UsedByNativeCodeAttribute..ctor",
+      "RequiredByNativeCodeAttribute..ctor",
+      "ITilemap..ctor",
+      "VFXExpressionValues..ctor",
+      "AssetBundleCreateRequest..ctor",
+      "AssetBundleRequest..ctor",
+      "IntegratedSubsystem..ctor",
+      "IntegratedSubsystemDescriptor..ctor",
+      "Subsystem..ctor",
+      "SubsystemDescriptor..ctor",
+      "SubsystemDescriptorWithProvider..ctor",
+      "SubsystemWithProvider..ctor",
+      "GridLayout.DoNothing",
+      "NiceVibrationsDemoManager.TriggerDefault"
+    ],
+    "side": "main",
+    "calls": []
+  },
+  {
+    "j": "1183",
+    "names": [],
+    "side": "main",
+    "calls": [
+      {
+        "j": "31214",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "1360",
+    "names": [
+      "ShortcutExtensions.DOKill"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "13865",
+        "names": [
+          "DOTween.Kill"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "3031",
+    "names": [
+      "ShortcutExtensions.DOMove"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "873",
+        "names": []
+      },
+      {
+        "j": "1131",
+        "names": []
+      },
+      {
+        "j": "1130",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "1874",
+        "names": [
+          "DOTween.To"
+        ]
+      },
+      {
+        "j": "1157",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "4679",
+    "names": [
+      "ObjectUnit.HideRigid"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "7845",
+        "names": [
+          "Rigidbody.get_isKinematic"
+        ]
+      },
+      {
+        "j": "35148",
+        "names": [
+          "Rigidbody.get_velocity"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "7954",
+        "names": [
+          "ObjectUnit.SetRigid"
+        ]
+      },
+      {
+        "j": "19265",
+        "names": [
+          "ObjectUnit.DelayToGrowScale"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "5869",
+    "names": [
+      "LevelManager.CheckRigid"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1028",
+        "names": [
+          "Transform.get_position"
+        ]
+      },
+      {
+        "j": "19871",
+        "names": [
+          "LevelManager.GetDynamicVisibleHeight"
+        ]
+      },
+      {
+        "j": "1387",
+        "names": [
+          "Transform.get_localScale"
+        ]
+      },
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "4679",
+        "names": [
+          "ObjectUnit.HideRigid"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "6538",
+    "names": [
+      "Rigidbody.set_velocity"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "35137",
+        "names": [
+          "Rigidbody.set_velocity_Injected"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "6539",
+    "names": [
+      "Rigidbody.set_isKinematic"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "892",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "6602",
+    "names": [
+      "ObjectUnit.SetVisible"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "907",
+        "names": [
+          "GameObject.SetActive"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "982",
+        "names": [
+          "Object.op_Implicit"
+        ]
+      },
+      {
+        "j": "6545",
+        "names": [
+          "Renderer.get_enabled"
+        ]
+      },
+      {
+        "j": "2912",
+        "names": [
+          "Renderer.set_enabled"
+        ]
+      },
+      {
+        "j": "7955",
+        "names": [
+          "ObjectUnit.PlayAnim"
+        ]
+      },
+      {
+        "j": "19265",
+        "names": [
+          "ObjectUnit.DelayToGrowScale"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "6603",
+    "names": [
+      "ObjectUnit.BeSelect"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "7954",
+        "names": [
+          "ObjectUnit.SetRigid"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "19262",
+        "names": [
+          "ObjectUnit.IsLockGuidePhysic"
+        ]
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1360",
+        "names": [
+          "ShortcutExtensions.DOKill"
+        ]
+      },
+      {
+        "j": "1028",
+        "names": [
+          "Transform.get_position"
+        ]
+      },
+      {
+        "j": "2886",
+        "names": [
+          "Transform.get_forward"
+        ]
+      },
+      {
+        "j": "3031",
+        "names": [
+          "ShortcutExtensions.DOMove"
+        ]
+      },
+      {
+        "j": "1183",
+        "names": []
+      },
+      {
+        "j": "982",
+        "names": [
+          "Object.op_Implicit"
+        ]
+      },
+      {
+        "j": "36803",
+        "names": [
+          "ObjectAnim.PlayAnim"
+        ]
+      },
+      {
+        "j": "6538",
+        "names": [
+          "Rigidbody.set_velocity"
+        ]
+      },
+      {
+        "j": "18665",
+        "names": [
+          "Rigidbody.set_angularVelocity"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "7954",
+    "names": [
+      "ObjectUnit.SetRigid"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "19262",
+        "names": [
+          "ObjectUnit.IsLockGuidePhysic"
+        ]
+      },
+      {
+        "j": "6539",
+        "names": [
+          "Rigidbody.set_isKinematic"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "7955",
+    "names": [
+      "ObjectUnit.PlayAnim"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "924",
+        "names": [
+          "Object.op_Equality"
+        ]
+      },
+      {
+        "j": "8464",
+        "names": [
+          "AnimancerComponent.Stop"
+        ]
+      },
+      {
+        "j": "1446",
+        "names": [
+          "MonoBehaviour.StopCoroutine"
+        ]
+      },
+      {
+        "j": "7956",
+        "names": [
+          "ObjectUnit.PlayAnimClip"
+        ]
+      },
+      {
+        "j": "1535",
+        "names": [
+          "MonoBehaviour.StartCoroutine"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "7956",
+    "names": [
+      "ObjectUnit.PlayAnimClip"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "4064",
+        "names": [
+          "AnimatorMa.GetAnim"
+        ]
+      },
+      {
+        "j": "915",
+        "names": [
+          "Object.op_Inequality"
+        ]
+      },
+      {
+        "j": "3101",
+        "names": [
+          "AnimancerComponent.Play"
+        ]
+      },
+      {
+        "j": "2232",
+        "names": [
+          "AnimationClip.get_length"
+        ]
+      },
+      {
+        "j": "1345",
+        "names": [
+          "Random.Range"
+        ]
+      },
+      {
+        "j": "2185",
+        "names": [
+          "AnimancerState.set_Time"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "9693",
+    "names": [
+      "ObjectUnit.FinishCreate"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "1161",
+        "names": [
+          "Transform.set_localScale"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "12985",
+    "names": [
+      "ObjectUnit.BeClick"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "873",
+        "names": []
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1387",
+        "names": [
+          "Transform.get_localScale"
+        ]
+      },
+      {
+        "j": "1360",
+        "names": [
+          "ShortcutExtensions.DOKill"
+        ]
+      },
+      {
+        "j": "6602",
+        "names": [
+          "ObjectUnit.SetVisible"
+        ]
+      },
+      {
+        "j": "7954",
+        "names": [
+          "ObjectUnit.SetRigid"
+        ]
+      },
+      {
+        "j": "36728",
+        "names": [
+          "ObjectUnit.DelayToHideCol"
+        ]
+      },
+      {
+        "j": "1135",
+        "names": [
+          "MonoBehaviour.StartCoroutine"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "5871",
+        "names": [
+          "LevelManager.CanUseNewAnim"
+        ]
+      },
+      {
+        "j": "982",
+        "names": [
+          "Object.op_Implicit"
+        ]
+      },
+      {
+        "j": "1727",
+        "names": [
+          "ShortcutExtensions.DOScale"
+        ]
+      },
+      {
+        "j": "1281",
+        "names": []
+      },
+      {
+        "j": "1486",
+        "names": [
+          "TweenCallback..ctor"
+        ]
+      },
+      {
+        "j": "1889",
+        "names": []
+      },
+      {
+        "j": "1183",
+        "names": []
+      },
+      {
+        "j": "7955",
+        "names": [
+          "ObjectUnit.PlayAnim"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "13226",
+    "names": [
+      "LevelManager.LostTarget"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "915",
+        "names": [
+          "Object.op_Inequality"
+        ]
+      },
+      {
+        "j": "6603",
+        "names": [
+          "ObjectUnit.BeSelect"
+        ]
+      },
+      {
+        "j": "2810",
+        "names": [
+          "HighlightEffect.SetHighlighted"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "13227",
+    "names": [
+      "LevelManager.GetUnit"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1028",
+        "names": [
+          "Transform.get_position"
+        ]
+      },
+      {
+        "j": "9878",
+        "names": [
+          "LevelManager.SetMinTouchHeight"
+        ]
+      },
+      {
+        "j": "1628",
+        "names": [
+          "Transform.SetParent"
+        ]
+      },
+      {
+        "j": "12985",
+        "names": [
+          "ObjectUnit.BeClick"
+        ]
+      },
+      {
+        "j": "19260",
+        "names": [
+          "ObjectUnit.PlaySound"
+        ]
+      },
+      {
+        "j": "1342",
+        "names": []
+      },
+      {
+        "j": "895",
+        "names": []
+      },
+      {
+        "j": "899",
+        "names": [
+          "String.op_Equality"
+        ]
+      },
+      {
+        "j": "2331",
+        "names": []
+      },
+      {
+        "j": "1923",
+        "names": [
+          "LevelManager.HasTwoPlayer"
+        ]
+      },
+      {
+        "j": "903",
+        "names": []
+      },
+      {
+        "j": "5871",
+        "names": [
+          "LevelManager.CanUseNewAnim"
+        ]
+      },
+      {
+        "j": "38478",
+        "names": [
+          "LevelObjAnimManager.ClickObj"
+        ]
+      },
+      {
+        "j": "19875",
+        "names": [
+          "LevelManager.DelayToCheckContent"
+        ]
+      },
+      {
+        "j": "1135",
+        "names": [
+          "MonoBehaviour.StartCoroutine"
+        ]
+      },
+      {
+        "j": "9879",
+        "names": [
+          "LevelManager.RefreshContentDisplay"
+        ]
+      },
+      {
+        "j": "38487",
+        "names": [
+          "LevelManager.SetObjOutStore"
+        ]
+      },
+      {
+        "j": "925",
+        "names": [
+          "Component.get_gameObject"
+        ]
+      },
+      {
+        "j": "1073",
+        "names": [
+          "Object.get_name"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "13231",
+    "names": [
+      "LevelManager.CheckClickRay"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "1923",
+        "names": [
+          "LevelManager.HasTwoPlayer"
+        ]
+      },
+      {
+        "j": "2414",
+        "names": [
+          "Camera.ScreenPointToRay"
+        ]
+      },
+      {
+        "j": "4708",
+        "names": [
+          "LayerMask.NameToLayer"
+        ]
+      },
+      {
+        "j": "7924",
+        "names": [
+          "Physics.Raycast"
+        ]
+      },
+      {
+        "j": "915",
+        "names": [
+          "Object.op_Inequality"
+        ]
+      },
+      {
+        "j": "925",
+        "names": [
+          "Component.get_gameObject"
+        ]
+      },
+      {
+        "j": "9602",
+        "names": [
+          "RaycastHit.get_rigidbody"
+        ]
+      },
+      {
+        "j": "924",
+        "names": [
+          "Object.op_Equality"
+        ]
+      },
+      {
+        "j": "19859",
+        "names": [
+          "LevelManager.SetTouchPos"
+        ]
+      },
+      {
+        "j": "38504",
+        "names": [
+          "LevelManager.HasTouchMove"
+        ]
+      },
+      {
+        "j": "6564",
+        "names": [
+          "RaycastHit.get_transform"
+        ]
+      },
+      {
+        "j": "1083",
+        "names": []
+      },
+      {
+        "j": "2547",
+        "names": [
+          "Input.GetMouseButtonDown"
+        ]
+      },
+      {
+        "j": "5871",
+        "names": [
+          "LevelManager.CanUseNewAnim"
+        ]
+      },
+      {
+        "j": "1073",
+        "names": [
+          "Object.get_name"
+        ]
+      },
+      {
+        "j": "7474",
+        "names": [
+          "VibrationsMa.PlayVibration"
+        ]
+      },
+      {
+        "j": "6603",
+        "names": [
+          "ObjectUnit.BeSelect"
+        ]
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "8126",
+        "names": [
+          "HighlightEffect.SetTarget"
+        ]
+      },
+      {
+        "j": "2810",
+        "names": [
+          "HighlightEffect.SetHighlighted"
+        ]
+      },
+      {
+        "j": "13226",
+        "names": [
+          "LevelManager.LostTarget"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "17154",
+    "names": [
+      "Tween.Reset"
+    ],
+    "side": "main",
+    "calls": []
+  },
+  {
+    "j": "18665",
+    "names": [
+      "Rigidbody.set_angularVelocity"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "35146",
+        "names": [
+          "Rigidbody.set_angularVelocity_Injected"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19258",
+    "names": [
+      "ObjectUnit.ThrowBack"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1028",
+        "names": [
+          "Transform.get_position"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "1595",
+        "names": [
+          "Random.Range"
+        ]
+      },
+      {
+        "j": "3031",
+        "names": [
+          "ShortcutExtensions.DOMove"
+        ]
+      },
+      {
+        "j": "1183",
+        "names": []
+      },
+      {
+        "j": "1628",
+        "names": [
+          "Transform.SetParent"
+        ]
+      },
+      {
+        "j": "1727",
+        "names": [
+          "ShortcutExtensions.DOScale"
+        ]
+      },
+      {
+        "j": "36722",
+        "names": [
+          "ObjectUnit.ThrowAnim"
+        ]
+      },
+      {
+        "j": "1135",
+        "names": [
+          "MonoBehaviour.StartCoroutine"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19259",
+    "names": [
+      "ObjectUnit.StoreObj"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "907",
+        "names": [
+          "GameObject.SetActive"
+        ]
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1727",
+        "names": [
+          "ShortcutExtensions.DOScale"
+        ]
+      },
+      {
+        "j": "1183",
+        "names": []
+      },
+      {
+        "j": "7955",
+        "names": [
+          "ObjectUnit.PlayAnim"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19260",
+    "names": [
+      "ObjectUnit.PlaySound"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "925",
+        "names": [
+          "Component.get_gameObject"
+        ]
+      },
+      {
+        "j": "1073",
+        "names": [
+          "Object.get_name"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "3492",
+        "names": [
+          "SoundManager.PlayEffectSound"
+        ]
+      },
+      {
+        "j": "17949",
+        "names": [
+          "SoundManager.PlayerGooseSound"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19261",
+    "names": [
+      "ObjectUnit.MessForce"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "7845",
+        "names": [
+          "Rigidbody.get_isKinematic"
+        ]
+      },
+      {
+        "j": "1345",
+        "names": [
+          "Random.Range"
+        ]
+      },
+      {
+        "j": "6538",
+        "names": [
+          "Rigidbody.set_velocity"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19262",
+    "names": [
+      "ObjectUnit.IsLockGuidePhysic"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "4845",
+        "names": [
+          "ABPackManager.get_NewPlayerGuideABType"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19263",
+    "names": [
+      "ObjectUnit.Init"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "9353",
+        "names": [
+          "SoundManager.LoadEffectSound"
+        ]
+      },
+      {
+        "j": "982",
+        "names": [
+          "Object.op_Implicit"
+        ]
+      },
+      {
+        "j": "36804",
+        "names": [
+          "ObjectAnim.InitAnim"
+        ]
+      },
+      {
+        "j": "6671",
+        "names": [
+          "LoadManager.LoadParticle"
+        ]
+      },
+      {
+        "j": "924",
+        "names": [
+          "Object.op_Equality"
+        ]
+      },
+      {
+        "j": "1084",
+        "names": []
+      },
+      {
+        "j": "6539",
+        "names": [
+          "Rigidbody.set_isKinematic"
+        ]
+      },
+      {
+        "j": "907",
+        "names": [
+          "GameObject.SetActive"
+        ]
+      },
+      {
+        "j": "7955",
+        "names": [
+          "ObjectUnit.PlayAnim"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19264",
+    "names": [
+      "ObjectUnit.DeletVel"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "6538",
+        "names": [
+          "Rigidbody.set_velocity"
+        ]
+      },
+      {
+        "j": "18665",
+        "names": [
+          "Rigidbody.set_angularVelocity"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19265",
+    "names": [
+      "ObjectUnit.DelayToGrowScale"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "982",
+        "names": [
+          "Object.op_Implicit"
+        ]
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1360",
+        "names": [
+          "ShortcutExtensions.DOKill"
+        ]
+      },
+      {
+        "j": "1161",
+        "names": [
+          "Transform.set_localScale"
+        ]
+      },
+      {
+        "j": "1727",
+        "names": [
+          "ShortcutExtensions.DOScale"
+        ]
+      },
+      {
+        "j": "873",
+        "names": []
+      },
+      {
+        "j": "1486",
+        "names": [
+          "TweenCallback..ctor"
+        ]
+      },
+      {
+        "j": "1889",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "19867",
+    "names": [
+      "LevelManager.GetTarget"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "915",
+        "names": [
+          "Object.op_Inequality"
+        ]
+      },
+      {
+        "j": "13227",
+        "names": [
+          "LevelManager.GetUnit"
+        ]
+      },
+      {
+        "j": "2810",
+        "names": [
+          "HighlightEffect.SetHighlighted"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "19882",
+    "names": [
+      "LevelManager.CheckAllRigidAndVisible"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "895",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "5869",
+        "names": [
+          "LevelManager.CheckRigid"
+        ]
+      },
+      {
+        "j": "9885",
+        "names": [
+          "LevelManager.CheckVisible"
+        ]
+      },
+      {
+        "j": "1923",
+        "names": [
+          "LevelManager.HasTwoPlayer"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "31214",
+    "names": [],
+    "side": "main",
+    "calls": [
+      {
+        "j": "928",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "32474",
+    "names": [
+      "TeachSceneMa.LostTarget"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "915",
+        "names": [
+          "Object.op_Inequality"
+        ]
+      },
+      {
+        "j": "6603",
+        "names": [
+          "ObjectUnit.BeSelect"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "32484",
+    "names": [
+      "TeachSceneMa.CheckClickRay"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "2414",
+        "names": [
+          "Camera.ScreenPointToRay"
+        ]
+      },
+      {
+        "j": "4708",
+        "names": [
+          "LayerMask.NameToLayer"
+        ]
+      },
+      {
+        "j": "7924",
+        "names": [
+          "Physics.Raycast"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "915",
+        "names": [
+          "Object.op_Inequality"
+        ]
+      },
+      {
+        "j": "925",
+        "names": [
+          "Component.get_gameObject"
+        ]
+      },
+      {
+        "j": "9602",
+        "names": [
+          "RaycastHit.get_rigidbody"
+        ]
+      },
+      {
+        "j": "924",
+        "names": [
+          "Object.op_Equality"
+        ]
+      },
+      {
+        "j": "6564",
+        "names": [
+          "RaycastHit.get_transform"
+        ]
+      },
+      {
+        "j": "1083",
+        "names": []
+      },
+      {
+        "j": "2547",
+        "names": [
+          "Input.GetMouseButtonDown"
+        ]
+      },
+      {
+        "j": "1073",
+        "names": [
+          "Object.get_name"
+        ]
+      },
+      {
+        "j": "7474",
+        "names": [
+          "VibrationsMa.PlayVibration"
+        ]
+      },
+      {
+        "j": "6603",
+        "names": [
+          "ObjectUnit.BeSelect"
+        ]
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "32474",
+        "names": [
+          "TeachSceneMa.LostTarget"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36721",
+    "names": [
+      "ObjectUnit.WinAnim"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "924",
+        "names": [
+          "Object.op_Equality"
+        ]
+      },
+      {
+        "j": "4064",
+        "names": [
+          "AnimatorMa.GetAnim"
+        ]
+      },
+      {
+        "j": "915",
+        "names": [
+          "Object.op_Inequality"
+        ]
+      },
+      {
+        "j": "3101",
+        "names": [
+          "AnimancerComponent.Play"
+        ]
+      },
+      {
+        "j": "2185",
+        "names": [
+          "AnimancerState.set_Time"
+        ]
+      },
+      {
+        "j": "1062",
+        "names": [
+          "Debug.LogError"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36722",
+    "names": [
+      "ObjectUnit.ThrowAnim"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "873",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "36723",
+    "names": [
+      "ObjectUnit.RotaToPos"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1386",
+        "names": [
+          "Transform.set_position"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36724",
+    "names": [
+      "ObjectUnit.RotaAnim"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1028",
+        "names": [
+          "Transform.get_position"
+        ]
+      },
+      {
+        "j": "4551",
+        "names": [
+          "Transform.get_up"
+        ]
+      },
+      {
+        "j": "1414",
+        "names": [
+          "Time.get_deltaTime"
+        ]
+      },
+      {
+        "j": "6370",
+        "names": [
+          "Transform.RotateAround"
+        ]
+      },
+      {
+        "j": "1386",
+        "names": [
+          "Transform.set_position"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36725",
+    "names": [
+      "ObjectUnit.OnCombine"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "3492",
+        "names": [
+          "SoundManager.PlayEffectSound"
+        ]
+      },
+      {
+        "j": "13190",
+        "names": [
+          "LoadManager.GetParticle"
+        ]
+      },
+      {
+        "j": "915",
+        "names": [
+          "Object.op_Inequality"
+        ]
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1028",
+        "names": [
+          "Transform.get_position"
+        ]
+      },
+      {
+        "j": "1386",
+        "names": [
+          "Transform.set_position"
+        ]
+      },
+      {
+        "j": "19551",
+        "names": [
+          "MinMaxGradient.op_Implicit"
+        ]
+      },
+      {
+        "j": "883",
+        "names": []
+      },
+      {
+        "j": "13173",
+        "names": [
+          "MainModule.set_startColor"
+        ]
+      },
+      {
+        "j": "3343",
+        "names": [
+          "ParticleSystem.Play"
+        ]
+      },
+      {
+        "j": "982",
+        "names": [
+          "Object.op_Implicit"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36726",
+    "names": [
+      "ObjectUnit.MoveToTargetPos"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "907",
+        "names": [
+          "GameObject.SetActive"
+        ]
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "3031",
+        "names": [
+          "ShortcutExtensions.DOMove"
+        ]
+      },
+      {
+        "j": "1281",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "36727",
+    "names": [
+      "ObjectUnit.InitRota"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "907",
+        "names": [
+          "GameObject.SetActive"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36728",
+    "names": [
+      "ObjectUnit.DelayToHideCol"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "873",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "36729",
+    "names": [
+      "ObjectUnit.CanShake"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "7845",
+        "names": [
+          "Rigidbody.get_isKinematic"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36730",
+    "names": [
+      "ObjectUnit.AddForce"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "7845",
+        "names": [
+          "Rigidbody.get_isKinematic"
+        ]
+      },
+      {
+        "j": "18670",
+        "names": [
+          "Rigidbody.AddForce"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36803",
+    "names": [
+      "ObjectAnim.PlayAnim"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "924",
+        "names": [
+          "Object.op_Equality"
+        ]
+      },
+      {
+        "j": "1360",
+        "names": [
+          "ShortcutExtensions.DOKill"
+        ]
+      },
+      {
+        "j": "1161",
+        "names": [
+          "Transform.set_localScale"
+        ]
+      },
+      {
+        "j": "2901",
+        "names": [
+          "ShortcutExtensions.DOPunchScale"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "36804",
+    "names": [
+      "ObjectAnim.InitAnim"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "924",
+        "names": [
+          "Object.op_Equality"
+        ]
+      },
+      {
+        "j": "1387",
+        "names": [
+          "Transform.get_localScale"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "38498",
+    "names": [
+      "LevelManager.LevelTouch"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "9883",
+        "names": [
+          "LevelManager.GetTouchButton"
+        ]
+      },
+      {
+        "j": "13231",
+        "names": [
+          "LevelManager.CheckClickRay"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "1923",
+        "names": [
+          "LevelManager.HasTwoPlayer"
+        ]
+      },
+      {
+        "j": "19867",
+        "names": [
+          "LevelManager.GetTarget"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "63997",
+    "names": [
+      "<>c__DisplayClass44_0.<BeClick>b__2"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "2901",
+        "names": [
+          "ShortcutExtensions.DOPunchScale"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "63999",
+    "names": [
+      "<>c__DisplayClass44_0.<BeClick>b__0"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "1727",
+        "names": [
+          "ShortcutExtensions.DOScale"
+        ]
+      },
+      {
+        "j": "1281",
+        "names": []
+      },
+      {
+        "j": "873",
+        "names": []
+      },
+      {
+        "j": "1486",
+        "names": [
+          "TweenCallback..ctor"
+        ]
+      },
+      {
+        "j": "1889",
+        "names": []
+      },
+      {
+        "j": "1183",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "65349",
+    "names": [
+      "<DelayToHideCol>d__47.MoveNext"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "873",
+        "names": []
+      },
+      {
+        "j": "907",
+        "names": [
+          "GameObject.SetActive"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "80060",
+    "names": [
+      "ObjectUnit..ctor"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "1140",
+        "names": [
+          "MonoBehaviour..ctor",
+          "RectTransform..ctor"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "80062",
+    "names": [
+      "ObjectUnit.RandomAnim"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "873",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "80064",
+    "names": [
+      "ObjectUnit.BeCatchAnim"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "944",
+        "names": [
+          "Component.get_transform"
+        ]
+      },
+      {
+        "j": "1360",
+        "names": [
+          "ShortcutExtensions.DOKill"
+        ]
+      },
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "1161",
+        "names": [
+          "Transform.set_localScale"
+        ]
+      },
+      {
+        "j": "2901",
+        "names": [
+          "ShortcutExtensions.DOPunchScale"
+        ]
+      },
+      {
+        "j": "19260",
+        "names": [
+          "ObjectUnit.PlaySound"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "83394",
+    "names": [
+      "LevelManager.Update"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "2631",
+        "names": [
+          "AsyncOperationHandle.IsValid"
+        ]
+      },
+      {
+        "j": "8421",
+        "names": [
+          "AsyncOperationHandle.get_PercentComplete"
+        ]
+      },
+      {
+        "j": "871",
+        "names": []
+      },
+      {
+        "j": "1547",
+        "names": [
+          "MonoBehaviour.print"
+        ]
+      },
+      {
+        "j": "19884",
+        "names": [
+          "LevelManager.CanTouch"
+        ]
+      },
+      {
+        "j": "38498",
+        "names": [
+          "LevelManager.LevelTouch"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "90473",
+    "names": [
+      "DOTween..cctor"
+    ],
+    "side": "main",
+    "calls": [
+      {
+        "j": "870",
+        "names": []
+      },
+      {
+        "j": "873",
+        "names": []
+      },
+      {
+        "j": "918",
+        "names": []
+      }
+    ]
+  },
+  {
+    "j": "4169",
+    "names": [
+      "ObjectUnit.GetPickScale",
+      "TrackEntry.get_DrawOrderThreshold",
+      "Bone.get_AScaleX",
+      "Skeleton.get_Time",
+      "TransformConstraintData.get_OffsetShearY",
+      "ScrollRect.get_verticalScrollbarSpacing",
+      "PointerEvent.get_deltaTime",
+      "FaceInfo.get_underlineThickness",
+      "Touch.get_azimuthAngle"
+    ],
+    "side": "sub",
+    "calls": []
+  },
+  {
+    "j": "6540",
+    "names": [
+      "Rigidbody.MovePosition"
+    ],
+    "side": "sub",
+    "calls": [
+      {
+        "j": "35161",
+        "names": [
+          "Rigidbody.MovePosition_Injected"
+        ]
+      }
+    ]
+  },
+  {
+    "j": "63998",
+    "names": [
+      "<>c__DisplayClass44_0.<BeClick>b__1"
+    ],
+    "side": "sub",
+    "calls": []
+  },
+  {
+    "j": "65794",
+    "names": [
+      "Tween..ctor"
+    ],
+    "side": "sub",
+    "calls": []
+  },
+  {
+    "j": "76396",
+    "names": [
+      "Rigidbody.WakeUp"
+    ],
+    "side": "sub",
+    "calls": []
+  },
+  {
+    "j": "80061",
+    "names": [
+      "ObjectUnit.<DelayToGrowScale>b__41_0"
+    ],
+    "side": "sub",
+    "calls": []
+  },
+  {
+    "j": "80063",
+    "names": [
+      "ObjectUnit.CanBeSelect"
+    ],
+    "side": "sub",
+    "calls": []
+  },
+  {
+    "j": "90554",
+    "names": [
+      "DOTweenModulePhysics.DOMove"
+    ],
+    "side": "sub",
+    "calls": []
+  }
+]

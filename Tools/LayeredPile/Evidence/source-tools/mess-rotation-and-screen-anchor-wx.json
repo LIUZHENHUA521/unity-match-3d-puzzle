@@ -1,0 +1,353 @@
+{
+  "WXLevelManagerDictionary": "_screenVFXPoint",
+  "fieldOffset": 708,
+  "key": {
+    "name": "ToolMessUp",
+    "value": 2,
+    "byteOffset": 586
+  },
+  "externalUnityReferenceIndex": 0,
+  "referenceTableOffset": 1124,
+  "referenceTable": [
+    {
+      "fileID": 0,
+      "pathID": 417
+    }
+  ],
+  "rawDictionaryEntryHex": "1d 01 02 00 00 00 24 00 6b 00 02 00 00 00 00 00 00 00 0b 01 02 00 00 00 24 00 76 00 00 00 00 00",
+  "chain": [
+    {
+      "transformPathID": 417,
+      "name": "MessToolPoint",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 291
+        },
+        "m_LocalRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+        },
+        "m_LocalScale": {
+          "x": 0.10000000149011612,
+          "y": 0.10000000149011612,
+          "z": 0.10000000149011612
+        },
+        "m_Children": [],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 359
+        }
+      }
+    },
+    {
+      "transformPathID": 359,
+      "name": "Main Camera",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 164
+        },
+        "m_LocalRotation": {
+          "x": -0.0,
+          "y": -0.0,
+          "z": -0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -30.0
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": 357
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 417
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 316
+        }
+      }
+    },
+    {
+      "transformPathID": 316,
+      "name": "MainLevelCenter",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 118
+        },
+        "m_LocalRotation": {
+          "x": 0.6560590267181396,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.7547096610069275
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.5
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": 359
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 339
+        }
+      }
+    },
+    {
+      "transformPathID": 339,
+      "name": "RotaCenter",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 141
+        },
+        "m_LocalRotation": {
+          "x": -0.0,
+          "y": -0.0,
+          "z": -0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": 316
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 345
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 312
+        }
+      }
+    },
+    {
+      "transformPathID": 312,
+      "name": "MainScene",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 107
+        },
+        "m_LocalRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": 323
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 395
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 404
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 389
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 317
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 370
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 361
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 612
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 613
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 610
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 393
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 339
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 372
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 378
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 336
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 355
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 338
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 400
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 321
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 386
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 467
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 379
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 358
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 388
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 383
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        }
+      }
+    }
+  ],
+  "collapsedCameraLocalMatrix": [
+    [
+      0.1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0.1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0.1,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "calls": [
+    {
+      "j": 4551,
+      "assembly": "UnityEngine.CoreModule.dll",
+      "type": "Transform",
+      "method": "get_up"
+    },
+    {
+      "j": 1028,
+      "method": "Transform.get_position"
+    },
+    {
+      "j": 6370,
+      "method": "Transform.RotateAround"
+    },
+    {
+      "j": 1628,
+      "method": "Transform.SetParent"
+    },
+    {
+      "j": 1271,
+      "method": "Transform.set_localPosition"
+    },
+    {
+      "j": 1725,
+      "method": "Transform.set_localEulerAngles"
+    }
+  ]
+}

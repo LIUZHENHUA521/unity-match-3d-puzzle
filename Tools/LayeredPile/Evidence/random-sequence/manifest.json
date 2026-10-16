@@ -1,0 +1,120 @@
+{
+  "target": "WX 2.1.12 retained WASM",
+  "source": {
+    "work/goose-main.wat": {
+      "sha256": "757c2048f19e7497005b4afd0d4ba59b4769b3ceb5a85097c72cbfab6d35c84f",
+      "bytes": 142220663
+    },
+    "work/goose-wasm-main-memory.bin": {
+      "sha256": "20c5b2b7a87096a344bde67ac4a6c97bdf62fbe34a82d4e91584969d7e7fb029",
+      "bytes": 3985872
+    }
+  },
+  "icall": {
+    "wrapper": "j1345",
+    "stringAddress": 1576193,
+    "name": "UnityEngine.Random::Range(System.Single,System.Single)"
+  },
+  "functions": {
+    "j83886.wat": {
+      "sha256": "945aca2c2efb10c275422a8f5f27068191f99c99312eacbd7078a812e32ef76b",
+      "lines": 317
+    },
+    "j29517.wat": {
+      "sha256": "cb5ec8dc563c069cfdc26624e05ec59653f38a10e13d50c9a2f35512b5cdade4",
+      "lines": 111
+    },
+    "j83885.wat": {
+      "sha256": "1ae956bd95713aa4f4fc80f95cb6dde2c646cba980c536f321c1606ab0989a8c",
+      "lines": 498
+    },
+    "j1898.wat": {
+      "sha256": "53260ff53aab552cc9b4dad26e86c7854fb9deecf559a2ca17e88f50b44f9470",
+      "lines": 23
+    },
+    "j65137.wat": {
+      "sha256": "27fbe333b46cd2a95452df8c3c7ebbb5471113ef2d0fd5a1924ba2e8d3b05623",
+      "lines": 2983
+    },
+    "j83882.wat": {
+      "sha256": "8ee996fcb3233372277a216511f3b62b9bc73a383fc7095c3ff5027c2133c2cd",
+      "lines": 224
+    },
+    "j1345.wat": {
+      "sha256": "5d10b43299546f7a4089f670aa07d07f018decbb5d4bc486a76eeed9915b631d",
+      "lines": 19
+    },
+    "j38733.wat": {
+      "sha256": "b40f0c0031aff27f926523e5e0a6cf6aeffa8bd82e59f4e17b809a63fc266065",
+      "lines": 81
+    },
+    "j16590.wat": {
+      "sha256": "24bd0e49fdb3937e897bc8986332ccced0813156988b562b2cff1944c6d862a5",
+      "lines": 102
+    },
+    "j1965.wat": {
+      "sha256": "ec1cc8e184a7f9daed380952b64d47fee41182f97fb347ec76f83a264b9ceda9",
+      "lines": 5
+    },
+    "j13228.wat": {
+      "sha256": "2983eaedb799dd4bf14b32d7f39a0ec59017d89b0bd1b75e84a56e84aaf3be5d",
+      "lines": 84
+    },
+    "j38734.wat": {
+      "sha256": "169a6f41241db4662db25e58b551a47b80f850e27605d1d4e886cd6ee557058a",
+      "lines": 97
+    },
+    "j38735.wat": {
+      "sha256": "aae071974cb41a039608877fc14d305f8501ed61fdbbd1c66c7f6a90d8beb4fc",
+      "lines": 21
+    },
+    "j19263.wat": {
+      "sha256": "4f886b4dc27707252448723c68c8e0f29865d003ad11daf10a42a948d78bae79",
+      "lines": 254
+    },
+    "j13230.wat": {
+      "sha256": "2ee3b0551a29a7b4563d443056cc89156c221c03d0fd0996324af2fdddfad700",
+      "lines": 259
+    },
+    "j38517.wat": {
+      "sha256": "e49d1580b37d5af4547b57ed2d3ad0b9c628f6efced6f52222eab89eb96d4125",
+      "lines": 1642
+    },
+    "j38270.wat": {
+      "sha256": "bb80cefa471874f3be5ddb1b74d01f9f6a98dfb8740d7ee67b3bf5eaeeae97c8",
+      "lines": 47
+    },
+    "j12039.wat": {
+      "sha256": "2767d1adfac08c2a6e7a073402f2dd95d14b029bb9fa00f23bdbbd7796477819",
+      "lines": 9
+    },
+    "j2594.wat": {
+      "sha256": "b99de9b0c547f5ce09ddef5aff9ef94c86456e180310bff65d73d0da159e4bc3",
+      "lines": 74
+    },
+    "j19949.wat": {
+      "sha256": "e55d3603fffe20e55cea4cbd0918d55afbbc4c216959d1641d4a3ed154e4ce4c",
+      "lines": 1198
+    },
+    "j83398.wat": {
+      "sha256": "4b28ea33500b1edb15fdc1c5b0ad1141b8efac7b988e14cdd941cbde8251f548",
+      "lines": 677
+    },
+    "j83393.wat": {
+      "sha256": "ff49ae2aa13a72fc258e785d12a532d09325604a2f04bcb1488f19e33ae7dc37",
+      "lines": 112
+    },
+    "j83395.wat": {
+      "sha256": "45285a2ce40cc39dc7001ccde490a9210aecc3858c1727eee5804f175e903ead",
+      "lines": 30
+    },
+    "j83431.wat": {
+      "sha256": "9f6170a4d631e27ebab96cab1f1f6b38b79f6b755bf8639a701f88a93a7c5fe3",
+      "lines": 169
+    },
+    "j4679.wat": {
+      "sha256": "8347ceba674172cb8fdba2d7e20036d9dc09776be8e005de2b5a83097b5a3f47",
+      "lines": 117
+    }
+  }
+}

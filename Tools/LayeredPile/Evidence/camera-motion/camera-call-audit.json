@@ -1,0 +1,24 @@
+[
+  {
+    "side": "main",
+    "caller": 83393,
+    "calls": [],
+    "modeWrites": [
+      "i32.const 3434312\n    i32.load\n    i32.load offset=92\n    i32.const 2\n    i32.store offset=8"
+    ]
+  },
+  {
+    "side": "sub",
+    "caller": 83404,
+    "calls": [
+      43052
+    ],
+    "modeWrites": []
+  },
+  {
+    "side": "main",
+    "caller": 83431,
+    "modeWrite": "LevelManager.Awake: static LevelControlType = this._levelType (instance offset176); ctor initializes 2",
+    "source": "main-j83431.wat"
+  }
+]

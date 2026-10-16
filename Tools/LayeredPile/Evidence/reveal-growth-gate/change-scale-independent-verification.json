@@ -1,0 +1,134 @@
+{
+  "target": "WX shipped WASM, independent audit",
+  "typeIndex": 2042,
+  "byvalTypeIndex": 16096,
+  "field": {
+    "nameIndex": 270107,
+    "typeIndex": 10969,
+    "token": 67111441,
+    "offset": 5719168,
+    "name": "_changeObjScale"
+  },
+  "fieldOffsetPointerTable": 3336976,
+  "objectUnitOffsetTable": 728752,
+  "fieldOrdinal": 30,
+  "actualFieldOffset": 128,
+  "typePointerTable": 184576,
+  "typePointer": 3105672,
+  "typeBits": "0x80020001",
+  "fieldAttributes": 1,
+  "typeKind": 2,
+  "customAttributes": [],
+  "serializedPositiveControls": {
+    "col": [
+      "SerializeField"
+    ],
+    "realCol": [
+      "SerializeField"
+    ],
+    "_render": [
+      "SerializeField"
+    ],
+    "_anim": [
+      "SerializeField"
+    ]
+  },
+  "methodNames": [
+    "Init",
+    "PlaySound",
+    "PlayAnim",
+    "RandomAnim",
+    "PlayAnimClip",
+    "WinAnim",
+    "FinishCreate",
+    "SetRigid",
+    "DeletVel",
+    "HideRigid",
+    "DelayToGrowScale",
+    "BeSelect",
+    "IsLockGuidePhysic",
+    "BeClick",
+    "GetPickScale",
+    "BeCatchAnim",
+    "DelayToHideCol",
+    "StoreObj",
+    "ThrowBack",
+    "ThrowAnim",
+    "MessForce",
+    "AddForce",
+    "CanShake",
+    "SetVisible",
+    "CanBeSelect",
+    "OnCombine",
+    "InitRota",
+    "RotaAnim",
+    "RotaToPos",
+    "MoveToTargetPos",
+    "SetBaseValue",
+    ".ctor",
+    "<DelayToGrowScale>b__41_0"
+  ],
+  "nestedNames": [
+    "<>c__DisplayClass44_0",
+    "<DelayToHideCol>d__47",
+    "<RandomAnim>d__33",
+    "<ThrowAnim>d__50"
+  ],
+  "allWatWriteOrConst128Candidates": 7719,
+  "ownedCandidates": [
+    {
+      "side": "main",
+      "j": 36724,
+      "mapping": [
+        {
+          "assembly": "Assembly-CSharp.dll",
+          "type": "ObjectUnit",
+          "name": "RotaAnim",
+          "j": 36724
+        }
+      ],
+      "line": 14,
+      "kind": "addressCandidate",
+      "context": "    local.set 5\n    local.get 2\n    i32.const 128\n    i32.add\n    local.get 0\n    i32.load offset=132"
+    },
+    {
+      "side": "main",
+      "j": 36724,
+      "mapping": [
+        {
+          "assembly": "Assembly-CSharp.dll",
+          "type": "ObjectUnit",
+          "name": "RotaAnim",
+          "j": 36724
+        }
+      ],
+      "line": 55,
+      "kind": "store",
+      "context": "    local.get 2\n    i32.load offset=116\n    local.set 4\n    local.get 2\n    local.get 3\n    i32.store offset=128\n    local.get 2"
+    }
+  ],
+  "stringLiteralMatches": [],
+  "sourceHashes": {
+    "work/goose-main.wat": "757c2048f19e7497005b4afd0d4ba59b4769b3ceb5a85097c72cbfab6d35c84f",
+    "work/goose-sub.wat": "29602680f3f8ffb9fed2ffdaa3c9b99a1951b5739cf6683ad7e3d4586072dfed",
+    "work/goose-wechat-data/extracted/Il2CppData/Metadata/global-metadata.dat": "d48fa260a0cb2f4f41d83a7ce2953017b40dafddebea6cbbf5895af95bc9fe3d",
+    "work/goose-wasm-main-memory.bin": "20c5b2b7a87096a344bde67ac4a6c97bdf62fbe34a82d4e91584969d7e7fb029"
+  },
+  "iosMetadataOnly": {
+    "typeIndex": 790,
+    "field": {
+      "nameIndex": 120194,
+      "typeIndex": 14124,
+      "token": 67113389,
+      "offset": 7010624,
+      "name": "_changeObjScale"
+    },
+    "typeTriple": [
+      3429,
+      1,
+      2
+    ],
+    "customAttributes": [],
+    "controlFlowVerified": false
+  }
+}

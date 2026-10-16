@@ -1,0 +1,45 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "Unlit/NiuQu_UV_Alpha" {
+Properties {
+
+_V ("V", Float) = 0.20000000298023224
+
+_Niuqu ("Niuqu", 2D) = "white" { }
+
+_Niuqu_U ("Niuqu_U", Float) = 1.0
+
+_Niuqu_V ("Niuqu_V", Float) = 1.0
+
+_Tex ("Tex", 2D) = "white" { }
+
+_Tex_Color ("Tex_Color", Color) = (1,1,1,1)
+
+_Tex_Color_Scale ("Tex_Color_Scale", Float) = 0.0
+
+_Tex_U ("Tex_U", Float) = 1.0
+
+_Tex_V ("Tex_V", Float) = 1.0
+
+_Mask ("Mask", 2D) = "white" { }
+
+_texcoord ("", 2D) = "white" { }
+
+}
+SubShader {
+ LOD 100
+ Tags { "RenderType" = "Opaque" }
+ Pass {
+ Name "Unlit"
+  LOD 100
+  Tags { "LIGHTMODE" = "FORWARDBASE" "RenderType" = "Opaque" }
+ ZWrite Off
+ Cull Off
+  GpuProgramID 2825
+}
+}
+CustomEditor "ASEMaterialInspector"
+}

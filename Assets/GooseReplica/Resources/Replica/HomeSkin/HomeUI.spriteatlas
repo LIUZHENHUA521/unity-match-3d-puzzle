@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: HomeUI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 0
+      compressionQuality: 0
+      maxTextureSize: 0
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 0
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 2c1799122a63b405ba7c7607dd3e36fb, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 80c5a021b94c450280f903b5277f28d7: 21300000
+    - 5e5689f332934146aaa1bc6134093471: 21300000
+    - f9894e77acdc4441bf8a9912946f195c: 21300000
+    - d7655358f7cc4527966005713207e037: 21300000
+    - a3569b49d29440b4ac3beb1675b9a520: 21300000
+    - 16fa5af905ed413d9b9b26aed6348913: 21300000
+    - 26b6cdfbbe384050baa4be99b7751a35: 21300000
+    - e8cdf96c03ad4e64a6af619f1012e377: 21300000
+    - 98e385bc730e49068314ba51e4312d9b: 21300000
+    - c0336addea234c9e8453901ce2581eac: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 80c5a021b94c450280f903b5277f28d7, type: 3}
+  - {fileID: 21300000, guid: 5e5689f332934146aaa1bc6134093471, type: 3}
+  - {fileID: 21300000, guid: f9894e77acdc4441bf8a9912946f195c, type: 3}
+  - {fileID: 21300000, guid: d7655358f7cc4527966005713207e037, type: 3}
+  - {fileID: 21300000, guid: a3569b49d29440b4ac3beb1675b9a520, type: 3}
+  - {fileID: 21300000, guid: 16fa5af905ed413d9b9b26aed6348913, type: 3}
+  - {fileID: 21300000, guid: 26b6cdfbbe384050baa4be99b7751a35, type: 3}
+  - {fileID: 21300000, guid: e8cdf96c03ad4e64a6af619f1012e377, type: 3}
+  - {fileID: 21300000, guid: 98e385bc730e49068314ba51e4312d9b, type: 3}
+  - {fileID: 21300000, guid: c0336addea234c9e8453901ce2581eac, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - btn_menu_selected
+  - easyModeBtn
+  - challengeBtn
+  - image_tab_blue_cube
+  - image_menu_home
+  - btn_menu_normal
+  - image_setting
+  - redPacket
+  - image_menu_collect
+  - image_menu_pet
+  m_RenderDataMap: {}
+  m_Tag: HomeUI
+  m_IsVariant: 0

@@ -1,0 +1,2639 @@
+{
+  "source": "WX2.1.12 CountrysideStove saved prefab; level1/custom collision subtrees excluded",
+  "theme": "daily",
+  "nodes": [
+    {
+      "name": "CountrysideStove",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": -1
+    },
+    {
+      "name": "BGCountrysideKitchen",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 0
+    },
+    {
+      "name": "Table",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.059999942779541,
+        "y": 1.059999942779541,
+        "z": 1.059999942779541
+      },
+      "boxes": [],
+      "parent": 1
+    },
+    {
+      "name": "BottomCol",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.019498229026794434,
+        "y": -0.5260000228881836,
+        "z": -0.01989745907485485
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": 1.0,
+        "z": -0.0,
+        "w": 0.0
+      },
+      "scale": {
+        "x": 36.974998474121094,
+        "y": 36.974998474121094,
+        "z": 36.974998474121094
+      },
+      "boxes": [],
+      "parent": 2
+    },
+    {
+      "name": "GameObject",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 3
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.009700000286102295,
+        "z": -0.019999999552965164
+      },
+      "rotation": {
+        "x": 0.013089582324028015,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9999143481254578
+      },
+      "scale": {
+        "x": 0.05000000074505806,
+        "y": 0.009999999776482582,
+        "z": 0.05999999865889549
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 4
+    },
+    {
+      "name": "Cube (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.013500000350177288,
+        "z": -0.05730000138282776
+      },
+      "rotation": {
+        "x": 0.23268160223960876,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.972553014755249
+      },
+      "scale": {
+        "x": 0.05999999865889549,
+        "y": 0.009999999776482582,
+        "z": 0.029999999329447746
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 4
+    },
+    {
+      "name": "GameObject (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.34202009439468384,
+        "z": 0.0,
+        "w": 0.9396926760673523
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 3
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.009700000286102295,
+        "z": -0.019999999552965164
+      },
+      "rotation": {
+        "x": 0.013089582324028015,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9999143481254578
+      },
+      "scale": {
+        "x": 0.05000000074505806,
+        "y": 0.009999999776482582,
+        "z": 0.05999999865889549
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 7
+    },
+    {
+      "name": "Cube (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.013500000350177288,
+        "z": -0.05730000138282776
+      },
+      "rotation": {
+        "x": 0.23268160223960876,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.972553014755249
+      },
+      "scale": {
+        "x": 0.05999999865889549,
+        "y": 0.009999999776482582,
+        "z": 0.03500000014901161
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 7
+    },
+    {
+      "name": "GameObject (2)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.720551073551178,
+        "z": 0.0,
+        "w": 0.6934019327163696
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 3
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.009700000286102295,
+        "z": -0.019999999552965164
+      },
+      "rotation": {
+        "x": 0.013089582324028015,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9999143481254578
+      },
+      "scale": {
+        "x": 0.05000000074505806,
+        "y": 0.009999999776482582,
+        "z": 0.05999999865889549
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 10
+    },
+    {
+      "name": "Cube (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.013500000350177288,
+        "z": -0.05730000138282776
+      },
+      "rotation": {
+        "x": 0.23268160223960876,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.972553014755249
+      },
+      "scale": {
+        "x": 0.05999999865889549,
+        "y": 0.009999999776482582,
+        "z": 0.05000000074505806
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 10
+    },
+    {
+      "name": "GameObject (3)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.9455185532569885,
+        "z": 0.0,
+        "w": 0.32556816935539246
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 3
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.009700000286102295,
+        "z": -0.019999999552965164
+      },
+      "rotation": {
+        "x": 0.013089582324028015,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9999143481254578
+      },
+      "scale": {
+        "x": 0.05000000074505806,
+        "y": 0.009999999776482582,
+        "z": 0.05999999865889549
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 13
+    },
+    {
+      "name": "Cube (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.013500000350177288,
+        "z": -0.05730000138282776
+      },
+      "rotation": {
+        "x": 0.23268160223960876,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.972553014755249
+      },
+      "scale": {
+        "x": 0.05999999865889549,
+        "y": 0.009999999776482582,
+        "z": 0.054999999701976776
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 13
+    },
+    {
+      "name": "GameObject (4)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.9993284344673157,
+        "z": -0.0,
+        "w": -0.03664367273449898
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 3
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.009700000286102295,
+        "z": -0.019999999552965164
+      },
+      "rotation": {
+        "x": 0.013089582324028015,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9999143481254578
+      },
+      "scale": {
+        "x": 0.05000000074505806,
+        "y": 0.009999999776482582,
+        "z": 0.05999999865889549
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 16
+    },
+    {
+      "name": "Cube (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.013500000350177288,
+        "z": -0.05730000138282776
+      },
+      "rotation": {
+        "x": 0.23268160223960876,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.972553014755249
+      },
+      "scale": {
+        "x": 0.05999999865889549,
+        "y": 0.009999999776482582,
+        "z": 0.054999999701976776
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 16
+    },
+    {
+      "name": "GameObject (5)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.8968727588653564,
+        "z": -0.0,
+        "w": -0.4422886073589325
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 3
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.009700000286102295,
+        "z": -0.019999999552965164
+      },
+      "rotation": {
+        "x": 0.013089582324028015,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9999143481254578
+      },
+      "scale": {
+        "x": 0.05000000074505806,
+        "y": 0.009999999776482582,
+        "z": 0.05999999865889549
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 19
+    },
+    {
+      "name": "Cube (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.013500000350177288,
+        "z": -0.05730000138282776
+      },
+      "rotation": {
+        "x": 0.23268160223960876,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.972553014755249
+      },
+      "scale": {
+        "x": 0.05999999865889549,
+        "y": 0.009999999776482582,
+        "z": 0.05000000074505806
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 19
+    },
+    {
+      "name": "GameObject (6)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.648784339427948,
+        "z": -0.0,
+        "w": -0.7609723210334778
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 3
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.009700000286102295,
+        "z": -0.019999999552965164
+      },
+      "rotation": {
+        "x": 0.013089582324028015,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9999143481254578
+      },
+      "scale": {
+        "x": 0.05000000074505806,
+        "y": 0.009999999776482582,
+        "z": 0.05999999865889549
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 22
+    },
+    {
+      "name": "Cube (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.013500000350177288,
+        "z": -0.05730000138282776
+      },
+      "rotation": {
+        "x": 0.23268160223960876,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.972553014755249
+      },
+      "scale": {
+        "x": 0.05999999865889549,
+        "y": 0.009999999776482582,
+        "z": 0.03500000014901161
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 22
+    },
+    {
+      "name": "GameObject (7)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.3098468482494354,
+        "z": -0.0,
+        "w": -0.9507864713668823
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 3
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.009700000286102295,
+        "z": -0.019999999552965164
+      },
+      "rotation": {
+        "x": 0.008726557716727257,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9999619722366333
+      },
+      "scale": {
+        "x": 0.05000000074505806,
+        "y": 0.009999999776482582,
+        "z": 0.05999999865889549
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 25
+    },
+    {
+      "name": "Cube (1)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.0,
+        "y": 0.013500000350177288,
+        "z": -0.05730000138282776
+      },
+      "rotation": {
+        "x": 0.23268160223960876,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.972553014755249
+      },
+      "scale": {
+        "x": 0.05999999865889549,
+        "y": 0.009999999776482582,
+        "z": 0.029999999329447746
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": false,
+          "material": null
+        }
+      ],
+      "parent": 25
+    },
+    {
+      "name": "Lv2AirWall",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.06104854494333267,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9981348514556885
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 0
+    },
+    {
+      "name": "WallPanel",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 28
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.0,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.026176949962973595,
+        "w": 0.9996573328971863
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 12.016468048095703,
+        "z": 2.1175613403320312
+      },
+      "boxes": [],
+      "parent": 30
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 31
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.3826834559440613,
+        "z": 0.0,
+        "w": 0.9238795042037964
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.0,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.026176949962973595,
+        "w": 0.9996573328971863
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 12.016468048095703,
+        "z": 2.1175613403320312
+      },
+      "boxes": [],
+      "parent": 33
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 34
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.0,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.026176949962973595,
+        "w": 0.9996573328971863
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 12.016468048095703,
+        "z": 2.1175613403320312
+      },
+      "boxes": [],
+      "parent": 36
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 37
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.9238795638084412,
+        "z": 0.0,
+        "w": 0.3826834559440613
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.0,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.026176949962973595,
+        "w": 0.9996573328971863
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 12.016468048095703,
+        "z": 2.1175613403320312
+      },
+      "boxes": [],
+      "parent": 39
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 40
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0,
+        "w": -4.371138828673793e-08
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.0,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.026176949962973595,
+        "w": 0.9996573328971863
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 12.016468048095703,
+        "z": 2.1175613403320312
+      },
+      "boxes": [],
+      "parent": 42
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 43
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.9238795638084412,
+        "z": 0.0,
+        "w": -0.3826833963394165
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.0,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.026176949962973595,
+        "w": 0.9996573328971863
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 12.016468048095703,
+        "z": 2.1175613403320312
+      },
+      "boxes": [],
+      "parent": 45
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 46
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": -0.7071068286895752
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.0,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.026176949962973595,
+        "w": 0.9996573328971863
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 12.016468048095703,
+        "z": 2.1175613403320312
+      },
+      "boxes": [],
+      "parent": 48
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 49
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.38268348574638367,
+        "z": 0.0,
+        "w": -0.9238795042037964
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.0,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.026176949962973595,
+        "w": 0.9996573328971863
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 12.016468048095703,
+        "z": 2.1175613403320312
+      },
+      "boxes": [],
+      "parent": 51
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 52
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 12.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.6288933753967285,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.10452846437692642,
+        "w": 0.9945219159126282
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 16.35744857788086,
+        "z": 6.538737773895264
+      },
+      "boxes": [],
+      "parent": 54
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 55
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 12.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.3826834559440613,
+        "z": 0.0,
+        "w": 0.9238795042037964
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.6288933753967285,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.10452846437692642,
+        "w": 0.9945219159126282
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 16.35744857788086,
+        "z": 6.538737773895264
+      },
+      "boxes": [],
+      "parent": 57
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 58
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 12.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.6288933753967285,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.10452846437692642,
+        "w": 0.9945219159126282
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 16.35744857788086,
+        "z": 6.538737773895264
+      },
+      "boxes": [],
+      "parent": 60
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 61
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 12.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.9238795638084412,
+        "z": 0.0,
+        "w": 0.3826834559440613
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.6288933753967285,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.10452846437692642,
+        "w": 0.9945219159126282
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 16.35744857788086,
+        "z": 6.538737773895264
+      },
+      "boxes": [],
+      "parent": 63
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 64
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 12.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0,
+        "w": -4.371138828673793e-08
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.6288933753967285,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.10452846437692642,
+        "w": 0.9945219159126282
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 16.35744857788086,
+        "z": 6.538737773895264
+      },
+      "boxes": [],
+      "parent": 66
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 67
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 12.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.9238795638084412,
+        "z": 0.0,
+        "w": -0.3826833963394165
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.6288933753967285,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.10452846437692642,
+        "w": 0.9945219159126282
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 16.35744857788086,
+        "z": 6.538737773895264
+      },
+      "boxes": [],
+      "parent": 69
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 70
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 12.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": -0.7071068286895752
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.6288933753967285,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.10452846437692642,
+        "w": 0.9945219159126282
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 16.35744857788086,
+        "z": 6.538737773895264
+      },
+      "boxes": [],
+      "parent": 72
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 73
+    },
+    {
+      "name": "wallPrefab(Clone)",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 12.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.38268348574638367,
+        "z": 0.0,
+        "w": -0.9238795042037964
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [],
+      "parent": 29
+    },
+    {
+      "name": "CubePoint",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -1.6288933753967285,
+        "y": -0.0,
+        "z": -0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.10452846437692642,
+        "w": 0.9945219159126282
+      },
+      "scale": {
+        "x": 3.0,
+        "y": 16.35744857788086,
+        "z": 6.538737773895264
+      },
+      "boxes": [],
+      "parent": 75
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": -0.5,
+        "y": 0.5,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 76
+    },
+    {
+      "name": "topPrefab",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 28.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 16.05959701538086,
+        "y": 2.0,
+        "z": 16.05959701538086
+      },
+      "boxes": [],
+      "parent": 28
+    },
+    {
+      "name": "Cube",
+      "active": true,
+      "layer": 0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": -0.17364825308322906,
+        "z": 0.0,
+        "w": 0.9848077893257141
+      },
+      "scale": {
+        "x": 1.100000023841858,
+        "y": 1.0,
+        "z": 1.100000023841858
+      },
+      "boxes": [
+        {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "size": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "enabled": true,
+          "trigger": false,
+          "hasMaterial": true,
+          "material": {
+            "m_Name": "SmoothMa",
+            "dynamicFriction": 0.0,
+            "staticFriction": 0.0,
+            "bounciness": 0.0,
+            "frictionCombine": 1,
+            "bounceCombine": 1
+          }
+        }
+      ],
+      "parent": 78
+    }
+  ],
+  "borders": [
+    {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.399999976158142,
+        "y": 0.009999999776482582,
+        "z": 1.399999976158142
+      }
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 2.9776384509618112,
+        "z": -0.36560808203159567
+      },
+      "scale": {
+        "x": 1.620112657546997,
+        "y": 0.009999999776482582,
+        "z": 1.620112657546997
+      }
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 5.9552769019236225,
+        "z": -0.7312161640631913
+      },
+      "scale": {
+        "x": 1.840225338935852,
+        "y": 0.009999999776482582,
+        "z": 1.840225338935852
+      }
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 8.932915352885434,
+        "z": -1.096824246094787
+      },
+      "scale": {
+        "x": 2.060338020324707,
+        "y": 0.009999999776482582,
+        "z": 2.060338020324707
+      }
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 11.910553803847245,
+        "z": -1.4624323281263827
+      },
+      "scale": {
+        "x": 2.2804505825042725,
+        "y": 0.009999999776482582,
+        "z": 2.2804505825042725
+      }
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 14.888192254809058,
+        "z": -1.8280404101579784
+      },
+      "scale": {
+        "x": 3.1731884479522705,
+        "y": 0.009999999776482582,
+        "z": 3.1731884479522705
+      }
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 17.86583070577087,
+        "z": -2.193648492189574
+      },
+      "scale": {
+        "x": 4.065925598144531,
+        "y": 0.009999999776482582,
+        "z": 4.065925598144531
+      }
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 20.84346915673268,
+        "z": -2.5592565742211697
+      },
+      "scale": {
+        "x": 4.958663463592529,
+        "y": 0.009999999776482582,
+        "z": 4.958663463592529
+      }
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 23.82110760769449,
+        "z": -2.9248646562527654
+      },
+      "scale": {
+        "x": 5.851400852203369,
+        "y": 0.009999999776482582,
+        "z": 5.851400852203369
+      }
+    }
+  ],
+  "changeAngleHeight": [
+    12.0
+  ]
+}

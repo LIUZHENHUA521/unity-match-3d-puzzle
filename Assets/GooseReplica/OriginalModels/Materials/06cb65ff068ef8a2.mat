@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GrilledCornMa
+  m_Shader: {fileID: 4800000, guid: 513b811901ef94a5a817c0a01f504ae9, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AOTex:
+        m_Texture: {fileID: 2800000, guid: 440cbe4ef2b5646509a7108e90a5b544, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColor:
+        m_Texture: {fileID: 2800000, guid: 07463e5d967e740b78bd36bf6b12e13f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap:
+        m_Texture: {fileID: 2800000, guid: b04d457f6f2684c5bb73e9b5dd97f3d5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 0d7d2f19e531247aca2d68f476199fd1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
+        m_Texture: {fileID: 2800000, guid: a912ecac0ccdb4588a21a025492f6589, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AOScale: 0.153
+    - _BaseCellOffset: 0
+    - _BaseCellSharpness: 1
+    - _CustomInvertLightDir: 1
+    - _FadeColorDirY: 0
+    - _FadeColorOffset: 0
+    - _FadeColorScale: 0
+    - _HighLightOffset: 0
+    - _HighLightPing: 0
+    - _HighLightShadowMask: 0
+    - _HighLightSmooth: 0
+    - _IsSingleColor: 0
+    - _IsUseNormalMap: 0
+    - _IsUseWorldMatcap: 0
+    - _MatcapScale: 0.79
+    - _MetcapShadowMask: 0.77
+    - _NormalScale: 0.8
+    - _OutlinePixels: 1.2
+    - _ReflectScale: 1
+    - _RimLightMul: -1
+    - _RimOffset: 0.28
+    - _RimPower: 1
+    - _RimShadowScale: 0
+    - _RoughnessScale: 1
+    - _SelectionGlow: 0
+    - _SelectionPulse: 1
+    - __dirty: 1
+    - _ground1: 0
+    - _ground2: 0
+    - _ground3: 0
+    - _ground4: 0
+    - _ground5: 0
+    - _ground6: 0
+    - _ground7: 0
+    - _inverseLightOffset: 0
+    - _inverseLightSmooth: 1
+    m_Colors:
+    - _BaseTint: {r: 1, g: 1, b: 1, a: 0}
+    - _CustomInverseDir: {r: 0, g: -1, b: -0.5, a: 0}
+    - _FadeColorB: {r: 1, g: 1, b: 1, a: 1}
+    - _FadeColorF: {r: 1, g: 1, b: 1, a: 1}
+    - _HighLightColor: {r: 0, g: 0, b: 0, a: 0}
+    - _IndirectColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0}
+    - _LightColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 0}
+    - _MatcapColor: {r: 0.18039216, g: 0.15715738, b: 0.13944314, a: 0}
+    - _ReflectOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _RimColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 0}
+    - _ShadowAddColor: {r: 0, g: 0, b: 0, a: 0}
+    - _inverseColor: {r: 0.23584908, g: 0.037997905, b: 0, a: 0}
+  m_BuildTextureStacks: []

@@ -1,0 +1,634 @@
+[
+  {
+    "type": "QualitySettings",
+    "file": "globalgamemanagers",
+    "id": 12,
+    "data": {
+      "m_CurrentQuality": 1,
+      "m_QualitySettings": [
+        {
+          "name": "Very Low",
+          "pixelLightCount": 0,
+          "shadows": 0,
+          "shadowResolution": 0,
+          "shadowProjection": 1,
+          "shadowCascades": 1,
+          "shadowDistance": 15.0,
+          "shadowNearPlaneOffset": 3.0,
+          "shadowCascade2Split": 0.3333333432674408,
+          "shadowCascade4Split": {
+            "x": 0.06666667014360428,
+            "y": 0.20000000298023224,
+            "z": 0.46666666865348816
+          },
+          "shadowmaskMode": 0,
+          "skinWeights": 1,
+          "textureQuality": 1,
+          "anisotropicTextures": 0,
+          "antiAliasing": 0,
+          "softParticles": false,
+          "softVegetation": false,
+          "realtimeReflectionProbes": false,
+          "billboardsFaceCameraPosition": false,
+          "vSyncCount": 0,
+          "lodBias": 0.30000001192092896,
+          "maximumLODLevel": 0,
+          "streamingMipmapsActive": false,
+          "streamingMipmapsAddAllCameras": true,
+          "streamingMipmapsMemoryBudget": 512.0,
+          "streamingMipmapsRenderersPerFrame": 512,
+          "streamingMipmapsMaxLevelReduction": 2,
+          "streamingMipmapsMaxFileIORequests": 1024,
+          "particleRaycastBudget": 4,
+          "asyncUploadTimeSlice": 2,
+          "asyncUploadBufferSize": 16,
+          "asyncUploadPersistentBuffer": true,
+          "resolutionScalingFixedDPIFactor": 1.0,
+          "customRenderPipeline": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        },
+        {
+          "name": "Medium",
+          "pixelLightCount": 1,
+          "shadows": 1,
+          "shadowResolution": 1,
+          "shadowProjection": 1,
+          "shadowCascades": 1,
+          "shadowDistance": 40.0,
+          "shadowNearPlaneOffset": 3.0,
+          "shadowCascade2Split": 0.3333333432674408,
+          "shadowCascade4Split": {
+            "x": 0.06666667014360428,
+            "y": 0.20000000298023224,
+            "z": 0.46666666865348816
+          },
+          "shadowmaskMode": 0,
+          "skinWeights": 2,
+          "textureQuality": 0,
+          "anisotropicTextures": 1,
+          "antiAliasing": 0,
+          "softParticles": false,
+          "softVegetation": false,
+          "realtimeReflectionProbes": false,
+          "billboardsFaceCameraPosition": false,
+          "vSyncCount": 0,
+          "lodBias": 0.699999988079071,
+          "maximumLODLevel": 0,
+          "streamingMipmapsActive": false,
+          "streamingMipmapsAddAllCameras": true,
+          "streamingMipmapsMemoryBudget": 512.0,
+          "streamingMipmapsRenderersPerFrame": 512,
+          "streamingMipmapsMaxLevelReduction": 2,
+          "streamingMipmapsMaxFileIORequests": 1024,
+          "particleRaycastBudget": 64,
+          "asyncUploadTimeSlice": 2,
+          "asyncUploadBufferSize": 16,
+          "asyncUploadPersistentBuffer": true,
+          "resolutionScalingFixedDPIFactor": 1.0,
+          "customRenderPipeline": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      ],
+      "m_StrippedMaximumLODLevel": 0
+    }
+  },
+  {
+    "type": "LightHierarchy",
+    "id": 565,
+    "file": "sharedassets0.assets",
+    "chain": [
+      {
+        "id": 343,
+        "name": "Directional Light",
+        "active": true,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 145
+          },
+          "m_LocalRotation": {
+            "x": -0.07652297616004944,
+            "y": -0.8228871822357178,
+            "z": 0.5578038692474365,
+            "w": 0.07652299106121063
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 3.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 345
+          }
+        }
+      },
+      {
+        "id": 345,
+        "name": "LightAngle",
+        "active": false,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 147
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 343
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 339
+          }
+        }
+      },
+      {
+        "id": 339,
+        "name": "RotaCenter",
+        "active": true,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 141
+          },
+          "m_LocalRotation": {
+            "x": -0.0,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 316
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 345
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 312
+          }
+        }
+      },
+      {
+        "id": 312,
+        "name": "MainScene",
+        "active": true,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 107
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 323
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 395
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 404
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 389
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 317
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 370
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 361
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 612
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 613
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 610
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 393
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 339
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 372
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 378
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 336
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 355
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 338
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 400
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 321
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 386
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 467
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 379
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 358
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 388
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 383
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "LightHierarchy",
+    "id": 566,
+    "file": "sharedassets0.assets",
+    "chain": [
+      {
+        "id": 386,
+        "name": "MainSceneLight",
+        "active": true,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 191
+          },
+          "m_LocalRotation": {
+            "x": 0.5943313241004944,
+            "y": -0.17171302437782288,
+            "z": 0.13176001608371735,
+            "w": 0.7745477557182312
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 3.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 312
+          }
+        }
+      },
+      {
+        "id": 312,
+        "name": "MainScene",
+        "active": true,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 107
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 323
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 395
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 404
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 389
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 317
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 370
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 361
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 612
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 613
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 610
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 393
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 339
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 372
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 378
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 336
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 355
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 338
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 400
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 321
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 386
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 467
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 379
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 358
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 388
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 383
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "LightHierarchy",
+    "id": 56,
+    "file": "level0",
+    "chain": [
+      {
+        "id": 49,
+        "name": "Directional Light",
+        "active": true,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 31
+          },
+          "m_LocalRotation": {
+            "x": -0.07652297616004944,
+            "y": -0.8228871822357178,
+            "z": 0.5578038692474365,
+            "w": 0.07652299106121063
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 3.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 47
+          }
+        }
+      },
+      {
+        "id": 47,
+        "name": "LightAngle",
+        "active": true,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 14
+          },
+          "m_LocalRotation": {
+            "x": -0.0,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 49
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 50
+          }
+        }
+      },
+      {
+        "id": 50,
+        "name": "SceneChange",
+        "active": true,
+        "data": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 32
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 47
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      }
+    ]
+  }
+]

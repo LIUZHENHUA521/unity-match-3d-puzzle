@@ -24,16 +24,19 @@ public class UIManager : Singleton<UIManager>
     #region PopUp
     public void ShowOutOfBoxesPopUp()
     {
+        if (ReplicaFlow.Instance != null) { ReplicaFlow.Instance.HandleResult(false); return; }
         GameManager.Instance.gameStatus = GameManager.GameStatus.FAIL;
         OutOfBoxesPopUp.SetActive(true);
     }
     public void ShowTimeIsUpPopUp()
     {
+        if (ReplicaFlow.Instance != null) { ReplicaFlow.Instance.HandleResult(false); return; }
         GameManager.Instance.gameStatus = GameManager.GameStatus.FAIL;
         TimeIsUpPopUp.SetActive(true);
     }
     public void ShowNextlevelPopUp()
     {
+        if (ReplicaFlow.Instance != null) { ReplicaFlow.Instance.HandleResult(true); return; }
         GameManager.Instance.gameStatus = GameManager.GameStatus.FINISH;
         NextLevelPopUp.SetActive(true);
     }

@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: China BowlMaWhite
+  m_Shader: {fileID: 4800000, guid: abead1325e32045879a241170c7a1e62, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AOTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColor:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap:
+        m_Texture: {fileID: 2800000, guid: bc56ab683b6864d58acd24f0f189946f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AOScale: 1
+    - _BaseCellOffset: 0
+    - _BaseCellSharpness: 1
+    - _CustomInvertLightDir: 0
+    - _FadeColorDirY: 0
+    - _FadeColorOffset: 0
+    - _FadeColorScale: 0
+    - _HighLightOffset: 0
+    - _HighLightPing: 0
+    - _HighLightShadowMask: 0
+    - _HighLightSmooth: 1
+    - _IsSingleColor: 0
+    - _IsUseNormalMap: 0
+    - _IsUseWorldMatcap: 0
+    - _MatcapScale: 0.13
+    - _MetcapShadowMask: 0.81
+    - _NormalScale: 0.18
+    - _ReflectScale: 1
+    - _RimLightMul: -1
+    - _RimOffset: 0.45
+    - _RimPower: 1
+    - _RimShadowScale: 0
+    - _RoughnessScale: 0
+    - __dirty: 1
+    - _ground1: 0
+    - _ground2: 0
+    - _ground3: 0
+    - _ground4: 0
+    - _ground5: 0
+    - _ground6: 0
+    - _ground7: 0
+    - _inverseLightOffset: 0
+    - _inverseLightSmooth: 1
+    m_Colors:
+    - _BaseTint: {r: 0.7176471, g: 0.7372549, b: 0.7137255, a: 1}
+    - _CustomInverseDir: {r: 1, g: 0, b: 0, a: 0}
+    - _FadeColorB: {r: 1, g: 1, b: 1, a: 1}
+    - _FadeColorF: {r: 1, g: 1, b: 1, a: 1}
+    - _HighLightColor: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 0}
+    - _IndirectColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 0}
+    - _LightColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
+    - _MatcapColor: {r: 1, g: 1, b: 1, a: 0}
+    - _ReflectOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _RimColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 0}
+    - _ShadowAddColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SourceLightDirection: {r: 0.2113092, g: 0.90630776, b: 0.3659982, a: 0}
+    - _inverseColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

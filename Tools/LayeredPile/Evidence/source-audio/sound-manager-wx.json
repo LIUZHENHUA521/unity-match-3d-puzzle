@@ -1,0 +1,809 @@
+{
+  "file": "sharedassets0.assets",
+  "id": 746,
+  "values": {
+    "_uiSoundSource": {
+      "file_id": 0,
+      "path_id": 561
+    },
+    "_btnClips": [
+      4,
+      1,
+      5,
+      3,
+      7,
+      2,
+      6
+    ],
+    "_GooseYellClips": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "_commonSoundClips": [
+      25,
+      24,
+      23,
+      35
+    ],
+    "_gooseSoundSource": {
+      "file_id": 0,
+      "path_id": 559
+    },
+    "_effectSoundSource": [
+      {
+        "file_id": 0,
+        "path_id": 562
+      },
+      {
+        "file_id": 0,
+        "path_id": 563
+      },
+      {
+        "file_id": 0,
+        "path_id": 558
+      }
+    ],
+    "_musicSoundSource": {
+      "file_id": 0,
+      "path_id": 560
+    },
+    "_mainSceneBGMVolume": 0.6000000238418579,
+    "_gameSceneBGMVolume": 0.8999999761581421,
+    "_mainSceneMusicDelay": 0.0,
+    "_mainSceneMusicHitTime": 2.640000104904175,
+    "_guideSoundSource": {
+      "file_id": 0,
+      "path_id": 564
+    }
+  },
+  "ranges": [
+    [
+      "_uiSoundSource",
+      [
+        "pptr",
+        "AudioSource"
+      ],
+      32,
+      44
+    ],
+    [
+      "_btnClips",
+      [
+        "list",
+        [
+          "enum",
+          "UISoundType"
+        ]
+      ],
+      44,
+      76
+    ],
+    [
+      "_GooseYellClips",
+      [
+        "list",
+        [
+          "enum",
+          "SoundType"
+        ]
+      ],
+      76,
+      96
+    ],
+    [
+      "_commonSoundClips",
+      [
+        "list",
+        [
+          "enum",
+          "SoundType"
+        ]
+      ],
+      96,
+      116
+    ],
+    [
+      "_gooseSoundSource",
+      [
+        "pptr",
+        "AudioSource"
+      ],
+      116,
+      128
+    ],
+    [
+      "_effectSoundSource",
+      [
+        "list",
+        [
+          "pptr",
+          "AudioSource"
+        ]
+      ],
+      128,
+      168
+    ],
+    [
+      "_musicSoundSource",
+      [
+        "pptr",
+        "AudioSource"
+      ],
+      168,
+      180
+    ],
+    [
+      "_mainSceneBGMVolume",
+      [
+        "simple",
+        "float"
+      ],
+      180,
+      184
+    ],
+    [
+      "_gameSceneBGMVolume",
+      [
+        "simple",
+        "float"
+      ],
+      184,
+      188
+    ],
+    [
+      "_mainSceneMusicDelay",
+      [
+        "simple",
+        "float"
+      ],
+      188,
+      192
+    ],
+    [
+      "_mainSceneMusicHitTime",
+      [
+        "simple",
+        "float"
+      ],
+      192,
+      196
+    ],
+    [
+      "_guideSoundSource",
+      [
+        "pptr",
+        "AudioSource"
+      ],
+      196,
+      208
+    ]
+  ],
+  "sources": {
+    "561": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 151
+      },
+      "m_Enabled": 1,
+      "OutputAudioMixerGroup": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_audioClip": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_PlayOnAwake": false,
+      "m_Volume": 1.0,
+      "m_Pitch": 1.0,
+      "Loop": false,
+      "Mute": false,
+      "Spatialize": false,
+      "SpatializePostEffects": false,
+      "Priority": 128,
+      "DopplerLevel": 1.0,
+      "MinDistance": 1.0,
+      "MaxDistance": 500.0,
+      "Pan2D": 0.0,
+      "rolloffMode": 0,
+      "BypassEffects": false,
+      "BypassListenerEffects": false,
+      "BypassReverbZones": false,
+      "rolloffCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "panLevelCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "spreadCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "reverbZoneMixCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      }
+    },
+    "559": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 144
+      },
+      "m_Enabled": 1,
+      "OutputAudioMixerGroup": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_audioClip": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_PlayOnAwake": false,
+      "m_Volume": 0.4000000059604645,
+      "m_Pitch": 1.0,
+      "Loop": false,
+      "Mute": false,
+      "Spatialize": false,
+      "SpatializePostEffects": false,
+      "Priority": 128,
+      "DopplerLevel": 1.0,
+      "MinDistance": 1.0,
+      "MaxDistance": 500.0,
+      "Pan2D": 0.0,
+      "rolloffMode": 1,
+      "BypassEffects": false,
+      "BypassListenerEffects": false,
+      "BypassReverbZones": false,
+      "rolloffCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "panLevelCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "spreadCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "reverbZoneMixCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      }
+    },
+    "562": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 165
+      },
+      "m_Enabled": 1,
+      "OutputAudioMixerGroup": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_audioClip": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_PlayOnAwake": false,
+      "m_Volume": 1.0,
+      "m_Pitch": 1.0,
+      "Loop": false,
+      "Mute": false,
+      "Spatialize": false,
+      "SpatializePostEffects": false,
+      "Priority": 128,
+      "DopplerLevel": 1.0,
+      "MinDistance": 1.0,
+      "MaxDistance": 500.0,
+      "Pan2D": 0.0,
+      "rolloffMode": 1,
+      "BypassEffects": false,
+      "BypassListenerEffects": false,
+      "BypassReverbZones": false,
+      "rolloffCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "panLevelCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "spreadCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "reverbZoneMixCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      }
+    },
+    "563": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 203
+      },
+      "m_Enabled": 1,
+      "OutputAudioMixerGroup": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_audioClip": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_PlayOnAwake": false,
+      "m_Volume": 1.0,
+      "m_Pitch": 1.149999976158142,
+      "Loop": false,
+      "Mute": false,
+      "Spatialize": false,
+      "SpatializePostEffects": false,
+      "Priority": 128,
+      "DopplerLevel": 1.0,
+      "MinDistance": 1.0,
+      "MaxDistance": 500.0,
+      "Pan2D": 0.0,
+      "rolloffMode": 1,
+      "BypassEffects": false,
+      "BypassListenerEffects": false,
+      "BypassReverbZones": false,
+      "rolloffCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "panLevelCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "spreadCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "reverbZoneMixCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      }
+    },
+    "558": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 143
+      },
+      "m_Enabled": 1,
+      "OutputAudioMixerGroup": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_audioClip": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_PlayOnAwake": false,
+      "m_Volume": 1.0,
+      "m_Pitch": 1.2999999523162842,
+      "Loop": false,
+      "Mute": false,
+      "Spatialize": false,
+      "SpatializePostEffects": false,
+      "Priority": 128,
+      "DopplerLevel": 1.0,
+      "MinDistance": 1.0,
+      "MaxDistance": 500.0,
+      "Pan2D": 0.0,
+      "rolloffMode": 1,
+      "BypassEffects": false,
+      "BypassListenerEffects": false,
+      "BypassReverbZones": false,
+      "rolloffCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "panLevelCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "spreadCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "reverbZoneMixCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      }
+    },
+    "560": {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 146
+      },
+      "m_Enabled": 1,
+      "OutputAudioMixerGroup": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_audioClip": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "m_PlayOnAwake": true,
+      "m_Volume": 0.6000000238418579,
+      "m_Pitch": 1.0,
+      "Loop": true,
+      "Mute": false,
+      "Spatialize": false,
+      "SpatializePostEffects": false,
+      "Priority": 128,
+      "DopplerLevel": 1.0,
+      "MinDistance": 1.0,
+      "MaxDistance": 500.0,
+      "Pan2D": 0.0,
+      "rolloffMode": 0,
+      "BypassEffects": false,
+      "BypassListenerEffects": false,
+      "BypassReverbZones": false,
+      "rolloffCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "panLevelCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "spreadCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "reverbZoneMixCustomCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 1.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      }
+    }
+  }
+}

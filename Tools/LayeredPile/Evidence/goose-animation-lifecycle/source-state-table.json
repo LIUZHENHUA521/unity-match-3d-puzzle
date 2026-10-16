@@ -1,0 +1,58 @@
+{
+  "field": {
+    "class": "ObjectUnit",
+    "name": "notBeCatch",
+    "offset": 16
+  },
+  "writes": [
+    {
+      "method": "Init",
+      "j": 19263,
+      "value": true
+    },
+    {
+      "method": "BeClick",
+      "j": 12985,
+      "value": false
+    },
+    {
+      "method": "StoreObj",
+      "j": 19259,
+      "value": true
+    },
+    {
+      "method": "ThrowAnim.MoveNext",
+      "j": 64881,
+      "value": true,
+      "afterWaitSeconds": 0.3
+    }
+  ],
+  "reads": [
+    {
+      "method": "CanBeSelect",
+      "j": 80063,
+      "condition": "notBeCatch && !isHiding && _isFinishCreate"
+    },
+    {
+      "method": "RandomAnim.MoveNext",
+      "j": 65003,
+      "true": {
+        "waitMin": 5,
+        "waitMax": 15,
+        "animType": 3,
+        "clips": [
+          "Level_InBox1",
+          "Level_InBox2"
+        ]
+      },
+      "false": {
+        "waitMin": 1,
+        "waitMax": 5,
+        "animType": 4,
+        "clips": [
+          "Level_Outside"
+        ]
+      }
+    }
+  ]
+}

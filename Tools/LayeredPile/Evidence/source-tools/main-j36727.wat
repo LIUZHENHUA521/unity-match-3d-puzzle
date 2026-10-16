@@ -1,0 +1,31 @@
+  (func $j36727 (type 31) (param i32 i32 i32 f32 i32)
+    local.get 0
+    i32.load offset=24
+    i32.const 0
+    i32.const 0
+    call $j907
+    local.get 0
+    i32.load offset=28
+    i32.const 0
+    i32.const 0
+    call $j907
+    local.get 0
+    local.get 1
+    i32.store offset=132
+    local.get 0
+    local.get 2
+    i32.load offset=8
+    i32.store offset=144
+    local.get 2
+    i32.load offset=4
+    local.set 1
+    local.get 0
+    local.get 2
+    i32.load
+    i32.store offset=136
+    local.get 0
+    local.get 1
+    i32.store offset=140
+    local.get 0
+    local.get 3
+    f32.store offset=148)

@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BarbecueNetMa
+  m_Shader: {fileID: 4800000, guid: d75a34fee6464431992d6113b9fa8d8b, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AOTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColor:
+        m_Texture: {fileID: 2800000, guid: dd30dc8f3afc34268815a4d6fcbbd5c9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap:
+        m_Texture: {fileID: 2800000, guid: 03228540a769342e092964e5d977743c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AOScale: 1
+    - _BaseCellOffset: 0
+    - _BaseCellSharpness: 0.01
+    - _HighLightOffset: 0
+    - _HighLightPing: 0
+    - _HighLightShadowMask: 0
+    - _HighLightSmooth: 0
+    - _IsSingleColor: 0
+    - _IsUseWorldMatcap: 0
+    - _MatcapScale: 1.06
+    - _MetcapShadowMask: 0
+    - _NormalScale: 1
+    - _ReflectScale: 1
+    - _RoughnessScale: 0
+    - __dirty: 1
+    - _ground1: 0
+    - _ground2: 0
+    - _ground6: 0
+    - _ground7: 0
+    m_Colors:
+    - _BaseTint: {r: 0.3301887, g: 0.3301887, b: 0.3301887, a: 1}
+    - _HighLightColor: {r: 0.01886791, g: 0.01886791, b: 0.01886791, a: 0}
+    - _IndirectColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 0}
+    - _LightColor: {r: 1, g: 1, b: 1, a: 0}
+    - _MatcapColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
+    - _ReflectOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _ShadowAddColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SourceLightDirection: {r: 0.2113092, g: 0.90630776, b: 0.3659982, a: 0}
+  m_BuildTextureStacks: []

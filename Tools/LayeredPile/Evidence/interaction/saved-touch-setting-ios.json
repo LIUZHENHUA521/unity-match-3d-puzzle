@@ -1,0 +1,788 @@
+{
+  "artifact": "Payload/goose.app/Data/sharedassets0.assets",
+  "object_path_id": 892,
+  "script": "LevelManager",
+  "game_object_path_id": 216,
+  "unity_version": "2021.3.14f1",
+  "object_size": 2832,
+  "asset_file_offset": 2073704,
+  "object_sha256": "b8c155bed1c110d1d66c86e3f504c3afb5a77537fdc86b0e7415af374e3456ce",
+  "unity_serialized_fields_offset": 2184,
+  "parsed_fields": 84,
+  "full_consumption_verified": true,
+  "source": "original serialized component; values are saved scene settings, not runtime measurements",
+  "schema_source": "IL2CPP field types, field attributes and custom SerializeField attributes; Sirenix.Odin SerializationData prefix layout",
+  "values": {
+    "_isMoveTouchChangeObj": true
+  },
+  "field_ranges_in_object": [
+    {
+      "name": "_rigidDepth",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2184,
+      "end": 2188
+    },
+    {
+      "name": "objectPickOffset",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2188,
+      "end": 2192
+    },
+    {
+      "name": "objectPickAnimTime",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2192,
+      "end": 2196
+    },
+    {
+      "name": "_isMoveTouchChangeObj",
+      "descriptor": [
+        "simple",
+        "bool"
+      ],
+      "start": 2196,
+      "end": 2200
+    },
+    {
+      "name": "_highLight",
+      "descriptor": [
+        "list",
+        [
+          "pptr",
+          "HighlightEffect"
+        ]
+      ],
+      "start": 2200,
+      "end": 2228
+    },
+    {
+      "name": "_levelToolMa",
+      "descriptor": [
+        "pptr",
+        "LevelToolMa"
+      ],
+      "start": 2228,
+      "end": 2240
+    },
+    {
+      "name": "_rotaTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2240,
+      "end": 2252
+    },
+    {
+      "name": "boxTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2252,
+      "end": 2264
+    },
+    {
+      "name": "_mainContentTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2264,
+      "end": 2276
+    },
+    {
+      "name": "_levelBGTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2276,
+      "end": 2288
+    },
+    {
+      "name": "_contentSizeTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2288,
+      "end": 2300
+    },
+    {
+      "name": "_mainLevelCameras",
+      "descriptor": [
+        "pptr",
+        "Camera"
+      ],
+      "start": 2300,
+      "end": 2312
+    },
+    {
+      "name": "_p1ContentTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2312,
+      "end": 2324
+    },
+    {
+      "name": "_p2ContentTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2324,
+      "end": 2336
+    },
+    {
+      "name": "_p2boxTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2336,
+      "end": 2348
+    },
+    {
+      "name": "_p1p2LevelBGTrans",
+      "descriptor": [
+        "list",
+        [
+          "pptr",
+          "Transform"
+        ]
+      ],
+      "start": 2348,
+      "end": 2376
+    },
+    {
+      "name": "_p1p2Cameras",
+      "descriptor": [
+        "list",
+        [
+          "pptr",
+          "Camera"
+        ]
+      ],
+      "start": 2376,
+      "end": 2404
+    },
+    {
+      "name": "_cameraTopTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2404,
+      "end": 2416
+    },
+    {
+      "name": "_cameraLimitZ",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2416,
+      "end": 2420
+    },
+    {
+      "name": "_visibleMinHeight",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2420,
+      "end": 2424
+    },
+    {
+      "name": "_visibleMaxHeight",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2424,
+      "end": 2428
+    },
+    {
+      "name": "_minVisibleY",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2428,
+      "end": 2432
+    },
+    {
+      "name": "_lastLevelText",
+      "descriptor": [
+        "simple",
+        "string"
+      ],
+      "start": 2432,
+      "end": 2456
+    },
+    {
+      "name": "submitServerType",
+      "descriptor": [
+        "enum",
+        "SubToServerID"
+      ],
+      "start": 2456,
+      "end": 2460
+    },
+    {
+      "name": "submitID",
+      "descriptor": [
+        "simple",
+        "string"
+      ],
+      "start": 2460,
+      "end": 2508
+    },
+    {
+      "name": "_submitTime",
+      "descriptor": [
+        "simple",
+        "int"
+      ],
+      "start": 2508,
+      "end": 2512
+    },
+    {
+      "name": "_sendSubmitTime",
+      "descriptor": [
+        "simple",
+        "int"
+      ],
+      "start": 2512,
+      "end": 2516
+    },
+    {
+      "name": "_newYearHardCount",
+      "descriptor": [
+        "simple",
+        "int"
+      ],
+      "start": 2516,
+      "end": 2520
+    },
+    {
+      "name": "toolAnimConfig",
+      "descriptor": [
+        "pptr",
+        "LevelToolConfig"
+      ],
+      "start": 2520,
+      "end": 2532
+    },
+    {
+      "name": "_maxOnceTouchHeight",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2532,
+      "end": 2536
+    },
+    {
+      "name": "_level2CreateCompeletTime",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2536,
+      "end": 2540
+    },
+    {
+      "name": "_maxCreateInterval",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2540,
+      "end": 2544
+    },
+    {
+      "name": "_frameMaxCreateCount",
+      "descriptor": [
+        "simple",
+        "int"
+      ],
+      "start": 2544,
+      "end": 2548
+    },
+    {
+      "name": "_createGrowSpeed",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2548,
+      "end": 2552
+    },
+    {
+      "name": "_physicCreateTime",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2552,
+      "end": 2556
+    },
+    {
+      "name": "_physicMaxCreateInterval",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2556,
+      "end": 2560
+    },
+    {
+      "name": "_physicFrameCreateCount",
+      "descriptor": [
+        "simple",
+        "int"
+      ],
+      "start": 2560,
+      "end": 2564
+    },
+    {
+      "name": "_physicCreateGrowSpeed",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2564,
+      "end": 2568
+    },
+    {
+      "name": "_isUseRealPhysicSpace",
+      "descriptor": [
+        "simple",
+        "bool"
+      ],
+      "start": 2568,
+      "end": 2572
+    },
+    {
+      "name": "_maxPhysicObjCount",
+      "descriptor": [
+        "simple",
+        "int"
+      ],
+      "start": 2572,
+      "end": 2576
+    },
+    {
+      "name": "_physicOverlapSpeed",
+      "descriptor": [
+        "vector",
+        "Vector2"
+      ],
+      "start": 2576,
+      "end": 2584
+    },
+    {
+      "name": "_gravitySpeed",
+      "descriptor": [
+        "vector",
+        "Vector2"
+      ],
+      "start": 2584,
+      "end": 2592
+    },
+    {
+      "name": "_layerMinDistance",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2592,
+      "end": 2596
+    },
+    {
+      "name": "_pickAnimTime",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2596,
+      "end": 2600
+    },
+    {
+      "name": "_pickMoveXZCurve",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2600,
+      "end": 2604
+    },
+    {
+      "name": "_pickMoveYCurve",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2604,
+      "end": 2608
+    },
+    {
+      "name": "_pickRotaCurve",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2608,
+      "end": 2612
+    },
+    {
+      "name": "UseTwoScaleCurve",
+      "descriptor": [
+        "simple",
+        "bool"
+      ],
+      "start": 2612,
+      "end": 2616
+    },
+    {
+      "name": "_pickScaleCurve1",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2616,
+      "end": 2620
+    },
+    {
+      "name": "_pickScaleCurve2",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2620,
+      "end": 2624
+    },
+    {
+      "name": "_pickScaleMaxTime",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2624,
+      "end": 2628
+    },
+    {
+      "name": "_pickMaxScale",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2628,
+      "end": 2632
+    },
+    {
+      "name": "_pickEndPunchScale",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2632,
+      "end": 2636
+    },
+    {
+      "name": "_pickEndPunchTime",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2636,
+      "end": 2640
+    },
+    {
+      "name": "_newAnimManager",
+      "descriptor": [
+        "pptr",
+        "LevelObjAnimManager"
+      ],
+      "start": 2640,
+      "end": 2652
+    },
+    {
+      "name": "_storeObjectTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2652,
+      "end": 2664
+    },
+    {
+      "name": "_storeObjPosYOffset",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2664,
+      "end": 2668
+    },
+    {
+      "name": "_storeObjIndexOffset",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2668,
+      "end": 2672
+    },
+    {
+      "name": "_storeContentTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2672,
+      "end": 2684
+    },
+    {
+      "name": "_storeContentHideZ",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2684,
+      "end": 2688
+    },
+    {
+      "name": "_storeContentShowZ",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2688,
+      "end": 2692
+    },
+    {
+      "name": "_toolHighlights",
+      "descriptor": [
+        "list",
+        [
+          "pptr",
+          "HighlightEffect"
+        ]
+      ],
+      "start": 2692,
+      "end": 2720
+    },
+    {
+      "name": "_throwMoveXCurve",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2720,
+      "end": 2724
+    },
+    {
+      "name": "_throwMoveZCurve",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2724,
+      "end": 2728
+    },
+    {
+      "name": "_throwMoveYCurve",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2728,
+      "end": 2732
+    },
+    {
+      "name": "_throwScaleCurve1",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2732,
+      "end": 2736
+    },
+    {
+      "name": "_throwScaleCurve2",
+      "descriptor": [
+        "enum",
+        "Ease"
+      ],
+      "start": 2736,
+      "end": 2740
+    },
+    {
+      "name": "_throwMaxScale",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2740,
+      "end": 2744
+    },
+    {
+      "name": "_storeAnimTime",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2744,
+      "end": 2748
+    },
+    {
+      "name": "_baceForce",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2748,
+      "end": 2752
+    },
+    {
+      "name": "_heighForce",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2752,
+      "end": 2756
+    },
+    {
+      "name": "_messHeight",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2756,
+      "end": 2760
+    },
+    {
+      "name": "_shakeOnceDepth",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2760,
+      "end": 2764
+    },
+    {
+      "name": "_shakeMaxDepthCount",
+      "descriptor": [
+        "simple",
+        "int"
+      ],
+      "start": 2764,
+      "end": 2768
+    },
+    {
+      "name": "_messObjPosHeight",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2768,
+      "end": 2772
+    },
+    {
+      "name": "_messRotaTime",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2772,
+      "end": 2776
+    },
+    {
+      "name": "_messRotaSpeed",
+      "descriptor": [
+        "vector",
+        "Vector2"
+      ],
+      "start": 2776,
+      "end": 2784
+    },
+    {
+      "name": "_messRotaDisSpeedMul",
+      "descriptor": [
+        "vector",
+        "Vector2"
+      ],
+      "start": 2784,
+      "end": 2792
+    },
+    {
+      "name": "_sharePowerToForce",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2792,
+      "end": 2796
+    },
+    {
+      "name": "_sharePowerToForceInIos",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2796,
+      "end": 2800
+    },
+    {
+      "name": "_guideHighlight",
+      "descriptor": [
+        "pptr",
+        "HighlightEffect"
+      ],
+      "start": 2800,
+      "end": 2812
+    },
+    {
+      "name": "_winWord2Time",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2812,
+      "end": 2816
+    },
+    {
+      "name": "_playGuideMusicScale",
+      "descriptor": [
+        "simple",
+        "float"
+      ],
+      "start": 2816,
+      "end": 2820
+    },
+    {
+      "name": "_mainCameraCenterTrans",
+      "descriptor": [
+        "pptr",
+        "Transform"
+      ],
+      "start": 2820,
+      "end": 2832
+    }
+  ]
+}

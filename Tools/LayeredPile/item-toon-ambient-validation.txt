@@ -1,0 +1,22 @@
+PASS source visual/theme 0; source camera pose; rendered pile and empty scene.
+PASS source visual/theme 1; source camera pose; rendered pile and empty scene.
+PASS source visual/theme 2; source camera pose; rendered pile and empty scene.
+PASS source item materials: 102 shaders/queues; 3053 declared numeric parameters, 1099 vectors, 612 texture slots/ST; 2264 undeclared legacy saved fields excluded.
+PASS 213 texture import settings (packed RGBA retained); 85 meshes / 47352 original tangents; 71 prefabs / 90 renderer material/mesh mappings.
+PASS rendered all 71 source prefabs, including transparent/special shaders; no shader errors; selection changed 136160 pixels and clearing left 0 changed pixels. Contact sheet is a diagnostic layout, not a source-device screenshot.
+PASS source environment: level0 RenderSettings 55 matches Flat=3, HDR sky 1.4148108, equator/ground/intensity/subtractive, null skybox/custom reflection, reflection mode/resolution/bounces/intensity, fog; repeated Begin/End and OnDestroy restore nondefault environment, reflection objects and 27 SH coefficients. No claim about original-device pixels or runtime GI/probe generation.PASS theme 0: lowered all 300 bodies by 8 units; 12 visibility checks; default camera position, rotation and zoom unchanged; no inferred follow-height tween.
+PASS theme 1: lowered all 300 bodies by 8 units; 12 visibility checks; default camera position, rotation and zoom unchanged; no inferred follow-height tween.
+PASS theme 2: lowered all 300 bodies by 8 units; 12 visibility checks; default camera position, rotation and zoom unchanged; no inferred follow-height tween.
+PASS source shadow flags 39 environment renderers; 90 item renderers; 6 shaders; saved light/quality and restore; shadow-on/off changed 247 pixels; receiver off removes >=95% (isolated render probe).PASS CountrysideStove: 67 source transforms; 28 shared visual/collision ancestors; supported materials; 9:16, 9:19.5 and 3:4 projection; home cleanup.
+PASS GroceryStore: 21 source transforms; 3 shared visual/collision ancestors; supported materials; 9:16, 9:19.5 and 3:4 projection; home cleanup.
+PASS Barbecue: 32 source transforms; 3 shared visual/collision ancestors; supported materials; 9:16, 9:19.5 and 3:4 projection; home cleanup.
+PASS three distinct source environments; source gravity/mass/drag/solver-related settings; discrete collision; contact offsets; measured free-fall acceleration; global settings restored after every theme.
+Theme 0: 3-second simulation, in-bounds population 300, selectable grid points 117.
+Theme 1: 3-second simulation, in-bounds population 300, selectable grid points 186.
+Theme 2: 3-second simulation, in-bounds population 300, selectable grid points 190.
+PASS 10,000 weighted rectangular coordinates; floor borders/world centres; all three themes retain 300 items; source picking/body layers and materials; source pivots; reversible visibility; hidden growth continues; one-time growth.
+PASS exact zero; .75s growth; OutQuad quarter/midpoint; 1s scaled check; pause; no catch-up burst; 300 objects retained.
+PASS hidden depth gating; transform/collider growth; exposed band activation; 300 objects retained.
+Editor 12 ticks: manager mean=0.000 ms; Physics.Simulate mean=0.308 ms. Not device FPS.
+PASS 24 dynamic bodies; no 2-second freeze; no manager position clamp.
+PASS press glow; solid kinematic lift; neighbour wake; cancel restore; collection cleanup; immediate tray travel; 300ms arrival; no residual lift; home cleanup

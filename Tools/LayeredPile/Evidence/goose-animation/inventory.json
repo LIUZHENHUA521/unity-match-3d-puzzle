@@ -1,0 +1,187 @@
+{
+  "source": "goose-1.11.03.ipa anim_assets bundles",
+  "models": [
+    {
+      "model": "Goose_Farmer",
+      "group": "Countryside",
+      "path": "Goose_Farmer/Goose/e"
+    },
+    {
+      "model": "Goose_SteelCup",
+      "group": "Countryside",
+      "path": "Goose_SteelCup/Goose/e"
+    },
+    {
+      "model": "Goose_Watermelon",
+      "group": "Countryside",
+      "path": "Goose_Watermelon/Goose/e"
+    },
+    {
+      "model": "Goose_Pancake",
+      "group": "Barbecue",
+      "path": "Goose_Pancake/e"
+    },
+    {
+      "model": "Goose_Tomato",
+      "group": "Countryside",
+      "path": "Goose_Tomato/Goose/e"
+    },
+    {
+      "model": "Goose_ChiliSauce",
+      "group": "GroceryStore",
+      "path": "Goose_ChiliSauce/Goose/e"
+    },
+    {
+      "model": "Goose_Eggplant",
+      "group": "Barbecue",
+      "path": "Goose_Eggplant/e"
+    },
+    {
+      "model": "Goose_GreenPepper",
+      "group": "Barbecue",
+      "path": "Goose_GreenPepper/e"
+    },
+    {
+      "model": "Goose_Potato",
+      "group": "Barbecue",
+      "path": "Goose_Potato/e"
+    },
+    {
+      "model": "Goose_ColaCup",
+      "group": "GroceryStore",
+      "path": "Goose_ColaCup/Goose/e"
+    },
+    {
+      "model": "Goose_Egg",
+      "group": "GroceryStore",
+      "path": "Goose_Egg/Goose/e"
+    },
+    {
+      "model": "Goose_Noodles",
+      "group": "GroceryStore",
+      "path": "Goose_Noodles/Goose/e"
+    }
+  ],
+  "clips": [
+    {
+      "name": "Level_InBox1",
+      "sourceFile": "CAB-9e4f5160c183b2bfe645050027e1a2fe",
+      "pathID": "-4480826189940213111",
+      "rawSha256": "aaf3a89a2c0959cdd8d619e693d1ed07c52059491535221814d3d35a6e203408",
+      "length": 1.3333333730697632,
+      "loop": false,
+      "streamed": 69,
+      "dense": 0,
+      "constant": 78,
+      "curveCount": 147,
+      "keyCount": 1052,
+      "maxHermiteError": 3.136392834335311e-08,
+      "events": 0
+    },
+    {
+      "name": "MainScene_Yell",
+      "sourceFile": "CAB-9e4f5160c183b2bfe645050027e1a2fe",
+      "pathID": "-1377797094588046964",
+      "rawSha256": "3558ca7e6e863bca89a7dd9a9f4e5dd780f71694e67036a785205f8aab75be50",
+      "length": 2.4000000953674316,
+      "loop": false,
+      "streamed": 73,
+      "dense": 0,
+      "constant": 74,
+      "curveCount": 147,
+      "keyCount": 1165,
+      "maxHermiteError": 3.952141564012024e-08,
+      "events": 0
+    },
+    {
+      "name": "MainScene_Dance",
+      "sourceFile": "CAB-9e4f5160c183b2bfe645050027e1a2fe",
+      "pathID": "-441143561319961387",
+      "rawSha256": "79d723ee07eb91b02cf8971e65073dc7ab511a90ea6a7a9fa62ebf5ecbe0d70b",
+      "length": 10.40000057220459,
+      "loop": false,
+      "streamed": 75,
+      "dense": 0,
+      "constant": 72,
+      "curveCount": 147,
+      "keyCount": 11502,
+      "maxHermiteError": 1.3984334090721973e-07,
+      "events": 0
+    },
+    {
+      "name": "Settlement_Struggle",
+      "sourceFile": "CAB-9e4f5160c183b2bfe645050027e1a2fe",
+      "pathID": "-386161531436367949",
+      "rawSha256": "007a9b7752ba9f716174f7a9670c5638ea9361f90f16d328c6fb87ab620b5850",
+      "length": 0.3333333432674408,
+      "loop": true,
+      "streamed": 75,
+      "dense": 0,
+      "constant": 72,
+      "curveCount": 147,
+      "keyCount": 932,
+      "maxHermiteError": 7.435189366619688e-08,
+      "events": 0
+    },
+    {
+      "name": "Level_Idle",
+      "sourceFile": "CAB-9e4f5160c183b2bfe645050027e1a2fe",
+      "pathID": "2718423375860472726",
+      "rawSha256": "74baef006192356f6788d91beb7745c5170fd63ac853cb544a6a4631c8792c0a",
+      "length": 1.3333333730697632,
+      "loop": true,
+      "streamed": 69,
+      "dense": 0,
+      "constant": 78,
+      "curveCount": 147,
+      "keyCount": 431,
+      "maxHermiteError": 1.2238117873264454e-08,
+      "events": 0
+    },
+    {
+      "name": "Level_InBox2",
+      "sourceFile": "CAB-9e4f5160c183b2bfe645050027e1a2fe",
+      "pathID": "3323732899651724699",
+      "rawSha256": "48c173d5f87a046bd398badc70ed5d64e6b0b50a64479008eb22d8d225fa576b",
+      "length": 1.3333333730697632,
+      "loop": false,
+      "streamed": 73,
+      "dense": 0,
+      "constant": 74,
+      "curveCount": 147,
+      "keyCount": 579,
+      "maxHermiteError": 5.572874661741167e-08,
+      "events": 0
+    },
+    {
+      "name": "Level_Outside",
+      "sourceFile": "CAB-9e4f5160c183b2bfe645050027e1a2fe",
+      "pathID": "4175329430619727025",
+      "rawSha256": "5e3473dbb96d45728165aad17a2031ea522a60810b7c5d8b7b88712b8a4fd98f",
+      "length": 1.3333333730697632,
+      "loop": true,
+      "streamed": 69,
+      "dense": 0,
+      "constant": 78,
+      "curveCount": 147,
+      "keyCount": 2376,
+      "maxHermiteError": 5.8211348491488124e-08,
+      "events": 0
+    },
+    {
+      "name": "MainScene_Idle",
+      "sourceFile": "CAB-ae788e88e60412d2ee0fcf84f20af4d8",
+      "pathID": "-1867088777925146437",
+      "rawSha256": "5bc3b61a87cd6056edfbb5c4c6c5e41a9fd113c74613a70b0ac71001db21db17",
+      "length": 4.800000190734863,
+      "loop": true,
+      "streamed": 69,
+      "dense": 0,
+      "constant": 78,
+      "curveCount": 147,
+      "keyCount": 1877,
+      "maxHermiteError": 1.0348739231530457e-07,
+      "events": 0
+    }
+  ]
+}

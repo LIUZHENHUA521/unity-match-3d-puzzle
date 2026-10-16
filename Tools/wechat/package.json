@@ -1,0 +1,15 @@
+{
+  "name": "goose-wechat-release",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "check": "node upload.cjs --check",
+    "upload": "node upload.cjs",
+    "preview": "node upload.cjs --preview",
+    "build": "python3 build.py",
+    "test": "node test-transport.cjs"
+  },
+  "dependencies": {
+    "miniprogram-ci": "1.9.17"
+  }
+}

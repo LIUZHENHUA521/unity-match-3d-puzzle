@@ -6,6 +6,7 @@ public class GameManager : Singleton<GameManager>
 {
     public enum GameStatus
     {
+        PREPARING,
         PLAY,
         FAIL,
         FINISH
@@ -20,10 +21,13 @@ public class GameManager : Singleton<GameManager>
     }
     private void DecreaseTimer()
     {
-        if (GameIsPlaying() && !BoosterManager.Instance.timeFreezed)
+        // MainLevel tutorial rows carry limittime=[0], which means the source
+        // game has no countdown for that stage. Keep zero as an inactive timer
+        // instead of immediately showing the time-up popup every frame.
+        if (GameIsPlaying() && currentLevelTime > 0 && !ReplicaSourceTools.Shuffling && !BoosterManager.Instance.timeFreezed)
         {
             currentLevelTime -= Time.deltaTime;
-            TimeSpan duration = TimeSpan.FromSeconds(currentLevelTime);
+            TimeSpan duration = TimeSpan.FromSeconds(Mathf.Max(0, currentLevelTime));
             UIManager.Instance.SetTimerText(duration);
             if (currentLevelTime <= 0)
             {
@@ -33,7 +37,8 @@ public class GameManager : Singleton<GameManager>
     }
     private void CheckIfGameEnd()
     {
-        if (LevelGenerator.Instance.objectsOnScene.Count == 0)
+        if (GameIsPlaying() && LevelGenerator.Instance.objectsOnScene.Count == 0 &&
+            (!InputController.Instance || InputController.Instance.CanEvaluateWin))
         {
             UIManager.Instance.ShowNextlevelPopUp();
         }

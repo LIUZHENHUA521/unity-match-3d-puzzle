@@ -1,0 +1,153 @@
+{
+  "proof": "Unique byte-exact 72-byte contiguous _throwMoveXCurve through _messRotaDisSpeedMul block; neighboring fields verified same shifted offsets. Numeric values recovered against independently decoded iOS field schema; WX typetree unavailable.",
+  "blockOffsetWX": 1696,
+  "blockOffsetIOS": 2720,
+  "rows": [
+    {
+      "name": "_storeObjPosYOffset",
+      "iosOffset": 2664,
+      "wxOffset": 1640,
+      "byteEqual": true,
+      "values": [
+        0.75
+      ]
+    },
+    {
+      "name": "_storeObjIndexOffset",
+      "iosOffset": 2668,
+      "wxOffset": 1644,
+      "byteEqual": true,
+      "values": [
+        0.10000000149011612
+      ]
+    },
+    {
+      "name": "_storeContentHideZ",
+      "iosOffset": 2684,
+      "wxOffset": 1660,
+      "byteEqual": true,
+      "values": [
+        -3.0
+      ]
+    },
+    {
+      "name": "_storeContentShowZ",
+      "iosOffset": 2688,
+      "wxOffset": 1664,
+      "byteEqual": true,
+      "values": [
+        1.440000057220459
+      ]
+    },
+    {
+      "name": "_throwMoveXCurve",
+      "iosOffset": 2720,
+      "wxOffset": 1696,
+      "byteEqual": true,
+      "values": [
+        3
+      ]
+    },
+    {
+      "name": "_throwMoveZCurve",
+      "iosOffset": 2724,
+      "wxOffset": 1700,
+      "byteEqual": true,
+      "values": [
+        27
+      ]
+    },
+    {
+      "name": "_throwMoveYCurve",
+      "iosOffset": 2728,
+      "wxOffset": 1704,
+      "byteEqual": true,
+      "values": [
+        26
+      ]
+    },
+    {
+      "name": "_throwScaleCurve1",
+      "iosOffset": 2732,
+      "wxOffset": 1708,
+      "byteEqual": true,
+      "values": [
+        6
+      ]
+    },
+    {
+      "name": "_throwScaleCurve2",
+      "iosOffset": 2736,
+      "wxOffset": 1712,
+      "byteEqual": true,
+      "values": [
+        2
+      ]
+    },
+    {
+      "name": "_throwMaxScale",
+      "iosOffset": 2740,
+      "wxOffset": 1716,
+      "byteEqual": true,
+      "values": [
+        1.399999976158142
+      ]
+    },
+    {
+      "name": "_storeAnimTime",
+      "iosOffset": 2744,
+      "wxOffset": 1720,
+      "byteEqual": true,
+      "values": [
+        0.30000001192092896
+      ]
+    },
+    {
+      "name": "_messHeight",
+      "iosOffset": 2756,
+      "wxOffset": 1732,
+      "byteEqual": true,
+      "values": [
+        4.0
+      ]
+    },
+    {
+      "name": "_messObjPosHeight",
+      "iosOffset": 2768,
+      "wxOffset": 1744,
+      "byteEqual": true,
+      "values": [
+        7.0
+      ]
+    },
+    {
+      "name": "_messRotaTime",
+      "iosOffset": 2772,
+      "wxOffset": 1748,
+      "byteEqual": true,
+      "values": [
+        1.0
+      ]
+    },
+    {
+      "name": "_messRotaSpeed",
+      "iosOffset": 2776,
+      "wxOffset": 1752,
+      "byteEqual": true,
+      "values": [
+        540.0,
+        720.0
+      ]
+    },
+    {
+      "name": "_messRotaDisSpeedMul",
+      "iosOffset": 2784,
+      "wxOffset": 1760,
+      "byteEqual": true,
+      "values": [
+        1.2000000476837158,
+        0.15000000596046448
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1294 @@
+{
+  "DOTween": [
+    {
+      "name": "Version",
+      "offset": 0
+    },
+    {
+      "name": "useSafeMode",
+      "offset": 4
+    },
+    {
+      "name": "nestedTweenFailureBehaviour",
+      "offset": 8
+    },
+    {
+      "name": "showUnityEditorReport",
+      "offset": 12
+    },
+    {
+      "name": "timeScale",
+      "offset": 16
+    },
+    {
+      "name": "useSmoothDeltaTime",
+      "offset": 20
+    },
+    {
+      "name": "maxSmoothUnscaledTime",
+      "offset": 24
+    },
+    {
+      "name": "rewindCallbackMode",
+      "offset": 28
+    },
+    {
+      "name": "_logBehaviour",
+      "offset": 32
+    },
+    {
+      "name": "onWillLog",
+      "offset": 36
+    },
+    {
+      "name": "drawGizmos",
+      "offset": 40
+    },
+    {
+      "name": "defaultUpdateType",
+      "offset": 44
+    },
+    {
+      "name": "defaultTimeScaleIndependent",
+      "offset": 48
+    },
+    {
+      "name": "defaultAutoPlay",
+      "offset": 52
+    },
+    {
+      "name": "defaultAutoKill",
+      "offset": 56
+    },
+    {
+      "name": "defaultLoopType",
+      "offset": 60
+    },
+    {
+      "name": "defaultRecyclable",
+      "offset": 64
+    },
+    {
+      "name": "defaultEaseType",
+      "offset": 68
+    },
+    {
+      "name": "defaultEaseOvershootOrAmplitude",
+      "offset": 72
+    },
+    {
+      "name": "defaultEasePeriod",
+      "offset": 76
+    },
+    {
+      "name": "instance",
+      "offset": 80
+    },
+    {
+      "name": "maxActiveTweenersReached",
+      "offset": 84
+    },
+    {
+      "name": "maxActiveSequencesReached",
+      "offset": 88
+    },
+    {
+      "name": "safeModeReport",
+      "offset": 92
+    },
+    {
+      "name": "GizmosDelegates",
+      "offset": 108
+    },
+    {
+      "name": "initialized",
+      "offset": 112
+    },
+    {
+      "name": "isQuitting",
+      "offset": 113
+    }
+  ],
+  "Tween": [
+    {
+      "name": "timeScale",
+      "offset": 24
+    },
+    {
+      "name": "isBackwards",
+      "offset": 28
+    },
+    {
+      "name": "id",
+      "offset": 32
+    },
+    {
+      "name": "stringId",
+      "offset": 36
+    },
+    {
+      "name": "intId",
+      "offset": 40
+    },
+    {
+      "name": "target",
+      "offset": 44
+    },
+    {
+      "name": "updateType",
+      "offset": 48
+    },
+    {
+      "name": "isIndependentUpdate",
+      "offset": 52
+    },
+    {
+      "name": "onPlay",
+      "offset": 56
+    },
+    {
+      "name": "onPause",
+      "offset": 60
+    },
+    {
+      "name": "onRewind",
+      "offset": 64
+    },
+    {
+      "name": "onUpdate",
+      "offset": 68
+    },
+    {
+      "name": "onStepComplete",
+      "offset": 72
+    },
+    {
+      "name": "onComplete",
+      "offset": 76
+    },
+    {
+      "name": "onKill",
+      "offset": 80
+    },
+    {
+      "name": "onWaypointChange",
+      "offset": 84
+    },
+    {
+      "name": "isFrom",
+      "offset": 88
+    },
+    {
+      "name": "isBlendable",
+      "offset": 89
+    },
+    {
+      "name": "isRecyclable",
+      "offset": 90
+    },
+    {
+      "name": "isSpeedBased",
+      "offset": 91
+    },
+    {
+      "name": "autoKill",
+      "offset": 92
+    },
+    {
+      "name": "duration",
+      "offset": 96
+    },
+    {
+      "name": "loops",
+      "offset": 100
+    },
+    {
+      "name": "loopType",
+      "offset": 104
+    },
+    {
+      "name": "delay",
+      "offset": 108
+    },
+    {
+      "name": "<isRelative>k__BackingField",
+      "offset": 112
+    },
+    {
+      "name": "easeType",
+      "offset": 116
+    },
+    {
+      "name": "customEase",
+      "offset": 120
+    },
+    {
+      "name": "easeOvershootOrAmplitude",
+      "offset": 124
+    },
+    {
+      "name": "easePeriod",
+      "offset": 128
+    },
+    {
+      "name": "typeofT1",
+      "offset": 132
+    },
+    {
+      "name": "typeofT2",
+      "offset": 136
+    },
+    {
+      "name": "typeofTPlugOptions",
+      "offset": 140
+    },
+    {
+      "name": "<active>k__BackingField",
+      "offset": 144
+    },
+    {
+      "name": "isSequenced",
+      "offset": 145
+    },
+    {
+      "name": "sequenceParent",
+      "offset": 148
+    },
+    {
+      "name": "activeId",
+      "offset": 152
+    },
+    {
+      "name": "specialStartupMode",
+      "offset": 156
+    },
+    {
+      "name": "creationLocked",
+      "offset": 160
+    },
+    {
+      "name": "startupDone",
+      "offset": 161
+    },
+    {
+      "name": "<playedOnce>k__BackingField",
+      "offset": 162
+    },
+    {
+      "name": "<position>k__BackingField",
+      "offset": 164
+    },
+    {
+      "name": "fullDuration",
+      "offset": 168
+    },
+    {
+      "name": "completedLoops",
+      "offset": 172
+    },
+    {
+      "name": "isPlaying",
+      "offset": 176
+    },
+    {
+      "name": "isComplete",
+      "offset": 177
+    },
+    {
+      "name": "elapsedDelay",
+      "offset": 180
+    },
+    {
+      "name": "delayComplete",
+      "offset": 184
+    },
+    {
+      "name": "miscInt",
+      "offset": 188
+    }
+  ],
+  "LevelManager": [
+    {
+      "name": "Instance",
+      "offset": 0
+    },
+    {
+      "name": "IsMoreVisible",
+      "offset": 4
+    },
+    {
+      "name": "_rigidDepth",
+      "offset": 44
+    },
+    {
+      "name": "_IsUseGooseTarget",
+      "offset": 48
+    },
+    {
+      "name": "_instanceLevelBG",
+      "offset": 52
+    },
+    {
+      "name": "_p1p2InstanceLevelBG",
+      "offset": 56
+    },
+    {
+      "name": "_IsBlockTimeCtrl",
+      "offset": 60
+    },
+    {
+      "name": "_IsOnlinePause",
+      "offset": 5
+    },
+    {
+      "name": "_hasWinToday",
+      "offset": 6
+    },
+    {
+      "name": "objectPickOffset",
+      "offset": 64
+    },
+    {
+      "name": "objectPickAnimTime",
+      "offset": 68
+    },
+    {
+      "name": "_isMoveTouchChangeObj",
+      "offset": 72
+    },
+    {
+      "name": "_winTargetData",
+      "offset": 76
+    },
+    {
+      "name": "_targetTypeHash",
+      "offset": 80
+    },
+    {
+      "name": "_curLeftTargetData",
+      "offset": 84
+    },
+    {
+      "name": "_levelDataList",
+      "offset": 88
+    },
+    {
+      "name": "_layerData",
+      "offset": 92
+    },
+    {
+      "name": "_highLight",
+      "offset": 112
+    },
+    {
+      "name": "_combieParticle",
+      "offset": 116
+    },
+    {
+      "name": "_levelToolMa",
+      "offset": 120
+    },
+    {
+      "name": "_rotaTrans",
+      "offset": 124
+    },
+    {
+      "name": "boxTrans",
+      "offset": 128
+    },
+    {
+      "name": "_mainContentTrans",
+      "offset": 132
+    },
+    {
+      "name": "_levelBGTrans",
+      "offset": 136
+    },
+    {
+      "name": "_contentSizeTrans",
+      "offset": 140
+    },
+    {
+      "name": "_mainLevelCameras",
+      "offset": 144
+    },
+    {
+      "name": "_p1ContentTrans",
+      "offset": 148
+    },
+    {
+      "name": "_p2ContentTrans",
+      "offset": 152
+    },
+    {
+      "name": "_p2boxTrans",
+      "offset": 156
+    },
+    {
+      "name": "_p1p2LevelBGTrans",
+      "offset": 160
+    },
+    {
+      "name": "_p1p2Cameras",
+      "offset": 164
+    },
+    {
+      "name": "_cameraTopTrans",
+      "offset": 168
+    },
+    {
+      "name": "_cameraLimitZ",
+      "offset": 172
+    },
+    {
+      "name": "_levelType",
+      "offset": 176
+    },
+    {
+      "name": "LevelControlType",
+      "offset": 8
+    },
+    {
+      "name": "CurGameType",
+      "offset": 12
+    },
+    {
+      "name": "CurBattleRelationType",
+      "offset": 16
+    },
+    {
+      "name": "CustomBattleRelationType",
+      "offset": 20
+    },
+    {
+      "name": "LevelWinBoxCount",
+      "offset": 24
+    },
+    {
+      "name": "CurLevel",
+      "offset": 28
+    },
+    {
+      "name": "BattleEndResult",
+      "offset": 32
+    },
+    {
+      "name": "IsPrepareLose",
+      "offset": 36
+    },
+    {
+      "name": "_instanceObjList",
+      "offset": 180
+    },
+    {
+      "name": "_contentPointList",
+      "offset": 184
+    },
+    {
+      "name": "_contentUnitList",
+      "offset": 188
+    },
+    {
+      "name": "_boxObjList",
+      "offset": 192
+    },
+    {
+      "name": "_p2InstanceObjList",
+      "offset": 196
+    },
+    {
+      "name": "_p2ContentPointList",
+      "offset": 200
+    },
+    {
+      "name": "_p2ContentUnitList",
+      "offset": 204
+    },
+    {
+      "name": "_p2BoxObjList",
+      "offset": 208
+    },
+    {
+      "name": "_lastTouchPos",
+      "offset": 212
+    },
+    {
+      "name": "_newTouchPos",
+      "offset": 220
+    },
+    {
+      "name": "_touchOffset",
+      "offset": 228
+    },
+    {
+      "name": "_hasRotaCamera",
+      "offset": 232
+    },
+    {
+      "name": "_maxLevelTime",
+      "offset": 236
+    },
+    {
+      "name": "_levelLeftTimer",
+      "offset": 240
+    },
+    {
+      "name": "LevelRecord",
+      "offset": 40
+    },
+    {
+      "name": "_matchCount",
+      "offset": 244
+    },
+    {
+      "name": "_playTimeSec",
+      "offset": 248
+    },
+    {
+      "name": "_curSelectUnit",
+      "offset": 252
+    },
+    {
+      "name": "_rayHit",
+      "offset": 256
+    },
+    {
+      "name": "_maxHeight",
+      "offset": 300
+    },
+    {
+      "name": "_minTouchHeight",
+      "offset": 304
+    },
+    {
+      "name": "_curLevelMaxCount",
+      "offset": 308
+    },
+    {
+      "name": "_curLevelProgress",
+      "offset": 312
+    },
+    {
+      "name": "_p2CurSelectUnit",
+      "offset": 316
+    },
+    {
+      "name": "_p2RayHit",
+      "offset": 320
+    },
+    {
+      "name": "_p2MaxHeight",
+      "offset": 364
+    },
+    {
+      "name": "_p2MinTouchHeight",
+      "offset": 368
+    },
+    {
+      "name": "_p2CurLevelMaxCount",
+      "offset": 372
+    },
+    {
+      "name": "_p2CurLevelProgress",
+      "offset": 376
+    },
+    {
+      "name": "_visibleMinHeight",
+      "offset": 380
+    },
+    {
+      "name": "_visibleMaxHeight",
+      "offset": 384
+    },
+    {
+      "name": "_minVisibleY",
+      "offset": 388
+    },
+    {
+      "name": "_lastLevelText",
+      "offset": 392
+    },
+    {
+      "name": "submitServerType",
+      "offset": 396
+    },
+    {
+      "name": "submitID",
+      "offset": 400
+    },
+    {
+      "name": "_submitTime",
+      "offset": 404
+    },
+    {
+      "name": "_sendSubmitTime",
+      "offset": 408
+    },
+    {
+      "name": "_newYearHardCount",
+      "offset": 412
+    },
+    {
+      "name": "_hasGetShake",
+      "offset": 416
+    },
+    {
+      "name": "_isInitNet",
+      "offset": 417
+    },
+    {
+      "name": "IsSceneLoadCompelet",
+      "offset": 44
+    },
+    {
+      "name": "IsLevel1LoadCompelet",
+      "offset": 45
+    },
+    {
+      "name": "IsLevel2LoadCompelet",
+      "offset": 46
+    },
+    {
+      "name": "SpGameTypeLoadCompelet",
+      "offset": 48
+    },
+    {
+      "name": "_assetLoader",
+      "offset": 420
+    },
+    {
+      "name": "_sceneLoadHandle",
+      "offset": 424
+    },
+    {
+      "name": "ScenePrograss",
+      "offset": 52
+    },
+    {
+      "name": "_isLoadingScene",
+      "offset": 436
+    },
+    {
+      "name": "Level1Prograss",
+      "offset": 56
+    },
+    {
+      "name": "Level2Prograss",
+      "offset": 60
+    },
+    {
+      "name": "_isLoading",
+      "offset": 437
+    },
+    {
+      "name": "_PreMainGameStart",
+      "offset": 438
+    },
+    {
+      "name": "_isGifInit",
+      "offset": 439
+    },
+    {
+      "name": "_LoseSp",
+      "offset": 64
+    },
+    {
+      "name": "_WinSp",
+      "offset": 68
+    },
+    {
+      "name": "_LoseString",
+      "offset": 72
+    },
+    {
+      "name": "_WinString",
+      "offset": 76
+    },
+    {
+      "name": "_p1TouchFlag",
+      "offset": 440
+    },
+    {
+      "name": "_p2TouchFlag",
+      "offset": 441
+    },
+    {
+      "name": "_p1TouchPos",
+      "offset": 444
+    },
+    {
+      "name": "_p2TouchPos",
+      "offset": 452
+    },
+    {
+      "name": "_maxOnceTouchHeight",
+      "offset": 460
+    },
+    {
+      "name": "_IsInForceTeach",
+      "offset": 80
+    },
+    {
+      "name": "_isBattleReady",
+      "offset": 464
+    },
+    {
+      "name": "_isInTeach",
+      "offset": 465
+    },
+    {
+      "name": "_level2CreateCompeletTime",
+      "offset": 468
+    },
+    {
+      "name": "_maxCreateInterval",
+      "offset": 472
+    },
+    {
+      "name": "_frameMaxCreateCount",
+      "offset": 476
+    },
+    {
+      "name": "_createGrowSpeed",
+      "offset": 480
+    },
+    {
+      "name": "_physicCreateTime",
+      "offset": 484
+    },
+    {
+      "name": "_physicMaxCreateInterval",
+      "offset": 488
+    },
+    {
+      "name": "_physicFrameCreateCount",
+      "offset": 492
+    },
+    {
+      "name": "_physicCreateGrowSpeed",
+      "offset": 496
+    },
+    {
+      "name": "_isUseRealPhysicSpace",
+      "offset": 500
+    },
+    {
+      "name": "_maxPhysicObjCount",
+      "offset": 504
+    },
+    {
+      "name": "_physicOverlapSpeed",
+      "offset": 508
+    },
+    {
+      "name": "_gravitySpeed",
+      "offset": 516
+    },
+    {
+      "name": "_layerMinDistance",
+      "offset": 524
+    },
+    {
+      "name": "_testLoadingSlow",
+      "offset": 528
+    },
+    {
+      "name": "_loadingTime",
+      "offset": 532
+    },
+    {
+      "name": "_isLoadingTipShow",
+      "offset": 536
+    },
+    {
+      "name": "_fakeBarSpeed",
+      "offset": 540
+    },
+    {
+      "name": "_fakeBarLimite",
+      "offset": 544
+    },
+    {
+      "name": "_curFakeBarFill",
+      "offset": 548
+    },
+    {
+      "name": "_growUpInCreate",
+      "offset": 552
+    },
+    {
+      "name": "_getLoseHeight",
+      "offset": 556
+    },
+    {
+      "name": "_levelBoardLimit",
+      "offset": 560
+    },
+    {
+      "name": "_pickAnimTime",
+      "offset": 584
+    },
+    {
+      "name": "_pickMoveXZCurve",
+      "offset": 588
+    },
+    {
+      "name": "_pickMoveYCurve",
+      "offset": 592
+    },
+    {
+      "name": "_pickRotaCurve",
+      "offset": 596
+    },
+    {
+      "name": "UseTwoScaleCurve",
+      "offset": 600
+    },
+    {
+      "name": "_pickScaleCurve1",
+      "offset": 604
+    },
+    {
+      "name": "_pickScaleCurve2",
+      "offset": 608
+    },
+    {
+      "name": "_pickScaleMaxTime",
+      "offset": 612
+    },
+    {
+      "name": "_pickMaxScale",
+      "offset": 616
+    },
+    {
+      "name": "_pickEndPunchScale",
+      "offset": 620
+    },
+    {
+      "name": "_pickEndPunchTime",
+      "offset": 624
+    },
+    {
+      "name": "_newAnimManager",
+      "offset": 628
+    },
+    {
+      "name": "IsUseNewAnimManager",
+      "offset": 81
+    },
+    {
+      "name": "_storeObjectTrans",
+      "offset": 632
+    },
+    {
+      "name": "_storePointList",
+      "offset": 636
+    },
+    {
+      "name": "_storeObjList",
+      "offset": 640
+    },
+    {
+      "name": "_curStoreIndex",
+      "offset": 644
+    },
+    {
+      "name": "_storeObjPosYOffset",
+      "offset": 648
+    },
+    {
+      "name": "_storeObjPosXOffset",
+      "offset": 652
+    },
+    {
+      "name": "_storeObjIndexOffset",
+      "offset": 656
+    },
+    {
+      "name": "_UseObjStore",
+      "offset": 660
+    },
+    {
+      "name": "_storeContentTrans",
+      "offset": 664
+    },
+    {
+      "name": "_storeContentHideZ",
+      "offset": 668
+    },
+    {
+      "name": "_storeContentShowZ",
+      "offset": 672
+    },
+    {
+      "name": "_toolHighlights",
+      "offset": 676
+    },
+    {
+      "name": "_throwMoveXCurve",
+      "offset": 680
+    },
+    {
+      "name": "_throwMoveZCurve",
+      "offset": 684
+    },
+    {
+      "name": "_throwMoveYCurve",
+      "offset": 688
+    },
+    {
+      "name": "_throwScaleCurve1",
+      "offset": 692
+    },
+    {
+      "name": "_throwScaleCurve2",
+      "offset": 696
+    },
+    {
+      "name": "_throwMaxScale",
+      "offset": 700
+    },
+    {
+      "name": "_storeAnimTime",
+      "offset": 704
+    },
+    {
+      "name": "_screenVFXPoint",
+      "offset": 708
+    },
+    {
+      "name": "_toolParticleNameList",
+      "offset": 712
+    },
+    {
+      "name": "_toolParticleObj",
+      "offset": 716
+    },
+    {
+      "name": "_clamObj",
+      "offset": 720
+    },
+    {
+      "name": "_baceForce",
+      "offset": 724
+    },
+    {
+      "name": "_heighForce",
+      "offset": 728
+    },
+    {
+      "name": "_messHeight",
+      "offset": 732
+    },
+    {
+      "name": "_shakeOnceDepth",
+      "offset": 736
+    },
+    {
+      "name": "_shakeMaxDepthCount",
+      "offset": 740
+    },
+    {
+      "name": "_curShakeCount",
+      "offset": 744
+    },
+    {
+      "name": "_curShakeY",
+      "offset": 748
+    },
+    {
+      "name": "_messObjPosHeight",
+      "offset": 752
+    },
+    {
+      "name": "_messRotaTime",
+      "offset": 756
+    },
+    {
+      "name": "_messRotaSpeed",
+      "offset": 760
+    },
+    {
+      "name": "_messRotaDisSpeedMul",
+      "offset": 768
+    },
+    {
+      "name": "HasAccessShake",
+      "offset": 82
+    },
+    {
+      "name": "_shakeTimeMulti",
+      "offset": 0
+    },
+    {
+      "name": "_shakeMinMulti",
+      "offset": 0
+    },
+    {
+      "name": "_shakeMaxMulti",
+      "offset": 0
+    },
+    {
+      "name": "_shakeForceWXBaseTimeFix",
+      "offset": 0
+    },
+    {
+      "name": "_shakeDeltaTimeFix",
+      "offset": 0
+    },
+    {
+      "name": "_lastShakeTime",
+      "offset": 776
+    },
+    {
+      "name": "_shakeInterval",
+      "offset": 780
+    },
+    {
+      "name": "_shakeRealFixMul",
+      "offset": 784
+    },
+    {
+      "name": "_logShakeCount",
+      "offset": 788
+    },
+    {
+      "name": "_curLogShakeCount",
+      "offset": 792
+    },
+    {
+      "name": "_sharePowerLimit",
+      "offset": 796
+    },
+    {
+      "name": "_sharePowerMax",
+      "offset": 800
+    },
+    {
+      "name": "_sharePowerToForce",
+      "offset": 804
+    },
+    {
+      "name": "_sharePowerToForceInIos",
+      "offset": 808
+    },
+    {
+      "name": "_stopControlInterval",
+      "offset": 812
+    },
+    {
+      "name": "_lastShowShakeTipTime",
+      "offset": 816
+    },
+    {
+      "name": "_isFirstCombie",
+      "offset": 820
+    },
+    {
+      "name": "_guideHighlight",
+      "offset": 824
+    },
+    {
+      "name": "_winWord1Time",
+      "offset": 828
+    },
+    {
+      "name": "_winWord2Time",
+      "offset": 832
+    },
+    {
+      "name": "_playGuideMusicScale",
+      "offset": 836
+    },
+    {
+      "name": "_newGuideCurIndex",
+      "offset": 840
+    },
+    {
+      "name": "_isOnlineUpload",
+      "offset": 844
+    },
+    {
+      "name": "_onlineBaseDataList",
+      "offset": 848
+    },
+    {
+      "name": "_onlineUploadTimer",
+      "offset": 852
+    },
+    {
+      "name": "_onlineGetTimer",
+      "offset": 856
+    },
+    {
+      "name": "_hasProgressNotUpload",
+      "offset": 860
+    },
+    {
+      "name": "_newYearLevelData",
+      "offset": 864
+    },
+    {
+      "name": "_newYearGetCount",
+      "offset": 868
+    },
+    {
+      "name": "_lastNewYearLevel",
+      "offset": 872
+    },
+    {
+      "name": "CurLevelLastNewYearLevel",
+      "offset": 84
+    }
+  ],
+  "ObjectUnit": [
+    {
+      "name": "type",
+      "offset": 12
+    },
+    {
+      "name": "notBeCatch",
+      "offset": 16
+    },
+    {
+      "name": "isHiding",
+      "offset": 17
+    },
+    {
+      "name": "isStore",
+      "offset": 18
+    },
+    {
+      "name": "_isSelect",
+      "offset": 19
+    },
+    {
+      "name": "_rigid",
+      "offset": 20
+    },
+    {
+      "name": "col",
+      "offset": 24
+    },
+    {
+      "name": "realCol",
+      "offset": 28
+    },
+    {
+      "name": "_render",
+      "offset": 32
+    },
+    {
+      "name": "_skinRender",
+      "offset": 36
+    },
+    {
+      "name": "_otherRenders",
+      "offset": 40
+    },
+    {
+      "name": "_anim",
+      "offset": 44
+    },
+    {
+      "name": "_effectSoundType",
+      "offset": 48
+    },
+    {
+      "name": "_soundUsePitch",
+      "offset": 52
+    },
+    {
+      "name": "_endSoundType",
+      "offset": 56
+    },
+    {
+      "name": "_endSoundCombie",
+      "offset": 60
+    },
+    {
+      "name": "_isGoose",
+      "offset": 61
+    },
+    {
+      "name": "_pickScale",
+      "offset": 64
+    },
+    {
+      "name": "_startPickScale",
+      "offset": 68
+    },
+    {
+      "name": "_targetPos",
+      "offset": 72
+    },
+    {
+      "name": "_pickOffset",
+      "offset": 84
+    },
+    {
+      "name": "_pickAnimTime",
+      "offset": 88
+    },
+    {
+      "name": "_isFinishCreate",
+      "offset": 92
+    },
+    {
+      "name": "_isInObjectPanel",
+      "offset": 93
+    },
+    {
+      "name": "isUseCustomParticle",
+      "offset": 94
+    },
+    {
+      "name": "customPartName",
+      "offset": 96
+    },
+    {
+      "name": "isUseCustomPartColor",
+      "offset": 100
+    },
+    {
+      "name": "customPartColor",
+      "offset": 104
+    },
+    {
+      "name": "_objectAnim",
+      "offset": 120
+    },
+    {
+      "name": "_ObjectCustomMod",
+      "offset": 124
+    },
+    {
+      "name": "_changeObjScale",
+      "offset": 128
+    },
+    {
+      "name": "_rotaCenterUpTrans",
+      "offset": 132
+    },
+    {
+      "name": "_rotaEndPos",
+      "offset": 136
+    },
+    {
+      "name": "_rotaSpeed",
+      "offset": 148
+    },
+    {
+      "name": "_curPos",
+      "offset": 152
+    },
+    {
+      "name": "_startOffsetY",
+      "offset": 164
+    },
+    {
+      "name": "_targetOffsetY",
+      "offset": 168
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+{
+  "camera": {
+    "m_GameObject": {
+      "m_FileID": 0,
+      "m_PathID": 164
+    },
+    "m_Enabled": 1,
+    "m_ClearFlags": 2,
+    "m_BackGroundColor": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.0
+    },
+    "m_projectionMatrixMode": 1,
+    "m_GateFitMode": 2,
+    "m_SensorSize": {
+      "x": 36.0,
+      "y": 24.0
+    },
+    "m_LensShift": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "m_FocalLength": 50.0,
+    "m_NormalizedViewPortRect": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 1.0,
+      "height": 1.0
+    },
+    "near clip plane": 0.30000001192092896,
+    "far clip plane": 1000.0,
+    "field of view": 60.0,
+    "orthographic": true,
+    "orthographic size": 6.5,
+    "m_Depth": 1.0,
+    "m_CullingMask": {
+      "m_Bits": 503
+    },
+    "m_RenderingPath": -1,
+    "m_TargetTexture": {
+      "m_FileID": 0,
+      "m_PathID": 0
+    },
+    "m_TargetDisplay": 0,
+    "m_TargetEye": 3,
+    "m_HDR": false,
+    "m_AllowMSAA": true,
+    "m_AllowDynamicResolution": false,
+    "m_ForceIntoRT": false,
+    "m_OcclusionCulling": true,
+    "m_StereoConvergence": 10.0,
+    "m_StereoSeparation": 0.02199999988079071
+  },
+  "chain": [
+    {
+      "name": "Main Camera",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 164
+        },
+        "m_LocalRotation": {
+          "x": -0.0,
+          "y": -0.0,
+          "z": -0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -30.0
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": 357
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 417
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 316
+        }
+      }
+    },
+    {
+      "name": "MainLevelCenter",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 118
+        },
+        "m_LocalRotation": {
+          "x": 0.6560590267181396,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.7547096610069275
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.5
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": 359
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 339
+        }
+      }
+    },
+    {
+      "name": "RotaCenter",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 141
+        },
+        "m_LocalRotation": {
+          "x": -0.0,
+          "y": -0.0,
+          "z": -0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": 316
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 345
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 312
+        }
+      }
+    },
+    {
+      "name": "MainScene",
+      "transform": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 107
+        },
+        "m_LocalRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": 323
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 395
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 404
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 389
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 317
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 370
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 361
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 612
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 613
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 610
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 393
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 339
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 372
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 378
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 336
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 355
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 338
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 400
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 321
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 386
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 467
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 379
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 358
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 388
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 383
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        }
+      }
+    }
+  ],
+  "cameraControlRaw": "000000008d000000000000000100000001000000fe000000000000000000000000000000e6010000000000000000000053010000000000000000000065010000000000000000003f0000803f0000000000000000"
+}

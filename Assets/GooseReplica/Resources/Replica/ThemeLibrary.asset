@@ -1,0 +1,162 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd1e84b6512a049fba7352f29874a8f4, type: 3}
+  m_Name: ThemeLibrary
+  m_EditorClassIdentifier: 
+  sourceLevelCatalog: {fileID: 11400000, guid: 0ebce4c3926cd4381bb3cd7b204489c3, type: 2}
+  pvpEndpoint: https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com
+  themes:
+  - id: daily
+    sourceEnvironment: CountrysideStove
+    title: "\u4E61\u6751\u6BCF\u65E5\u6311\u6218"
+    subtitle: "\u539F\u7248\u4E61\u6751\u7269\u54C1\uFF0C\u6BCF\u5929\u4E00\u9053\u6311\u6218"
+    gooseSprite: Goose_Potato_2_Icon
+    prefabs:
+    - {fileID: 1815187960369510949, guid: 8f24f6d6c2ab84d76bcdad5ea8189ec4, type: 3}
+    - {fileID: 5801302684121750858, guid: 224f9b39914be4a9daa7f9b19c673cd9, type: 3}
+    - {fileID: 4224091736557857809, guid: ef04d3270cf6d45d4b565e3684b1946f, type: 3}
+    - {fileID: 3145532231976737796, guid: b079ba93ca67e40188da6ef2dfd85e4e, type: 3}
+    - {fileID: 1413067997728954432, guid: 08a99436792b24ac1b6d462a6c10aeb1, type: 3}
+    - {fileID: 7163262378425603715, guid: 3180a96ddaa864cba8f683c25289d6ba, type: 3}
+    - {fileID: 2011612114248968123, guid: 4feab73f90cb14c219581ab23e410200, type: 3}
+    - {fileID: 6272072955938428669, guid: d7f489f8012ca47488e2019ff076f087, type: 3}
+    - {fileID: 7191215260279103103, guid: bc123060fe6504fbfb5495a2e70cf0cd, type: 3}
+    - {fileID: 2254621766201865216, guid: 9ec3e28310d4e4c25be89e808086ae28, type: 3}
+    - {fileID: 3959315542666418671, guid: ed6fd9d2dec1843049dd6fa09b404293, type: 3}
+    - {fileID: 5761419096678708950, guid: 2ea6a2b631acc4663bdfcc0f4db9095a, type: 3}
+    - {fileID: 6848212252956530007, guid: 9884e7f9e66734925aba606af9911bf7, type: 3}
+    - {fileID: 1637764925751030036, guid: 9f36477d144c54ed0b99f823f79552a1, type: 3}
+    - {fileID: 3353550484554450162, guid: 6598992e90899413d8a2f294836bdad4, type: 3}
+    - {fileID: 619505012423568414, guid: dc4a52713ec8b46b5900709e8079623b, type: 3}
+    - {fileID: 4939770606524418062, guid: 6c14149a424d3463ba783a7414c0d34b, type: 3}
+    - {fileID: 4550350545386331436, guid: 268b29869ed274e6aaa84d3001a58f0c, type: 3}
+    - {fileID: 6607291932500756491, guid: f72c3f4019f3245548a2f971b9ce673c, type: 3}
+    - {fileID: 5634884904833496215, guid: ad1bef68636094c9983e90a784f60268, type: 3}
+    - {fileID: 2518254576524163000, guid: 66b9aa74052404a358bab518014789c8, type: 3}
+    layers:
+    - count: 150
+      types: 20
+      height: 14
+      weights: []
+    - count: 60
+      types: 10
+      height: 18
+      weights: []
+    - count: 45
+      types: 8
+      height: 21
+      weights: []
+    - count: 45
+      types: 7
+      height: 24
+      weights: []
+    seconds: 600
+  - id: toys
+    sourceEnvironment: GroceryStore
+    title: "\u5C0F\u5356\u90E8"
+    subtitle: "\u96F6\u98DF\u65E5\u7528\u54C1\uFF0C\u6E05\u7A7A\u5C0F\u5356\u90E8"
+    gooseSprite: Goose_Eggplant_2_Icon
+    prefabs:
+    - {fileID: 2975403465435913329, guid: eded08cfc3c6744578ff5d7e83e803b7, type: 3}
+    - {fileID: 3246542760737413234, guid: 706200846160f4dbeb7b982bf3846d6a, type: 3}
+    - {fileID: 3088651994529114728, guid: 97f1011a3795a44fca76bcbc7e885351, type: 3}
+    - {fileID: 5604342010822341414, guid: 4f253a431d40e4410bf0ddfdd84abeab, type: 3}
+    - {fileID: 4908965431458498422, guid: c98d78a21d4be4a27b46c7baf1372396, type: 3}
+    - {fileID: 6280875819341550615, guid: 9db735500c06243539a874c2c09202b4, type: 3}
+    - {fileID: 4245593378245913138, guid: f020c3a7052d94c729cb7bcdd0c84c08, type: 3}
+    - {fileID: 956518475226440562, guid: 50e1802da8efd44cebaf43f3ba061d8d, type: 3}
+    - {fileID: 8041245190789755081, guid: 281672ce7b6ae4dea81e6870ac60441b, type: 3}
+    - {fileID: 5549438085340962823, guid: ff92ca76ca4984e05b10583c1d6eceb0, type: 3}
+    - {fileID: 6471996856522719479, guid: cc68693be610644fa9c3c6d2bc2aaf0e, type: 3}
+    - {fileID: 538554783447094240, guid: 973724d0a5e1047eda699b630831a386, type: 3}
+    - {fileID: 1386555952442828258, guid: ce311d92166e74e5192ef04a8f8167a8, type: 3}
+    - {fileID: 267268844491519058, guid: 9f254d7a525de4d8888c59e0c8c28e22, type: 3}
+    - {fileID: 1797635555330037175, guid: 0d48b86cf4350466a9db4e6d1c8e9757, type: 3}
+    - {fileID: 5728232488198307956, guid: c905a77fa27554cb6ba47d56b1d5530b, type: 3}
+    - {fileID: 7751189310837660441, guid: f32d23137689f4762a0aa4572edd2763, type: 3}
+    - {fileID: 5593714372778325098, guid: 4402921b416be4e828ce08c26bf68817, type: 3}
+    layers:
+    - count: 150
+      types: 18
+      height: 14
+      weights: []
+    - count: 60
+      types: 10
+      height: 18
+      weights: []
+    - count: 45
+      types: 8
+      height: 21
+      weights: []
+    - count: 45
+      types: 7
+      height: 24
+      weights: []
+    seconds: 600
+  - id: travel
+    sourceEnvironment: Barbecue
+    title: "\u70E7\u70E4\u644A"
+    subtitle: "\u627E\u9F50\u70E4\u4E32\uFF0C\u6311\u6218\u70E7\u70E4\u644A"
+    gooseSprite: Goose_GreenPepper_2_Icon
+    prefabs:
+    - {fileID: 353115543238961753, guid: 50a11befc34bf415fa781434a5f5c5c1, type: 3}
+    - {fileID: 6581373085088690311, guid: 12110b1ec801f46ff889721de0076386, type: 3}
+    - {fileID: 3396987396933440095, guid: de62b521d516349758bd8d9ed870d28a, type: 3}
+    - {fileID: 4390791240029774225, guid: 67b42d2f5d7ab46d5a6c7f44847f3775, type: 3}
+    - {fileID: 8180788063180015118, guid: f549dc0c9e227447cbba09e3765b610d, type: 3}
+    - {fileID: 4422072403411486524, guid: c53d59f1579764dc1bcd30c81a41aa88, type: 3}
+    - {fileID: 2918864476065202982, guid: eeda01e40218d477ea87ad2285d3bacd, type: 3}
+    - {fileID: 5622258519817199246, guid: 0d7a6f759d7a1413d9391e3bf7bce425, type: 3}
+    - {fileID: 4585663400290366702, guid: 4a763080d8df24a20a2a61721ccc56b7, type: 3}
+    - {fileID: 4937491054129198157, guid: 2139c108b87b04720a2c5f5a8f2b17f7, type: 3}
+    - {fileID: 2924937644726991990, guid: bca7f971c2b5b4a118bf1a8b9a03ad49, type: 3}
+    - {fileID: 9152163167160724785, guid: 6fbbb98fd527a42bd898a3939c2387af, type: 3}
+    - {fileID: 6342277965618426286, guid: 0c96b6d97688a437a8632d12abf844d8, type: 3}
+    - {fileID: 7636011949836530969, guid: 9d8eb737c87f54f4aa51c05c66f6e975, type: 3}
+    - {fileID: 2303054815550655949, guid: dd0a6726974654164ac9f22730e122b3, type: 3}
+    - {fileID: 8932109488857395923, guid: 3dcbd3a4333444c53965f6cebba5f3b3, type: 3}
+    - {fileID: 6078978089292543124, guid: d9e134fa998304ceb9ee12c594751aac, type: 3}
+    - {fileID: 4000488640348968478, guid: c715bd0f8c2c84ba18cffb6cf4e4efd7, type: 3}
+    - {fileID: 7019572727741850036, guid: 38fa1d2e9ea6b4ae28ac168d3647f51e, type: 3}
+    - {fileID: 4114218505890602687, guid: 4927c507cbc6c47f3b987eeee85aa380, type: 3}
+    - {fileID: 4211393628045979762, guid: 45bd0e1f6124d4e6e952772fc117d6d9, type: 3}
+    - {fileID: 6605991907438191594, guid: 9a5efbdaee14147658fd5be27989ce08, type: 3}
+    - {fileID: 1529844237955392812, guid: 4cbe527847d94438eaaf0393deb5c47b, type: 3}
+    - {fileID: 959409541405828052, guid: 17583270d2c2f4d9c96143da5df32e31, type: 3}
+    - {fileID: 1854961390537338305, guid: 15cda4a1856f748849e45b6242329d45, type: 3}
+    layers:
+    - count: 150
+      types: 20
+      height: 14
+      weights: []
+    - count: 60
+      types: 10
+      height: 18
+      weights: []
+    - count: 45
+      types: 8
+      height: 21
+      weights: []
+    - count: 45
+      types: 7
+      height: 24
+      weights: []
+    seconds: 600
+  homeMusic: {fileID: 8300000, guid: 590ec06fbb6324348919923fca9a24c5, type: 3}
+  gameMusic: {fileID: 8300000, guid: 1d2931d4ffc6047ff999b2fad85a32bf, type: 3}
+  pvpMusic: {fileID: 8300000, guid: fea7ea73e3c1047c9aa43f17e28ae5af, type: 3}
+  clickSound: {fileID: 8300000, guid: 88db1f03cd2304e2397796e424be5696, type: 3}
+  selectSound: {fileID: 8300000, guid: 8782f8b028c5473180db53defb522537, type: 3}
+  matchSound: {fileID: 8300000, guid: 5706f37dd02649b4856a59730c09d96b, type: 3}
+  winSound: {fileID: 8300000, guid: 847a6fa9a9c9a4f24b6d27024ee134b3, type: 3}
+  loseSound: {fileID: 8300000, guid: 4cac8d9d9fea94937b8860d0e04764bf, type: 3}
+  font: {fileID: 0}

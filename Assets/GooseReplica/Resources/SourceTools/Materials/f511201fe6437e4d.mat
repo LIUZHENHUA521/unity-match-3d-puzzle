@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Noise_002
+  m_Shader: {fileID: 4800000, guid: 480fa2e210bf54980aa950f4a3c717b2, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 0817911fe6b504148abff800846affef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Niuqu:
+        m_Texture: {fileID: 2800000, guid: 38dc5ebafc56d4102a3d7f3da234d128, type: 3}
+        m_Scale: {x: 2, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Tex:
+        m_Texture: {fileID: 2800000, guid: 9a78805142be8411097d618cb5ff1f14, type: 3}
+        m_Scale: {x: 1, y: 0.5}
+        m_Offset: {x: 0, y: -0.19}
+    m_Ints: []
+    m_Floats:
+    - _Niuqu_U: -0.5
+    - _Niuqu_V: 0
+    - _Tex_Color_Scale: 3
+    - _Tex_U: -2
+    - _Tex_V: 0
+    - _V: 0
+    m_Colors:
+    - _Tex_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
