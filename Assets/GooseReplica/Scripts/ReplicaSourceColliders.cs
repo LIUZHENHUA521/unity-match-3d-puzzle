@@ -18,11 +18,11 @@ public sealed class ReplicaSourceColliders : MonoBehaviour {
     // The original ObjectUnit prefab already owns its collider hierarchy. This
     // marker lets pooled/template clones skip the JSON walk and AddComponent
     // pass while retaining the exact baked shape/layer/material state.
-    public bool IsConfiguredFor(string name)=>pickObject&&configuredSourceName==name;
+    public bool IsConfiguredFor(string name)=>pickObject&&string.Equals(configuredSourceName,name,StringComparison.OrdinalIgnoreCase);
     public void SetVisible(bool visible){if(pickObject)pickObject.SetActive(visible);}
     public void RestoreConfiguredColliderState(){
         if(string.IsNullOrEmpty(configuredSourceName))return;
-        if(profiles==null){profiles=new Dictionary<string,Profile>();var data=Resources.Load<TextAsset>("Replica/SourceColliders");if(data)foreach(var p in JsonUtility.FromJson<Data>(data.text).items)profiles[p.name]=p;}
+        LoadProfiles();
         if(!profiles.TryGetValue(configuredSourceName,out var profile)||!pickObject)return;
         var visual=pickObject.transform.root.GetChild(0);
         foreach(var node in profile.nodes){
@@ -49,7 +49,7 @@ public sealed class ReplicaSourceColliders : MonoBehaviour {
         // runtime marker lets us skip the expensive profile walk.
         if(restorePivot&&visual){visual.localPosition=Vector3.zero;visual.localRotation=Quaternion.identity;}
         if(component&&component.IsConfiguredFor(name))return;
-        if(profiles==null){profiles=new Dictionary<string,Profile>();var data=Resources.Load<TextAsset>("Replica/SourceColliders");if(data)foreach(var p in JsonUtility.FromJson<Data>(data.text).items)profiles[p.name]=p;}
+        LoadProfiles();
         if(!profiles.TryGetValue(name,out var profile)||obj.transform.childCount==0)return;
         // Source Instantiate sets the object pivot and Euler rotation; importer had recentered its visual.
         foreach(var node in profile.nodes){
@@ -89,4 +89,20 @@ public sealed class ReplicaSourceColliders : MonoBehaviour {
         component.pickObject=Resolve(visual,profile.col)?.gameObject;
         component.configuredSourceName=name;
     }
+
+    static void LoadProfiles(){
+        if(profiles!=null)return;
+        profiles=new Dictionary<string,Profile>(StringComparer.OrdinalIgnoreCase);
+        var data=Resources.Load<TextAsset>("Replica/SourceColliders");
+        if(data){var parsed=JsonUtility.FromJson<Data>(data.text);foreach(var p in parsed?.items??Array.Empty<Profile>())if(p!=null&&!string.IsNullOrEmpty(p.name))profiles[p.name]=p;}
+        foreach(var id in AdapterIds())if(ReplicaSourceCatalog.TryGetColliderProfile(id,out var source))profiles[id]=FromAdapter(source,id);
+    }
+    static IEnumerable<string> AdapterIds(){return ReplicaSourceCatalog.GetIds();}
+    static Profile FromAdapter(ReplicaSourceCatalog.ColliderProfile source,string id){
+        var p=new Profile{name=string.IsNullOrEmpty(source.name)?id:source.name,col=source.col,realCol=source.realCol};
+        var nodes=source.nodes??Array.Empty<ReplicaSourceCatalog.ColliderNode>();p.nodes=new Node[nodes.Length];
+        for(int i=0;i<nodes.Length;i++){var n=nodes[i];var shapes=n.colliders??Array.Empty<ReplicaSourceCatalog.ColliderShape>();p.nodes[i]=new Node{indices=n.indices,layer=n.layer,colliders=new Shape[shapes.Length]};for(int j=0;j<shapes.Length;j++){var s=shapes[j];p.nodes[i].colliders[j]=new Shape{type=s.type,enabled=s.enabled,trigger=s.trigger,hasMaterial=s.hasMaterial,center=s.center,size=s.size,radius=s.radius,height=s.height,direction=s.direction,material=s.material==null?null:new Surface{m_Name=s.material.m_Name,dynamicFriction=s.material.dynamicFriction,staticFriction=s.material.staticFriction,bounciness=s.material.bounciness,frictionCombine=s.material.frictionCombine,bounceCombine=s.material.bounceCombine}};}}
+        return p;
+    }
+    public static void ClearCache(){profiles=null;ReplicaSourceCatalog.ClearCache();}
 }

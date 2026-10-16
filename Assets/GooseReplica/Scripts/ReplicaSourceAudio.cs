@@ -16,7 +16,9 @@ public sealed class ReplicaSourceAudio : MonoBehaviour {
     public int LastSound {get;private set;}
     public float LastPitch {get;private set;}
     public static bool Enabled=>ReplicaFlow.Instance&&ReplicaFlow.Instance.SettingsEffects;
-    static void LoadCatalog(){if(catalog!=null)return;catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("Replica/SourceAudioItems").text);items=new Dictionary<string,Item>();foreach(var item in catalog.items)items.Add(item.name,item);}
+    static void LoadCatalog(){if(catalog!=null)return;var text=Resources.Load<TextAsset>("Replica/SourceAudioItems");catalog=text?(JsonUtility.FromJson<Catalog>(text.text)??new Catalog{items=Array.Empty<Item>(),names=Array.Empty<string>()}):new Catalog{items=Array.Empty<Item>(),names=Array.Empty<string>()};items=new Dictionary<string,Item>(StringComparer.OrdinalIgnoreCase);foreach(var item in catalog.items??Array.Empty<Item>())if(item!=null&&!string.IsNullOrEmpty(item.name))items[item.name]=item;foreach(var id in AdapterIds())if(ReplicaSourceCatalog.TryGetAudioProfile(id,out var profile))items[id]=new Item{name=string.IsNullOrEmpty(profile.name)?id:profile.name,select=profile.select,combine=profile.combine,usePitch=profile.usePitch,combineDefault=profile.combineDefault,goose=profile.goose};}
+    static IEnumerable<string> AdapterIds(){return ReplicaSourceCatalog.GetIds();}
+    public static void ClearCache(){catalog=null;items=null;ReplicaSourceCatalog.ClearCache();}
     public static void Bind(GameObject obj,string sourceName){LoadCatalog();if(items.TryGetValue(sourceName,out var item))bound[obj]=item;}
     public static void Forget(GameObject obj){if(!ReferenceEquals(obj,null))bound.Remove(obj);}
     public static void ResetLevel(){bound.Clear();if(ReplicaFlow.Instance){var audio=ReplicaFlow.Instance.GetComponent<ReplicaSourceAudio>();if(audio)audio.sequence.ResetLevel();}}

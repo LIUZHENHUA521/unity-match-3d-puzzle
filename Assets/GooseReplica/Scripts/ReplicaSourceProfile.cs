@@ -21,7 +21,9 @@ public static class ReplicaSourceProfile {
         set {PlayerPrefs.SetFloat(ModelSizeKey,Mathf.Round(Mathf.Clamp(value,.5f,1.25f)*100f)/100f);PlayerPrefs.Save();}
     }
     public static float ModelScale(string name){
-        if(sizes==null){sizes=new Dictionary<string,float>();var data=Resources.Load<TextAsset>("Replica/SourceSizes");if(data)foreach(var item in JsonUtility.FromJson<Sizes>(data.text).items)sizes[item.name]=item.normalizedToSource;}
+        if(ReplicaSourceCatalog.TryGetSize(name,out float catalogValue))return catalogValue*ModelSizeMultiplier;
+        if(sizes==null){sizes=new Dictionary<string,float>(StringComparer.OrdinalIgnoreCase);var data=Resources.Load<TextAsset>("Replica/SourceSizes");if(data)foreach(var item in JsonUtility.FromJson<Sizes>(data.text).items)sizes[item.name]=item.normalizedToSource;}
         return (sizes.TryGetValue(name,out float value)?value:ReplicaFlow.BoardItemScale)*ModelSizeMultiplier;
     }
+    public static void ClearCache(){sizes=null;ReplicaSourceCatalog.ClearCache();}
 }
