@@ -73,7 +73,17 @@ for reference_file in replica_resources.glob('Source*'):
     # SourceLevelCatalog is runtime data, not authoring evidence. It contains
     # the first/second-stage prefab references used by ReplicaSourceLevelPlan;
     # moving it out makes the theme challenge callback throw in WeChat builds.
-    if reference_file.name in {'SourceLevelCatalog.asset','SourceColliders.json','SourceSizes.json'}:
+    if reference_file.name in {
+        'SourceLevelCatalog.asset',
+        'SourceColliders.json',
+        'SourceSizes.json',
+        # Runtime lookup tables.  SourceAudio.LoadCatalog dereferences the
+        # asset directly during layered item creation, so moving these makes
+        # the creation coroutine abort with a NullReferenceException.
+        'SourceAudioItems.json',
+        'SourceFlightItems.json',
+        'SourceEnvironment.json',
+    }:
         continue
     target = excluded / reference_file.name
     if target.exists():
