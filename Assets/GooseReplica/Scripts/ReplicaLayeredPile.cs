@@ -59,7 +59,11 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
         boundary=reusedBoundary??ReplicaSourceEnvironment.CreateBoundary();
         boundary.name=ReplicaSourceEnvironment.CurrentName+" source collision reference";
         boundary.SetActive(true);
-        if(creating)creationGrowthRoutine=StartCoroutine(LoopCreationGrowth());
+        // Creation growth is advanced from LateUpdate.  Keeping it on the
+        // frame loop avoids a WebGL coroutine resuming several WaitForSeconds
+        // continuations together after a loading frame, which made the whole
+        // pile look as if it appeared at once.
+        creationGrowthRoutine=null;
     }
     public static List<Vector3> Positions(int count,float minHeight,float maxHeight,System.Random random){
         var result=new List<Vector3>(count);
@@ -70,7 +74,7 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
     // The optional argument preserves the dormant source branch for explicit evidence/fixtures only.
     public void Register(Rigidbody body,bool sourceChangeObjScale=false){
         if(!Running||!body||entries.Any(e=>e.body==body))return;
-        var e=new Entry{body=body,renderers=body.GetComponentsInChildren<Renderer>().Where(r=>r.enabled).ToArray(),scale=body.transform.localScale,sourceColliders=body.GetComponent<ReplicaSourceColliders>(),changeObjScale=sourceChangeObjScale};entries.Add(e);
+        var e=new Entry{body=body,renderers=body.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled).ToArray(),scale=body.transform.localScale,sourceColliders=body.GetComponent<ReplicaSourceColliders>(),changeObjScale=sourceChangeObjScale};entries.Add(e);
         // Init clears _isFinishCreate before this first SetVisible; FinishCreate later restores it.
         // Initial growth is controlled by LoopCrowObjSize, not the later reveal tween.
         e.finishCreate=!Creating;
@@ -152,7 +156,14 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
             else if(ReplicaPilePhysics.Instance)ReplicaPilePhysics.Instance.RefreshHeightState(e.body);
         }
     }
-    void LateUpdate(){if(!Creating)StepVisibility(Time.deltaTime);}
+    void LateUpdate(){
+        if(!Running)return;
+        // The source's creation size loop is frame-driven in the player.  Do
+        // this before the normal visibility scan so newly registered objects
+        // receive their first .1 scale step on the next rendered frame.
+        if(Creating){StepCreationGrowth(Time.deltaTime);return;}
+        StepVisibility(Time.deltaTime);
+    }
     public void StepVisibility(float delta){
         if(!Running)return;
         if(Creating){StepCreationGrowth(delta);return;}

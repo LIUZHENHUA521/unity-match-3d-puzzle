@@ -270,6 +270,11 @@ public class ReplicaFlow : MonoBehaviour {
         while(version==creationVersion&&steps.MoveNext()){
             PendingCreationWait=(float)steps.Current;
             yield return new WaitForSeconds(PendingCreationWait);
+            // Keep each source batch on a distinct rendered frame.  On WebGL
+            // a loading hitch can make several scaled waits become due before
+            // the next frame; yielding once here prevents the iterator from
+            // draining all 300 CreateBoardItem calls in that frame.
+            yield return null;
         }
         if(version==creationVersion){sourceCreationSteps=null;sourceCreationRunner=null;PendingCreationWait=0;}
     }
