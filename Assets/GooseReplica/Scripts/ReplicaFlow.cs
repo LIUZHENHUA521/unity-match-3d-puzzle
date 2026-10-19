@@ -301,11 +301,9 @@ public class ReplicaFlow : MonoBehaviour {
         Clear();ScreenName="game";resultShown=false;BlocksGameplay=false;
         Label(page,IsPvp?"好友对战":CurrentTheme.title+" · 第"+Stage+"关",new Vector2(320,70),new Vector2(550,65),34,Color.white,true);
         Button(page,"",new Vector2(649,70),new Vector2(72,72),()=>ShowSettings(true),"PauseBtn");
-        if(!IsPvp&&Stage==2)Button(page,"大小 "+AppliedModelSize.ToString("F2")+"×",new Vector2(593,150),new Vector2(175,58),ShowModelSize,"PopBtn1",23);
         timer=Label(page,"",new Vector2(360,150),new Vector2(250,65),45,Color.white);
         remaining=Label(page,"",new Vector2(360,220),new Vector2(520,50),27,Color.white);
         if(IsPvp)peerText=Label(page,"",new Vector2(360,280),new Vector2(680,46),24,Color.white);
-        else diagnostics.Show(this,page);
         float controlsY=page.rect.height-155;
         moveToolButton=Button(page,!IsPvp&&Stage==2?"移出":"撤回",new Vector2(135,controlsY),new Vector2(180,90),Undo,"PopBtn1",29);
         shuffleToolButton=Button(page,!IsPvp&&Stage==2?"打乱":"颠锅",new Vector2(360,controlsY),new Vector2(180,90),()=>{if(ReplicaSourceTools.Enabled)ReplicaSourceTools.MessUp();else FindObjectOfType<FoodPileShake>().Shake();},"MainBtnBg",29);
