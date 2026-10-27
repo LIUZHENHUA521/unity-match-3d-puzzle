@@ -125,14 +125,30 @@ for meta in texture_root.glob('*.png.meta'):
 
 # Photoshop UI exports use uncompressed textures for editing. Apply high-quality
 # GPU compression only to the disposable release copy; preserve source artwork
-# and its resolution, sprite borders and layout in the working project.
+# and its resolution, sprite borders and layout in the working project. Release
+# textures above 1024px are scaled by Unity's importer, preserving sprite geometry.
 for skin in ('GameplaySkin', 'HomeSkinPS', 'SettingsSkinPS'):
     for meta in (replica_resources / skin).glob('*.meta'):
         text = meta.read_text()
         if 'TextureImporter:' not in text:
             continue
         text = re.sub(r'(?m)^    textureCompression: \d+', '    textureCompression: 2', text)
+        text = re.sub(r'(?m)^(\s+maxTextureSize: )(\d+)',
+                      lambda m: m[1] + str(min(int(m[2]), 1024)), text)
         meta.write_text(text)
+
+# Hidden alternate tray layers from the PSD are not runtime content. Only omit
+# them if no serialized asset or runtime literal references the image.
+for name in ('img_Blue_box1', 'img_GreyBlue_box', 'image_add_circle'):
+    image = replica_resources / 'GameplaySkin' / (name + '.png')
+    meta = image.with_suffix('.png.meta')
+    if not image.exists() or not meta.exists():
+        continue
+    guid = re.search(r'^guid: ([0-9a-f]{32})', meta.read_text(), re.M)
+    if not guid or guid.group(1) in referenced_guids or any(name in literal for literal in names):
+        continue
+    for asset in (image, meta):
+        shutil.move(str(asset), str(excluded / asset.name))
 print(f'Staged {stage}; sprites kept={len(kept)}, excluded={len(removed)}', flush=True)
 if args.prepare_only:
     raise SystemExit(0)
