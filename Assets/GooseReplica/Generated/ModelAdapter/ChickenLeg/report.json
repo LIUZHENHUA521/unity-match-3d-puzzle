@@ -1,0 +1,62 @@
+{
+    "requestId": "ccfc80754b494312a7e51209ea9209d0",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/008_Chicken Leg/ChickenLeg.obj",
+    "logicalId": "ChickenLeg",
+    "displayName": "ChickenLeg",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/ChickenLeg/ChickenLeg.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/ChickenLeg/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.30737051367759707,
+    "visualSize": {
+        "x": 1.3989630937576295,
+        "y": 0.5815131664276123,
+        "z": 0.6119472980499268
+    },
+    "visualCenter": {
+        "x": 0.08902496099472046,
+        "y": -0.0036574900150299074,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.08902496099472046,
+        "y": -0.29441407322883608,
+        "z": 0.0
+    },
+    "longestSide": 1.3989630937576295,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

@@ -1,0 +1,62 @@
+{
+    "requestId": "9c30ecef39814477b24c1a63bacdad2f",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/016_Fries/Fries.obj",
+    "logicalId": "Fries",
+    "displayName": "Fries",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Fries/Fries.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Fries/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.3242133557796478,
+    "visualSize": {
+        "x": 0.9488379955291748,
+        "y": 0.5857484340667725,
+        "z": 1.3262871503829957
+    },
+    "visualCenter": {
+        "x": -0.008633196353912354,
+        "y": 0.2809234857559204,
+        "z": -0.21217738091945649
+    },
+    "bottom": {
+        "x": -0.008633196353912354,
+        "y": -0.01195073127746582,
+        "z": -0.21217738091945649
+    },
+    "longestSide": 1.3262871503829957,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

@@ -4,7 +4,11 @@ using System.Globalization;
 using UnityEngine;
 
 public static class ModelAdapterRules {
+    // Stored Prefab size and gameplay size are separate coordinate spaces.
     public const float SourceLongestSide = .43f;
+    // Approximately the median longest side of the original countryside items.
+    public const float DefaultGameplayLongestSide = 2.1f;
+    public const float DefaultGameplayScale = DefaultGameplayLongestSide / SourceLongestSide;
     public const float BoundsTolerance = .05f;
 
     public static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);

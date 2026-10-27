@@ -1,0 +1,62 @@
+{
+    "requestId": "1f1f1f6ed37948238f02e15ba4945391",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/009_Chocolate Bar/ChocolateBar.obj",
+    "logicalId": "ChocolateBar",
+    "displayName": "ChocolateBar",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/ChocolateBar/ChocolateBar.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/ChocolateBar/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.4918769598007202,
+    "visualSize": {
+        "x": 0.575210452079773,
+        "y": 0.06831202656030655,
+        "z": 0.8742023706436157
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.05983507260680199,
+        "z": -1.4901161193847657e-8
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.025679059326648713,
+        "z": -1.4901161193847657e-8
+    },
+    "longestSide": 0.8742023706436157,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

@@ -1,0 +1,62 @@
+{
+    "requestId": "d391b55a4172466f86f3f02722cb0537",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/023_Steak/Steak.obj",
+    "logicalId": "Steak",
+    "displayName": "Steak",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Steak/Steak.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Steak/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.22481778264045716,
+    "visualSize": {
+        "x": 1.3199169635772706,
+        "y": 0.33967068791389468,
+        "z": 1.9126601219177247
+    },
+    "visualCenter": {
+        "x": -0.26549190282821658,
+        "y": 0.0,
+        "z": -0.07666710019111633
+    },
+    "bottom": {
+        "x": -0.26549190282821658,
+        "y": -0.16983534395694734,
+        "z": -0.07666710019111633
+    },
+    "longestSide": 1.9126601219177247,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

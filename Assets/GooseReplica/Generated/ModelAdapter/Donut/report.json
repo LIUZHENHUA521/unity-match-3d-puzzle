@@ -1,0 +1,62 @@
+{
+    "requestId": "924a987b334b4736a773cfe256b7f183",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/013_Donut/Donut.obj",
+    "logicalId": "Donut",
+    "displayName": "Donut",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Donut/Donut.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Donut/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.49437984824180605,
+    "visualSize": {
+        "x": 0.8590501546859741,
+        "y": 0.2913826107978821,
+        "z": 0.8697765469551086
+    },
+    "visualCenter": {
+        "x": -0.0007077306509017944,
+        "y": 0.018214665353298188,
+        "z": 0.008824527263641358
+    },
+    "bottom": {
+        "x": -0.0007077306509017944,
+        "y": -0.12747663259506226,
+        "z": 0.008824527263641358
+    },
+    "longestSide": 0.8697765469551086,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

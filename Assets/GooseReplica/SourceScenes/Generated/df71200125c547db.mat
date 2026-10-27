@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StoreBoxMa
+  m_Name: PotMa
   m_Shader: {fileID: 4800000, guid: d75a34fee6464431992d6113b9fa8d8b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColor:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a304cb069c604158acdf2e7285590403, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Matcap:
@@ -69,7 +69,7 @@ Material:
     - _ground6: 0
     - _ground7: 0
     m_Colors:
-    - _BaseTint: {r: 0, g: 0.5566038, b: 0, a: 1}
+    - _BaseTint: {r: 1, g: 1, b: 1, a: 1}
     - _HighLightColor: {r: 0, g: 0, b: 0, a: 0}
     - _IndirectColor: {r: 0.24528301, g: 0.22098611, b: 0.22098611, a: 0}
     - _LightColor: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0}

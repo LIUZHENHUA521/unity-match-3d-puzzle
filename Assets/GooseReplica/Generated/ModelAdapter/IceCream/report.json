@@ -1,0 +1,62 @@
+{
+    "requestId": "83dda8d5f8db4a4ab619da4b27c0aa6b",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/018_Ice Cream/IceCream.obj",
+    "logicalId": "IceCream",
+    "displayName": "IceCream",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/IceCream/IceCream.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/IceCream/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.46363791823387148,
+    "visualSize": {
+        "x": 0.5155473947525024,
+        "y": 0.9274479150772095,
+        "z": 0.5155472755432129
+    },
+    "visualCenter": {
+        "x": -0.0020358115434646608,
+        "y": 0.30834126472473147,
+        "z": -0.003129243850708008
+    },
+    "bottom": {
+        "x": -0.0020358115434646608,
+        "y": -0.1553826928138733,
+        "z": -0.003129243850708008
+    },
+    "longestSide": 0.9274479150772095,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

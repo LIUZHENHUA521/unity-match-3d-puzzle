@@ -37,12 +37,20 @@ source = '\n'.join(p.read_text() for p in (ROOT / 'Assets/GooseReplica/Scripts')
 names = set(re.findall(r'"([^"\n]+)"', source))
 themes = (ROOT / 'Assets/GooseReplica/Resources/Replica/ThemeLibrary.asset').read_text()
 names.update(re.findall(r'^\s+gooseSprite: (.+)$', themes, re.M))
+# Prefab-based UI references sprites by GUID instead of Resources.Load names.
+# Retain those dependencies when trimming the reference art collection.
+referenced_guids = set()
+for asset in (stage / 'Assets').rglob('*'):
+    if asset.suffix in {'.prefab', '.unity', '.asset', '.mat', '.spriteatlas'}:
+        referenced_guids.update(re.findall(r'guid: ([0-9a-f]{32})', asset.read_text(errors='ignore')))
 sprites = stage / 'Assets/GooseReplica/Resources/GooseArt/Sprites'
 excluded = stage / 'BuildInputs/ReferenceSprites'
 excluded.mkdir(parents=True, exist_ok=True)
 kept, removed = [], []
 for sprite in sprites.glob('*.png'):
-    if sprite.stem in names:
+    meta = sprite.with_suffix('.png.meta')
+    guid = re.search(r'^guid: ([0-9a-f]{32})', meta.read_text(), re.M) if meta.exists() else None
+    if sprite.stem in names or (guid and guid.group(1) in referenced_guids):
         kept.append(sprite.name)
         continue
     removed.append(sprite.name)
@@ -114,6 +122,17 @@ for meta in texture_root.glob('*.png.meta'):
     text = re.sub(r'(?m)^    maxTextureSize: \d+', '    maxTextureSize: 512', text)
     text = re.sub(r'(?m)^    textureCompression: \d+', '    textureCompression: 1', text)
     meta.write_text(text)
+
+# Photoshop UI exports use uncompressed textures for editing. Apply high-quality
+# GPU compression only to the disposable release copy; preserve source artwork
+# and its resolution, sprite borders and layout in the working project.
+for skin in ('GameplaySkin', 'HomeSkinPS', 'SettingsSkinPS'):
+    for meta in (replica_resources / skin).glob('*.meta'):
+        text = meta.read_text()
+        if 'TextureImporter:' not in text:
+            continue
+        text = re.sub(r'(?m)^    textureCompression: \d+', '    textureCompression: 2', text)
+        meta.write_text(text)
 print(f'Staged {stage}; sprites kept={len(kept)}, excluded={len(removed)}', flush=True)
 if args.prepare_only:
     raise SystemExit(0)
@@ -122,6 +141,11 @@ result = subprocess.run(['/Applications/Unity/Unity.app/Contents/MacOS/Unity', '
                          '-projectPath', str(stage), '-buildTarget', 'WebGL',
                          '-executeMethod', 'WechatReleaseBuild.Run', '-logFile', str(log)])
 if result.returncode:
+    if log.exists():
+        errors = [line for line in log.read_text(errors='replace').splitlines()
+                  if line.startswith('Exception:') or 'error CS' in line]
+        if errors:
+            print('\n'.join(errors[-5:]), flush=True)
     raise SystemExit(f'Unity build failed ({result.returncode}); see {log}')
 output = stage / 'Builds/Wechat/minigame'
 entry = (output / 'game.js').read_text()

@@ -1,0 +1,62 @@
+{
+    "requestId": "8298fafe1c314fbeb19a538175de9c6d",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/022_Soda/Soda.obj",
+    "logicalId": "Soda",
+    "displayName": "Soda",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Soda/Soda.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Soda/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.22361810505390168,
+    "visualSize": {
+        "x": 0.9117938876152039,
+        "y": 1.9229212999343873,
+        "z": 0.9117938280105591
+    },
+    "visualCenter": {
+        "x": 2.9802322387695315e-8,
+        "y": 0.9653376936912537,
+        "z": -1.4901161193847657e-7
+    },
+    "bottom": {
+        "x": 2.9802322387695315e-8,
+        "y": 0.0038770437240600588,
+        "z": -1.4901161193847657e-7
+    },
+    "longestSide": 1.9229212999343873,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

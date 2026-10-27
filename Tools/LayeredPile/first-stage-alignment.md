@@ -1,3 +1,5 @@
+> 2026-10-28 更正：本文旧结论不代表完整原版对齐。已发现隐藏旧锅碰撞体泄漏，以及 WinType/WinCount、初始化时序、limitHeight 使用和第一关交互仍有差异。详见 [本次复核](first-stage-collision-audit-2026-10-28.md)。
+
 # 第一关对齐记录
 
 依据 `outputs/goose-analysis/wechat-LevelData.json` 的 `MainLevel / _level=1 / _index=1` 行，第一关使用主题自己的原始模型池，12 个物品、2 种类型、目标高度 6、限制高度 4、场景 `CountrysideStove`，`_limittime=[0]`。

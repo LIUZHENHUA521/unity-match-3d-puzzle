@@ -17,11 +17,10 @@ public class ReplicaDiagnostics : MonoBehaviour {
     float elapsed,worst;
     int frames,steps;
     public void Show(ReplicaFlow flow,Transform parent) {
-        label=flow.Label(parent,"Diagnostics 0.1.10",new Vector2(360,290),new Vector2(700,110),19,Color.white,true);
-        var physics=flow.Button(parent,"Physics ON",new Vector2(180,375),new Vector2(280,48),TogglePhysics,"PopBtn1",22);
-        physicsLabel=physics.GetComponentInChildren<Text>();
-        var models=flow.Button(parent,"Models ON",new Vector2(540,375),new Vector2(280,48),ToggleModels,"PopBtn1",22);
-        modelsLabel=models.GetComponentInChildren<Text>();
+        var view=ReplicaUIView.Load("Diagnostics",parent);
+        label=view.Get<Text>("Readout");
+        physicsLabel=view.Bind("Physics",TogglePhysics).GetComponentInChildren<Text>();
+        modelsLabel=view.Bind("Models",ToggleModels).GetComponentInChildren<Text>();
         elapsed=0;frames=steps=0;worst=0;Native(0);
     }
     public void TogglePhysics() {

@@ -1,0 +1,62 @@
+{
+    "requestId": "473120b69e744eb9a1537c1758432baf",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/001_Apple Green/AppleGreen.obj",
+    "logicalId": "AppleGreen",
+    "displayName": "AppleGreen",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/AppleGreen/AppleGreen.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/AppleGreen/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.5048498511314392,
+    "visualSize": {
+        "x": 0.8024517893791199,
+        "y": 0.851738452911377,
+        "z": 0.7987043857574463
+    },
+    "visualCenter": {
+        "x": 0.00002917647361755371,
+        "y": 0.031672850251197818,
+        "z": 1.4901161193847657e-8
+    },
+    "bottom": {
+        "x": 0.00002917647361755371,
+        "y": -0.39419639110565188,
+        "z": 1.4901161193847657e-8
+    },
+    "longestSide": 0.851738452911377,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

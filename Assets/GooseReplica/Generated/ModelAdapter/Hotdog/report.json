@@ -1,0 +1,62 @@
+{
+    "requestId": "4813a26ae0e5431badb8d4e97ecf0b6b",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/017_Hotdog/Hotdog.obj",
+    "logicalId": "Hotdog",
+    "displayName": "Hotdog",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Hotdog/Hotdog.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Hotdog/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.25874093174934389,
+    "visualSize": {
+        "x": 0.7852928638458252,
+        "y": 0.4093705415725708,
+        "z": 1.6618939638137818
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": -0.09967242926359177,
+        "z": 0.002879798412322998
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": -0.30435770750045779,
+        "z": 0.002879798412322998
+    },
+    "longestSide": 1.6618939638137818,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

@@ -1,0 +1,62 @@
+{
+    "requestId": "5a0977c58a1a4e8eb79b72354f9b8847",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/005_Bread/Bread.obj",
+    "logicalId": "Bread",
+    "displayName": "Bread",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Bread/Bread.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Bread/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.3586173355579376,
+    "visualSize": {
+        "x": 0.6933388113975525,
+        "y": 0.8470235466957092,
+        "z": 1.199049711227417
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.43062952160835268,
+        "z": -5.960464477539063e-8
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.007117748260498047,
+        "z": -5.960464477539063e-8
+    },
+    "longestSide": 1.199049711227417,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

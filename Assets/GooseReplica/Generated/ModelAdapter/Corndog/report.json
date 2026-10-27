@@ -1,0 +1,62 @@
+{
+    "requestId": "9f8c62ac68d2491596f9f07eec04792e",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/010_Corndog/Corndog.obj",
+    "logicalId": "Corndog",
+    "displayName": "Corndog",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Corndog/Corndog.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Corndog/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.318089097738266,
+    "visualSize": {
+        "x": 0.2561560869216919,
+        "y": 1.3518224954605103,
+        "z": 0.2561560869216919
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.6756425499916077,
+        "z": -1.6391277313232423e-7
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": -0.00026869773864746094,
+        "z": -1.6391277313232423e-7
+    },
+    "longestSide": 1.3518224954605103,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

@@ -10,6 +10,7 @@ public sealed class ReplicaSourceLevelPlan : ScriptableObject {
         public int sourceIndex,seconds;
         public float limitHeight;
         public GameObject[] prefabs;
+        public string[] tutorialNames;
         public ChallengeLayer[] layers;
     }
     public Profile[] profiles;
@@ -32,8 +33,8 @@ public sealed class ReplicaSourceLevelPlan : ScriptableObject {
     // height 6, limit height 4, and no countdown.
     public static Profile GetTutorial(string environment){
         var ordinary=Get(environment);
-        string[] names;
-        switch(environment){
+        string[] names = ordinary.tutorialNames;
+        if (names == null || names.Length == 0) switch(environment){
             case "CountrysideStove": names=new[]{"Goose_Tomato","Potato","Orange","SaltedEgg"};break;
             case "GroceryStore": names=new[]{"Goose_ChiliSauce","Banana","GlassCola","WahahaMilk"};break;
             case "Barbecue": names=new[]{"Goose_Pancake","BBQSkewers2","GrilledCorn"};break;

@@ -10,6 +10,7 @@ public sealed class ReplicaThemePresentation : MonoBehaviour {
  public static readonly Quaternion SourceRotation=new Quaternion(.6560590267f,0,0,.7547096610f);
  public static Vector3 SourcePosition=>new Vector3(0,0,.5f)+SourceRotation*new Vector3(0,0,-30);
  GameObject visual;Camera camera;CameraFitter fitter;bool fitted,orthographic;Vector3 position;Quaternion rotation;float size,near,far,fov;Rect rect;CameraClearFlags clear;Color background;bool hdr;int culling;
+ Collider[] legacyColliders;bool[] colliderStates;
  Renderer[] legacy;bool[] enabledStates;ReplicaSourceLighting lighting;
  public void Begin(string theme){
   End();var prefab=Resources.Load<GameObject>("Replica/Scenes/"+theme);if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
@@ -18,7 +19,12 @@ public sealed class ReplicaThemePresentation : MonoBehaviour {
   // The source theme prefab owns the complete backdrop. Hide the legacy
   // Cooking Pot while the source presentation is active so the two bowls do
   // not overlap; restore its original renderer states when leaving the theme.
-  var pot=GameObject.Find("Cooking Pot");if(pot){legacy=pot.GetComponentsInChildren<Renderer>(true);enabledStates=legacy.Select(r=>r.enabled).ToArray();foreach(var r in legacy)r.enabled=false;}
+  // Own both visual and collision suppression for the full presentation lifetime,
+  // including first-stage -> second-stage reuse. Hidden renderers still collide.
+  var pot=GameObject.Find("Cooking Pot");if(pot){
+   legacy=pot.GetComponentsInChildren<Renderer>(true);enabledStates=legacy.Select(r=>r.enabled).ToArray();foreach(var r in legacy)r.enabled=false;
+   legacyColliders=pot.GetComponentsInChildren<Collider>(true);colliderStates=legacyColliders.Select(c=>c.enabled).ToArray();foreach(var c in legacyColliders)c.enabled=false;
+  }
   camera=Camera.main;if(!camera)return;position=camera.transform.position;rotation=camera.transform.rotation;size=camera.orthographicSize;orthographic=camera.orthographic;near=camera.nearClipPlane;far=camera.farClipPlane;fov=camera.fieldOfView;rect=camera.rect;clear=camera.clearFlags;background=camera.backgroundColor;hdr=camera.allowHDR;culling=camera.cullingMask;
   fitter=camera.GetComponent<CameraFitter>();if(fitter){fitted=fitter.enabled;fitter.enabled=false;}
   camera.transform.SetPositionAndRotation(SourcePosition,SourceRotation);camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.clear;camera.allowHDR=false;camera.cullingMask=503;camera.orthographic=true;camera.nearClipPlane=.3f;camera.farClipPlane=1000;camera.rect=new Rect(0,0,1,1);Fit();
@@ -30,6 +36,7 @@ public sealed class ReplicaThemePresentation : MonoBehaviour {
   if(lighting)lighting.End();
   if(visual){visual.SetActive(false);Destroy(visual);visual=null;}
   if(legacy!=null)for(int i=0;i<legacy.Length;i++)if(legacy[i])legacy[i].enabled=enabledStates[i];legacy=null;
+  if(legacyColliders!=null)for(int i=0;i<legacyColliders.Length;i++)if(legacyColliders[i])legacyColliders[i].enabled=colliderStates[i];legacyColliders=null;colliderStates=null;
   if(camera){camera.transform.SetPositionAndRotation(position,rotation);camera.orthographic=orthographic;camera.orthographicSize=size;camera.nearClipPlane=near;camera.farClipPlane=far;camera.fieldOfView=fov;camera.rect=rect;camera.clearFlags=clear;camera.backgroundColor=background;camera.allowHDR=hdr;camera.cullingMask=culling;}
   if(fitter)fitter.enabled=fitted;camera=null;fitter=null;
  }

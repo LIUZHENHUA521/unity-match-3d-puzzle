@@ -1,0 +1,62 @@
+{
+    "requestId": "b4c17dfeafbd4cdd9a9bf6670e88ffb6",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/019_Pizza/Pizza.obj",
+    "logicalId": "Pizza",
+    "displayName": "Pizza",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Pizza/Pizza.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Pizza/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.1275269091129303,
+    "visualSize": {
+        "x": 3.371837615966797,
+        "y": 0.1609334647655487,
+        "z": 3.3568615913391115
+    },
+    "visualCenter": {
+        "x": -0.004414737224578857,
+        "y": 0.06635741889476776,
+        "z": -0.014893829822540284
+    },
+    "bottom": {
+        "x": -0.004414737224578857,
+        "y": -0.014109313488006592,
+        "z": -0.014893829822540284
+    },
+    "longestSide": 3.371837615966797,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

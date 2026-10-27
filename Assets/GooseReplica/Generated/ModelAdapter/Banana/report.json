@@ -1,0 +1,62 @@
+{
+    "requestId": "e13b379b10324e79a075e7fc907376da",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/003_Banana/Banana.obj",
+    "logicalId": "Banana",
+    "displayName": "Banana",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Banana/Banana.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Banana/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.30622193217277529,
+    "visualSize": {
+        "x": 1.1753950119018555,
+        "y": 1.4042103290557862,
+        "z": 0.3094794750213623
+    },
+    "visualCenter": {
+        "x": 0.1189756840467453,
+        "y": 0.25635960698127749,
+        "z": -0.0384209044277668
+    },
+    "bottom": {
+        "x": 0.1189756840467453,
+        "y": -0.4457455575466156,
+        "z": -0.0384209044277668
+    },
+    "longestSide": 1.4042103290557862,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

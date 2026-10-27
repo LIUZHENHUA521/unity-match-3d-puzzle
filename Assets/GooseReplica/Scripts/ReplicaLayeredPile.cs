@@ -29,7 +29,7 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
     public int HiddenCount => entries.Count(e=>e.body&&!e.visible);
     class Entry { public Rigidbody body;public Renderer[] renderers;public Vector3 scale;public ReplicaSourceColliders sourceColliders;public bool visible;public bool changeObjScale;public float growth=1;public float creationScale=1;public bool finishCreate=true; }
     readonly List<Entry> entries=new List<Entry>();
-    Transform pot;Collider[] oldWalls;bool[] wallStates;GameObject boundary;
+    GameObject boundary;
     void Awake(){Instance=this;}
     void OnDestroy(){Clear();if(Instance==this)Instance=null;}
     public static float Radius(float y)=>ReplicaSourceProfile.HalfExtent(y);
@@ -50,11 +50,6 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
         }else{
             if(!presentation)presentation=gameObject.AddComponent<ReplicaThemePresentation>();
             presentation.Begin(ReplicaSourceEnvironment.CurrentName);
-        }
-        pot=GameObject.Find("Cooking Pot")?.transform;
-        if(pot){
-            oldWalls=pot.GetComponentsInChildren<Collider>();
-            wallStates=oldWalls.Select(c=>c.enabled).ToArray();foreach(var c in oldWalls)c.enabled=false;
         }
         boundary=reusedBoundary??ReplicaSourceEnvironment.CreateBoundary();
         boundary.name=ReplicaSourceEnvironment.CurrentName+" source collision reference";
@@ -192,9 +187,8 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
     public void Clear(){
         Running=false;Creating=false;StopCreationGrowth();
         foreach(var e in entries)if(e.body){SetGrowth(e,1);if(e.sourceColliders)e.sourceColliders.SetVisible(true);foreach(var r in e.renderers)if(r)r.enabled=true;}
-        entries.Clear();if(presentation)presentation.End();
-        if(oldWalls!=null)for(int i=0;i<oldWalls.Length;i++)if(oldWalls[i])oldWalls[i].enabled=wallStates[i];
+        entries.Clear();if(presentation)presentation.End();presentation=null;
         if(boundary){boundary.SetActive(false);Destroy(boundary);}
-        pot=null;oldWalls=null;boundary=null;
+        boundary=null;
     }
 }

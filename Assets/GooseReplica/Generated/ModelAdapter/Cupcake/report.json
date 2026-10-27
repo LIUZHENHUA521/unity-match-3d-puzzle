@@ -1,0 +1,62 @@
+{
+    "requestId": "e82f7e82cd7445bca09e993d19e88505",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/012_Cupcake/Cupcake.obj",
+    "logicalId": "Cupcake",
+    "displayName": "Cupcake",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Cupcake/Cupcake.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Cupcake/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.46159258484840395,
+    "visualSize": {
+        "x": 0.7341572046279907,
+        "y": 0.9315574169158936,
+        "z": 0.7258005142211914
+    },
+    "visualCenter": {
+        "x": 0.02063506841659546,
+        "y": 0.3432846665382385,
+        "z": -0.002528354525566101
+    },
+    "bottom": {
+        "x": 0.02063506841659546,
+        "y": -0.12249404191970825,
+        "z": -0.002528354525566101
+    },
+    "longestSide": 0.9315574169158936,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

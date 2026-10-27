@@ -17,134 +17,144 @@ MonoBehaviour:
     sourceIndex: 1
     seconds: 600
     limitHeight: 21.5
+    tutorialNames:
+    - AppleGreen
+    - Avocado
+    - Broccoli
+    - Croissant
     prefabs:
-    - {fileID: 1815822016762190056, guid: 8c3fcc6b020eb42fcb7b92ae883f825a, type: 3}
-    - {fileID: 8889431932489063424, guid: 9a72b68ef8378458986e429bdd339932, type: 3}
-    - {fileID: 7247069382544806786, guid: 7f8f23c6430a34d1b8735af4452bb349, type: 3}
-    - {fileID: 1932347743944844673, guid: c976699f2a41c478a9d7b01e5be76e46, type: 3}
-    - {fileID: 1413067997728954432, guid: 08a99436792b24ac1b6d462a6c10aeb1, type: 3}
-    - {fileID: 1068629075532476325, guid: a7f9eef18715942d8be1511cb1b5a6d4, type: 3}
-    - {fileID: 6848212252956530007, guid: 9884e7f9e66734925aba606af9911bf7, type: 3}
-    - {fileID: 5761419096678708950, guid: 2ea6a2b631acc4663bdfcc0f4db9095a, type: 3}
-    - {fileID: 2011612114248968123, guid: 4feab73f90cb14c219581ab23e410200, type: 3}
-    - {fileID: 4224091736557857809, guid: ef04d3270cf6d45d4b565e3684b1946f, type: 3}
-    - {fileID: 619505012423568414, guid: dc4a52713ec8b46b5900709e8079623b, type: 3}
-    - {fileID: 3353550484554450162, guid: 6598992e90899413d8a2f294836bdad4, type: 3}
-    - {fileID: 4939770606524418062, guid: 6c14149a424d3463ba783a7414c0d34b, type: 3}
-    - {fileID: 7163262378425603715, guid: 3180a96ddaa864cba8f683c25289d6ba, type: 3}
-    - {fileID: 1637764925751030036, guid: 9f36477d144c54ed0b99f823f79552a1, type: 3}
-    - {fileID: 7191215260279103103, guid: bc123060fe6504fbfb5495a2e70cf0cd, type: 3}
-    - {fileID: 5634884904833496215, guid: ad1bef68636094c9983e90a784f60268, type: 3}
-    - {fileID: 3959315542666418671, guid: ed6fd9d2dec1843049dd6fa09b404293, type: 3}
-    - {fileID: 2254621766201865216, guid: 9ec3e28310d4e4c25be89e808086ae28, type: 3}
-    - {fileID: 4550350545386331436, guid: 268b29869ed274e6aaa84d3001a58f0c, type: 3}
-    - {fileID: 2518254576524163000, guid: 66b9aa74052404a358bab518014789c8, type: 3}
-    - {fileID: 6607291932500756491, guid: f72c3f4019f3245548a2f971b9ce673c, type: 3}
+    - {fileID: 1359654659339291410, guid: ffbcfed118cd34052aa7d1c4568fb387, type: 3}
+    - {fileID: 2889027287666926041, guid: 02a68ba3294be4287b4596dc1b184892, type: 3}
+    - {fileID: 2410030124605836480, guid: bc309efa74cba4959a2d34b558b15c61, type: 3}
+    - {fileID: 5514353622174584986, guid: bcb61ac60b7db4ce68031d365eec5d5c, type: 3}
+    - {fileID: 3229883777812714596, guid: 9f7f0ecdd95ae48ab9140c13938eb490, type: 3}
+    - {fileID: 2971652822918563286, guid: d4a81e7c8df8e454f8ad5e6028be32e4, type: 3}
+    - {fileID: 1702596613568810496, guid: 7758dc002776740f39238937a0eda8bd, type: 3}
+    - {fileID: 2830470215440344672, guid: 6a2aca2a31c4049c38dd24389aeec2d1, type: 3}
+    - {fileID: 5631954297974291522, guid: 28aca7ed4022d4c928b79e68b9120f93, type: 3}
+    - {fileID: 1503301747676384850, guid: 57ac4f4bf36684760a237c0d9eb5166a, type: 3}
+    - {fileID: 9222541254733721683, guid: 13152f4cd5aa94a34a5225983245b32b, type: 3}
+    - {fileID: 624748491968820647, guid: b4de3db559798498b9cf871300cdf886, type: 3}
+    - {fileID: 4869629457496889767, guid: 072b31d25564f42e7893370589de30cf, type: 3}
+    - {fileID: 5030187314925978714, guid: 9e112c02bc8dc436491cba0d0466f2bd, type: 3}
+    - {fileID: 952025812838536831, guid: 3a17c5e8217414fbf8e8d46806b5a1fa, type: 3}
+    - {fileID: 3345162343504402117, guid: 49d109d60a9b64090b737adfe1afb2cd, type: 3}
+    - {fileID: 633595130470954713, guid: f5cb8f9efc11d49fa9eff00bdcd3d827, type: 3}
+    - {fileID: 4579418487622020822, guid: 86aca40b172044b4cad332934a32aa3c, type: 3}
+    - {fileID: 3394875380398197649, guid: c03e86aeaeade466899f77aa46320bd1, type: 3}
+    - {fileID: 5028143553833825734, guid: b0e889c3be9c947cfa4743203c34443a, type: 3}
+    - {fileID: 7129614917882245210, guid: 69ba4119be6e54ac8b7e202fe6c24886, type: 3}
+    - {fileID: 7730111320831322452, guid: 78abf19f80870475a892fac01f3c6f48, type: 3}
+    - {fileID: 7941093430980560012, guid: cbbbecc564b95433b8599577e15e6b94, type: 3}
     layers:
     - count: 150
-      types: 22
+      types: 23
       height: 14
       weights:
-      - 0.8
-      - 1
-      - 0.6
-      - 0.4
-      - 0.8
-      - 2
-      - 2
       - 1
       - 1
-      - 2
       - 1
-      - 2
-      - 0.8
-      - 2
-      - 2
       - 1
-      - 2
-      - 2
       - 1
-      - 0.8
-      - 0.8
-      - 0.8
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
     - count: 60
       types: 10
       height: 18
       weights:
-      - 0.8
-      - 1
-      - 0.6
-      - 0.4
-      - 0.8
-      - 2
-      - 2
       - 1
       - 1
-      - 2
       - 1
-      - 2
-      - 0.8
-      - 2
-      - 2
       - 1
-      - 2
-      - 2
       - 1
-      - 0.8
-      - 0.8
-      - 0.8
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
     - count: 45
       types: 8
       height: 20
       weights:
-      - 0.8
-      - 1
-      - 0.6
-      - 0.4
-      - 0.8
-      - 2
-      - 2
       - 1
       - 1
-      - 2
       - 1
-      - 2
-      - 0.8
-      - 2
-      - 2
       - 1
-      - 2
-      - 2
       - 1
-      - 0.8
-      - 0.8
-      - 0.8
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
     - count: 45
       types: 7
       height: 22
       weights:
-      - 0.8
-      - 1
-      - 0.6
-      - 0.4
-      - 0.8
-      - 2
-      - 2
       - 1
       - 1
-      - 2
       - 1
-      - 2
-      - 0.8
-      - 2
-      - 2
       - 1
-      - 2
-      - 2
       - 1
-      - 0.8
-      - 0.8
-      - 0.8
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
   - environment: GroceryStore
     sourceIndex: 4
     seconds: 600

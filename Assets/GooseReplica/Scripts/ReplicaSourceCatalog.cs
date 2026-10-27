@@ -12,6 +12,7 @@ public static class ReplicaSourceCatalog {
         public string id;
         public string displayName;
         public string prefabPath;
+        // Runtime scale applied to the already-normalized Prefab, not its import scale.
         public float normalizedToSource;
         public ColliderProfile colliderProfile;
         public AudioProfile audioProfile;

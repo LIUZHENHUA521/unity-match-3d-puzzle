@@ -1,0 +1,62 @@
+{
+    "requestId": "0351829d044a4573be18f85726f1c90c",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/021_Pumpkin/Pumpkin.obj",
+    "logicalId": "Pumpkin",
+    "displayName": "Pumpkin",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Pumpkin/Pumpkin.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Pumpkin/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.28433293104171755,
+    "visualSize": {
+        "x": 1.4972639083862305,
+        "y": 0.9309451580047607,
+        "z": 1.5123116970062256
+    },
+    "visualCenter": {
+        "x": -0.03167831897735596,
+        "y": 0.4613432288169861,
+        "z": -2.9802322387695315e-8
+    },
+    "bottom": {
+        "x": -0.03167831897735596,
+        "y": -0.004129350185394287,
+        "z": -2.9802322387695315e-8
+    },
+    "longestSide": 1.5123116970062256,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

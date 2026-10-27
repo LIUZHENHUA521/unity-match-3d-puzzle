@@ -22,12 +22,13 @@ public class ReplicaFlow : MonoBehaviour {
     public string LastResult {get;private set;}
     public int TodaySeed {get;private set;}
     public float AppliedModelSize {get;private set;}=1f;
-    Canvas canvas;RectTransform page,modal;Font font;Text timer,remaining,peerText,toast;
+    Canvas canvas;RectTransform page,modal;Text timer,remaining,peerText,toast;
     ReplicaPilePhysics pilePhysics;
     ReplicaLayeredPile layeredPile;
     ReplicaThemePresentation sourceTutorialPresentation;
     GameObject sourceTutorialBoundary;
     ReplicaDiagnostics diagnostics;
+    ReplicaGameplayHUD gameplayHUD;
     Button moveToolButton,findToolButton,shuffleToolButton;
     ReplicaNetwork network;AudioSource music,effects;int pvpUndo=3;bool resultShown,pendingPick;
     int displayedTime=-1,displayedCount=-1,displayedPeer=-1;
@@ -55,12 +56,9 @@ public class ReplicaFlow : MonoBehaviour {
         QualitySettings.shadowDistance=20f;
         QualitySettings.shadowCascades=0;
         foreach(var c in FindObjectsOfType<Canvas>())c.gameObject.SetActive(false);
-        font=library.font?library.font:Resources.Load<Font>("Replica/Fonts/GooseSans");
-        if(!font)font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        canvas=new GameObject("Goose UI",typeof(RectTransform),typeof(Canvas),typeof(CanvasScaler),typeof(GraphicRaycaster)).GetComponent<Canvas>();
-        canvas.renderMode=RenderMode.ScreenSpaceOverlay;canvas.sortingOrder=100;
-        var scaler=canvas.GetComponent<CanvasScaler>();scaler.uiScaleMode=CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(720,1280);scaler.matchWidthOrHeight=0;
-        page=Rect("Page",canvas.transform,Vector2.zero,new Vector2(720,1280));Stretch(page);
+        var uiRoot=ReplicaUIView.Load("UIRoot",null);
+        canvas=uiRoot.GetComponent<Canvas>();canvas.name="Goose UI";
+        page=uiRoot.Get<RectTransform>("Page");
         music=gameObject.AddComponent<AudioSource>();music.loop=true;music.volume=.25f;
         effects=gameObject.AddComponent<AudioSource>();effects.volume=.65f;
         pilePhysics=gameObject.AddComponent<ReplicaPilePhysics>();
@@ -87,7 +85,7 @@ public class ReplicaFlow : MonoBehaviour {
             }
             int t=Mathf.CeilToInt(GameManager.Instance.currentLevelTime);
             int count=LevelGenerator.Instance.objectsOnScene.Count;
-            if(timer&&t!=displayedTime){timer.text=GameManager.Instance.currentLevelTime>0?(t/60).ToString("00")+":"+(t%60).ToString("00"):"";displayedTime=t;}
+            if(timer&&t!=displayedTime){timer.text=GameManager.Instance.currentLevelTime>0?(t/60).ToString("00")+":"+(t%60).ToString("00"):(gameplayHUD?"∞":"");displayedTime=t;}
             if(remaining&&count!=displayedCount)remaining.text="剩余 "+count+" / "+InitialCount;
             if(peerText&&(count!=displayedCount||otherCleared!=displayedPeer))peerText.text="我方 "+(InitialCount-count)+" / "+InitialCount+"    对手 "+otherCleared+" / "+InitialCount;
             displayedCount=count;displayedPeer=otherCleared;
@@ -96,7 +94,7 @@ public class ReplicaFlow : MonoBehaviour {
 
     void Clear(){
         displayedTime=displayedCount=displayedPeer=-1;
-        foreach(Transform t in page)Destroy(t.gameObject);modal=null;timer=null;remaining=null;peerText=null;toast=null;BlocksGameplay=false;
+        foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;peerText=null;toast=null;BlocksGameplay=false;
     }
     void Music(AudioClip clip){if(music.clip!=clip){music.clip=clip;if(clip)music.Play();}music.mute=!SettingsMusic;}
     void Click(){if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
@@ -115,37 +113,29 @@ public class ReplicaFlow : MonoBehaviour {
     }
     public void HomeClick(){Click();}
     public void ShowRewardInfo(){
-        BlocksGameplay=true;
-        var panel=Modal("红包奖励");
-        Label(panel,"本科局：毕业可领 "+ReplicaHomeView.BachelorReward+" 元奖励\n\n清北局：毕业可领 "+ReplicaHomeView.EliteReward+" 元奖励",new Vector2(360,475),new Vector2(550,180),31);
-        Label(panel,"奖励规则即将开放",new Vector2(360,670),new Vector2(500,70),27);
-        Button(panel,"知道了",new Vector2(360,845),new Vector2(420,95),()=>{Destroy(panel.gameObject);modal=null;BlocksGameplay=false;},"PopBtn2",32);
-    }
-    void IconButton(string sprite,string text,Vector2 pos,Action action){
-        Button(page,"",pos,new Vector2(118,118),action,sprite);Label(page,text,pos+new Vector2(0,91),new Vector2(220,44),26);
+        BlocksGameplay=true;var view=OpenModal("Reward");
+        view.Text("Amounts","本科局：毕业可领 "+ReplicaHomeView.BachelorReward+" 元奖励\n\n清北局：毕业可领 "+ReplicaHomeView.EliteReward+" 元奖励");
+        view.Bind("Close",()=>CloseModal());
     }
     public void ShowThemes(){
-        Clear();ScreenName="themes";Background(new Color(.96f,.91f,.75f));Title("主题玩法",Home);
-        Label(page,"每个主题都有一只等待你的大鹅",new Vector2(360,180),new Vector2(650,55),26);
+        Clear();ScreenName="themes";var view=ReplicaUIView.Load("Themes",page);view.Bind("Back",Home);
         for(int i=0;i<library.themes.Length;i++){
-            int index=i;var theme=library.themes[i];float y=350+i*240;
-            Art(page,"PopBG2",new Vector2(360,y),new Vector2(620,205),false);
-            Art(page,theme.gooseSprite,new Vector2(132,y),new Vector2(140,160));
-            Label(page,theme.title,new Vector2(420,y-55),new Vector2(350,54),36);
-            Label(page,theme.subtitle,new Vector2(430,y),new Vector2(390,46),23);
-            Button(page,"挑战",new Vector2(440,y+62),new Vector2(240,66),()=>Begin(index),"MainBtnBg",28);
+            int index=i;var theme=library.themes[i];
+            view.Text("Name"+i,theme.title);view.Text("Description"+i,theme.subtitle);
+            view.Get<Image>("Goose"+i).sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+theme.gooseSprite);
+            view.Bind("Play"+i,()=>Begin(index));
         }
     }
     public bool HasGoose(string id){return PlayerPrefs.GetInt("goose.collection."+id,0)>0;}
     public void ShowCollection(){
-        Clear();ScreenName="collection";Background(new Color(.96f,.91f,.75f));Title("我的大鹅",Home);
-        Label(page,"已收集 "+library.themes.Count(t=>HasGoose(t.id))+" / "+library.themes.Length,new Vector2(360,190),new Vector2(600,60),30);
+        Clear();ScreenName="collection";var view=ReplicaUIView.Load("Collection",page);view.Bind("Back",Home);
+        view.Text("Count","已收集 "+library.themes.Count(t=>HasGoose(t.id))+" / "+library.themes.Length);
         for(int i=0;i<library.themes.Length;i++){
-            int index=i;var t=library.themes[i];float y=380+i*240;bool got=HasGoose(t.id);
-            var art=Art(page,t.gooseSprite,new Vector2(180,y),new Vector2(185,185));art.color=got?Color.white:new Color(.28f,.28f,.28f,.8f);
-            Label(page,t.title,new Vector2(450,y-45),new Vector2(370,55),32);
-            Label(page,got?"已获得 · 永久收藏":"通关主题第二关解锁",new Vector2(450,y+14),new Vector2(400,50),24);
-            Button(page,got?"再挑战":"去解锁",new Vector2(450,y+75),new Vector2(250,65),()=>Begin(index),"PopBtn1",25);
+            int index=i;var theme=library.themes[i];bool got=HasGoose(theme.id);
+            var art=view.Get<Image>("Goose"+i);art.sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+theme.gooseSprite);
+            art.color=got?Color.white:new Color(.28f,.28f,.28f,.8f);
+            view.Text("Name"+i,theme.title);view.Text("Status"+i,got?"已获得 · 永久收藏":"通关主题第二关解锁");
+            view.Text("Play"+i+"Text",got?"再挑战":"去解锁");view.Bind("Play"+i,()=>Begin(index));
         }
     }
     public void Begin(int theme){
@@ -299,16 +289,18 @@ public class ReplicaFlow : MonoBehaviour {
     }
     void HUD(){
         Clear();ScreenName="game";resultShown=false;BlocksGameplay=false;
-        Label(page,IsPvp?"好友对战":CurrentTheme.title+" · 第"+Stage+"关",new Vector2(320,70),new Vector2(550,65),34,Color.white,true);
-        Button(page,"",new Vector2(649,70),new Vector2(72,72),()=>ShowSettings(true),"PauseBtn");
-        timer=Label(page,"",new Vector2(360,150),new Vector2(250,65),45,Color.white);
-        remaining=Label(page,"",new Vector2(360,220),new Vector2(520,50),27,Color.white);
-        if(IsPvp)peerText=Label(page,"",new Vector2(360,280),new Vector2(680,46),24,Color.white);
-        float controlsY=page.rect.height-155;
-        moveToolButton=Button(page,!IsPvp&&Stage==2?"移出":"撤回",new Vector2(135,controlsY),new Vector2(180,90),Undo,"PopBtn1",29);
-        shuffleToolButton=Button(page,!IsPvp&&Stage==2?"打乱":"颠锅",new Vector2(360,controlsY),new Vector2(180,90),()=>{if(ReplicaSourceTools.Enabled)ReplicaSourceTools.MessUp();else FindObjectOfType<FoodPileShake>().Shake();},"MainBtnBg",29);
-        findToolButton=Button(page,IsPvp?"认输":Stage==2?"凑齐":"提示",new Vector2(585,controlsY),new Vector2(180,90),()=>{if(IsPvp)network.Send(new ReplicaMessage{type="surrender"});else BoosterManager.Instance.HintButton();},"PopBtn2",29);
-        if(!IsPvp&&Stage!=2)Button(page,"冻结时间",new Vector2(360,controlsY+90),new Vector2(240,48),()=>BoosterManager.Instance.Freeze(),"PopBtn1",23);
+        var view=ReplicaUIView.Load(IsPvp?"PvpGameHUD":"GameHUD",page);
+        gameplayHUD=view.GetComponent<ReplicaGameplayHUD>();
+        if(gameplayHUD)view.Bind("Settings",()=>ShowSettings(true));
+        view.Text("Title",IsPvp?"好友对战":CurrentTheme.title+" · 第"+Stage+"关");
+        view.Bind("Pause",()=>ShowSettings(true));timer=view.Get<Text>("Timer");remaining=view.Get<Text>("Remaining");
+        view.Show("Peer",IsPvp);peerText=IsPvp?view.Get<Text>("Peer"):null;
+        view.Text("UndoText",!IsPvp&&Stage==2?"移出":"撤回");moveToolButton=view.Bind("Undo",Undo);
+        view.Text("ShuffleText",!IsPvp&&Stage==2?"打乱":"颠锅");
+        shuffleToolButton=view.Bind("Shuffle",()=>{if(ReplicaSourceTools.Enabled)ReplicaSourceTools.MessUp();else FindObjectOfType<FoodPileShake>().Shake();});
+        view.Text("HintText",IsPvp?"认输":Stage==2?"凑齐":"提示");
+        findToolButton=view.Bind("Hint",()=>{if(IsPvp)network.Send(new ReplicaMessage{type="surrender"});else BoosterManager.Instance.HintButton();});
+        view.Show("Freeze",!gameplayHUD&&!IsPvp&&Stage!=2);view.Bind("Freeze",()=>BoosterManager.Instance.Freeze());
     }
     public bool HandleResult(bool win){
         if(ScreenName!="game"||resultShown)return true;
@@ -319,10 +311,11 @@ public class ReplicaFlow : MonoBehaviour {
     }
     void Result(bool win,string title,string detail){
         LastResult=title;BlocksGameplay=true;Time.timeScale=1;
-        var panel=Modal(title);Art(panel,CurrentTheme.gooseSprite,new Vector2(360,445),new Vector2(205,230));
-        Label(panel,detail,new Vector2(360,650),new Vector2(580,90),27);
-        Button(panel,IsPvp?"再次匹配":win&&Stage==1?"挑战第二关":win?"查看图鉴":"再试一次",new Vector2(360,790),new Vector2(420,100),()=>{if(IsPvp){StopBoard();ShowPvp();}else if(win&&Stage==1)NextStage();else if(win){StopBoard();ShowCollection();}else RestartStage();},"MainBtnBg",32);
-        Button(panel,"返回首页",new Vector2(360,920),new Vector2(350,86),Home,"PopBtn1",29);
+        var view=OpenModal("Result");view.Text("Title",title);view.Text("Detail",detail);
+        view.Get<Image>("Goose").sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+CurrentTheme.gooseSprite);
+        view.Text("ContinueText",IsPvp?"再次匹配":win&&Stage==1?"挑战第二关":win?"查看图鉴":"再试一次");
+        view.Bind("Continue",()=>{if(IsPvp){StopBoard();ShowPvp();}else if(win&&Stage==1)NextStage();else if(win){StopBoard();ShowCollection();}else RestartStage();});
+        view.Bind("Home",Home);
         var clip=win?library.winSound:library.loseSound;if(SettingsEffects&&clip)effects.PlayOneShot(clip);
 #if UNITY_WEBGL && !UNITY_EDITOR
         if(!win&&SettingsVibration)WeChatWASM.WX.VibrateShort(new WeChatWASM.VibrateShortOption{type="light"});
@@ -341,66 +334,46 @@ public class ReplicaFlow : MonoBehaviour {
     }
     public void ShowModelSize(){
         if(IsPvp||Stage!=2||ScreenName!="game")return;
-        Time.timeScale=0;BlocksGameplay=true;
-        var panel=Modal("调整模型大小");
-        Action close=()=>{Destroy(panel.gameObject);modal=null;BlocksGameplay=false;Time.timeScale=1;};
-        Button(panel,"×",new Vector2(622,250),new Vector2(66,66),close,"CloseBtn",30);
-        Label(panel,"当前这局："+AppliedModelSize.ToString("F2")+"×",new Vector2(360,385),new Vector2(540,65),29);
-        var readout=Label(panel,"",new Vector2(360,480),new Vector2(500,75),43);
-        var track=Rect("ModelSizeSlider",panel,new Vector2(360,580),new Vector2(440,60));
-        var hit=track.gameObject.AddComponent<Image>();hit.color=new Color(0,0,0,.04f);
-        var rail=Rect("Rail",track,new Vector2(220,30),new Vector2(440,12));rail.gameObject.AddComponent<Image>().color=new Color(.48f,.35f,.20f);rail.GetComponent<Image>().raycastTarget=false;
-        var handleArea=Rect("Handle area",track,new Vector2(220,30),new Vector2(410,60));
-        var handle=Rect("Handle",handleArea,Vector2.zero,new Vector2(42,60));
-        handle.sizeDelta=new Vector2(42,0);
-        var handleImage=handle.gameObject.AddComponent<Image>();handleImage.color=new Color(1f,.66f,.15f);
-        var slider=track.gameObject.AddComponent<Slider>();slider.targetGraphic=handleImage;slider.handleRect=handle;
-        slider.minValue=50;slider.maxValue=125;slider.wholeNumbers=true;slider.value=Mathf.RoundToInt(AppliedModelSize*100);
-        Action refresh=()=>readout.text="新大小："+(slider.value/100f).ToString("F2")+"×";
+        Time.timeScale=0;BlocksGameplay=true;var view=OpenModal("ModelSize");
+        view.Bind("Close",()=>CloseModal(true));view.Text("Current","当前这局："+AppliedModelSize.ToString("F2")+"×");
+        var slider=view.Get<Slider>("Slider");slider.SetValueWithoutNotify(Mathf.RoundToInt(AppliedModelSize*100));
+        Action refresh=()=>view.Text("Readout","新大小："+(slider.value/100f).ToString("F2")+"×");
         slider.onValueChanged.AddListener(_=>refresh());refresh();
-        Label(panel,"小 0.50×                         大 1.25×",new Vector2(360,645),new Vector2(520,50),23);
-        Button(panel,"− 0.01",new Vector2(200,710),new Vector2(200,65),()=>slider.value--,"PopBtn1",25);
-        Button(panel,"＋ 0.01",new Vector2(520,710),new Vector2(200,65),()=>slider.value++,"PopBtn1",25);
-        Label(panel,"1.00× = 刚才偏大的版本\n保持物品大小比例，重开后生效",new Vector2(360,795),new Vector2(540,90),25);
-        Button(panel,"按此大小重开",new Vector2(360,900),new Vector2(460,90),()=>{
-            ReplicaSourceProfile.ModelSizeMultiplier=slider.value/100f;Time.timeScale=1;RestartStage();
-        },"PopBtn2",30);
-        Button(panel,"恢复 1.00×",new Vector2(360,995),new Vector2(300,58),()=>slider.value=100,"PopBtn1",24);
+        view.Bind("Minus",()=>slider.value--);view.Bind("Plus",()=>slider.value++);
+        view.Bind("Apply",()=>{ReplicaSourceProfile.ModelSizeMultiplier=slider.value/100f;Time.timeScale=1;RestartStage();});
+        view.Bind("Reset",()=>slider.value=100);
     }
     public void ShowSettings(bool ingame){
         if(ingame&&!IsPvp)Time.timeScale=0;BlocksGameplay=true;
-        var panel=Modal(ingame?"暂停 / 设置":"设置");
-        Action close=()=>{Destroy(panel.gameObject);modal=null;BlocksGameplay=false;if(ingame&&!IsPvp)Time.timeScale=1;};
-        Button(panel,"×",new Vector2(622,250),new Vector2(66,66),close,"CloseBtn",30);
-        SettingToggle(panel,"音乐",400,SettingsMusic,value=>{PlayerPrefs.SetInt("goose.music",value?1:0);music.mute=!value;PlayerPrefs.Save();});
-        SettingToggle(panel,"音效",535,SettingsEffects,value=>{PlayerPrefs.SetInt("goose.effects",value?1:0);PlayerPrefs.Save();});
-        SettingToggle(panel,"震动",670,SettingsVibration,value=>{PlayerPrefs.SetInt("goose.vibration",value?1:0);PlayerPrefs.Save();});
-        Button(panel,ingame?"继续游戏":"完成",new Vector2(360,840),new Vector2(430,95),close,"PopBtn2",32);
-        if(ingame)Button(panel,"返回首页",new Vector2(360,965),new Vector2(370,85),Home,"PopBtn1",29);
+        var view=OpenModal("PauseSettings");view.Text("Title",ingame?"暂停 / 设置":"设置");
+        Action close=()=>CloseModal(ingame&&!IsPvp);
+        view.Bind("Close",close);view.Bind("Continue",close);view.Text("ContinueText",ingame?"继续游戏":"完成");
+        SettingToggle(view,"Music",SettingsMusic,value=>{PlayerPrefs.SetInt("goose.music",value?1:0);music.mute=!value;PlayerPrefs.Save();});
+        SettingToggle(view,"Effects",SettingsEffects,value=>{PlayerPrefs.SetInt("goose.effects",value?1:0);PlayerPrefs.Save();});
+        SettingToggle(view,"Vibration",SettingsVibration,value=>{PlayerPrefs.SetInt("goose.vibration",value?1:0);PlayerPrefs.Save();});
+        view.Show("Home",ingame);view.Bind("Home",Home);
+        var skin=view.GetComponent<ReplicaSettingsSkin>();
+        if(skin){view.Show("Continue",ingame);skin.BindSupport();}
     }
-    void SettingToggle(Transform p,string name,float y,bool value,Action<bool> change){
-        Label(p,name,new Vector2(215,y),new Vector2(190,65),34);Button button=null;bool current=value;
-        button=Button(p,current?"已开启":"已关闭",new Vector2(465,y),new Vector2(210,78),()=>{current=!current;change(current);button.GetComponentInChildren<Text>().text=current?"已开启":"已关闭";},"PopBtn1",28);
+    void SettingToggle(ReplicaUIView view,string key,bool value,Action<bool> change){
+        bool current=value;var skin=view.GetComponent<ReplicaSettingsSkin>();
+        void Refresh(){view.Text(key+"Text",current?"已开启":"已关闭");if(skin)skin.SetState(key,current);}
+        Refresh();view.Bind(key,()=>{current=!current;change(current);Refresh();});
     }
     public void ShowPvp(){
         if(network)network.Disconnect();StopBoard();IsPvp=true;ThemeIndex=0;Stage=2;roomId="";lobbyStatus="邀请朋友来一场三消对决";DrawLobby();Music(library.pvpMusic);
     }
     void DrawLobby(){
-        Clear();ScreenName="pvp";Background(new Color(.89f,.95f,.98f));Title("好友对战",Home);
-        Art(page,"onlineLogo",new Vector2(360,285),new Vector2(430,170));
-        Label(page,lobbyStatus,new Vector2(360,440),new Vector2(650,120),30);
-        if(!string.IsNullOrEmpty(roomId))Label(page,"房间号："+roomId,new Vector2(360,560),new Vector2(650,55),38);
-        var address=InputBox(page,endpoint,new Vector2(360,670),new Vector2(630,64));address.onEndEdit.AddListener(v=>{endpoint=v.Trim();PlayerPrefs.SetString("goose.endpoint",endpoint);});
-        if(!network.Connected){
-            Button(page,"快速匹配",new Vector2(360,790),new Vector2(460,95),()=>ConnectPvp("match",""),"MainBtnBg",32);
-            Button(page,"创建房间",new Vector2(205,920),new Vector2(290,85),()=>ConnectPvp("create",""),"PopBtn1",28);
-            var code=InputBox(page,"",new Vector2(505,920),new Vector2(250,85));code.characterLimit=6;
-            Button(page,"加入房间",new Vector2(360,1050),new Vector2(450,85),()=>ConnectPvp("join",code.text),"PopBtn2",29);
-        }else {
-            Button(page,"准备",new Vector2(360,790),new Vector2(450,100),()=>network.Send(new ReplicaMessage{type="ready"}),"MainBtnBg",34);
-            Button(page,"取消 / 离开",new Vector2(360,960),new Vector2(430,90),ShowPvp,"PopBtn1",29);
-        }
-        Label(page,"双方同配置 · 先清空者胜\n每人可撤回 3 次，断线判负",new Vector2(360,1190),new Vector2(650,80),23);
+        Clear();ScreenName="pvp";var view=ReplicaUIView.Load("PvpLobby",page);view.Bind("Back",Home);
+        view.Text("Status",lobbyStatus);view.Show("Room",!string.IsNullOrEmpty(roomId));view.Text("Room","房间号："+roomId);
+        var address=view.Get<InputField>("Address");address.SetTextWithoutNotify(endpoint);
+        address.onEndEdit.AddListener(v=>{endpoint=v.Trim();PlayerPrefs.SetString("goose.endpoint",endpoint);});
+        bool connected=network.Connected;
+        foreach(var key in new[]{"Match","Create","Code","Join"})view.Show(key,!connected);
+        view.Show("Ready",connected);view.Show("Leave",connected);
+        view.Bind("Match",()=>ConnectPvp("match",""));view.Bind("Create",()=>ConnectPvp("create",""));
+        var code=view.Get<InputField>("Code");view.Bind("Join",()=>ConnectPvp("join",code.text));
+        view.Bind("Ready",()=>network.Send(new ReplicaMessage{type="ready"}));view.Bind("Leave",ShowPvp);
     }
     void ConnectPvp(string action,string room){lobbyStatus="正在连接…";network.Connect(endpoint,action,room);Notice(lobbyStatus);}
     void Receive(ReplicaMessage m){
@@ -438,26 +411,17 @@ public class ReplicaFlow : MonoBehaviour {
         yield return new WaitForSecondsRealtime(.9f);
         GameManager.Instance.gameStatus=GameManager.GameStatus.FINISH;Result(win,title,reason);
     }
-    void Notice(string value){if(!toast)toast=Label(page,value,new Vector2(360,350),new Vector2(680,90),23,Color.white,true);else toast.text=value;}
-    void Title(string text,Action back){Label(page,text,new Vector2(360,90),new Vector2(510,75),43);Button(page,"返回",new Vector2(90,88),new Vector2(135,68),back,"PopBtn1",25);}
-    RectTransform Modal(string title){
-        if(modal)Destroy(modal.gameObject);modal=Rect("Modal",page,Vector2.zero,new Vector2(720,1280));Stretch(modal);
-        var shade=modal.gameObject.AddComponent<Image>();shade.color=new Color(0,0,0,.58f);shade.raycastTarget=true;
-        Art(modal,"PopBG2",new Vector2(360,640),new Vector2(650,850),false);Label(modal,title,new Vector2(360,280),new Vector2(550,80),43);return modal;
+    public void ShowHomeFeatureNotice(string message){Notice(message);}
+    void Notice(string value){
+        if(!toast)toast=ReplicaUIView.Load("Notice",page).Get<Text>("Message");toast.text=value;
+        if(modal)modal.SetAsLastSibling();
     }
-    void Background(Color color){var r=Rect("Background",page,Vector2.zero,new Vector2(720,1280));Stretch(r);r.gameObject.AddComponent<Image>().color=color;}
-    public Image Art(Transform parent,string sprite,Vector2 pos,Vector2 size,bool preserve=true){var r=Rect(sprite,parent,pos,size);var im=r.gameObject.AddComponent<Image>();im.sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+sprite);im.preserveAspect=preserve;im.raycastTarget=false;return im;}
-    public Text Label(Transform parent,string text,Vector2 pos,Vector2 size,int fontSize,Color? color=null,bool outline=false){
-        var r=Rect(text,parent,pos,size);var t=r.gameObject.AddComponent<Text>();t.font=font;t.fontSize=fontSize;t.text=text;t.alignment=TextAnchor.MiddleCenter;t.color=color??new Color(.30f,.18f,.09f);t.raycastTarget=false;t.horizontalOverflow=HorizontalWrapMode.Wrap;t.verticalOverflow=VerticalWrapMode.Overflow;
-        if(outline){var o=r.gameObject.AddComponent<Outline>();o.effectColor=new Color(.2f,.1f,0,.9f);o.effectDistance=new Vector2(2,-2);}return t;
+    ReplicaUIView OpenModal(string prefab){
+        if(modal){modal.gameObject.SetActive(false);Destroy(modal.gameObject);}
+        var view=ReplicaUIView.Load(prefab,page);modal=(RectTransform)view.transform;return view;
     }
-    public Button Button(Transform parent,string text,Vector2 pos,Vector2 size,Action action,string sprite="PopBtn1",int fontSize=28){
-        var im=Art(parent,sprite,pos,size,false);im.raycastTarget=true;var b=im.gameObject.AddComponent<Button>();b.targetGraphic=im;b.onClick.AddListener(()=>{Click();action();});
-        if(text.Length>0){var t=Label(im.transform,text,new Vector2(size.x/2,size.y/2),size,fontSize);Stretch(t.rectTransform);}return b;
+    void CloseModal(bool resume=false){
+        if(modal){modal.gameObject.SetActive(false);Destroy(modal.gameObject);modal=null;}
+        BlocksGameplay=false;if(resume)Time.timeScale=1;
     }
-    InputField InputBox(Transform parent,string value,Vector2 pos,Vector2 size){
-        var im=Art(parent,"InputBg",pos,size,false);im.raycastTarget=true;var field=im.gameObject.AddComponent<InputField>();var text=Label(im.transform,value,new Vector2(size.x/2,size.y/2),size-new Vector2(25,8),23);text.alignment=TextAnchor.MiddleLeft;Stretch(text.rectTransform);text.rectTransform.offsetMin=new Vector2(12,3);text.rectTransform.offsetMax=new Vector2(-12,-3);field.textComponent=text;field.text=value;return field;
-    }
-    static RectTransform Rect(string name,Transform parent,Vector2 pos,Vector2 size){var r=new GameObject(name,typeof(RectTransform)).GetComponent<RectTransform>();r.SetParent(parent,false);r.anchorMin=r.anchorMax=new Vector2(0,1);r.pivot=new Vector2(.5f,.5f);r.anchoredPosition=new Vector2(pos.x,-pos.y);r.sizeDelta=size;return r;}
-    static void Stretch(RectTransform r){r.anchorMin=Vector2.zero;r.anchorMax=Vector2.one;r.offsetMin=r.offsetMax=Vector2.zero;}
 }

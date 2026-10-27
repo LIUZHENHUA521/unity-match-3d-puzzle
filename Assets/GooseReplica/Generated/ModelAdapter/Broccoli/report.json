@@ -1,0 +1,62 @@
+{
+    "requestId": "07678ff7f9d947ef934a8297f9b77de9",
+    "inputPath": "Assets/GooseReplica/IncomingModels/quaternius/006_Broccoli/Broccoli.obj",
+    "logicalId": "Broccoli",
+    "displayName": "Broccoli",
+    "generatedPrefabPath": "Assets/GooseReplica/Generated/ModelAdapter/Broccoli/Broccoli.prefab",
+    "previewPath": "Assets/GooseReplica/Generated/ModelAdapter/Broccoli/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.4779745936393738,
+    "visualSize": {
+        "x": 0.7514625191688538,
+        "y": 0.8996294140815735,
+        "z": 0.6444055438041687
+    },
+    "visualCenter": {
+        "x": 0.00309714674949646,
+        "y": 0.44652143120765688,
+        "z": 0.0027537941932678224
+    },
+    "bottom": {
+        "x": 0.00309714674949646,
+        "y": -0.003293275833129883,
+        "z": 0.0027537941932678224
+    },
+    "longestSide": 0.8996294140815735,
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        }
+    ]
+}

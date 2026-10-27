@@ -59,6 +59,16 @@ public static class ReplicaBuilder {
             else if(cmd=="stop")EditorApplication.isPlaying=false;
             else if(cmd=="spawncapture")SpawnCapture.Run();
             else if(cmd=="test")ReplicaValidation.Run();
+            else if(cmd=="skinfinalize")ReplicaGameplaySkinValidation.FinalizeAssets();
+            else if(cmd=="skincheck")ReplicaGameplaySkinValidation.Run();
+            else if(cmd=="uicheck")ReplicaUIPrefabValidation.Run();
+            else if(cmd=="layoutcheck")ReplicaUILayoutValidation.Run();
+            else if(cmd=="gameplayskin")ReplicaGameplaySkinBuilder.Build();
+            else if(cmd=="picnicbuild")PicnicBackdropBuilder.Build();
+            else if(cmd=="picniccapture")PicnicBackdropBuilder.Capture();
+            else if(cmd=="kitchenbuild")KitchenSceneBuilder.Build();
+            else if(cmd=="kitcheninspect")KitchenSceneBuilder.Inspect();
+            else if(cmd=="modeladaptercheck")ModelAdapterValidation.RunMenu();
             else if(cmd=="layercheck")LayeredPileValidation.Run();
             else if(cmd=="selectionpreview")SelectionFeedbackValidation.Preview();
             else if(cmd=="heightphysicscheck")HeightPhysicsValidation.Run();

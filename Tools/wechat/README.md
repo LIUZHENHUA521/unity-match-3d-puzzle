@@ -1,5 +1,20 @@
 # 微信小游戏发布配置
 
+## Unity 发布菜单（macOS）
+
+打开 **工具 → 微信小游戏 → 发布**，填写版本号和更新说明，点击 **保存、构建并上传开发版本**。
+菜单使用 `release.config.json` 指定的场景（窗口会显示），并非当前打开的任意场景。
+先在微信开发者工具登录对应账号，并在设置 → 安全设置开启服务端口；本入口不需要 CI 上传私钥。
+
+发布会保存资源、要求保存已修改场景，在 `Builds/WechatMenuProject` 构建独立副本，校验 AppID、方向和资源分包，
+再复制到带版本号和时间戳的独立目录，通过开发者工具 CLI 上传。
+上传成功后仍需在公众平台「版本管理」设为体验版；本工具不提审、不发布正式版。
+发布期间可关闭窗口再打开，但请勿退出 Unity；为避免中断，脚本程序集重载会延迟到发布结束。
+
+窗口提供发布日志、Unity 构建日志和公众平台入口。日志分别位于 `Builds/Wechat/menu-publish.log` 和
+`Builds/wechat-build.log`，上传回执与独立发布目录同在 `Builds/Wechat`。
+脚本安全检查可运行 `python3 Tools/wechat/test-publish.py`，不会实际构建或上传。
+
 AppID：`wx74f2d8722c02a6f4`，由用户从 sandBlast 分配给当前 Unity 游戏。
 
 - `release.config.json`：AppID、目标场景、竖屏、输出目录和 PVP 地址。
