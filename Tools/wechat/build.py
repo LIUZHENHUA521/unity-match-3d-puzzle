@@ -114,12 +114,12 @@ runtime_audio = replica_resources / 'SourceAudio'
 if not runtime_audio.exists() or not any(runtime_audio.glob('*.wav')):
     raise SystemExit('Missing runtime second-stage audio: Resources/Replica/SourceAudio')
 # The source models carry authoring-quality 1K/2K textures.  The experience
-# build uses the same models but can safely import these at 512px with Unity's
+# build uses the same models but imports these at 256px with Unity's
 # platform compression, keeping the initial WeChat package under its limit.
 texture_root = stage / 'Assets/GooseReplica/OriginalModels/Textures'
 for meta in texture_root.glob('*.png.meta'):
     text = meta.read_text()
-    text = re.sub(r'(?m)^    maxTextureSize: \d+', '    maxTextureSize: 512', text)
+    text = re.sub(r'(?m)^    maxTextureSize: \d+', '    maxTextureSize: 256', text)
     text = re.sub(r'(?m)^    textureCompression: \d+', '    textureCompression: 1', text)
     meta.write_text(text)
 
