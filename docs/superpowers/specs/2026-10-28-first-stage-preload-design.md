@@ -1,0 +1,20 @@
+# Restore source first-stage flow and prepare stage two
+
+The user explicitly requested restoring stage one, following the shipped Goose logic, and preparing stage-two resources during stage one. Implement the ordinary WX 2.1.12 MainLevel path supported by recovered evidence; do not silently claim server-controlled new-player AB parity.
+
+## Behavior
+
+- Solo Begin enters stage 1. Independent first-stage catalog preserves original source target and candidate prefab identities, without replacing the user's stage-two countryside models.
+- First-stage source rows: 12 ordinary items (six each of two allowed types) plus three explicit target items (15 total); exclude target type from ordinary selection; no countdown; source height 6 / limitHeight 4. Default source win policy is empty board after the merge checkpoint, not merely picking the target.
+- Use the same source creation iterator, visibility/growth/physics, pointer behavior, flight/audio and triple-removal path as the ordinary source game. Remove the legacy synchronous spawn followed by an arbitrary 3-second wait. All 15 descriptions sample Y in [1.5,6] and sort together before rotation sampling. Initial visibility threshold is -2, so all grow visibly. Batches are 1/3/3/3/3/2 with .03-second intervals, then .5/.2/.3-second finalization. Forced-guide AB variants are explicitly outside this ordinary path.
+- Completing stage 1 automatically starts stage 2 and overlays a one-second “进入最后一关” notice. Retain the current theme presentation and boundary. No intermediate result/continue button; source stage-two creation proceeds underneath the notice.
+- Start preparing stage-two resources during stage one. Serialized catalog references already retain prefab dependencies in this Unity project; additionally prepare lookup/audio data and at most one reusable inactive instance per prefab across frames. This is local cold-path preparation, not pre-instantiating all 300 board items. Do not consume gameplay RNG or create gameplay bindings/physics registrations during preparation.
+- Keep prepared instances across stage transition; cancel on Home/restart/theme switch, reset with versioned ownership, and prevent stale work from enabling gameplay. During handoff cancel unfinished warmup and invalidate its generation token, keep completed prepared instances, and let ordinary stage-two creation instantiate any missing type. Never deposit late duplicate warmup results. Detach presentation/boundary ownership from the pile before stage teardown. Full session teardown cancels warmup and clears the pool. Pool identity must be prefab identity for templates, buckets and tokens, so same-name original/adapter assets cannot collide. Instantiate warmup clones beneath an inactive preparation root, make them inactive before reparenting, and do not initialize animations or run gameplay bindings. No changes to stage-two layout, total item count or tray pose settings.
+- Extending source input to stage one must not accidentally unlock stage-two tools. Check source tool configuration and explicitly gate or hide first-stage tools rather than falling back to legacy behavior.
+
+## Validation and delivery
+
+Check all three first-stage plans, 15-item composition and target exclusion, real creation/growth/readiness, no countdown, original flight/merge checkpoints, automatic transition preserving scene/boundary, preload before transition with reuse and zero gameplay/RNG side effects, cancellation/restart/theme switches, same-name pool isolation, compare stage-two generation with/without preload from the same RNG state immediately before stage-two entry (not before legitimate stage-one draws), and existing stage-two creation/tray regression. Build a local WeChat package and validate it; do not upload unless asked. Report evidence boundaries honestly.
+
+### Random stream ordering
+Before ordinary type selection, consume three float Range(0, 1) target-layer draws, even for the single layer. Append those targets after ordinary allocation; sample and sort all positions together. Validate the first three draws using a recording random provider.
