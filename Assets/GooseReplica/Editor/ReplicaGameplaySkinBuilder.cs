@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public static class ReplicaGameplaySkinBuilder {
     const string Art="Assets/GooseReplica/Resources/Replica/GameplaySkin/";
     const string UI="Assets/GooseReplica/Resources/Replica/UI/";
-    static Sprite Sprite(string name)=>AssetDatabase.LoadAssetAtPath<Sprite>(Art+name+".png");
+    static Sprite Sprite(string name)=>AssetDatabase.LoadAssetAtPath<Sprite>(Art+name+".png") ?? AssetDatabase.LoadAssetAtPath<Sprite>(Art+name+".jpg");
     static RectTransform Rect(string name,Transform parent,Vector2 anchor,Vector2 position,Vector2 size){
         var r=new GameObject(name,typeof(RectTransform)).GetComponent<RectTransform>();r.SetParent(parent,false);r.anchorMin=r.anchorMax=anchor;r.pivot=new Vector2(.5f,.5f);r.anchoredPosition=position;r.sizeDelta=size;return r;
     }

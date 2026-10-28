@@ -12,7 +12,7 @@ public static class SourceCreationValidation {
         try{
             Physics.autoSimulation=false;
             for(int theme=0;theme<3;theme++){
-                flow.Begin(theme);flow.NextStage();
+                flow.Begin(theme);
                 var pile=ReplicaLayeredPile.Instance;var objects=LevelGenerator.Instance.objectsOnScene;
                 Check(flow.CreationInProgress&&pile.Creating,"creation must remain suspended after first batch");
                 Check(objects.Count==1,"source zero-based remainder yields after first one item");
@@ -31,6 +31,9 @@ public static class SourceCreationValidation {
                     foreach(var obj in objects.Skip(previous)){
                         Check(obj.transform.position.y>=highest,"source descriptions sort by ascending Y");highest=obj.transform.position.y;
                         Check(!pile.CanPick(obj.GetComponent<Rigidbody>()),"FinishCreate required before selecting");
+                        bool expectedVisible=obj.transform.position.y>=pile.Threshold;
+                        Check(obj.GetComponentsInChildren<Renderer>(true).Any(r=>r.enabled)==expectedVisible,"initial visibility uses spawn height before physics sync");
+                        if(expectedVisible&&!sawInitialGrow)Check(obj.transform.localScale==Vector3.zero,"visible new items start at zero scale");
                         if(!sawInitialGrow&&obj.transform.localScale==Vector3.zero){
                             sawInitialGrow=true;
                             int type=int.Parse(obj.name.Substring(5));

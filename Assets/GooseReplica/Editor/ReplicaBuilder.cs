@@ -72,7 +72,11 @@ public static class ReplicaBuilder {
             else if(cmd=="layercheck")LayeredPileValidation.Run();
             else if(cmd=="selectionpreview")SelectionFeedbackValidation.Preview();
             else if(cmd=="heightphysicscheck")HeightPhysicsValidation.Run();
+            else if(cmd=="pileoptimizationcheck")PileOptimizationValidation.Run();
+            else if(cmd=="creationcheck")SourceCreationValidation.Run();
+            else if(cmd=="creationframescheck")SourceCreationFramesValidation.Start();
             else if(cmd=="selectioncheck")SelectionFeedbackValidation.Run();
+            else if(cmd=="highlightcheck")SourceHighlightValidation.Run();
             else if(cmd=="pvptest")ReplicaNetworkValidation.Run();
             else if(cmd=="home")ReplicaFlow.Instance.Home();
             else if(cmd=="tutorial")ReplicaFlow.Instance.Begin(0);

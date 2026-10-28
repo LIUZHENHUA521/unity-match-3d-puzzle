@@ -60,6 +60,9 @@ for sprite in sprites.glob('*.png'):
 # Keep source/reference exports out of Unity Resources. The WeChat exporter packs
 # Resources wholesale even when no runtime code loads these authoring assets.
 reference_dirs = [
+    # Only LevelEditorTab loads these 23 authoring thumbnails. No runtime asset
+    # references their GUIDs; retain originals but exclude them from release.
+    stage / 'Assets/Resources/Editor',
     stage / 'Assets/GooseReplica/OriginalModels/Prefabs/Legacy',
     # Authoring-only source exports are kept in the project for iteration but
     # must not enter the runtime WebGL package.

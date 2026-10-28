@@ -1,5 +1,14 @@
 # 分帧创建与开局时序对齐（2026-10-16）
 
+## 2026-10-28：修复开局全隐藏与额外等待
+
+- `CreateBoardItem` 把出生描述的高度传给 `ReplicaLayeredPile.Register`，由该高度决定初始显隐。对象池模板停放在 Y=-1000，关闭自动 Transform 同步时不能立即读取其克隆刚体的旧位置作为出生高度。上层物品现在正确进入从零比例增长分支。
+- `RunSourceCreation` 每批只等待原有 `WaitForSeconds`，移除其后的额外 `yield return null`；保留首批 1 件、其后 3 件、末批 2 件，以及 .5/.2/.3 秒尾部等待。
+- 当前增长仍由 `LateUpdate` 累计 .02 秒后推进 .1；下文旧说明中“增长也由独立协程驱动”不再代表当前实现。没有补帧追赶循环，不保证不同设备逐帧等价。
+- 创建测试已改为从 `Begin` 直接进入第二关，沿真实对象池路径检查尚未物理同步时的初始显隐，以及真实帧中的提前显现、逐步长大、暂停、取消、重开和完成后才开放操作。
+- 编辑器实测三个主题在创建到 175 / 172 / 160 件时首次出现可见物品，约 1.95 / 2.10 / 2.12 秒；完整创建约 4.79 / 5.35 / 4.78 秒。三主题验证通过。这是编辑器观测，不是 iOS 性能承诺，也不是与原版真机的等时对照。
+- 报告：`work/ios-performance-audit/creation-alignment-validation.txt`。本次未构建或发布。
+
 > 2026-10-16 门闩复核纠正：本文旧行为/旧通过记录中的“后续显示默认 .75 秒长大”结论失效。普通 WX 对象的 `_changeObjScale` 为非序列化 private bool，未发现开启路径，默认不执行重显长大；开局创建增长仍保留。最新证据与实现见 [reveal-growth-gate-alignment.md](reveal-growth-gate-alignment.md)。
 
 范围：本项目三个主题的基础第二关、普通非强制教程创建路径；先不发布。证据为微信 2.1.12 WASM 控制流、iOS 1.11.03 保存的 LevelManager 数值；不是抓取线上当前运行状态。原函数和 SHA-256 位于 [Evidence/frame-creation](Evidence/frame-creation)。

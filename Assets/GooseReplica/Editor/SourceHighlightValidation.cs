@@ -9,7 +9,7 @@ public static class SourceHighlightValidation {
     static void Check(bool value,string message){if(!value)throw new Exception(message);}
     static void Close(float a,float b,string message){Check(Mathf.Abs(a-b)<.00001f,message+" "+a+" != "+b);}
     public static void Run(){
-        string report="";GameObject cameraObject=null,first=null,second=null,real=null;RenderTexture rt=null;
+        string report="";GameObject cameraObject=null,first=null,second=null,real=null,country=null;RenderTexture rt=null;Mesh gpuOnly=null;
         try{
             Close(ReplicaSourceHighlight.OverlayPulse(0),1,"source triangle wave starts at maximum");
             Close(ReplicaSourceHighlight.OverlayPulse(.25f),.75f,"quarter period");
@@ -33,6 +33,40 @@ public static class SourceHighlightValidation {
             first.GetComponent<Renderer>().enabled=false;fx.Select(first);fx.Rebuild();Check(fx.DrawCount==2,"hidden renderer not outlined");
             fx.Clear();Check(!fx.HasCommands&&fx.RendererCount==0&&!fx.Target,"cancel has no residual draws");
             for(int i=0;i<8;i++){fx.Select(first);fx.Clear();}Check(camera.GetCommandBuffers(CameraEvent.AfterForwardAlpha).Length==1,"repeated selection does not leak camera buffers");
+            // Imported country meshes disable Read/Write. Exercise a guaranteed
+            // GPU-only mesh as well, so Editor CPU access cannot hide a regression.
+            second.SetActive(false);first.GetComponent<Renderer>().enabled=true;
+            gpuOnly=UnityEngine.Object.Instantiate(mesh);gpuOnly.UploadMeshData(true);
+            first.GetComponent<MeshFilter>().sharedMesh=gpuOnly;Check(!gpuOnly.isReadable,"GPU-only probe");
+            var gpuPlain=Capture(null);fx.Select(first);var gpuLit=Capture(null);
+            Check(fx.RendererCount==1&&fx.DrawCount==12,"GPU-only mesh participates in every highlight pass");
+            Check(Changed(gpuPlain,gpuLit)>100,"GPU-only mesh highlight changes rendered pixels");
+            fx.Clear();Check(Changed(gpuPlain,Capture(null))<20,"GPU-only selection clears");
+            Check(first.GetComponent<MeshFilter>().sharedMesh==gpuOnly&&!gpuOnly.isReadable,"highlight preserves borrowed mesh and readability");
+            first.GetComponent<MeshFilter>().sharedMesh=mesh;UnityEngine.Object.DestroyImmediate(gpuOnly);gpuOnly=null;
+            first.SetActive(false);
+            int countryCount=0,unreadableCount=0;string countryEvidence="";
+            var feedback=cameraObject.AddComponent<ReplicaSelectionFeedback>();
+            foreach(var countryPrefab in ReplicaSourceLevelPlan.Get("CountrysideStove").prefabs){
+                country=UnityEngine.Object.Instantiate(countryPrefab);
+                foreach(var tr in country.GetComponentsInChildren<Transform>(true))tr.gameObject.layer=30;
+                foreach(var body in country.GetComponentsInChildren<Rigidbody>(true)){body.isKinematic=true;body.detectCollisions=false;}
+                var countryRenderers=country.GetComponentsInChildren<Renderer>().Where(r=>r.enabled&&r.shadowCastingMode!=ShadowCastingMode.ShadowsOnly).ToArray();
+                Check(countryRenderers.Length>0,"country renderer "+countryPrefab.name);
+                var cb=countryRenderers[0].bounds;foreach(var r in countryRenderers)cb.Encapsulate(r.bounds);
+                country.transform.localScale*=2/Mathf.Max(cb.size.x,cb.size.y,cb.size.z);
+                cb=countryRenderers[0].bounds;foreach(var r in countryRenderers)cb.Encapsulate(r.bounds);country.transform.position-=cb.center;
+                unreadableCount+=country.GetComponentsInChildren<MeshFilter>().Count(f=>f.sharedMesh&&!f.sharedMesh.isReadable);
+                var before=Capture(null);feedback.Begin(country,camera,false);var lit=Capture(countryCount==0?"country-highlight-on.png":null);
+                Check(feedback.Selected==country&&fx.RendererCount>=countryRenderers.Length,"country press registers renderer "+countryPrefab.name);
+                int changedPixels=Changed(before,lit);Check(changedPixels>100,"country press renders highlight "+countryPrefab.name);
+                int yellow=0;for(int i=0;i<lit.Length;i++)if(lit[i].r>before[i].r+6&&lit[i].g>before[i].g+6&&lit[i].r>lit[i].b+20&&lit[i].g>lit[i].b+20)yellow++;
+                Check(yellow>10,"country press produces yellow pixels "+countryPrefab.name);
+                feedback.Cancel();Check(!fx.Target&&!fx.HasCommands&&Changed(before,Capture(null))<20,"country cancel clears highlight "+countryPrefab.name);
+                countryEvidence+=$" {countryPrefab.name}:{changedPixels}/{yellow}";countryCount++;
+                UnityEngine.Object.DestroyImmediate(country);country=null;
+            }
+            Check(unreadableCount>0,"current countryside includes GPU-only imported meshes");
             var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/GooseReplica/OriginalModels/Prefabs/Barbecue/Goose_Pancake.prefab");Check(prefab,"source goose prefab");
             real=UnityEngine.Object.Instantiate(prefab);first.SetActive(false);second.SetActive(false);
             foreach(var tr in real.GetComponentsInChildren<Transform>(true))tr.gameObject.layer=30;
@@ -40,7 +74,8 @@ public static class SourceHighlightValidation {
             real.transform.rotation=Quaternion.Euler(0,150,0);
             var rs=real.GetComponentsInChildren<Renderer>().Where(r=>r.enabled&&r.shadowCastingMode!=ShadowCastingMode.ShadowsOnly).ToArray();Check(rs.Length>0,"source goose renderers");
             var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);real.transform.localScale*=2/Mathf.Max(bounds.size.x,bounds.size.y,bounds.size.z);bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);real.transform.position-=bounds.center;
-            Color32[] Capture(string filename){camera.Render();var old=RenderTexture.active;RenderTexture.active=rt;var image=new Texture2D(rt.width,rt.height,TextureFormat.RGB24,false);try{image.ReadPixels(new Rect(0,0,rt.width,rt.height),0,0);image.Apply();File.WriteAllBytes("visual-captures/"+filename,image.EncodeToPNG());return image.GetPixels32();}finally{RenderTexture.active=old;UnityEngine.Object.DestroyImmediate(image);}}
+            Color32[] Capture(string filename){camera.Render();var old=RenderTexture.active;RenderTexture.active=rt;var image=new Texture2D(rt.width,rt.height,TextureFormat.RGB24,false);try{image.ReadPixels(new Rect(0,0,rt.width,rt.height),0,0);image.Apply();if(filename!=null)File.WriteAllBytes("visual-captures/"+filename,image.EncodeToPNG());return image.GetPixels32();}finally{RenderTexture.active=old;UnityEngine.Object.DestroyImmediate(image);}}
+            int Changed(Color32[] a,Color32[] b){int count=0;for(int i=0;i<a.Length;i++)if(Mathf.Abs(a[i].r-b[i].r)+Mathf.Abs(a[i].g-b[i].g)+Mathf.Abs(a[i].b-b[i].b)>6)count++;return count;}
             var plain=Capture("source-goose-highlight-off.png");fx.Select(real);var selected=Capture("source-goose-highlight-on.png");Check(fx.RendererCount==rs.Length,"all real goose renderer parts selected");
             int changed=0;for(int i=0;i<plain.Length;i++)if(Mathf.Abs(plain[i].r-selected[i].r)+Mathf.Abs(plain[i].g-selected[i].g)+Mathf.Abs(plain[i].b-selected[i].b)>6)changed++;Check(changed>100,"real source skinned selection produces pixels");
             fx.Clear();var cleared=Capture("source-goose-highlight-cleared.png");int residual=0;for(int i=0;i<plain.Length;i++)if(Mathf.Abs(plain[i].r-cleared[i].r)+Mathf.Abs(plain[i].g-cleared[i].g)+Mathf.Abs(plain[i].b-cleared[i].b)>6)residual++;Check(residual<20,"real source selection clears without residual "+residual);
@@ -91,9 +126,10 @@ public static class SourceHighlightValidation {
                 coveredDelta+=centerDelta;fx.ClearAll();
             }
             report="PASS source profile; triangle overlay and width sine; stencil/4-direction geometry; shader support; selection switching; hidden/destroyed cancellation; immutable originals; camera buffer lifetime; real goose mesh render changed "+changed+" pixels and clearing left "+residual+"; isolated skins "+skinEvidence+"; AutoFind blue pixels "+blueShift+"; two tool slots and unscaled timeout during pause; 3-distance covered interior changed "+coveredDelta+" pixels; rendered capture\n";
+            report+=$"PASS GPU-only mesh; {countryCount} countryside prefabs ({unreadableCount} unreadable meshes): press produces yellow highlight, cancel clears. Changed/yellow pixels:"+countryEvidence+"\n";
         }catch(Exception e){report="FAIL "+e+"\n";}
         finally{
-            if(cameraObject)UnityEngine.Object.DestroyImmediate(cameraObject);if(first)UnityEngine.Object.DestroyImmediate(first);if(second)UnityEngine.Object.DestroyImmediate(second);if(real)UnityEngine.Object.DestroyImmediate(real);if(rt){rt.Release();UnityEngine.Object.DestroyImmediate(rt);}
+            if(cameraObject)UnityEngine.Object.DestroyImmediate(cameraObject);if(first)UnityEngine.Object.DestroyImmediate(first);if(second)UnityEngine.Object.DestroyImmediate(second);if(real)UnityEngine.Object.DestroyImmediate(real);if(country)UnityEngine.Object.DestroyImmediate(country);if(gpuOnly)UnityEngine.Object.DestroyImmediate(gpuOnly);if(rt){rt.Release();UnityEngine.Object.DestroyImmediate(rt);}
             File.WriteAllText("Temp/goose-source-highlight-validation.txt",report);Debug.Log(report);
         }
     }

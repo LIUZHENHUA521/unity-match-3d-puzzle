@@ -12,8 +12,9 @@ public sealed class ReplicaSourceHighlight : MonoBehaviour {
     public static readonly Color GlowColor=new Color(1,.9647059441f,.1333333403f,1);
     // OnEnable j85382 indices 4..7, IEEE 0x3f350529, not rounded sqrt(0.5).
     static readonly Vector2[] Directions={new Vector2(-.70711f,.70711f),new Vector2(.70711f,.70711f),new Vector2(.70711f,-.70711f),new Vector2(-.70711f,-.70711f)};
-    // Source uses DrawRenderer for skins (current bone matrices), DrawMesh with smoothed normals for static meshes.
-    sealed class Part {public Renderer renderer;public Mesh mesh;public bool skinned;public Material[] overlays;}
+    // Readable static meshes get smoothed normals; skins and GPU-only meshes
+    // draw through their renderer without requiring a CPU mesh copy.
+    sealed class Part {public Renderer renderer;public Mesh mesh;public bool drawRenderer;public Material[] overlays;}
     sealed class Group {
         public GameObject target;public readonly List<Part> parts=new List<Part>();
         public Material[] glow,outline;
@@ -61,9 +62,10 @@ public sealed class ReplicaSourceHighlight : MonoBehaviour {
         }
         foreach(var renderer in item.GetComponentsInChildren<Renderer>(true)){
             var skin=renderer as SkinnedMeshRenderer;var filter=renderer.GetComponent<MeshFilter>();
-            Mesh source=skin?skin.sharedMesh:(filter?filter.sharedMesh:null);if(!source||(!skin&&!source.isReadable))continue;
-            var part=new Part{renderer=renderer,skinned=skin!=null,mesh=skin?source:Instantiate(source)};
-            if(!part.skinned){part.mesh.name="Source selected geometry";part.mesh.hideFlags=HideFlags.HideAndDontSave;Smooth(part.mesh,Groups(source.vertices));}
+            Mesh source=skin?skin.sharedMesh:(filter?filter.sharedMesh:null);if(!source)continue;
+            bool drawRenderer=skin!=null||!source.isReadable;
+            var part=new Part{renderer=renderer,drawRenderer=drawRenderer,mesh=drawRenderer?source:Instantiate(source)};
+            if(!part.drawRenderer){part.mesh.name="Source selected geometry";part.mesh.hideFlags=HideFlags.HideAndDontSave;Smooth(part.mesh,Groups(source.vertices));}
             var materials=renderer.sharedMaterials;part.overlays=new Material[source.subMeshCount];
             for(int i=0;i<part.overlays.Length;i++){
                 var material=part.overlays[i]=MaterialFor("Overlay");var original=i<materials.Length?materials[i]:null;
@@ -90,7 +92,7 @@ public sealed class ReplicaSourceHighlight : MonoBehaviour {
     }
     bool Visible(Part p)=>p.renderer&&p.renderer.enabled&&p.renderer.gameObject.activeInHierarchy;
     void Draw(Part p,Material material,int submesh){
-        if(p.skinned)commands.DrawRenderer(p.renderer,material,submesh,0);
+        if(p.drawRenderer)commands.DrawRenderer(p.renderer,material,submesh,0);
         else commands.DrawMesh(p.mesh,p.renderer.localToWorldMatrix,material,submesh,0);
         DrawCount++;
     }
@@ -112,7 +114,7 @@ public sealed class ReplicaSourceHighlight : MonoBehaviour {
     public void ClearAll(){Clear();ClearTools();}
     static void DisposeGroup(Group group){
         group.target=null;
-        foreach(var p in group.parts){if(!p.skinned&&p.mesh)Release(p.mesh);foreach(var m in p.overlays)if(m)Release(m);}group.parts.Clear();
+        foreach(var p in group.parts){if(!p.drawRenderer&&p.mesh)Release(p.mesh);foreach(var m in p.overlays)if(m)Release(m);}group.parts.Clear();
         if(group.glow!=null)foreach(var m in group.glow)if(m)Release(m);
         if(group.outline!=null)foreach(var m in group.outline)if(m)Release(m);
         group.glow=null;group.outline=null;

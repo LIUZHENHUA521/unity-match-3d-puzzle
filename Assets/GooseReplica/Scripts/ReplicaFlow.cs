@@ -139,7 +139,8 @@ public class ReplicaFlow : MonoBehaviour {
         }
     }
     public void Begin(int theme){
-        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=Today;StartStage();
+        // All solo entry points start directly on the full layered challenge.
+        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=2;runDate=Today;StartStage();
     }
     public void RestartStage(){StopBoard();StartStage();}
     public void NextStage(){
@@ -232,7 +233,7 @@ public class ReplicaFlow : MonoBehaviour {
         // loop activates eligible bodies only after the initial growth reaches full size.
         pilePhysics.Register(body,layered);
         LevelGenerator.Instance.objectsOnScene.Add(obj);
-        if(layered){var goose=obj.GetComponent<ReplicaSourceGooseAnimation>();goose?.InitializeSource();goose?.ReturnToPile();layeredPile.Register(body);}
+        if(layered){var goose=obj.GetComponent<ReplicaSourceGooseAnimation>();goose?.InitializeSource();goose?.ReturnToPile();layeredPile.Register(body,initialHeight:position.y);}
     }
     IEnumerator SourceCreationSteps(List<SourceCreateInfo> descriptions,GameObject[] prefabs,IReplicaSourceRandom random,int version){
         float wait=SourceCreateInterval(descriptions.Count);
@@ -259,12 +260,9 @@ public class ReplicaFlow : MonoBehaviour {
         var steps=sourceCreationSteps;
         while(version==creationVersion&&steps.MoveNext()){
             PendingCreationWait=(float)steps.Current;
+            // Source yields once per batch. WaitForSeconds already resumes on
+            // a later frame; an extra null yield adds ~100 frames to 300 items.
             yield return new WaitForSeconds(PendingCreationWait);
-            // Keep each source batch on a distinct rendered frame.  On WebGL
-            // a loading hitch can make several scaled waits become due before
-            // the next frame; yielding once here prevents the iterator from
-            // draining all 300 CreateBoardItem calls in that frame.
-            yield return null;
         }
         if(version==creationVersion){sourceCreationSteps=null;sourceCreationRunner=null;PendingCreationWait=0;}
     }
