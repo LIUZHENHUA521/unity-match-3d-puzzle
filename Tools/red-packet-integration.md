@@ -16,7 +16,7 @@
 
 原任务 H5 AuthGate 允许输入 userId 或 URL openid 作为本地身份，不能用于认证收款人。webSession 函数创建的是 web_ 匿名账号，也不能用于微信收款认证。
 
-已向用户询问可复用的真实微信网页授权入口，尚待提供；不以昵称、客户端 openid 或输入 ID 自动绑定。双端确认绑定、自动 unionid 关联尚未实施。现网 `task.voucherGameId=goose3d` 查询为空，3D 游戏圈活动还未配置。
+用户已确认暂时没有真实微信网页授权入口，本阶段先完成代码和后台、保持实际发券关闭；不以昵称、客户端 openid 或输入 ID 自动绑定。双端确认绑定、自动 unionid 关联尚未实施。现网 `task.voucherGameId=goose3d` 查询为空，3D 游戏圈活动还未配置。
 
 shared/voucherLifecycle 来源白名单/关联/金额校验以及 server 客服策略已有本地准备修改和测试，尚未部署。必须在接入认证后补齐提交时可信身份校验、最终 transferCash 身份映射和商户 AppID 校验、旧公共红包查询隔离、绑定不可变、并发绑定及付款回归，才能部署共享付款链路。不得仅因资格/后台已上线就开启发券。
 
