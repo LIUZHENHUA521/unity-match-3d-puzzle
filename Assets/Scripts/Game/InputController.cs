@@ -12,7 +12,7 @@ public class InputController : Singleton<InputController>
     public bool IsResolving { get; private set; }
     private Coroutine resolution;
     public bool IsBusy => IsResolving || resolution != null || HasPendingVisuals;
-    public bool UsesSourceFlight => ReplicaFlow.Instance && !ReplicaFlow.Instance.IsPvp && ReplicaFlow.Instance.Stage==2;
+    public bool UsesSourceFlight => ReplicaFlow.Instance && !ReplicaFlow.Instance.IsPvp && (ReplicaFlow.Instance.Stage==1||ReplicaFlow.Instance.Stage==2);
     public bool HasPendingVisuals => sourceFlying.Count>0 || sourceCombining.Count>0;
     public bool CanEvaluateWin => !UsesSourceFlight || sourceCompletionCheckReady;
     readonly HashSet<GameObject> sourceFlying=new HashSet<GameObject>();
@@ -130,7 +130,9 @@ public class InputController : Singleton<InputController>
         if(UsesSourceFlight)obj.transform.DOKill(false);
         pickHistory.Add(obj);
         if(ReplicaLayeredPile.Instance)ReplicaLayeredPile.Instance.Detach(obj.GetComponent<Rigidbody>());
-        scales[obj] = obj.transform.localScale;
+        var trayDisplay=UsesSourceFlight?ReplicaTrayDisplayBinding.For(obj):null;
+        if(trayDisplay&&!ReplicaSourceTools.IsStored(obj))trayDisplay.CaptureBoardPose();
+        scales[obj] = trayDisplay?trayDisplay.boardScale:obj.transform.localScale;
         var body = obj.GetComponent<Rigidbody>();
         if (ReplicaPilePhysics.Instance) ReplicaPilePhysics.Instance.RemoveForPick(body);
         if(UsesSourceFlight){
@@ -161,6 +163,7 @@ public class InputController : Singleton<InputController>
         sourceCompletionCheckReady=false;
         LastFlightDuration=ReplicaSourceFlight.MoveSeconds;
         var initial=scales[obj];var target=ReplicaSourceFlight.PickScale(obj,initial);
+        var display=ReplicaTrayDisplayBinding.For(obj);if(display)target*=display.pose.scale;
         sourceFlying.Add(obj);
         // BeClick starts scale at release; RefreshContentDisplay starts all three axes immediately.
         obj.transform.DOScale(initial*ReplicaSourceFlight.ScalePeak,ReplicaSourceFlight.ScalePeakSeconds)
@@ -201,12 +204,17 @@ public class InputController : Singleton<InputController>
             var obj=objectsOnStack[i];if(!obj)continue;
             if(sourceMoves.TryGetValue(obj,out var old))foreach(var tween in old)if(tween.IsActive())tween.Kill();
             var slot=ReplicaTray.Instance?ReplicaTray.Instance.SlotPosition(i):new Vector3(-1+i*.333f,.3f,-1.62f);
+            var display=ReplicaTrayDisplayBinding.For(obj);
+            var cameraRotation=Camera.main?Camera.main.transform.rotation:Quaternion.identity;
+            float spacing=ReplicaTray.Instance?Vector3.Distance(ReplicaTray.Instance.SlotPosition(0),ReplicaTray.Instance.SlotPosition(1)):ReplicaTray.SourcePointSpacing;
+            slot=ReplicaTrayDisplaySettings.Position(display?display.pose:null,slot,cameraRotation,spacing);
+            var rotation=display?ReplicaTrayDisplaySettings.Rotation(display.pose,cameraRotation):Camera.main?cameraRotation*Quaternion.Euler(-90,0,0):Quaternion.identity;
             // RefreshContentDisplay applies the SAME .3 s to existing and incoming items.
             sourceMoves[obj]=new List<Tween>{
                 obj.transform.DOMoveX(slot.x,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.Linear),
                 obj.transform.DOMoveY(slot.y,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.OutQuad),
                 obj.transform.DOMoveZ(slot.z,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.Linear),
-                obj.transform.DORotateQuaternion(Camera.main?Camera.main.transform.rotation*Quaternion.Euler(-90,0,0):Quaternion.identity,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.InQuad)
+                obj.transform.DORotateQuaternion(rotation,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.InQuad)
             };
         }
     }
@@ -225,6 +233,7 @@ public class InputController : Singleton<InputController>
         yield return new WaitForSeconds(ReplicaSourceFlight.ShrinkSeconds);
         ReplicaSourceAudio.Combine(items[1]);
         sourceCompletionCheckReady=true;
+        if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Matched();
         yield return new WaitForSeconds(ReplicaSourceFlight.FinalRemovalDelay);
         RemoveSourceVisual(items[1]);
         RepositionSource();BoosterManager.Instance.CheckHintInteractibility();
@@ -295,7 +304,15 @@ public class InputController : Singleton<InputController>
     public bool MoveSourceItemsToStore(int count=3)
     {
         if(!UsesSourceFlight||ReplicaSourceTools.Shuffling||!ReplicaSourceTools.CanUse(0)||!GameManager.Instance.GameIsPlaying())return false;
-        var items=ReplicaSourceTools.ReturnCandidates(objectsOnStack,count);if(items.Count==0)return false;
+        var items=ReplicaSourceTools.ReturnCandidates(objectsOnStack,count);if(items.Count==0||!ReplicaSourceTools.TrySpend(0))return false;
+        return MoveItemsIntoStore(items);
+    }
+    // Revive moves every tray item without spending or resetting the ordinary move tool.
+    public bool ReviveSourceTray(){
+        if(!UsesSourceFlight||ReplicaSourceTools.Shuffling||objectsOnStack.Count==0)return false;
+        return MoveItemsIntoStore(objectsOnStack.Where(x=>x).ToList());
+    }
+    bool MoveItemsIntoStore(List<GameObject> items){
         ReplicaSourceAudio.Tool(24);CancelPointer();
         foreach(var obj in items){
             obj.transform.DOKill();sourceMoves.Remove(obj);sourceFlying.Remove(obj);
@@ -304,7 +321,7 @@ public class InputController : Singleton<InputController>
             if(boardColliders.TryGetValue(obj,out var flags))foreach(var flag in flags)if(flag.Key)flag.Key.enabled=flag.Value;
             obj.GetComponent<ReplicaSourceGooseAnimation>()?.EnterStore();
         }
-        ReplicaSourceTools.Store(items);ReplicaSourceTools.MarkUsed(0);
+        ReplicaSourceTools.Store(items);
         RepositionSource();BoosterManager.Instance.CheckHintInteractibility();return true;
     }
     public void UndoLast()
@@ -315,11 +332,15 @@ public class InputController : Singleton<InputController>
         objectsOnStack.Remove(obj); arrivedObject.Remove(obj);
         obj.transform.DOKill();
         obj.transform.localScale = scales[obj]; scales.Remove(obj);
+        var display=UsesSourceFlight?ReplicaTrayDisplayBinding.For(obj):null;
+        if(display)obj.transform.DORotateQuaternion(display.boardRotation,.35f).SetEase(Ease.OutQuad);
         obj.transform.DOMove(ReplicaLayeredPile.Instance && ReplicaLayeredPile.Instance.Running ? ReplicaLayeredPile.Instance.ReturnPosition() : LevelGenerator.Instance.CreateRandomPosition(), .35f).OnComplete(() => {
             if (!obj) return;
             var body = obj.GetComponent<Rigidbody>();
             body.isKinematic = false; body.detectCollisions = true;
-            body.interpolation = RigidbodyInterpolation.Interpolate;
+            // Source pickups animate Transform in Update. Re-enabling interpolation here
+            // lets the previous physics pose overwrite a later pickup's final tween pose.
+            body.interpolation = UsesSourceFlight ? RigidbodyInterpolation.None : RigidbodyInterpolation.Interpolate;
             // Restore source per-shape enabled flags, not every collider indiscriminately.
             if(boardColliders.TryGetValue(obj,out var colliderStates)){
                 foreach(var state in colliderStates)if(state.Key)state.Key.enabled=state.Value;

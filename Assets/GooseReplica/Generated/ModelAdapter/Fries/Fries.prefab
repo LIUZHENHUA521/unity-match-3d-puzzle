@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5701577406753899107}
   - component: {fileID: 4174789159361186969}
   - component: {fileID: 6385021862553993316}
+  - component: {fileID: 3125124277036364698}
   m_Layer: 0
   m_Name: Fries
   m_TagString: Collectable
@@ -76,6 +77,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &3125124277036364698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3345162343504402117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 4090653045785464034}
+  colliderStates:
+  - collider: {fileID: 7159373890987539082}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 5062326665395046092}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Fries
 --- !u!1 &4090653045785464034
 GameObject:
   m_ObjectHideFlags: 0

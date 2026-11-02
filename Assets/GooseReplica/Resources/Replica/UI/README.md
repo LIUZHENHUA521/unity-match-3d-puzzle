@@ -47,3 +47,7 @@ ReplicaFlow 负责页面切换和玩法逻辑，ReplicaHomeView 负责首页事�
 
 Unity Play 模式下可运行菜单 Goose → UI → Validate prefab UI in Play Mode。
 报告写到 Temp/ui-migration/validation.txt。验证涵盖 Prefab 引用、首页导航、暂停期间计时冻结、恢复、返回首页、设置开关、结算下一关、模型滑块和本地对战大厅状态；不发起网络对战。
+
+## 邮件新增界面
+
+`Mailbox.prefab`、`CommonDialog.prefab` 使用720×1280内容设计区，短屏完整缩放。`HomeMenu.prefab` 跟随首页左上菜单定位；邮件为第三项。通用框标题、正文和两个按钮由 `ReplicaCommonDialog.Configure` 配置。详细发放、领取及验证说明见 `Tools/mail-system.md`。

@@ -72,6 +72,8 @@ public static class SourceToolVisualImporter {
                 }
                 for(int i=1;i<objects.Count;i++)objects[i].SetActive(p.nodes[i].active);objects[0].SetActive(true);PrefabUtility.SaveAsPrefabAsset(objects[0],Out+"/"+p.name+".prefab");
             }finally{if(objects.Count>0)UnityEngine.Object.DestroyImmediate(objects[0]);}}
+        var storeArt=Resources.Load<Texture2D>("Replica/GameplaySkin/img_Blue_box3a");
+        if(storeArt){var material=materials[data.background.material];material.mainTexture=storeArt;EditorUtility.SetDirty(material);}
         var bg=new GameObject("StoreContentBG");try{bg.transform.localPosition=data.background.position;bg.transform.localRotation=data.background.rotation;bg.transform.localScale=data.background.scale;bg.AddComponent<MeshFilter>().sharedMesh=meshes[data.background.mesh];var mr=bg.AddComponent<MeshRenderer>();mr.sharedMaterial=materials[data.background.material];mr.shadowCastingMode=ShadowCastingMode.Off;mr.receiveShadows=false;PrefabUtility.SaveAsPrefabAsset(bg,Out+"/StoreContentBG.prefab");}finally{UnityEngine.Object.DestroyImmediate(bg);}
         AssetDatabase.SaveAssets();Debug.Log("SOURCE_TOOL_VISUAL_IMPORT PASS: "+data.prefabs.Length+" original prefabs, "+particleCount+" native particle modules, "+data.materials.Length+" materials, "+data.textures.Length+" textures; verified builtin store mesh 10210.");
     }

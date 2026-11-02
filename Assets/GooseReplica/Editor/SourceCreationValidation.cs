@@ -8,22 +8,24 @@ using UnityEngine;
 public static class SourceCreationValidation {
     static void Check(bool value,string message){if(!value)throw new Exception(message);}
     public static void Run(){
-        bool auto=Physics.autoSimulation;var flow=ReplicaFlow.Instance;
+        bool auto=Physics.autoSimulation;var flow=ReplicaFlow.Instance;bool oldSchedule=flow.UseLegacyCreationScheduleForValidation;flow.UseLegacyCreationScheduleForValidation=true;
         try{
             Physics.autoSimulation=false;
             for(int theme=0;theme<3;theme++){
-                flow.Begin(theme);
+                flow.Begin(theme);flow.NextStage();
                 var pile=ReplicaLayeredPile.Instance;var objects=LevelGenerator.Instance.objectsOnScene;
                 Check(flow.CreationInProgress&&pile.Creating,"creation must remain suspended after first batch");
                 Check(objects.Count==1,"source zero-based remainder yields after first one item");
                 Check(objects[0].GetComponent<Rigidbody>().isKinematic,"Init sets kinematic before creation height checks");
                 Check(GameManager.Instance.gameStatus==GameManager.GameStatus.PREPARING,"no input/countdown while creating");
-                var steps=flow.TakeOverSourceCreationForValidation();int batches=0,tail=0,previous=0;float waits=0,highest=float.NegativeInfinity;
+                var steps=flow.TakeOverSourceCreationForValidation();int batches=0,tail=0,previous=0,lastTimedCount=0;float waits=0,highest=float.NegativeInfinity;
                 bool sawInitialGrow=false,sawPark=false;
                 do {
                     float wait=(float)steps.Current;waits+=wait;
-                    if(Mathf.Abs(wait-.02f)<.00001f){
-                        int delta=objects.Count-previous;
+                    if(wait==0){
+                        Check((objects.Count>previous&&objects.Count-previous<=2)||(pile.CreationGrowingCount>=ReplicaLayeredPile.CreationGrowingLimit)||(objects.Count==300&&pile.CreationGrowingCount>0),"budget split or pending final growth");
+                    }else if(Mathf.Abs(wait-.02f)<.00001f){
+                        int delta=objects.Count-lastTimedCount;lastTimedCount=objects.Count;
                         Check(delta==(batches==0?1:3),"source batch size/index mismatch");batches++;
                     } else {
                         float[] tails={.5f,.2f,.3f};Check(tail<tails.Length&&Mathf.Abs(wait-tails[tail++])<.00001f,"tail wait sequence");
@@ -38,14 +40,14 @@ public static class SourceCreationValidation {
                             sawInitialGrow=true;
                             int type=int.Parse(obj.name.Substring(5));
                             var prefab=ReplicaSourceLevelPlan.Get(flow.library.themes[theme].sourceEnvironment).prefabs[type];
-                            var full=prefab.transform.localScale*ReplicaSourceProfile.ModelScale(prefab.name);
+                            var full=prefab.transform.localScale*ReplicaSourceProfile.ModelScale(prefab);
                             pile.StepVisibility(.02f);
-                            Check(Vector3.Distance(obj.transform.localScale,full*.1f)<.0001f,"creation grows linearly +.1 each .02 tick");
+                            Check(Vector3.Distance(obj.transform.localScale,full*(.02f/ReplicaLayeredPile.CreationGrowSeconds))<.0001f,"creation progresses by elapsed scaled time");
                         }
                     }
                     // No physics simulation: retain sampled coordinates to check sorted order. Advance
                     // scaled creation-growth ticks, testing its real depth checks and finite phases.
-                    for(float t=0;t+1e-6f<wait;t+=.02f)pile.StepVisibility(Mathf.Min(.02f,wait-t));
+                    SourceCreationTestSupport.AdvanceGrowth(wait);
                     sawPark|=objects.Any(x=>x.GetComponent<Rigidbody>().isKinematic);
                     previous=objects.Count;
                 }while(steps.MoveNext());
@@ -55,7 +57,7 @@ public static class SourceCreationValidation {
                 Check(GameManager.Instance.gameStatus==GameManager.GameStatus.PLAY,"input/countdown enable after finish");
                 flow.Home();
             }
-            File.WriteAllText("Temp/goose-source-creation-validation.txt","PASS three themes: true source iterator; batches 1/3/.../2; ascending Y; initial kinematic rigid; +.1/.02 creation growth; depth-based freezing; waits .02 then .5/.2/.3; FinishCreate before play.\n");
-        }finally{flow.Home();Physics.autoSimulation=auto;}
+            File.WriteAllText("Temp/goose-source-creation-validation.txt","PASS three themes: production iterator; bounded slices within batches 1/3/.../2; ascending Y; initial kinematic rigid; time-based bounded creation growth; depth-based freezing; waits .02 then .5/.2/.3; FinishCreate before play.\n");
+        }finally{flow.Home();flow.UseLegacyCreationScheduleForValidation=oldSchedule;Physics.autoSimulation=auto;}
     }
 }

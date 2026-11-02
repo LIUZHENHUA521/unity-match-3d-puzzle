@@ -34,14 +34,14 @@ public static class ReplicaGameplaySkinBuilder {
             var header=Rect("Header - safe area",root.transform,new Vector2(0,1),Vector2.zero,new Vector2(720,180));header.pivot=new Vector2(0,1);
             var footer=Rect("Tools - safe area",root.transform,Vector2.zero,Vector2.zero,new Vector2(720,180));footer.pivot=Vector2.zero;
             foreach(string key in new[]{"Title","Remaining","Peer","Freeze"})view.Show(key,false);
-            var settings=Image("Settings",header,"image_setting 拷贝",new Vector2(0,1),new Vector2(75,-111),new Vector2(70,70));settings.raycastTarget=true;
+            var settings=Image("Settings",header,"image_setting 拷贝",new Vector2(0,1),new Vector2(75,-111),new Vector2(70,70));settings.raycastTarget=true;settings.gameObject.SetActive(false);
             var settingsButton=settings.gameObject.AddComponent<Button>();settingsButton.targetGraphic=settings;
             bindings.Add(new ReplicaUIView.Binding{key="Settings",target=settings.gameObject});
-            var pause=view.Get<RectTransform>("Pause");Place(pause,header,new Vector2(0,1),new Vector2(165,-111),new Vector2(70,70));view.Get<Image>("Pause").sprite=Sprite("image_pause");
-            var timerBg=Image("Timer frame",header,"img_whiteLine_cube",new Vector2(0,1),new Vector2(360,-120),new Vector2(254,82));
+            var pause=view.Get<RectTransform>("Pause");Place(pause,header,new Vector2(0,1),new Vector2(75,-60),new Vector2(70,70));view.Get<Image>("Pause").sprite=Sprite("image_pause");
+            var timerBg=Image("Timer frame",header,"img_whiteLine_cube",new Vector2(0,1),new Vector2(360,-60),new Vector2(254,82));
             timerBg.transform.SetAsFirstSibling();
-            Image("Clock",header,"img_icon_time",new Vector2(0,1),new Vector2(286.5f,-119.5f),new Vector2(53,55));
-            var timer=view.Get<Text>("Timer");Place(timer.rectTransform,header,new Vector2(0,1),new Vector2(390,-120),new Vector2(132,62));timer.fontSize=46;timer.fontStyle=FontStyle.Bold;timer.color=new Color32(0,119,190,255);timer.text="7:35";
+            Image("Clock",header,"img_icon_time",new Vector2(0,1),new Vector2(286.5f,-59.5f),new Vector2(53,55));
+            var timer=view.Get<Text>("Timer");Place(timer.rectTransform,header,new Vector2(0,1),new Vector2(390,-60),new Vector2(132,62));timer.fontSize=46;timer.fontStyle=FontStyle.Bold;timer.color=new Color32(0,119,190,255);timer.text="7:35";
             var outline=timer.GetComponent<Outline>()??timer.gameObject.AddComponent<Outline>();outline.effectColor=Color.white;outline.effectDistance=new Vector2(2,-2);
             var skin=root.AddComponent<ReplicaGameplayHUD>();skin.header=header;skin.footer=footer;skin.quantities=new Text[3];
             var keys=new[]{"Undo","Hint","Shuffle"};var labels=new[]{"移出","吸附","洗牌"};var icons=new[]{"image_btn_remove","image_btn_adsorpt","image_btn_shuffle"};
@@ -70,7 +70,7 @@ public static class ReplicaGameplaySkinBuilder {
             var view=root.GetComponent<ReplicaUIView>();var rect=(RectTransform)root.transform;rect.sizeDelta=new Vector2(720,159);
             var skin=root.GetComponent<ReplicaTraySkin>()??root.AddComponent<ReplicaTraySkin>();skin.screenCenterFromBottom=237.5f;skin.slots=new RectTransform[7];
             var frame=view.Get<Image>("Frame");frame.sprite=Sprite("img_Blue_box");frame.type=UnityEngine.UI.Image.Type.Simple;frame.rectTransform.sizeDelta=rect.sizeDelta;frame.rectTransform.anchoredPosition=Vector2.zero;
-            var footer=Image("Toolbar background",root.transform,"img_Blue_cube",new Vector2(.5f,.5f),new Vector2(0,-147.5f),new Vector2(720,180));footer.transform.SetAsFirstSibling();skin.footerBackground=footer.rectTransform;
+            var footer=Image("Toolbar background",root.transform,"img_Blue_cube",new Vector2(.5f,.5f),new Vector2(0,-147.5f),new Vector2(720,180));footer.transform.SetAsFirstSibling();skin.footerBackground=footer.rectTransform;footer.gameObject.SetActive(false);
             for(int i=0;i<7;i++){
                 var slot=view.Get<RectTransform>("Slot"+i);slot.anchoredPosition=new Vector2((i-3)*98.5f,3);slot.sizeDelta=new Vector2(90,92);slot.GetComponent<Image>().enabled=false;skin.slots[i]=slot;
             }

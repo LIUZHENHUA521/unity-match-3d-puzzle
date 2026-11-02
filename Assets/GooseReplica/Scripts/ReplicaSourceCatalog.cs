@@ -14,6 +14,9 @@ public static class ReplicaSourceCatalog {
         public string prefabPath;
         // Runtime scale applied to the already-normalized Prefab, not its import scale.
         public float normalizedToSource;
+        public float trayBaseScale; // Frozen pre-adjustment gameplay scale for fallback tray sizing.
+        public string sizeTier;
+        public string sizeReason;
         public ColliderProfile colliderProfile;
         public AudioProfile audioProfile;
     }

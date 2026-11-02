@@ -20,7 +20,7 @@ public class BoosterManager : Singleton<BoosterManager>
             if (ReplicaSourceTools.Shuffling || !ReplicaSourceTools.CanUse(1)) return;
             var items=ReplicaSourceTools.AutoFindCandidates(InputController.Instance.objectsOnStack,LevelGenerator.Instance.objectsOnScene);
             if(items.Count==0)return;
-            ReplicaSourceTools.MarkUsed(1);ReplicaSourceAudio.Tool(25);
+            if(!ReplicaSourceTools.TrySpend(1))return;ReplicaSourceAudio.Tool(25);
             if(Camera.main)ReplicaSourceHighlight.For(Camera.main).ShowAutoFind(items);
             foreach(var item in items){
                 var stack=InputController.Instance.objectsOnStack;int index=stack.FindLastIndex(x=>x&&x.name==item.name);index=index<0?stack.Count:index+1;

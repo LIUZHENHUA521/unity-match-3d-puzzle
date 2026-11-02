@@ -11,6 +11,7 @@ public sealed class ReplicaSourceLevelPlan : ScriptableObject {
         public float limitHeight;
         public GameObject[] prefabs;
         public string[] tutorialNames;
+        public int[] ordinaryTypes; // Zero-based prefab indices; target is index zero in recovered first rows.
         public ChallengeLayer[] layers;
     }
     public Profile[] profiles;
@@ -26,29 +27,19 @@ public sealed class ReplicaSourceLevelPlan : ScriptableObject {
         throw new InvalidOperationException("No source level profile for "+environment);
     }
 
-    // WX LevelData's first MainLevel row is a separate tutorial profile. It is
-    // deliberately kept out of SourceLevelCatalog because that catalog is the
-    // ordinary second-stage (150/60/45/45) plan. The names and geometry below
-    // come directly from the packaged first rows: 12 items, two selected types,
-    // height 6, limit height 4, and no countdown.
+    static ReplicaSourceLevelPlan firstStage;
     public static Profile GetTutorial(string environment){
-        var ordinary=Get(environment);
-        string[] names = ordinary.tutorialNames;
-        if (names == null || names.Length == 0) switch(environment){
-            case "CountrysideStove": names=new[]{"Goose_Tomato","Potato","Orange","SaltedEgg"};break;
-            case "GroceryStore": names=new[]{"Goose_ChiliSauce","Banana","GlassCola","WahahaMilk"};break;
-            case "Barbecue": names=new[]{"Goose_Pancake","BBQSkewers2","GrilledCorn"};break;
-            default: throw new InvalidOperationException("No source tutorial profile for "+environment);
-        }
-        var prefabs=new GameObject[names.Length];
-        for(int i=0;i<names.Length;i++){
-            prefabs[i]=ordinary.prefabs.FirstOrDefault(p=>p&&p.name==names[i]);
-            if(!prefabs[i])throw new InvalidOperationException("Missing source tutorial prefab "+environment+"/"+names[i]);
-        }
-        return new Profile{
-            environment=environment,sourceIndex=ordinary.sourceIndex,seconds=0,
-            limitHeight=4f,prefabs=prefabs,
-            layers=new[]{new ChallengeLayer(12,2,6f){weights=Enumerable.Repeat(1f,prefabs.Length).ToArray()}}
-        };
+        if(!firstStage)firstStage=Resources.Load<ReplicaSourceLevelPlan>("Replica/FirstStageCatalog");
+        if(!firstStage)throw new InvalidOperationException("Missing FirstStageCatalog; run Import First Stage Plans");
+        return firstStage.profiles.First(p=>p.environment==environment);
+    }
+    public static System.Collections.Generic.List<ChallengeTile> GenerateFirstStage(Profile profile,IReplicaSourceRandom random){
+        // j38517 allocates the three targets BEFORE selecting ordinary types.
+        // The single-layer KFakeRandom still consumes one float draw per target.
+        for(int i=0;i<3;i++)random.Range(0f,1f);
+        var tiles=ChallengePlan.GenerateSource(random,profile.ordinaryTypes.Length,profile.layers);
+        foreach(var tile in tiles)tile.type=profile.ordinaryTypes[tile.type];
+        for(int i=0;i<3;i++)tiles.Add(new ChallengeTile{id=tiles.Count,type=0,layer=0,height=6f});
+        return tiles;
     }
 }

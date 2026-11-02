@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7554928553131723841}
   - component: {fileID: 8696494681117314316}
   - component: {fileID: 620086645216318866}
+  - component: {fileID: 5374606477958327918}
   m_Layer: 0
   m_Name: Banana
   m_TagString: Collectable
@@ -76,6 +77,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &5374606477958327918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2410030124605836480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 4585061392503742520}
+  colliderStates:
+  - collider: {fileID: 9157030978050472466}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 622181464361291040}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Banana
 --- !u!1 &4585061392503742520
 GameObject:
   m_ObjectHideFlags: 0

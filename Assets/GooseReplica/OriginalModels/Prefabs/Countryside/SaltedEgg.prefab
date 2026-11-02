@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2677467982988214950}
   - component: {fileID: 1518447986721340545}
+  - component: {fileID: 5751552473077678267}
   m_Layer: 0
   m_Name: SaltedEgg
   m_TagString: Collectable
@@ -60,6 +61,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &5751552473077678267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637764925751030036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 5097821503141705974}
+  colliderStates:
+  - collider: {fileID: 5066420031943286294}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 9030527811682462246}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: SaltedEgg
 --- !u!1 &5097821503141705974
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8448504251383986885}
   - component: {fileID: 9030527811682462246}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Col
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +121,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5097821503141705974}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: cef60c497ea964cc881580ec7f78501d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -124,7 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6858681261323176852}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SaltedEgg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8243662067925243088}
   - component: {fileID: 5066420031943286294}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RealCol (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +208,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9087675935620336782}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: cef60c497ea964cc881580ec7f78501d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -213,7 +235,7 @@ GameObject:
   - component: {fileID: 9054418544285856506}
   - component: {fileID: 5742681077200379301}
   - component: {fileID: 4831005884696010040}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lba_egg_0_mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}

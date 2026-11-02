@@ -1,0 +1,44 @@
+mergeInto(LibraryManager.library, {
+ $GooseProfile: {
+  target:'', generation:0, readVersion:0, button:null,
+  emit:function(version,data){if(version===GooseProfile.generation&&GooseProfile.target)Module.SendMessage(GooseProfile.target,'OnWechatProfile',JSON.stringify(data));},
+  close:function(){GooseProfile.generation++;GooseProfile.target='';if(GooseProfile.button){try{GooseProfile.button.destroy();}catch(e){}GooseProfile.button=null;}},
+  result:function(version,res){
+   if(res&&res.userInfo&&!(res.errMsg&&res.errMsg.indexOf(':fail')>=0)){
+    var u=res.userInfo;GooseProfile.emit(version,{state:'ready',nickName:typeof u.nickName==='string'?u.nickName:'',avatarUrl:typeof u.avatarUrl==='string'?u.avatarUrl:'',gender:Number(u.gender)||0,country:u.country||'',province:u.province||'',city:u.city||''});
+   }else GooseProfile.emit(version,{state:'denied',message:'未获取微信资料，可点击下方按钮重试'});
+  }
+ },
+ GooseProfileOpen__deps:['$GooseProfile'],
+ GooseProfileOpen:function(target){
+  GooseProfile.close();GooseProfile.target=UTF8ToString(target);var version=GooseProfile.generation,readVersion=++GooseProfile.readVersion;
+  if(typeof wx==='undefined'){GooseProfile.emit(version,{state:'unavailable',message:'请在微信小游戏中同步资料'});return;}
+  try{wx.getSetting({success:function(r){if(version!==GooseProfile.generation||readVersion!==GooseProfile.readVersion)return;
+   if(r.authSetting&&r.authSetting['scope.userInfo']){
+    if(typeof wx.getUserInfo!=='function'){GooseProfile.emit(version,{state:'unavailable',message:'当前微信暂不支持读取资料'});return;}
+    wx.getUserInfo({withCredentials:false,lang:'zh_CN',success:function(res){if(readVersion===GooseProfile.readVersion)GooseProfile.result(version,res);},fail:function(){if(readVersion!==GooseProfile.readVersion)return;GooseProfile.emit(version,{state:'denied',message:'微信资料读取失败，请点击同步重试'});}});
+   }else GooseProfile.emit(version,{state:'authorize',message:'点击同步微信资料，由微信确认授权'});
+  },fail:function(){if(readVersion!==GooseProfile.readVersion)return;GooseProfile.emit(version,{state:'authorize',message:'暂未读取到授权状态，可点击同步重试'});}});}catch(e){GooseProfile.emit(version,{state:'unavailable',message:'当前微信暂不支持读取资料'});}
+ },
+ GooseProfileBounds__deps:['$GooseProfile'],
+ GooseProfileBounds:function(x,y,w,h,screenW,screenH){
+  if(!GooseProfile.target||typeof wx==='undefined'||w<=0||h<=0||screenW<=0||screenH<=0)return;
+  var version=GooseProfile.generation;
+  try{
+   var info=wx.getWindowInfo?wx.getWindowInfo():wx.getSystemInfoSync();
+   var sx=info.windowWidth/screenW,sy=info.windowHeight/screenH;
+   if(!(sx>0&&sy>0))return;
+   var style={left:x*sx,top:y*sy,width:w*sx,height:h*sy,lineHeight:h*sy,backgroundColor:'rgba(0, 0, 0, 0)',color:'rgba(0, 0, 0, 0)',fontSize:0,borderWidth:0};
+   if(GooseProfile.button){for(var k in style)GooseProfile.button.style[k]=style[k];return;}
+   if(!wx.createUserInfoButton){GooseProfile.emit(version,{state:'unavailable',message:'当前微信暂不支持资料授权'});return;}
+   var button=wx.createUserInfoButton({type:'text',text:'',lang:'zh_CN',withCredentials:false,style:style});
+   GooseProfile.button=button;button.onTap(function(res){if(version!==GooseProfile.generation)return;GooseProfile.readVersion++;GooseProfile.result(version,res);});
+  }catch(e){GooseProfile.emit(version,{state:'unavailable',message:'微信授权按钮暂不可用，请稍后重试'});}
+ },
+ GooseProfileClose__deps:['$GooseProfile'],GooseProfileClose:function(){GooseProfile.close();},
+ GooseProfileCopy__deps:['$GooseProfile'],GooseProfileCopy:function(value){
+  var text=UTF8ToString(value),version=GooseProfile.generation;
+  if(typeof wx==='undefined')return;
+  wx.setClipboardData({data:text,success:function(){GooseProfile.emit(version,{state:'copied',message:'用户 ID 已复制'});},fail:function(){GooseProfile.emit(version,{state:'copyFailed',message:'复制失败，请重试'});}});
+ }
+});

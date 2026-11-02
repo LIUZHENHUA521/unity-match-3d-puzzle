@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 4221199859167730695}
   - component: {fileID: 4069159033640155701}
   - component: {fileID: 8146364103812311039}
+  - component: {fileID: 284117775678205628}
   m_Layer: 0
   m_Name: ChocolateBar
   m_TagString: Collectable
@@ -195,6 +196,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &284117775678205628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5631954297974291522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 3209571414987708515}
+  colliderStates:
+  - collider: {fileID: 7461078887456328485}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 8993748094883155413}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: ChocolateBar
 --- !u!1 &7045252774588584379
 GameObject:
   m_ObjectHideFlags: 0

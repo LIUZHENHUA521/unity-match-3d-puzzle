@@ -11,8 +11,10 @@ public static class WechatReleaseBuild {
     public static void Run() {
         try {
             HomeSkinAssets.Ensure();
+            SourcePrefabPreparation.Bake();
             var release=JsonUtility.FromJson<ReleaseConfig>(File.ReadAllText("Tools/wechat/release.config.json"));
             if(!File.Exists(release.scene))throw new Exception("Release scene missing: "+release.scene);
+            WechatReleaseAssets.Prepare(release.scene);
             EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(release.scene,true)};
             PlayerSettings.defaultInterfaceOrientation=UIOrientation.Portrait;
             PlayerSettings.productName=release.projectName;
@@ -34,6 +36,9 @@ public static class WechatReleaseBuild {
             config.ProjectConf.MemorySize=256;
             config.ProjectConf.IOSDevicePixelRatio=2;
             config.CompileOptions.DevelopBuild=false;
+            // Asset changes must not reuse the previous script-only data package.
+            config.CompileOptions.ScriptOnly=false;
+            config.CompileOptions.CleanBuild=true;
             config.CompileOptions.Il2CppOptimizeSize=true;
             config.CompileOptions.Webgl2=true;
             config.CompileOptions.fbslim=false;

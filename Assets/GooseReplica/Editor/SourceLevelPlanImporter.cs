@@ -28,4 +28,20 @@ public static class SourceLevelPlanImporter {
         asset.profiles=profiles;EditorUtility.SetDirty(asset);AssetDatabase.SaveAssets();
         Debug.Log("SOURCE_LEVEL_PLANS_IMPORTED: "+string.Join(", ",profiles.Select(x=>x.environment+"="+x.prefabs.Length)));
     }
+    [MenuItem("Goose/Import First Stage Plans")]
+    public static void ImportFirstStage(){
+        string[] environments={"CountrysideStove"};
+        string[] groups={"Countryside"};
+        string[][] names={new[]{"Goose_Tomato","Potato","Orange","SaltedEgg"}};
+        const string path="Assets/GooseReplica/Resources/Replica/FirstStageCatalog.asset";
+        var asset=AssetDatabase.LoadAssetAtPath<ReplicaSourceLevelPlan>(path);
+        if(!asset){asset=ScriptableObject.CreateInstance<ReplicaSourceLevelPlan>();AssetDatabase.CreateAsset(asset,path);}
+        asset.profiles=Enumerable.Range(0,environments.Length).Select(i=>{
+            var prefabs=names[i].Select(n=>AssetDatabase.LoadAssetAtPath<GameObject>("Assets/GooseReplica/OriginalModels/Prefabs/"+groups[i]+"/"+n+".prefab")).ToArray();
+            if(prefabs.Any(p=>!p))throw new InvalidOperationException("Missing first-stage original prefab "+groups[i]);
+            return new ReplicaSourceLevelPlan.Profile{environment=environments[i],sourceIndex=new[]{1,4,5}[i],seconds=0,limitHeight=4,prefabs=prefabs,
+                ordinaryTypes=Enumerable.Range(1,prefabs.Length-1).ToArray(),layers=new[]{new ChallengeLayer(12,2,6f){weights=Enumerable.Repeat(1f,prefabs.Length-1).ToArray()}}};
+        }).ToArray();
+        EditorUtility.SetDirty(asset);AssetDatabase.SaveAssets();Debug.Log("FIRST_STAGE_PLANS_IMPORTED");
+    }
 }

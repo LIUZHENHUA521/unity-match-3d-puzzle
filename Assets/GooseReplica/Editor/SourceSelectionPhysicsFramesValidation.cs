@@ -64,6 +64,10 @@ public static class SourceSelectionPhysicsFramesValidation {
         // Shuffle completion checks only its candidates at source depth=1, then normal optimization resumes at .5.
         flow.Home();flow.Begin(0);flow.NextStage();SourceCreationTestSupport.FinishPending(flow);
         var pile=ReplicaLayeredPile.Instance;var board=LevelGenerator.Instance.objectsOnScene;
+        // This fixture drains the production iterator synchronously with simulation
+        // disabled. Publish the authored transforms before querying post-create
+        // heights; the real PlayerLoop normally supplies this synchronization.
+        Physics.SyncTransforms();pile.RefreshVisibility();
         var candidate=board.First(o=>o.GetComponentInChildren<Renderer>().enabled).GetComponent<Rigidbody>();
         candidate.isKinematic=false;candidate.velocity=Vector3.zero;candidate.angularVelocity=Vector3.zero;
         candidate.position=new Vector3(0,(pile.Threshold+pile.PhysicsThreshold)*.5f,0);pile.RestoreToolScale(candidate);

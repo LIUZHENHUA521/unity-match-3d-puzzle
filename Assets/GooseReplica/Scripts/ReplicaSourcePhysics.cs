@@ -24,7 +24,8 @@ public static class ReplicaSourcePhysics {
         body.interpolation=RigidbodyInterpolation.None;body.collisionDetectionMode=CollisionDetectionMode.Discrete;
         body.sleepThreshold=Sleep;body.maxDepenetrationVelocity=Depenetration;
         body.solverIterations=6;body.solverVelocityIterations=1;
-        foreach(var c in body.GetComponentsInChildren<Collider>(true)){
+        var token=body.GetComponent<ReplicaSourcePoolToken>();token?.CacheComponents();
+        foreach(var c in token?token.Colliders:body.GetComponentsInChildren<Collider>(true)){
             c.contactOffset=Contact;
             // Source project default material is ObjMa, including colliders with no explicit material.
             if(!c.sharedMaterial)c.sharedMaterial=DefaultSurface;

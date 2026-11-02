@@ -11,7 +11,8 @@ public sealed class ReplicaSourceAudio : MonoBehaviour {
     static readonly Dictionary<GameObject,Item> bound=new Dictionary<GameObject,Item>();
     readonly Dictionary<int,AudioClip> clips=new Dictionary<int,AudioClip>();
     readonly SourceSoundSequence sequence=new SourceSoundSequence();
-    AudioSource[] effects;AudioSource goose;
+    AudioSource[] effects;AudioSource goose;AudioClip selectionClip;
+    public AudioClip SelectionClip=>selectionClip?selectionClip:(selectionClip=Resources.Load<AudioClip>("Replica/SourceAudio/DM-CGS-32"));
     public int PlayedCount {get;private set;}
     public int LastSound {get;private set;}
     public float LastPitch {get;private set;}
@@ -27,17 +28,25 @@ public sealed class ReplicaSourceAudio : MonoBehaviour {
     public static bool TryBoundProfile(GameObject obj,out Item item)=>bound.TryGetValue(obj,out item);
     public static bool TryProfile(string name,out Item item){LoadCatalog();return items.TryGetValue(name,out item);}
     public AudioClip Clip(int id){LoadCatalog();if(catalog.names==null||id<=0||id>=catalog.names.Length)return null;if(!clips.TryGetValue(id,out var clip)){clip=Resources.Load<AudioClip>("Replica/SourceAudio/"+catalog.names[id]);clips[id]=clip;}return clip;}
-    public bool PlayEffect(int id,bool usePitch,string objectName){
+    public static void Preload(string name){
+        var audio=Get();if(!audio||!TryProfile(name,out var item))return;
+        if(audio.SelectionClip)audio.SelectionClip.LoadAudioData();
+        foreach(int id in new[]{item.select,item.combine,23}){var clip=audio.Clip(id);if(clip)clip.LoadAudioData();}
+        if(item.goose)for(int id=31;id<=34;id++){var clip=audio.Clip(id);if(clip)clip.LoadAudioData();}
+    }
+    public bool PlayEffect(int id,bool usePitch,string objectName)=>PlayEffect(id,usePitch,objectName,null);
+    bool PlayEffect(int id,bool usePitch,string objectName,AudioClip overrideClip){
         if(!Enabled)return false;
         // Original updates its throttle before checking the loaded clip dictionary.
         if(!sequence.TryBegin(id,Time.time))return false;
-        var clip=Clip(id);if(!clip)return false;
+        var clip=overrideClip?overrideClip:Clip(id);if(!clip)return false;
         int index=sequence.SelectSource(usePitch,objectName);effects[index].PlayOneShot(clip);
         PlayedCount++;LastSound=id;LastPitch=effects[index].pitch;return true;
     }
     public static void Select(GameObject obj){
         if(!Enabled||!bound.TryGetValue(obj,out var item))return;var audio=Get();
-        audio.PlayEffect(item.select,item.usePitch,obj.name);
+        // Keep the original sound ID for throttling and the object-name pitch sequence.
+        if(item.select>0)audio.PlayEffect(item.select,item.usePitch,obj.name,audio.SelectionClip);
         // PlaySound invokes goose voice even if the material effect was throttled.
         if(item.goose){var clip=audio.Clip(UnityEngine.Random.Range(31,35));if(clip)audio.goose.PlayOneShot(clip);}
     }

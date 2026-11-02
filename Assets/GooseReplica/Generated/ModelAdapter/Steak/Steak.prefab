@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 5479074404883845116}
   - component: {fileID: 2018559198814541645}
   - component: {fileID: 238711336370817931}
+  - component: {fileID: 5249931160515109759}
   m_Layer: 0
   m_Name: Steak
   m_TagString: Collectable
@@ -248,6 +249,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &5249931160515109759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7941093430980560012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 1486960778116677074}
+  colliderStates:
+  - collider: {fileID: 4971443280498836402}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 8728595043936666836}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Steak
 --- !u!1001 &5260982255829231431
 PrefabInstance:
   m_ObjectHideFlags: 0

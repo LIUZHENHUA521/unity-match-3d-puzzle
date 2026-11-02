@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [DefaultExecutionOrder(-500)]
-public class ReplicaFlow : MonoBehaviour {
+public partial class ReplicaFlow : MonoBehaviour {
     public static ReplicaFlow Instance {get;private set;}
     public ReplicaTheme library;
     public bool IsPvp {get;private set;}
@@ -25,8 +25,7 @@ public class ReplicaFlow : MonoBehaviour {
     Canvas canvas;RectTransform page,modal;Text timer,remaining,peerText,toast;
     ReplicaPilePhysics pilePhysics;
     ReplicaLayeredPile layeredPile;
-    ReplicaThemePresentation sourceTutorialPresentation;
-    GameObject sourceTutorialBoundary;
+    ReplicaStagePreloader stagePreloader;
     ReplicaDiagnostics diagnostics;
     ReplicaGameplayHUD gameplayHUD;
     Button moveToolButton,findToolButton,shuffleToolButton;
@@ -64,19 +63,21 @@ public class ReplicaFlow : MonoBehaviour {
         pilePhysics=gameObject.AddComponent<ReplicaPilePhysics>();
         layeredPile=gameObject.AddComponent<ReplicaLayeredPile>();
         gameObject.AddComponent<ReplicaSourceObjectPool>();
+        stagePreloader=gameObject.AddComponent<ReplicaStagePreloader>();
         gameObject.AddComponent<ReplicaTray>();
         diagnostics=gameObject.AddComponent<ReplicaDiagnostics>();
         network=gameObject.AddComponent<ReplicaNetwork>();network.Received=Receive;
-        endpoint=PlayerPrefs.GetString("goose.endpoint",library.pvpEndpoint);Home();
+        endpoint=PlayerPrefs.GetString("goose.endpoint",library.pvpEndpoint);
+        gameObject.AddComponent<ReplicaInvitations>().Initialize(endpoint);gameObject.AddComponent<ReplicaGameRecords>().Initialize(endpoint);gameObject.AddComponent<ReplicaRewards>().Initialize(endpoint);Home();
 #if UNITY_WEBGL && !UNITY_EDITOR
         WeChatWASM.WX.ReportGameStart();
 #endif
         yield break;
     }
-    void OnDestroy(){CancelSourceCreation();if(sourceTutorialPresentation)sourceTutorialPresentation.End();if(sourceTutorialBoundary)Destroy(sourceTutorialBoundary);ReplicaSourcePhysics.End();if(Instance==this)Instance=null;Time.timeScale=1;}
+    void OnDestroy(){CancelSourceCreation();if(stagePreloader)stagePreloader.Cancel();ReplicaSourcePhysics.End();if(Instance==this)Instance=null;Time.timeScale=1;}
     void Update(){
         if(ScreenName=="game") {
-            if(!IsPvp&&Stage==2&&InputController.Instance){
+            if(ReplicaSourceTools.Enabled){
                 var input=InputController.Instance;
                 bool ready=GameManager.Instance.GameIsPlaying()&&!BlocksGameplay&&!ReplicaSourceTools.Shuffling;
                 if(moveToolButton)moveToolButton.interactable=ready&&ReplicaSourceTools.CanUse(0)&&input.objectsOnStack.Count>0;
@@ -85,7 +86,7 @@ public class ReplicaFlow : MonoBehaviour {
             }
             int t=Mathf.CeilToInt(GameManager.Instance.currentLevelTime);
             int count=LevelGenerator.Instance.objectsOnScene.Count;
-            if(timer&&t!=displayedTime){timer.text=GameManager.Instance.currentLevelTime>0?(t/60).ToString("00")+":"+(t%60).ToString("00"):(gameplayHUD?"∞":"");displayedTime=t;}
+            if(timer&&t!=displayedTime){timer.text=GameManager.Instance.currentLevelTime>0?(t/60).ToString("00")+":"+(t%60).ToString("00"):(gameplayHUD&&Stage==1?"∞":"00:00");displayedTime=t;}
             if(remaining&&count!=displayedCount)remaining.text="剩余 "+count+" / "+InitialCount;
             if(peerText&&(count!=displayedCount||otherCleared!=displayedPeer))peerText.text="我方 "+(InitialCount-count)+" / "+InitialCount+"    对手 "+otherCleared+" / "+InitialCount;
             displayedCount=count;displayedPeer=otherCleared;
@@ -100,7 +101,7 @@ public class ReplicaFlow : MonoBehaviour {
     void Click(){if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
     public void SelectSound(){if(SettingsEffects&&library.selectSound)effects.PlayOneShot(library.selectSound);}
     public void MatchSound(){if(SettingsEffects&&library.matchSound)effects.PlayOneShot(library.matchSound);}
-    void StopBoard(){if(Camera.main){var highlight=Camera.main.GetComponent<ReplicaSourceHighlight>();if(highlight)highlight.ClearAll();}ReplicaSourceAudio.ResetLevel();CancelSourceCreation();if(sourceTutorialPresentation)sourceTutorialPresentation.End();if(sourceTutorialBoundary){sourceTutorialBoundary.SetActive(false);Destroy(sourceTutorialBoundary);sourceTutorialBoundary=null;}ReplicaSourcePhysics.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();ReplicaSourceObjectPool.Clear();resultShown=false;pendingPick=false;}
+    void StopBoard(bool preservePool=false){ResetRevival();if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Finish("quit","home");if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ReplicaSourceHighlight>();if(highlight)highlight.ClearAll();}ReplicaSourceAudio.ResetLevel();CancelSourceCreation();ReplicaSourcePhysics.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)ReplicaSourceObjectPool.Clear();resultShown=false;pendingPick=false;}
     public void Home(){
         if(network)network.Disconnect();StopBoard();IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
         ReplicaHomeView.Create(this,page,ReplicaHomeView.Tab.Home);
@@ -123,7 +124,7 @@ public class ReplicaFlow : MonoBehaviour {
             int index=i;var theme=library.themes[i];
             view.Text("Name"+i,theme.title);view.Text("Description"+i,theme.subtitle);
             view.Get<Image>("Goose"+i).sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+theme.gooseSprite);
-            view.Bind("Play"+i,()=>Begin(index));
+            view.Bind("Play"+i,()=>BeginReward(index,"elite"));
         }
     }
     public bool HasGoose(string id){return PlayerPrefs.GetInt("goose.collection."+id,0)>0;}
@@ -138,48 +139,72 @@ public class ReplicaFlow : MonoBehaviour {
             view.Text("Play"+i+"Text",got?"再挑战":"去解锁");view.Bind("Play"+i,()=>Begin(index));
         }
     }
-    public void Begin(int theme){
-        // All solo entry points start directly on the full layered challenge.
-        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=2;runDate=Today;StartStage();
+    public void BeginReward(int theme,string tier){if(ReplicaRewards.Instance)ReplicaRewards.Instance.Begin(theme,tier,library.themes[theme].id);}
+    public void BeginQualified(int theme,string runId,string tier,string version){
+        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=Today;ReplicaGameRecords.Instance.QualifiedRun(runId,tier,version);StartStage();
     }
-    public void RestartStage(){StopBoard();StartStage();}
+    public void ShowRedPackets(){BlocksGameplay=true;var view=OpenModal("RedPackets");view.Bind("Close",()=>CloseModal());view.GetComponent<ReplicaRewardsView>().Connect();}
+    public void Begin(int theme){
+        // Ordinary MainLevel starts with the recovered first-stage row.
+        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=Today;if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.NewRun();StartStage();
+    }
+    public void RestartStage(){if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Finish("quit","restart");StopBoard();StartStage();}
     public void NextStage(){
         // The source keeps the theme presentation alive while MainLevel rolls
         // into the layered challenge. Rebuilding the same scene and collision
         // shell here caused a synchronous hitch before the creation coroutine
         // could show its first batch.
-        var reusedPresentation=sourceTutorialPresentation;
-        var reusedBoundary=sourceTutorialBoundary;
-        sourceTutorialPresentation=null;
-        sourceTutorialBoundary=null;
-        Stage=2;StopBoard();StartStage(reusedPresentation,reusedBoundary);
+        layeredPile.TakePresentation(out var reusedPresentation,out var reusedBoundary);
+        StopBoard(true);Stage=2;StartStage(reusedPresentation,reusedBoundary,false);
+        var notice=ReplicaUIView.Load("Notice",page);notice.Get<Text>("Message").text="进入最后一关";
+        Destroy(notice.gameObject,1f);
     }
-    void StartStage(ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null){
+    void StartStage(ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null,bool countAttempt=true){
+        if(!IsPvp){
+            if(PlayerPrefs.GetString("goose.result.date","")!=Today){PlayerPrefs.SetString("goose.result.date",Today);PlayerPrefs.SetInt("goose.result.attempts",0);}
+            // Count a new challenge at tutorial start, and each retry of the final stage.
+            if(countAttempt)PlayerPrefs.SetInt("goose.result.attempts",PlayerPrefs.GetInt("goose.result.attempts",0)+1);
+            PlayerPrefs.Save();
+        }
         var date=DateTime.ParseExact(runDate,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture).AddHours(4);
         TodaySeed=ChallengePlan.DailySeed(CurrentTheme.id,Stage,date);
         bool sourceTutorial=!IsPvp&&Stage==1;
         var source=sourceTutorial||Stage==2? (sourceTutorial?ReplicaSourceLevelPlan.GetTutorial(CurrentTheme.sourceEnvironment):ReplicaSourceLevelPlan.Get(CurrentTheme.sourceEnvironment)) : null;
         var prefabs=source!=null?source.prefabs:CurrentTheme.prefabs;
         IReplicaSourceRandom sourceRandom=source!=null?ReplicaSourceGlobalRandom.Instance:null;
-        var tiles=source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
+        var tiles=sourceTutorial?ReplicaSourceLevelPlan.GenerateFirstStage(source,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
         Spawn(tiles,TodaySeed,source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);
+        if(sourceTutorial)stagePreloader.Begin(CurrentTheme.sourceEnvironment);
 
     }
     public const float BoardItemScale = 1.5f;
     sealed class SourceCreateInfo {public ChallengeTile tile;public Vector3 position;}
     public const int SourceFrameCreateCount=3;
+    public const int HiddenCreationSliceLimit=12;
     public const float SourceCreateSeconds=2f,SourceMaximumCreateInterval=.03f;
+    public const double CreationSliceBudgetMilliseconds=2.5;
+    public const float SlowCreationFrameSeconds=1f/45;
+    public static int CreationSliceLimit(bool hidden,float previousFrameSeconds)=>previousFrameSeconds>SlowCreationFrameSeconds?1:(hidden?HiddenCreationSliceLimit:SourceFrameCreateCount);
+    public int SlowFrameCreationYieldCount {get;private set;}
+    public double MaxCreationSliceMilliseconds {get;private set;}
+    public int CreationBudgetYieldCount {get;private set;}
+#if UNITY_EDITOR
+    [NonSerialized] public double CreationBudgetOverride=-1;
+    [NonSerialized] public float CreationFrameSecondsOverride=-1;
+    [NonSerialized] public bool UseLegacyCreationScheduleForValidation;
+#endif
     public static float SourceCreateInterval(int count)=>Mathf.Min(SourceCreateSeconds/Mathf.Max(1,count)*SourceFrameCreateCount,SourceMaximumCreateInterval);
     void Spawn(List<ChallengeTile> tiles,int seed,int seconds,GameObject[] sourcePrefabs=null,IReplicaSourceRandom sourceRandom=null,bool sourceTutorial=false,ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null){
         var prefabs=sourcePrefabs??CurrentTheme.prefabs;
         LastResult="";InitialCount=tiles.Count;
-        bool layered=!IsPvp&&Stage==2;
+        if(!IsPvp&&ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Prepare(CurrentTheme.id,Stage,runDate,tiles.Count,seconds);
+        bool layered=!IsPvp&&(Stage==1||Stage==2);
         ReplicaSourceColliders.ConfigureLayers();
         if(!IsPvp)ReplicaSourcePhysics.Begin();
         GameManager.Instance.currentLevelTime=seconds;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(layered){
             AppliedModelSize=ReplicaSourceProfile.ModelSizeMultiplier;
-            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true,reusedPresentation,reusedBoundary);
+            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true,reusedPresentation,reusedBoundary,sourceTutorial?4f:(float?)null);
             var random=sourceRandom??ReplicaSourceGlobalRandom.Instance;
             // LoopCreateObj builds all descriptions bottom-to-top, then List.Sort compares Y.
             // Rotation is sampled later, at CreateUnitObj, in the sorted creation order.
@@ -195,22 +220,6 @@ public class ReplicaFlow : MonoBehaviour {
             sourceCreationRunner=StartCoroutine(RunSourceCreation(version));
             return;
         }
-        if(sourceTutorial){
-            // The first MainLevel uses the same source scene, boundary and
-            // Rigidbody setup as the ordinary source board, but has no hidden
-            // layers or later visibility scan. Item positions still come from
-            // the source GetPos interval [0,6].
-            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);
-            if(!sourceTutorialPresentation)sourceTutorialPresentation=gameObject.AddComponent<ReplicaThemePresentation>();
-            sourceTutorialPresentation.Begin(CurrentTheme.sourceEnvironment);
-            sourceTutorialBoundary=ReplicaSourceEnvironment.CreateBoundary();
-            sourceTutorialBoundary.name=CurrentTheme.sourceEnvironment+" source tutorial collision reference";
-            var random=sourceRandom??ReplicaSourceGlobalRandom.Instance;
-            foreach(var tile in tiles)
-                CreateBoardItem(tile,prefabs[tile.type],ReplicaSourceEnvironment.Position(0f,6f,random),ReplicaSourceEnvironment.Rotation(random),false,true);
-            StartCoroutine(Ready(false));
-            return;
-        }
         var legacyRandom=new System.Random(seed);int lastLayer=-1,local=0;
         foreach(var tile in tiles){
             if(tile.layer!=lastLayer){local=0;lastLayer=tile.layer;}
@@ -223,10 +232,11 @@ public class ReplicaFlow : MonoBehaviour {
         var obj=layered?ReplicaSourceObjectPool.Get(prefab,prefab.name):Instantiate(prefab);
         obj.transform.SetPositionAndRotation(position,rotation);
         bool sourceModel=layered||sourceBoard;
-        obj.transform.localScale*=sourceModel?ReplicaSourceProfile.ModelScale(prefab.name):BoardItemScale;
+        obj.transform.localScale*=sourceModel?ReplicaSourceProfile.ModelScale(prefab):BoardItemScale;
         ReplicaSourceColliders.Apply(obj,prefab.name,sourceModel);
-        ReplicaSourceFlight.Bind(obj,prefab.name,layered);
+        ReplicaSourceFlight.Bind(obj,prefab.name,layered,prefab);
         if(layered)ReplicaSourceAudio.Bind(obj,prefab.name);
+        ReplicaTrayDisplayBinding.Bind(obj,prefab);
         obj.name="type_"+tile.type;var tileComponent=obj.GetComponent<ReplicaTile>()??obj.AddComponent<ReplicaTile>();tileComponent.id=tile.id;
         var body=obj.GetComponent<Rigidbody>();body.useGravity=true;ReplicaSourcePhysics.Apply(body);
         // ObjectUnit.Init calls Rigidbody.set_isKinematic(true), j6539. The creation
@@ -237,14 +247,54 @@ public class ReplicaFlow : MonoBehaviour {
     }
     IEnumerator SourceCreationSteps(List<SourceCreateInfo> descriptions,GameObject[] prefabs,IReplicaSourceRandom random,int version){
         float wait=SourceCreateInterval(descriptions.Count);
+        MaxCreationSliceMilliseconds=0;CreationBudgetYieldCount=0;SlowFrameCreationYieldCount=0;ReplicaSourceObjectPool.ResetMetrics();
+        double budget=CreationSliceBudgetMilliseconds;
+#if UNITY_EDITOR
+        if(CreationBudgetOverride>=0)budget=CreationBudgetOverride;
+#endif
+        var slice=System.Diagnostics.Stopwatch.StartNew();int createdInSlice=0;
         for(int i=0;i<descriptions.Count;i++){
             if(version!=creationVersion)yield break;
+            // Backpressure bounds each item's wait between scale steps as well as
+            // the work per tick. Do not accumulate an entire half-grown board.
+            while(layeredPile.CreationGrowingCount>=ReplicaLayeredPile.CreationGrowingLimit){
+                yield return 0f;
+                if(version!=creationVersion)yield break;
+                slice.Restart();createdInSlice=0;
+            }
             var info=descriptions[i];CreateBoardItem(info.tile,prefabs[info.tile.type],info.position,ReplicaSourceEnvironment.Rotation(random),true);
-            // Source tests the zero-based index: first yield after item 0, then 3,6,... .
-            if(i%SourceFrameCreateCount==0)yield return wait;
+            double elapsed=slice.Elapsed.TotalMilliseconds;
+            MaxCreationSliceMilliseconds=System.Math.Max(MaxCreationSliceMilliseconds,elapsed);
+            createdInSlice++;
+            bool hiddenPreparation=Stage==2&&!layeredPile.IsInitiallyVisible(info.position.y);
+#if UNITY_EDITOR
+            hiddenPreparation&=!UseLegacyCreationScheduleForValidation;
+#endif
+            float previousFrameSeconds=Time.unscaledDeltaTime;
+#if UNITY_EDITOR
+            if(CreationFrameSecondsOverride>=0)previousFrameSeconds=CreationFrameSecondsOverride;
+#endif
+            int limit=CreationSliceLimit(hiddenPreparation,previousFrameSeconds);
+#if UNITY_EDITOR
+            // Deterministic iterator fixtures control timing themselves.
+            if(CreationBudgetOverride>=0||UseLegacyCreationScheduleForValidation)limit=HiddenCreationSliceLimit;
+#endif
+            // Hidden supports retain exactly the same Register/visibility/physics
+            // path. Only their presentation delay is removed. Visible entries
+            // retain source global-index batches, with the existing time budget.
+            if(!hiddenPreparation&&i%SourceFrameCreateCount==0){yield return wait;slice.Restart();createdInSlice=0;}
+            else if(i+1<descriptions.Count&&(elapsed>=budget||createdInSlice>=limit)){
+                CreationBudgetYieldCount++;if(limit==1)SlowFrameCreationYieldCount++;yield return 0f;slice.Restart();createdInSlice=0;
+            }
         }
         yield return .5f;
         if(version!=creationVersion)yield break;
+        // A bounded growth queue can outlive the source's fixed half-second tail.
+        // Keep input locked and drain it naturally; never snap the remainder to full size.
+        while(layeredPile.CreationGrowingCount>0){
+            yield return 0f;
+            if(version!=creationVersion)yield break;
+        }
         layeredPile.StopCreationGrowth(); // StopCoroutine("LoopCrowObjSize")
         yield return .2f;
         if(version!=creationVersion)yield break;
@@ -254,6 +304,7 @@ public class ReplicaFlow : MonoBehaviour {
         layeredPile.FinishCreation(); // FinishCreate(true), height check, then optimization starts.
         CreationInProgress=false;PendingCreationWait=0;
         GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
+        if(!IsPvp&&ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.StartRecord();
         BoosterManager.Instance.BoostersInteractibility(true);
     }
     IEnumerator RunSourceCreation(int version){
@@ -262,7 +313,11 @@ public class ReplicaFlow : MonoBehaviour {
             PendingCreationWait=(float)steps.Current;
             // Source yields once per batch. WaitForSeconds already resumes on
             // a later frame; an extra null yield adds ~100 frames to 300 items.
-            yield return new WaitForSeconds(PendingCreationWait);
+            if(PendingCreationWait>0)yield return new WaitForSeconds(PendingCreationWait);
+            else yield return null;
+            // Unlike WaitForSeconds, a budget's null yield also resumes while
+            // paused. Hold the iterator here until scaled time resumes.
+            while(version==creationVersion&&Time.timeScale<=0)yield return null;
         }
         if(version==creationVersion){sourceCreationSteps=null;sourceCreationRunner=null;PendingCreationWait=0;}
     }
@@ -283,42 +338,64 @@ public class ReplicaFlow : MonoBehaviour {
         // Parked items are pickable: do not lock input until the entire queue settles.
         yield return new WaitForSeconds(3);
         if(pvp){network.Send(new ReplicaMessage{type="loaded"});Notice("已准备好，等待对手…");}
-        else {GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;BoosterManager.Instance.BoostersInteractibility(true);}
+        else {GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.StartRecord();BoosterManager.Instance.BoostersInteractibility(true);}
     }
     void HUD(){
         Clear();ScreenName="game";resultShown=false;BlocksGameplay=false;
         var view=ReplicaUIView.Load(IsPvp?"PvpGameHUD":"GameHUD",page);
         gameplayHUD=view.GetComponent<ReplicaGameplayHUD>();
-        if(gameplayHUD)view.Bind("Settings",()=>ShowSettings(true));
+        if(gameplayHUD)view.Show("Settings",false);
         view.Text("Title",IsPvp?"好友对战":CurrentTheme.title+" · 第"+Stage+"关");
         view.Bind("Pause",()=>ShowSettings(true));timer=view.Get<Text>("Timer");remaining=view.Get<Text>("Remaining");
         view.Show("Peer",IsPvp);peerText=IsPvp?view.Get<Text>("Peer"):null;
-        view.Text("UndoText",!IsPvp&&Stage==2?"移出":"撤回");moveToolButton=view.Bind("Undo",Undo);
-        view.Text("ShuffleText",!IsPvp&&Stage==2?"打乱":"颠锅");
-        shuffleToolButton=view.Bind("Shuffle",()=>{if(ReplicaSourceTools.Enabled)ReplicaSourceTools.MessUp();else FindObjectOfType<FoodPileShake>().Shake();});
-        view.Text("HintText",IsPvp?"认输":Stage==2?"凑齐":"提示");
-        findToolButton=view.Bind("Hint",()=>{if(IsPvp)network.Send(new ReplicaMessage{type="surrender"});else BoosterManager.Instance.HintButton();});
-        view.Show("Freeze",!gameplayHUD&&!IsPvp&&Stage!=2);view.Bind("Freeze",()=>BoosterManager.Instance.Freeze());
+        view.Text("UndoText",!IsPvp?"移出":"撤回");moveToolButton=view.Bind("Undo",()=>UseTool(0,Undo));
+        view.Text("ShuffleText",!IsPvp?"打乱":"颠锅");
+        shuffleToolButton=view.Bind("Shuffle",()=>UseTool(2,()=>{if(ReplicaSourceTools.Enabled)ReplicaSourceTools.MessUp();else FindObjectOfType<FoodPileShake>().Shake();}));
+        view.Text("HintText",IsPvp?"认输":"凑齐");
+        findToolButton=view.Bind("Hint",()=>UseTool(1,()=>{if(IsPvp)network.Send(new ReplicaMessage{type="surrender"});else BoosterManager.Instance.HintButton();}));
+        foreach(var key in new[]{"Undo","Shuffle","Hint"})view.Show(key,IsPvp||ReplicaSourceTools.Enabled);
+        view.Show("Freeze",false);view.Bind("Freeze",()=>BoosterManager.Instance.Freeze());
     }
     public bool HandleResult(bool win){
-        if(ScreenName!="game"||resultShown)return true;
+        if(ScreenName!="game"||resultShown||revivePending)return true;
         if(IsPvp){GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;return true;}
+        if(!win&&TryOfferRevival())return true;
+        return FinishSoloResult(win);
+    }
+    bool FinishSoloResult(bool win){
+        if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Finish(win?"win":"fail",win?"cleared":GameManager.Instance.currentLevelTime<=0&&Stage!=1?"timeout":"tray_full");
+        if(win&&Stage==1){NextStage();return true;}
         resultShown=true;GameManager.Instance.gameStatus=win?GameManager.GameStatus.FINISH:GameManager.GameStatus.FAIL;
         if(win&&Stage==2){PlayerPrefs.SetInt("goose.collection."+CurrentTheme.id,1);PlayerPrefs.SetString("goose.completed."+CurrentTheme.id,runDate);PlayerPrefs.Save();}
         Result(win,win?(Stage==1?"第一关通过！":"抓到大鹅啦！"):"差一点就成功了",win?(Stage==1?"热身结束，真正的挑战来了":"已点亮 "+CurrentTheme.title+" 图鉴"):"同一关再试一次，留意槽位和遮挡");return true;
     }
     void Result(bool win,string title,string detail){
         LastResult=title;BlocksGameplay=true;Time.timeScale=1;
+        if(!IsPvp){
+            float progress=win?1:Mathf.Clamp01(1f-(LevelGenerator.Instance.objectsOnScene.Count)/(float)Mathf.Max(1,InitialCount));
+            string key="goose.result.best."+CurrentTheme.id+"."+Stage;
+            float best=Mathf.Max(progress,PlayerPrefs.GetFloat(key,0));PlayerPrefs.SetFloat(key,best);PlayerPrefs.Save();
+            var result=OpenModal(win?"ResultSuccess":"ResultFailure").GetComponent<ReplicaResultView>();
+            result.Configure(PlayerPrefs.GetInt("goose.result.attempts",1),progress,best,win?(Action)Home:RestartStage,RestartStage,ShareResult);
+        }else{
         var view=OpenModal("Result");view.Text("Title",title);view.Text("Detail",detail);
         view.Get<Image>("Goose").sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+CurrentTheme.gooseSprite);
         view.Text("ContinueText",IsPvp?"再次匹配":win&&Stage==1?"挑战第二关":win?"查看图鉴":"再试一次");
         view.Bind("Continue",()=>{if(IsPvp){StopBoard();ShowPvp();}else if(win&&Stage==1)NextStage();else if(win){StopBoard();ShowCollection();}else RestartStage();});
         view.Bind("Home",Home);
+        }
         var clip=win?library.winSound:library.loseSound;if(SettingsEffects&&clip)effects.PlayOneShot(clip);
 #if UNITY_WEBGL && !UNITY_EDITOR
         if(!win&&SettingsVibration)WeChatWASM.WX.VibrateShort(new WeChatWASM.VibrateShortOption{type="light"});
 #elif UNITY_IOS || UNITY_ANDROID
         if(!win&&SettingsVibration&&!Application.isEditor)Handheld.Vibrate();
+#endif
+    }
+    void ShareResult(){
+#if UNITY_WEBGL && !UNITY_EDITOR
+        WeChatWASM.WX.ShareAppMessage(new WeChatWASM.ShareAppMessageOption{title=GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH?"我通关成功啦！一起来挑战吧！":"差一点就通关啦，一起来挑战！"});
+#else
+        Notice("请在微信小游戏中分享给好友");
 #endif
     }
     void Undo(){
@@ -341,9 +418,42 @@ public class ReplicaFlow : MonoBehaviour {
         view.Bind("Apply",()=>{ReplicaSourceProfile.ModelSizeMultiplier=slider.value/100f;Time.timeScale=1;RestartStage();});
         view.Bind("Reset",()=>slider.value=100);
     }
+    public void ShowUserProfile(){
+        BlocksGameplay=true;var view=OpenModal("UserProfile");view.Bind("Close",()=>CloseModal());view.GetComponent<ReplicaUserProfileView>().Connect(ReplicaInvitations.Instance);
+    }
+    public void ShowMailbox(){
+        BlocksGameplay=true;var view=OpenModal("Mailbox");view.Bind("Close",()=>CloseModal());view.GetComponent<ReplicaMailboxView>().Connect(ReplicaInvitations.Instance);
+    }
+    public void ShowInvites(){
+        BlocksGameplay=true;var view=OpenModal("InviteRewards");
+        view.Bind("Close",()=>CloseModal());view.Bind("Invite",()=>ReplicaInvitations.Instance.Share());
+        view.GetComponent<ReplicaInviteView>().Connect(ReplicaInvitations.Instance);
+        ReplicaInvitations.Instance.Refresh();
+    }
+    void UseTool(int type,Action action){
+        if(BlocksGameplay)return;
+        if(!ReplicaSourceTools.Enabled||IsPvp||ReplicaSourceTools.UsedCount(type)<1){action();return;}
+        var service=ReplicaInvitations.Instance;
+        if(!service||!service.Ready||service.HasPending){Notice("道具服务尚未连接，请稍后重试");service?.Refresh();return;}
+        if(service.Busy)return;
+        StartCoroutine(UseInventory(type,action,service));
+    }
+    bool CanApplyInventory(int boardVersion)=>ScreenName=="game"&&ReplicaSourceTools.Enabled&&creationVersion==boardVersion&&GameManager.Instance.GameIsPlaying();
+    IEnumerator UseInventory(int type,Action action,ReplicaInvitations service){
+        int boardVersion=creationVersion;
+        BlocksGameplay=true;float speed=Time.timeScale;Time.timeScale=0;
+        yield return service.Use(type,()=>{
+            if(!CanApplyInventory(boardVersion))return false;
+            return ReplicaSourceTools.RunPaid(type,()=>{BoosterManager.Instance.CheckHintInteractibility();action();});
+        });
+        Time.timeScale=speed;BlocksGameplay=modal!=null;
+        if(!string.IsNullOrEmpty(service.Status))Notice(service.Status);
+    }
     public void ShowSettings(bool ingame){
+        if(ingame&&ReplicaInvitations.Instance&&ReplicaInvitations.Instance.Busy)return;
         if(ingame&&!IsPvp)Time.timeScale=0;BlocksGameplay=true;
         var view=OpenModal("PauseSettings");view.Text("Title",ingame?"暂停 / 设置":"设置");
+        AddMusicCredit(view);
         Action close=()=>CloseModal(ingame&&!IsPvp);
         view.Bind("Close",close);view.Bind("Continue",close);view.Text("ContinueText",ingame?"继续游戏":"完成");
         SettingToggle(view,"Music",SettingsMusic,value=>{PlayerPrefs.SetInt("goose.music",value?1:0);music.mute=!value;PlayerPrefs.Save();});
@@ -351,7 +461,19 @@ public class ReplicaFlow : MonoBehaviour {
         SettingToggle(view,"Vibration",SettingsVibration,value=>{PlayerPrefs.SetInt("goose.vibration",value?1:0);PlayerPrefs.Save();});
         view.Show("Home",ingame);view.Bind("Home",Home);
         var skin=view.GetComponent<ReplicaSettingsSkin>();
-        if(skin){view.Show("Continue",ingame);skin.BindSupport();}
+        if(skin){view.Show("Continue",false);view.Show("Home",false);skin.BindSupport(ingame);}
+    }
+    static void AddMusicCredit(ReplicaUIView view){
+        var title=view.Get<Text>("Title");
+        var credit=new GameObject("Music Credit",typeof(RectTransform),typeof(CanvasRenderer),typeof(Text));
+        credit.transform.SetParent(title.transform.parent,false);
+        var rect=(RectTransform)credit.transform;
+        rect.anchorMin=rect.anchorMax=new Vector2(.5f,1);
+        rect.anchoredPosition=new Vector2(0,-1240);rect.sizeDelta=new Vector2(650,120);
+        var text=credit.GetComponent<Text>();text.font=title.font;text.fontSize=20;
+        text.alignment=TextAnchor.MiddleCenter;text.color=new Color(.3f,.18f,.09f);
+        text.raycastTarget=false;
+        text.text="Music: Carefree — Kevin MacLeod\nincompetech.com · CC BY 4.0\nhttps://creativecommons.org/licenses/by/4.0/";
     }
     void SettingToggle(ReplicaUIView view,string key,bool value,Action<bool> change){
         bool current=value;var skin=view.GetComponent<ReplicaSettingsSkin>();
@@ -410,7 +532,7 @@ public class ReplicaFlow : MonoBehaviour {
         GameManager.Instance.gameStatus=GameManager.GameStatus.FINISH;Result(win,title,reason);
     }
     public void ShowHomeFeatureNotice(string message){Notice(message);}
-    void Notice(string value){
+    public void Notice(string value){
         if(!toast)toast=ReplicaUIView.Load("Notice",page).Get<Text>("Message");toast.text=value;
         if(modal)modal.SetAsLastSibling();
     }

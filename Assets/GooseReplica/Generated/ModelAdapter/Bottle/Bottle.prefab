@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 290981019346309829}
   - component: {fileID: 9016941621480361375}
   - component: {fileID: 5632856207587495258}
+  - component: {fileID: 1161426226777528161}
   m_Layer: 0
   m_Name: Bottle
   m_TagString: Collectable
@@ -195,6 +196,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &1161426226777528161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514353622174584986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 7885128243312841942}
+  colliderStates:
+  - collider: {fileID: 3132484324369111352}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 3791374652076107165}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Bottle
 --- !u!1 &7885128243312841942
 GameObject:
   m_ObjectHideFlags: 0

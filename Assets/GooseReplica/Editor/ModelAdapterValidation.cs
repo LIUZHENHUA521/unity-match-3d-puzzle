@@ -51,7 +51,7 @@ public static class ModelAdapterValidation {
             float normalizedLongest = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
             Check(Mathf.Abs(normalizedLongest - ModelAdapterRules.SourceLongestSide) < .005f,
                 "normalized Prefab size " + item.id, ref failures);
-            Check(Mathf.Abs(item.normalizedToSource - ModelAdapterRules.DefaultGameplayScale) < .001f,
+            Check(ModelAdapterRules.IsFinite(item.normalizedToSource) && item.normalizedToSource > 0,
                 "gameplay scale must not reuse import scale " + item.id, ref failures);
             instance.transform.localScale *= ReplicaSourceProfile.ModelScale(item.id);
             ReplicaSourceColliders.Apply(instance, item.id, true);
@@ -59,7 +59,7 @@ public static class ModelAdapterValidation {
             bounds = renderers[0].bounds;
             foreach (var renderer in renderers) bounds.Encapsulate(renderer.bounds);
             float longest = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
-            float expected = ModelAdapterRules.DefaultGameplayLongestSide * ReplicaSourceProfile.ModelSizeMultiplier;
+            float expected = item.normalizedToSource * ModelAdapterRules.SourceLongestSide * ReplicaSourceProfile.ModelSizeMultiplier;
             Check(Mathf.Abs(longest - expected) < .01f, "gameplay rendered size " + item.id, ref failures);
             foreach (int layer in new[]{ReplicaSourceColliders.PickLayer, ReplicaSourceColliders.BodyLayer}) {
                 var colliders = instance.GetComponentsInChildren<Collider>()

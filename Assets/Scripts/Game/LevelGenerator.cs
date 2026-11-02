@@ -83,7 +83,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     public void ClearBoard() { DestroyLevel(); }
     private void DestroyLevel()
     {
-        bool sourceBoard=ReplicaFlow.Instance&& !ReplicaFlow.Instance.IsPvp && ReplicaFlow.Instance.Stage==2;
+        bool sourceBoard=ReplicaFlow.Instance&& !ReplicaFlow.Instance.IsPvp && (ReplicaFlow.Instance.Stage==1||ReplicaFlow.Instance.Stage==2);
         for (int i = 0; i < objectsOnScene.Count; i++)
         {
             if (objectsOnScene[i]) {

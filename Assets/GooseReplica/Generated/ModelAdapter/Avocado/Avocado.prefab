@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4997032487582702737}
   - component: {fileID: 7380535912090094003}
   - component: {fileID: 7044807616165652238}
+  - component: {fileID: 965030466484885428}
   m_Layer: 0
   m_Name: Avocado
   m_TagString: Collectable
@@ -76,6 +77,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &965030466484885428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2889027287666926041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 8421665092734544641}
+  colliderStates:
+  - collider: {fileID: 3010821827329890212}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 4074993477949799069}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Avocado
 --- !u!1 &3574364754660663071
 GameObject:
   m_ObjectHideFlags: 0

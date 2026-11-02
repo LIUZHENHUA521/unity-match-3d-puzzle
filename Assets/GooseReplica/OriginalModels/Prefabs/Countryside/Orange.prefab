@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2312433947291902905}
   - component: {fileID: 3141151354389782082}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RealCol (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2291708888849152083}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: cef60c497ea964cc881580ec7f78501d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -62,7 +62,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1359512606907521305}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Orange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7324875005982944314}
   - component: {fileID: 343107997538396428}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Col
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3709986569604810333}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: cef60c497ea964cc881580ec7f78501d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -148,6 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3906001241516119127}
   - component: {fileID: 585370147472984065}
+  - component: {fileID: 4326677523507884869}
   m_Layer: 0
   m_Name: Orange
   m_TagString: Collectable
@@ -198,6 +199,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &4326677523507884869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959315542666418671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 3709986569604810333}
+  colliderStates:
+  - collider: {fileID: 3141151354389782082}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 343107997538396428}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Orange
 --- !u!1 &8617616504089407751
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +231,7 @@ GameObject:
   - component: {fileID: 1569047555900528704}
   - component: {fileID: 1557723122162183568}
   - component: {fileID: 864846556804690884}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Orange_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

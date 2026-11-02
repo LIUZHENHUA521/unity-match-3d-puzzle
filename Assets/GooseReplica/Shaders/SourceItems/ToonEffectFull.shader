@@ -60,7 +60,6 @@ _SelectionPulse("Project selection pulse",Float)=1
 _OutlinePixels("Project selection outline",Float)=1.2
 }
  SubShader { Tags { "Queue"="Geometry" "RenderType"="Opaque" }
- UsePass "Goose/Original Item/SELECTION_OUTLINE"
 Pass { Name "SOURCE_OUTLINE" Tags {"LightMode"="ForwardBase"}
  Cull Front ZWrite On ZTest LEqual
  Blend One Zero ColorMask RGBA

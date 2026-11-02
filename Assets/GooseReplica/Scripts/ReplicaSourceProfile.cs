@@ -20,10 +20,22 @@ public static class ReplicaSourceProfile {
         get => Mathf.Clamp(PlayerPrefs.GetFloat(ModelSizeKey,1f),.5f,1.25f);
         set {PlayerPrefs.SetFloat(ModelSizeKey,Mathf.Round(Mathf.Clamp(value,.5f,1.25f)*100f)/100f);PlayerPrefs.Save();}
     }
+    public static float ModelScale(GameObject prefab){
+        float multiplier=ReplicaTrayDisplaySettings.Current?ReplicaTrayDisplaySettings.Current.BoardMultiplier(prefab):1;
+        return BaseModelScale(prefab)*multiplier;
+    }
+    public static float BaseModelScale(GameObject prefab){
+        string id=ReplicaTrayDisplaySettings.AdapterId(prefab);
+        if(!string.IsNullOrEmpty(id)&&ReplicaSourceCatalog.TryGetSize(id,out float value))return value*ModelSizeMultiplier;
+        return OriginalScale(prefab.name)*ModelSizeMultiplier;
+    }
     public static float ModelScale(string name){
-        if(ReplicaSourceCatalog.TryGetSize(name,out float catalogValue))return catalogValue*ModelSizeMultiplier;
+        if(ReplicaSourceCatalog.TryGetSize(name,out float value))return value*ModelSizeMultiplier;
+        return OriginalScale(name)*ModelSizeMultiplier;
+    }
+    static float OriginalScale(string name){
         if(sizes==null){sizes=new Dictionary<string,float>(StringComparer.OrdinalIgnoreCase);var data=Resources.Load<TextAsset>("Replica/SourceSizes");if(data)foreach(var item in JsonUtility.FromJson<Sizes>(data.text).items)sizes[item.name]=item.normalizedToSource;}
-        return (sizes.TryGetValue(name,out float value)?value:ReplicaFlow.BoardItemScale)*ModelSizeMultiplier;
+        return sizes.TryGetValue(name,out float value)?value:ReplicaFlow.BoardItemScale;
     }
     public static void ClearCache(){sizes=null;ReplicaSourceCatalog.ClearCache();}
 }

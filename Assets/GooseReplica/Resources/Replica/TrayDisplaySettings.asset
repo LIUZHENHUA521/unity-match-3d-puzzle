@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ac858042e83451ca01aed65b1da0b0, type: 3}
+  m_Name: TrayDisplaySettings
+  m_EditorClassIdentifier: 
+  entries:
+  - prefab: {fileID: 0}
+    adapterId: AppleGreen
+    pose:
+      rotation: {x: -25, y: 0, z: 0}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Avocado
+    pose:
+      rotation: {x: -15, y: 180, z: -10}
+      scale: 1.1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Banana
+    pose:
+      rotation: {x: -15, y: 180, z: -25}
+      scale: 0.52
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Bottle
+    pose:
+      rotation: {x: -10, y: 180, z: 12}
+      scale: 1.1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Bread
+    pose:
+      rotation: {x: -35, y: 140, z: 0}
+      scale: 0.9
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Broccoli
+    pose:
+      rotation: {x: -20, y: 0, z: -10}
+      scale: 0.95
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Burger
+    pose:
+      rotation: {x: -20, y: 0, z: 0}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: ChickenLeg
+    pose:
+      rotation: {x: -65, y: 0, z: -25}
+      scale: 0.65
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Corndog
+    pose:
+      rotation: {x: -15, y: 0, z: -15}
+      scale: 1.1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Croissant
+    pose:
+      rotation: {x: -70, y: 0, z: -10}
+      scale: 0.9
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Cupcake
+    pose:
+      rotation: {x: -25, y: 0, z: 0}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Donut
+    pose:
+      rotation: {x: -60, y: 0, z: 0}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Egg
+    pose:
+      rotation: {x: -20, y: 0, z: -10}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Eggplant
+    pose:
+      rotation: {x: -20, y: 0, z: 15}
+      scale: 0.95
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Fries
+    pose:
+      rotation: {x: 55, y: 0, z: 0}
+      scale: 1.1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Hotdog
+    pose:
+      rotation: {x: -75, y: 0, z: -35}
+      scale: 0.9
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: IceCream
+    pose:
+      rotation: {x: -20, y: 0, z: -10}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pizza
+    pose:
+      rotation: {x: -70, y: 0, z: 15}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Popsicle
+    pose:
+      rotation: {x: -10, y: 0, z: 12}
+      scale: 1.1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pumpkin
+    pose:
+      rotation: {x: -35, y: 0, z: 0}
+      scale: 1.1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Soda
+    pose:
+      rotation: {x: -15, y: 0, z: -10}
+      scale: 1.1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Steak
+    pose:
+      rotation: {x: -75, y: 0, z: -25}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: ChocolateBar
+    pose:
+      rotation: {x: -90, y: 0, z: -20}
+      scale: 0.9
+      offset: {x: 0, y: 0, z: 0}

@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 6316919655037398670}
   - component: {fileID: 2748949011084086640}
   - component: {fileID: 1864367046067374552}
+  - component: {fileID: 7660958990320229319}
   m_Layer: 0
   m_Name: Croissant
   m_TagString: Collectable
@@ -248,6 +249,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &7660958990320229319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9222541254733721683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 2044109850705388022}
+  colliderStates:
+  - collider: {fileID: 5498437083234575179}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 4758454727591694347}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Croissant
 --- !u!1001 &2475905617320049553
 PrefabInstance:
   m_ObjectHideFlags: 0

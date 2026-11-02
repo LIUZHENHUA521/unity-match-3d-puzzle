@@ -22,7 +22,7 @@ public static class ReplicaBuilder {
         library.themes=new[]{Theme("daily","每日厨房","每天一道挑战，清空整锅食物","Goose_Potato_2_Icon",food),Theme("toys","玩具总动员","找齐玩具，收藏专属大鹅","Goose_Eggplant_2_Icon",toys),Theme("travel","出发去旅行","车船飞机，一起踏上旅途","Goose_GreenPepper_2_Icon",vehicles)};
         string audio="Assets/GooseReplica/Resources/GooseArt/Audio";
         Func<string,AudioClip> clip=name=>Directory.GetFiles(audio).Where(x=>!x.EndsWith(".meta")&&Path.GetFileNameWithoutExtension(x)==name).Select(x=>AssetDatabase.LoadAssetAtPath<AudioClip>(x)).FirstOrDefault();
-        library.homeMusic=clip("BGM_MainScene");library.gameMusic=clip("BGM_Game50");library.pvpMusic=clip("BGM_PVP");library.clickSound=clip("S_ButtonClick");library.selectSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/GooseReplica/Audio/CrazyCombo/tile_click.mp3");library.matchSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/GooseReplica/Audio/CrazyCombo/merge_sound.mp3");library.winSound=clip("S_Win");library.loseSound=clip("S_Lose");
+        library.homeMusic=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/GooseReplica/Audio/Licensed/Carefree.mp3");library.gameMusic=library.homeMusic;library.pvpMusic=clip("BGM_PVP");library.clickSound=clip("S_ButtonClick");library.selectSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/GooseReplica/Audio/CrazyCombo/tile_click.mp3");library.matchSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/GooseReplica/Audio/CrazyCombo/merge_sound.mp3");library.winSound=clip("S_Win");library.loseSound=clip("S_Lose");
         var old=AssetDatabase.LoadAssetAtPath<ReplicaTheme>("Assets/GooseReplica/Resources/Replica/ThemeLibrary.asset");if(old){EditorUtility.CopySerialized(library,old);UnityEngine.Object.DestroyImmediate(library);library=old;}else AssetDatabase.CreateAsset(library,"Assets/GooseReplica/Resources/Replica/ThemeLibrary.asset");
         library.sourceLevelCatalog=AssetDatabase.LoadAssetAtPath<ReplicaSourceLevelPlan>("Assets/GooseReplica/Resources/Replica/SourceLevelCatalog.asset");
         EditorSceneManager.OpenScene("Assets/Scenes/FoodPileChallenge.unity");
@@ -61,6 +61,7 @@ public static class ReplicaBuilder {
             else if(cmd=="test")ReplicaValidation.Run();
             else if(cmd=="skinfinalize")ReplicaGameplaySkinValidation.FinalizeAssets();
             else if(cmd=="skincheck")ReplicaGameplaySkinValidation.Run();
+            else if(cmd=="pauseexitcheck")ReplicaGameplaySkinValidation.ValidatePauseExit();
             else if(cmd=="uicheck")ReplicaUIPrefabValidation.Run();
             else if(cmd=="layoutcheck")ReplicaUILayoutValidation.Run();
             else if(cmd=="gameplayskin")ReplicaGameplaySkinBuilder.Build();
@@ -74,6 +75,18 @@ public static class ReplicaBuilder {
             else if(cmd=="heightphysicscheck")HeightPhysicsValidation.Run();
             else if(cmd=="pileoptimizationcheck")PileOptimizationValidation.Run();
             else if(cmd=="creationcheck")SourceCreationValidation.Run();
+            else if(cmd=="firststageimport")SourceLevelPlanImporter.ImportFirstStage();
+            else if(cmd=="hiddenstartupcheck")HiddenStartupValidation.Start();
+            else if(cmd=="firststagehudcheck")FirstStageHudValidation.Start();
+            else if(cmd=="firststagecheck")FirstStageValidation.Start();
+            else if(cmd=="creationprepare")SourcePrefabPreparation.Bake();
+            else if(cmd=="creationbudgetcheck")CreationBudgetValidation.Start();
+            else if(cmd=="traydisplaycandidates")TrayDisplayPresets.CaptureCandidates();
+            else if(cmd=="traydisplaydefaults")TrayDisplayPresets.ApplyCountrysideDefaults();
+            else if(cmd=="traydisplayopen")TrayDisplayWindow.Open();
+            else if(cmd=="traydisplayfries")TrayDisplayPresets.CaptureFries();
+            else if(cmd=="traydisplayrefine")TrayDisplayPresets.ApplyCountrysideDefaults(true);
+            else if(cmd=="traydisplaycheck")TrayDisplayValidation.Start();
             else if(cmd=="creationframescheck")SourceCreationFramesValidation.Start();
             else if(cmd=="selectioncheck")SelectionFeedbackValidation.Run();
             else if(cmd=="highlightcheck")SourceHighlightValidation.Run();

@@ -14,12 +14,15 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
     }
 
     static ReplicaSourceObjectPool instance;
-    readonly Dictionary<string, Bucket> buckets = new Dictionary<string, Bucket>();
-    readonly Dictionary<string, GameObject> preparedTemplates = new Dictionary<string, GameObject>();
+    readonly Dictionary<GameObject, Bucket> buckets = new Dictionary<GameObject, Bucket>();
+    readonly Dictionary<GameObject, GameObject> preparedTemplates = new Dictionary<GameObject, GameObject>();
     readonly HashSet<GameObject> pooled = new HashSet<GameObject>();
 
     public static int PooledCount => instance ? instance.pooled.Count : 0;
     public static bool Active => instance != null;
+    public static int CacheHits {get;private set;}
+    public static int CacheMisses {get;private set;}
+    public static void ResetMetrics(){CacheHits=0;CacheMisses=0;}
 
     static ReplicaSourceObjectPool Ensure()
     {
@@ -28,11 +31,34 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
         return instance;
     }
 
+    Transform inactiveRoot;
+    Transform InactiveRoot {
+        get {if(!inactiveRoot){var root=new GameObject("Prepared stage objects");root.SetActive(false);root.transform.SetParent(transform,false);inactiveRoot=root.transform;}return inactiveRoot;}
+    }
     void Awake() { instance = this; }
+    // Instantiate below an inactive parent: no gameplay Awake/OnEnable, random
+    // draws, animation or collision registration occurs during warm-up.
+    public static int CachedCount(GameObject prefab)=>instance&&prefab&&instance.buckets.TryGetValue(prefab,out var bucket)?bucket.items.Count:0;
+    public static bool Prepare(GameObject prefab,int targetCount=1){
+        if(!prefab)return false;var owner=Ensure();if(!owner)return false;
+        if(targetCount<=0||CachedCount(prefab)>=targetCount)return false;
+        var obj=Instantiate(owner.PreparedTemplate(prefab,prefab.name),owner.InactiveRoot,false);
+        obj.SetActive(false);
+        var token=obj.GetComponent<ReplicaSourcePoolToken>()??obj.AddComponent<ReplicaSourcePoolToken>();
+        token.CacheComponents();
+        token.sourcePrefab=prefab;token.sourceName=prefab.name;token.prefabScale=obj.transform.localScale;token.hasPrefabScale=true;
+        if(!owner.buckets.TryGetValue(prefab,out var bucket))owner.buckets.Add(prefab,bucket=new Bucket());
+        bucket.items.Push(obj);owner.pooled.Add(obj);return true;
+    }
+
 
     GameObject PreparedTemplate(GameObject prefab, string sourceName)
     {
-        if (preparedTemplates.TryGetValue(sourceName, out var existing) && existing)
+        // Editor-prepared prefabs already contain the native shapes and cloneable
+        // reference cache. Avoid creating a second, runtime template for them.
+        var prepared = prefab.GetComponent<ReplicaSourceColliders>();
+        if (prepared && prepared.IsConfiguredFor(sourceName)) return prefab;
+        if (preparedTemplates.TryGetValue(prefab, out var existing) && existing)
             return existing;
 
         // Source ObjectUnit prefabs carry their colliders. The replica starts
@@ -40,10 +66,11 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
         // type and let Instantiate clone the already-built native collider
         // hierarchy. Only the first copy of a type pays the JSON/AddComponent
         // cost; every later copy avoids rebuilding it on the gameplay frame.
-        var template = Instantiate(prefab);
+        var template = Instantiate(prefab,InactiveRoot,false);
+        template.SetActive(false);
         template.name = "__SourceColliderTemplate_" + sourceName;
         ReplicaSourceColliders.Apply(template, sourceName, true);
-        template.transform.SetParent(transform, false);
+        template.transform.SetParent(InactiveRoot, false);
         template.transform.localPosition = new Vector3(0, -1000, 0);
         template.transform.localRotation = Quaternion.identity;
         foreach (var r in template.GetComponentsInChildren<Renderer>(true)) r.enabled = false;
@@ -54,7 +81,7 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
             body.useGravity = false;
             body.detectCollisions = false;
         }
-        preparedTemplates[sourceName] = template;
+        preparedTemplates[prefab] = template;
         return template;
     }
 
@@ -63,23 +90,26 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
         if (!prefab) return null;
         var owner = Ensure();
         GameObject obj = null;
-        if (owner && !string.IsNullOrEmpty(sourceName) && owner.buckets.TryGetValue(sourceName, out var bucket))
+        if (owner && !string.IsNullOrEmpty(sourceName) && owner.buckets.TryGetValue(prefab, out var bucket))
         {
             while (bucket.items.Count > 0 && !obj)
             {
                 var candidate = bucket.items.Pop();
                 owner.pooled.Remove(candidate);
-                if (candidate) obj = candidate;
+                if (candidate) {obj = candidate;CacheHits++;}
             }
         }
 
         if (!obj)
         {
+            CacheMisses++;
             var template = owner && !string.IsNullOrEmpty(sourceName) ? owner.PreparedTemplate(prefab, sourceName) : null;
             obj = template ? Instantiate(template) : Instantiate(prefab);
         }
         var token = obj.GetComponent<ReplicaSourcePoolToken>() ?? obj.AddComponent<ReplicaSourcePoolToken>();
+        token.CacheComponents();
         token.sourceName = sourceName;
+        token.sourcePrefab = prefab;
         if (!token.hasPrefabScale)
         {
             token.prefabScale = obj.transform.localScale;
@@ -89,11 +119,11 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
         obj.transform.localScale = token.prefabScale;
         // Re-enable the complete hierarchy hidden by Recycle. Source visibility
         // is reapplied by ReplicaLayeredPile after the object is registered.
-        foreach (var child in obj.GetComponentsInChildren<Transform>(true)) child.gameObject.SetActive(true);
-        foreach (var r in obj.GetComponentsInChildren<Renderer>(true)) r.enabled = true;
+        foreach (var child in token.Transforms) if(child&&!child.gameObject.activeSelf)child.gameObject.SetActive(true);
+        foreach (var r in token.Renderers) if(r&&!r.enabled)r.enabled = true;
         obj.SetActive(true);
         obj.GetComponent<ReplicaSourceColliders>()?.RestoreConfiguredColliderState();
-        var body = obj.GetComponent<Rigidbody>();
+        var body = token.Body;
         if (body) body.detectCollisions = true;
         return obj;
     }
@@ -105,15 +135,16 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
         if (!owner) { Destroy(obj); return; }
 
         var token = obj.GetComponent<ReplicaSourcePoolToken>() ?? obj.AddComponent<ReplicaSourcePoolToken>();
+        token.CacheComponents();
         if (!string.IsNullOrEmpty(sourceName)) token.sourceName = sourceName;
-        string key = token.sourceName;
-        if (string.IsNullOrEmpty(key)) { Destroy(obj); return; }
+        var key = token.sourcePrefab;
+        if (!key) { Destroy(obj); return; }
         if (owner.pooled.Contains(obj)) return;
 
         obj.transform.DOKill(false);
         ReplicaSourceFlight.Forget(obj);
         ReplicaSourceAudio.Forget(obj);
-        var body = obj.GetComponent<Rigidbody>();
+        var body = token.Body;
         if (body)
         {
             // Unity rejects velocity writes while a body is kinematic. Clear
@@ -127,8 +158,8 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
             body.detectCollisions = false;
             body.useGravity = false;
         }
-        foreach (var c in obj.GetComponentsInChildren<Collider>(true)) c.enabled = false;
-        foreach (var r in obj.GetComponentsInChildren<Renderer>(true)) r.enabled = false;
+        foreach (var c in token.Colliders) if(c&&c.enabled)c.enabled = false;
+        foreach (var r in token.Renderers) if(r&&r.enabled)r.enabled = false;
         var anim = obj.GetComponent<ReplicaSourceGooseAnimation>();
         if (anim) anim.SetSourceVisible(false);
         if (token.hasPrefabScale) obj.transform.localScale = token.prefabScale;
@@ -169,7 +200,26 @@ public sealed class ReplicaSourceObjectPool : MonoBehaviour
 // lose the source prefab key required by LevelObjectPool.Get/Recycle.
 public sealed class ReplicaSourcePoolToken : MonoBehaviour
 {
+    [HideInInspector] public GameObject sourcePrefab;
     [HideInInspector] public string sourceName;
     [HideInInspector] public Vector3 prefabScale;
     [HideInInspector] public bool hasPrefabScale;
+    // Never serialize these: Instantiate must not copy references into a template.
+    [System.NonSerialized] public Transform[] Transforms;
+    [System.NonSerialized] public Renderer[] Renderers;
+    [System.NonSerialized] public Collider[] Colliders;
+    [System.NonSerialized] public Rigidbody Body;
+    public void CacheComponents(){
+        if(Transforms!=null)return;
+        Transforms=GetComponentsInChildren<Transform>(true);
+        Renderers=GetComponentsInChildren<Renderer>(true);
+        Colliders=GetComponentsInChildren<Collider>(true);
+        Body=GetComponent<Rigidbody>();
+    }
+    public Renderer[] EnabledRenderers(){
+        CacheComponents();
+        foreach(var r in Renderers)if(!r||!r.enabled)return System.Array.FindAll(Renderers,r=>r&&r.enabled);
+        return Renderers;
+    }
+    public void InvalidateComponents(){Transforms=null;Renderers=null;Colliders=null;Body=null;}
 }

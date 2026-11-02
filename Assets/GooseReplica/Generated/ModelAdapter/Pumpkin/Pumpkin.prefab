@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 8804939177382128335}
   - component: {fileID: 7604194529124621160}
   - component: {fileID: 6835758498727508325}
+  - component: {fileID: 8878877300633984231}
   m_Layer: 0
   m_Name: Pumpkin
   m_TagString: Collectable
@@ -248,6 +249,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &8878877300633984231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7129614917882245210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 1852812552385956271}
+  colliderStates:
+  - collider: {fileID: 797468193947765028}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 3206846185774480968}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Pumpkin
 --- !u!1001 &8253319456381448915
 PrefabInstance:
   m_ObjectHideFlags: 0

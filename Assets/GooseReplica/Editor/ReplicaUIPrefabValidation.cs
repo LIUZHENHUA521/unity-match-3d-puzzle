@@ -38,7 +38,7 @@ public static class ReplicaUIPrefabValidation {
             case 6:
                 Check(Time.timeScale==1 && !View("PauseSettings").Get<Transform>("Home").gameObject.activeSelf,"home settings does not pause / hides return-home");
                 bool prior=Flow.SettingsEffects;Click("PauseSettings","Effects");Check(Flow.SettingsEffects!=prior,"effects toggle updates preference");Click("PauseSettings","Effects");
-                Click("PauseSettings","Continue");Click("Home","Elite");break;
+                Click("PauseSettings","Close");Click("Home","Elite");break;
             case 7:Check(Flow.ScreenName=="themes","theme page opens");Click("Themes","Back");break;
             case 8:Click("Home","Bachelor");break;
             case 9:
@@ -53,7 +53,7 @@ public static class ReplicaUIPrefabValidation {
                 ScreenCapture.CaptureScreenshot("Temp/ui-migration/pause.png");due=EditorApplication.timeSinceStartup+.8;break;
             case 11:
                 Check(Mathf.Approximately(pausedTime,GameManager.Instance.currentLevelTime),"timer frozen while paused");
-                Click("PauseSettings","Continue");Check(Time.timeScale==1&&!Flow.BlocksGameplay,"continue resumes game");
+                Click("PauseSettings","Close");Check(Time.timeScale==1&&!Flow.BlocksGameplay,"continue resumes game");
                 Private("Result",true,"第一关通过！","测试结算按钮");break;
             case 12:Check(View("Result").Get<Text>("Title").text=="第一关通过！","result dynamic title");Click("Result","Continue");break;
             case 13:Check(Flow.Stage==2,"result continue starts second stage");Check(!View("GameHUD").Get<Transform>("Freeze").gameObject.activeSelf,"stage2 hides freeze");Flow.ShowModelSize();break;
@@ -62,11 +62,11 @@ public static class ReplicaUIPrefabValidation {
                 Flow.ShowPvp();break;
             case 15:
                 Check(Flow.ScreenName=="pvp","pvp lobby opens");Check(View("PvpLobby").Get<Transform>("Join").gameObject.activeSelf&&!View("PvpLobby").Get<Transform>("Ready").gameObject.activeSelf,"disconnected lobby state");
-                Flow.ShowSettings(true);Check(Time.timeScale==1,"pvp settings never pauses simulation");Click("PauseSettings","Continue");Flow.ShowCollection();break;
+                Flow.ShowSettings(true);Check(Time.timeScale==1,"pvp settings never pauses simulation");Click("PauseSettings","Close");Flow.ShowCollection();break;
             case 16:Check(Flow.ScreenName=="collection","collection page opens");Click("Collection","Back");break;
             case 17:ScreenCapture.CaptureScreenshot("Temp/ui-migration/home-final.png");Flow.Begin(0);break;
             case 18:Click("GameHUD","Pause");break;
-            case 19:Click("PauseSettings","Home");break;
+            case 19:View("PauseSettings").GetComponent<ReplicaSettingsSkin>().support.onClick.Invoke();break;
             case 20:
                 Check(Flow.ScreenName=="home"&&Time.timeScale==1&&!Flow.BlocksGameplay,"pause return-home restores time and input");
                 Check(LevelGenerator.Instance.objectsOnScene.Count==0,"return-home clears gameplay");Finish(null);break;

@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 8858061931958819873}
   - component: {fileID: 3879237810064549832}
   - component: {fileID: 4580103820865711660}
+  - component: {fileID: 2321439541473404787}
   m_Layer: 0
   m_Name: Burger
   m_TagString: Collectable
@@ -216,6 +217,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &2321439541473404787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702596613568810496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 1522896196940810628}
+  colliderStates:
+  - collider: {fileID: 6885373342034468751}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 4058457969996268694}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Burger
 --- !u!1 &6383542433053036650
 GameObject:
   m_ObjectHideFlags: 0

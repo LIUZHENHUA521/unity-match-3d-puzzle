@@ -8,7 +8,12 @@ using UnityEngine;
 // No gameplay RNG is used here: particle autoRandomSeed belongs to the native particle system.
 public sealed class ReplicaSourceToolVisual : MonoBehaviour {
     public const float FindDurationMultiplier=.7f,FindUnitSize=.0209f,FindWidth=.15f;
-    public const float StoreShowZ=1.44f,StoreHideZ=-3f,StoreDepth=6.998f;
+    public const float StoreShowZ=1f,StoreHideZ=-3f,StoreDepth=6.998f;
+    // Move the board and stored objects together, about 61 pixels on a 720-wide layout.
+    public static Vector3 StoreLayoutOffset(Camera camera){
+        float ratio=ReplicaTray.Instance?Vector3.Distance(ReplicaTray.Instance.SlotPosition(0),ReplicaTray.Instance.SlotPosition(1))/.71f:1.4f;
+        return camera.transform.up*((StoreShowZ-1.44f)*ratio);
+    }
     static ReplicaSourceToolVisual instance;
     readonly List<GameObject> effects=new List<GameObject>();
     // ObjectPoolMa.GetObjByName/RemoveObj keeps transient effects by prefab name.
@@ -66,6 +71,7 @@ public sealed class ReplicaSourceToolVisual : MonoBehaviour {
         var camera=Camera.main;if(!camera||!background)return;var center=ReplicaTray.Instance?ReplicaTray.Instance.SlotPosition(3):camera.transform.TransformPoint(0,-5.04f,1.58f);
         float ratio=ReplicaTray.Instance?Vector3.Distance(ReplicaTray.Instance.SlotPosition(0),ReplicaTray.Instance.SlotPosition(1))/.71f:1.4f;
         var p=center+camera.transform.up*(backgroundZ*ratio);var screen=camera.WorldToScreenPoint(p);screen.z=StoreDepth;background.transform.position=camera.ScreenToWorldPoint(screen);
-        background.transform.rotation=camera.transform.rotation;background.transform.localScale=new Vector3(2.67f,1.076612949f,.861290395f)*ratio;
+        // Preserve the blue three-cell artwork's 349 x 156 aspect at the existing board width.
+        background.transform.rotation=camera.transform.rotation;background.transform.localScale=new Vector3(2.67f,2.67f*156/349,.861290395f)*ratio;
     }
 }

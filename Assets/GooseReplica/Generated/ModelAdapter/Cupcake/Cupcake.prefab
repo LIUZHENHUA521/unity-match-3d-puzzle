@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4766073852519487692}
   - component: {fileID: 2064694470507570320}
   - component: {fileID: 7341933775846266966}
+  - component: {fileID: 6638350616000518683}
   m_Layer: 0
   m_Name: Cupcake
   m_TagString: Collectable
@@ -76,6 +77,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &6638350616000518683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624748491968820647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 1032730808808525841}
+  colliderStates:
+  - collider: {fileID: 6930221996533022460}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 2152888963797567621}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Cupcake
 --- !u!1 &847527226021196838
 GameObject:
   m_ObjectHideFlags: 0

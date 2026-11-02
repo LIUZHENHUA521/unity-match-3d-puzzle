@@ -64,6 +64,7 @@ GameObject:
   - component: {fileID: 7229889104954997584}
   - component: {fileID: 1148918524464840697}
   - component: {fileID: 5171580359861797628}
+  - component: {fileID: 6339358059034567938}
   m_Layer: 0
   m_Name: IceCream
   m_TagString: Collectable
@@ -129,6 +130,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &6339358059034567938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579418487622020822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 5745341577197592506}
+  colliderStates:
+  - collider: {fileID: 7626642905838996767}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 1720278998644902475}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: IceCream
 --- !u!1 &5745341577197592506
 GameObject:
   m_ObjectHideFlags: 0

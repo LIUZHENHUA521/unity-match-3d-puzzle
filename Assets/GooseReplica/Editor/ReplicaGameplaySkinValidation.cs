@@ -10,6 +10,31 @@ public static class ReplicaGameplaySkinValidation {
     static ReplicaFlow Flow=>ReplicaFlow.Instance;
     static ReplicaUIView Hud=>UnityEngine.Object.FindObjectOfType<ReplicaGameplayHUD>().GetComponent<ReplicaUIView>();
     static void Check(bool condition,string message){if(!condition)throw new Exception(message);report+="PASS "+message+"\n";}
+    public static void ValidatePauseExit(){
+        report="";
+        try{
+            if(!Application.isPlaying||!Flow)throw new Exception("Start game first");
+            Flow.Begin(0);SourceCreationTestSupport.FinishPending(Flow);
+            Check(!Hud.Get<Button>("Settings").gameObject.activeSelf,"settings hidden in game");
+            Hud.Get<Button>("Pause").onClick.Invoke();
+            Check(Time.timeScale==0&&Flow.BlocksGameplay,"pause blocks input and time");
+            var view=UnityEngine.Object.FindObjectsOfType<ReplicaSettingsSkin>().Single();
+            Check(view.support.image.sprite&&view.support.image.sprite.texture.width==282,"PSD exit artwork imported at design size");
+            var ui=view.GetComponent<ReplicaUIView>();
+            Check(!ui.Get<Button>("Home").gameObject.activeSelf&&!ui.Get<Button>("Continue").gameObject.activeSelf,"legacy buttons hidden");
+            ui.Get<Button>("Close").onClick.Invoke();
+            Check(Time.timeScale==1&&!Flow.BlocksGameplay,"close resumes gameplay");
+            Flow.ShowSettings(true);
+            view=UnityEngine.Object.FindObjectsOfType<ReplicaSettingsSkin>().Last(v=>v.gameObject.activeInHierarchy);
+            view.support.onClick.Invoke();
+            Check(Flow.ScreenName=="home"&&Time.timeScale==1&&!Flow.BlocksGameplay,"exit returns home and restores time");
+            Flow.ShowSettings(false);
+            view=UnityEngine.Object.FindObjectsOfType<ReplicaSettingsSkin>().Last(v=>v.gameObject.activeInHierarchy);
+            Check(view.support.image.sprite.name!="exit-game","home retains customer service");
+            view.GetComponent<ReplicaUIView>().Get<Button>("Close").onClick.Invoke();
+        }catch(Exception e){report+="FAIL "+e;}
+        File.WriteAllText("Temp/pause-exit-validation.txt",report);Debug.Log(report);
+    }
     public static void FinalizeAssets(){
         const string path="Assets/GooseReplica/Resources/Replica/UI/CollectionTray.prefab";
         var root=PrefabUtility.LoadPrefabContents(path);
@@ -32,10 +57,10 @@ public static class ReplicaGameplaySkinValidation {
             case 0:Flow.Begin(0);due=EditorApplication.timeSinceStartup+4;break;
             case 1:
                 Check(Hud.Get<Text>("Timer").text=="∞","unlimited tutorial timer");
-                Check(Hud.Get<RectTransform>("Settings").sizeDelta==new Vector2(70,70),"authored settings control");
-                Hud.Get<Button>("Settings").onClick.Invoke();Check(Flow.BlocksGameplay&&Time.timeScale==0,"new settings button pauses gameplay");break;
+                Check(!Hud.Get<RectTransform>("Settings").gameObject.activeSelf,"gameplay settings button hidden");
+                Hud.Get<Button>("Pause").onClick.Invoke();Check(Flow.BlocksGameplay&&Time.timeScale==0,"pause button pauses gameplay");break;
             case 2:
-                UnityEngine.Object.FindObjectsOfType<ReplicaUIView>().First(v=>v.name=="PauseSettings(Clone)").Get<Button>("Continue").onClick.Invoke();
+                UnityEngine.Object.FindObjectsOfType<ReplicaUIView>().First(v=>v.name=="PauseSettings(Clone)").Get<Button>("Close").onClick.Invoke();
                 InputController.Instance.AddObjectOnStack(LevelGenerator.Instance.objectsOnScene[0]);due=EditorApplication.timeSinceStartup+1;break;
             case 3:
                 Check(InputController.Instance.objectsOnStack.Count==1,"tutorial item collected");Check(Vector3.Distance(InputController.Instance.objectsOnStack[0].transform.position,ReplicaTray.Instance.SlotPosition(0))<.01f,"tutorial item lands at blue slot");

@@ -54,10 +54,12 @@ public sealed class ModelAdapterWindow : EditorWindow {
             using (new EditorGUI.DisabledScope(report == null || string.IsNullOrEmpty(report.previewPath))) if (GUILayout.Button("打开浏览器预览")) ModelAdapterPreview.Open(report);
         }
         using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling)) {
+            if (GUILayout.Button("预览整套尺寸分配")) PreviewBatchSizes();
             if (GUILayout.Button("一键全部生成适配 Prefab")) GenerateAll();
         }
         EditorGUILayout.HelpBox("批量生成按各模型名称设置 ID，使用上方碰撞草稿和更新选项。", MessageType.Info);
-        EditorGUILayout.LabelField("游戏内最长边（全局倍率 1）", ModelAdapterRules.Format(ModelAdapterRules.DefaultGameplayLongestSide));
+        EditorGUILayout.HelpBox("自动分配小 / 中 / 大档；未知名称默认中档。生成后可在「Goose / 槽内展示配置」分别调整棋盘大小与槽内姿态。", MessageType.Info);
+        if (GUILayout.Button("打开道具展示配置")) TrayDisplayWindow.Open();
         scroll = EditorGUILayout.BeginScrollView(scroll);
         if (!string.IsNullOrEmpty(batchSummary)) {
             EditorGUILayout.HelpBox(batchSummary, MessageType.Info);
@@ -66,6 +68,7 @@ public sealed class ModelAdapterWindow : EditorWindow {
         if (report == null) { EditorGUILayout.EndScrollView(); return; }
         EditorGUILayout.LabelField("状态", report.HasErrors ? "存在错误" : "可以生成", EditorStyles.boldLabel);
         EditorGUILayout.LabelField("尺寸", report.visualSize.ToString("F4") + " / 归一化 " + ModelAdapterRules.Format(report.normalizedScale));
+        EditorGUILayout.LabelField("建议棋盘尺寸", SizeSummary(report));
         EditorGUILayout.LabelField("Collider", report.colliderCount + "，Pick=" + report.hasPickCollider + "，Body=" + report.hasBodyCollider);
         foreach (var issue in report.issues) {
             var type = issue.severity == ModelAdapterSeverity.Error ? MessageType.Error : issue.severity == ModelAdapterSeverity.Warning ? MessageType.Warning : MessageType.Info;
@@ -74,12 +77,27 @@ public sealed class ModelAdapterWindow : EditorWindow {
         EditorGUILayout.EndScrollView();
     }
 
+    static string SizeSummary(ModelAdapterReport report){
+        if(ReplicaSourceCatalog.TryGet(report.logicalId,out var existing)&&!string.IsNullOrEmpty(existing.sizeTier))
+            return existing.sizeTier+"档 / "+(existing.normalizedToSource*ModelAdapterRules.SourceLongestSide).ToString("F2")+"（保留已有基准，手动倍率另存）";
+        var size=ModelAdapterSizing.Suggest(report.logicalId,report.visualSize);
+        return size.tier+"档 / "+size.longest.ToString("F2")+" · "+size.reason;
+    }
+    void PreviewBatchSizes(){
+        RefreshAssets();batchDetails.Clear();
+        foreach(var path in assets){
+            string id=ModelAdapterRules.NormalizeId(Path.GetFileNameWithoutExtension(path));
+            var scan=ModelAdapterService.Scan(path,id,id,generateColliderDraft,true).report;
+            batchDetails.Add(id+"："+(scan.HasErrors?"检查失败，请单独扫描":SizeSummary(scan)));
+        }
+        batchSummary="整套尺寸预览（世界单位，全局倍率 1；已保存的手动倍率保留）";
+    }
     void GenerateAll() {
         RefreshAssets();
         var inputs = assets.ToArray();
         if (inputs.Length == 0) return;
-        if (updateExisting && !EditorUtility.DisplayDialog("确认批量更新",
-            "将处理 " + inputs.Length + " 个模型，并替换同 ID 的适配 Prefab、尺寸、碰撞和音效映射。是否继续？", "继续", "取消")) return;
+        PreviewBatchSizes();
+        if (!EditorUtility.DisplayDialog("确认批量尺寸分配", string.Join("\n", batchDetails)+"\n\n生成模型"+(updateExisting?"并更新已有 ID":"")+"；保留已保存的棋盘倍率和槽内配置。", "生成", "取消")) return;
         batchDetails.Clear();
         report = null;
         int succeeded = 0, failed = 0, processed = 0;

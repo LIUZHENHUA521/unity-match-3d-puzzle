@@ -6,7 +6,7 @@ using DG.Tweening;
 using UnityEngine;
 
 // WX ToolReturnBack / ToolAutoFind: j38482, j13232, j19860, j19862, j19259.
-// Acquisition/advertising remain local-only; native tool visuals are reconstructed separately.
+// Acquisition/advertising remain local-only; invitation inventory is authorized by ReplicaInvitations.
 public sealed class ReplicaSourceTools : MonoBehaviour {
     public const int ReturnCount=3;
     public const float StoreSeconds=.3f,StoreScaleSeconds=.2f;
@@ -16,7 +16,11 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
     readonly List<GameObject>[] columns={new List<GameObject>(),new List<GameObject>(),new List<GameObject>()};
     int nextColumn;
     readonly int[] used=new int[3];
-    public static bool CanUse(int type)=>type>=0&&type<3&&(!instance||instance.used[type]<1);
+    static int paidType=-1;
+    public static int Remaining(int type)=>Mathf.Max(0,1-UsedCount(type))+(ReplicaInvitations.Instance?ReplicaInvitations.Instance.Inventory(type):0);
+    public static bool CanUse(int type)=>type>=0&&type<3&&(paidType==type||UsedCount(type)<1||(ReplicaInvitations.Instance&&!ReplicaInvitations.Instance.Busy&&!ReplicaInvitations.Instance.HasPending&&ReplicaInvitations.Instance.Inventory(type)>0));
+    public static bool TrySpend(int type){if(UsedCount(type)>=1&&paidType!=type)return false;MarkUsed(type);return true;}
+    public static bool RunPaid(int type,Action action){int before=UsedCount(type);paidType=type;try{action();return UsedCount(type)>before;}finally{paidType=-1;}}
     public static void MarkUsed(int type){var owner=Ensure();if(owner&&type>=0&&type<3)owner.used[type]++;}
     public static int UsedCount(int type)=>instance&&type>=0&&type<3?instance.used[type]:0;
     bool shuffling;
@@ -99,7 +103,7 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
         result+=camera.transform.right*(x+stagger*contentScale);
         // Content rotation maps StorePointList local +Y to camera -forward.
         result-=camera.transform.forward*(localStack*contentScale);
-        result+=camera.transform.up*(storePointY*contentScale);
+        result+=camera.transform.up*(storePointY*contentScale)+ReplicaSourceToolVisual.StoreLayoutOffset(camera);
         return result;
     }
 
@@ -120,7 +124,7 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
         float? peak=ReplicaLayeredPile.Instance&&ReplicaLayeredPile.Instance.Running?(float?)ReplicaLayeredPile.Instance.RefreshSourceMaxHeight():null;
         var candidates=ShuffleCandidates(LevelGenerator.Instance.objectsOnScene,InputController.Instance.objectsOnStack,peak);
         if(candidates.Count==0)return false;
-        MarkUsed(2);owner.StartCoroutine(owner.Shuffle(candidates));return true;
+        if(!TrySpend(2))return false;owner.StartCoroutine(owner.Shuffle(candidates));return true;
     }
     IEnumerator Shuffle(List<GameObject> candidates){
         shuffling=true;InputController.Instance.CancelSelection();ReplicaSourceToolVisual.MessUp();

@@ -8,8 +8,9 @@ using UnityEngine.Rendering;
 public sealed class ReplicaSourceHighlight : MonoBehaviour {
     public const float OutlineWidth=.2f, GlowWidth=.25f, GlowIntensity=1.86f;
     public const float OverlayIntensity=.5f, OverlayMinimum=.5f, AnimationSpeed=1f;
-    public static readonly Color OverlayColor=new Color(1,.9215686321f,.01568627544f,1);
-    public static readonly Color GlowColor=new Color(1,.9647059441f,.1333333403f,1);
+    // Blue selection palette: bright blue surface with a lighter blue halo.
+    public static readonly Color OverlayColor=new Color32(51,153,255,255);
+    public static readonly Color GlowColor=new Color32(102,204,255,255);
     // OnEnable j85382 indices 4..7, IEEE 0x3f350529, not rounded sqrt(0.5).
     static readonly Vector2[] Directions={new Vector2(-.70711f,.70711f),new Vector2(.70711f,.70711f),new Vector2(.70711f,-.70711f),new Vector2(-.70711f,-.70711f)};
     // Readable static meshes get smoothed normals; skins and GPU-only meshes

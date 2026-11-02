@@ -10,8 +10,14 @@ public sealed class ReplicaSettingsSkin : MonoBehaviour {
         var mark=key=="Music"?musicMark:key=="Effects"?effectsMark:vibrationMark;
         if(mark)mark.SetActive(enabled);
     }
-    public void BindSupport(){
+    public void BindSupport(bool ingame=false){
         support.onClick.RemoveAllListeners();
+        if(ingame){
+            support.image.sprite=Resources.Load<Sprite>("Replica/SettingsSkinPS/exit-game");
+            support.image.preserveAspect=true;
+            support.onClick.AddListener(()=>{ReplicaFlow.Instance.HomeClick();ReplicaFlow.Instance.Home();});
+            return;
+        }
         support.onClick.AddListener(()=>{
             ReplicaFlow.Instance.HomeClick();
             supportStatus.text="客服功能尚未接入";

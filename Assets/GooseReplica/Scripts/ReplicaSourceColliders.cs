@@ -11,27 +11,23 @@ public sealed class ReplicaSourceColliders : MonoBehaviour {
     [Serializable] class Shape {public string type;public bool enabled,trigger,hasMaterial;public Vector3 center,size;public float radius,height;public int direction;public Surface material;}
     [Serializable] class Surface {public string m_Name;public float dynamicFriction,staticFriction,bounciness;public int frictionCombine,bounceCombine;}
     static Dictionary<string,Profile> profiles;
+    static Dictionary<string,Profile> adapterProfiles;
     static readonly Dictionary<string,PhysicMaterial> materials=new Dictionary<string,PhysicMaterial>();
-    GameObject pickObject;
+    [SerializeField] GameObject pickObject;
+    [Serializable] struct ColliderState {public Collider collider;public bool enabled,trigger;}
+    [SerializeField] ColliderState[] colliderStates;
     public bool HasPickObject=>pickObject;
     [SerializeField] string configuredSourceName;
     // The original ObjectUnit prefab already owns its collider hierarchy. This
     // marker lets pooled/template clones skip the JSON walk and AddComponent
     // pass while retaining the exact baked shape/layer/material state.
-    public bool IsConfiguredFor(string name)=>pickObject&&string.Equals(configuredSourceName,name,StringComparison.OrdinalIgnoreCase);
+    public bool IsConfiguredFor(string name)=>pickObject&&colliderStates!=null&&string.Equals(configuredSourceName,name,StringComparison.OrdinalIgnoreCase);
     public void SetVisible(bool visible){if(pickObject)pickObject.SetActive(visible);}
     public void RestoreConfiguredColliderState(){
-        if(string.IsNullOrEmpty(configuredSourceName))return;
-        LoadProfiles();
-        if(!profiles.TryGetValue(configuredSourceName,out var profile)||!pickObject)return;
-        var visual=pickObject.transform.root.GetChild(0);
-        foreach(var node in profile.nodes){
-            var target=Resolve(visual,node.indices);if(!target)continue;
-            var existing=target.GetComponents<Collider>();
-            for(int i=0;i<node.colliders.Length&&i<existing.Length;i++){
-                existing[i].enabled=node.colliders[i].enabled;
-                existing[i].isTrigger=node.colliders[i].trigger;
-            }
+        if(colliderStates==null)return;
+        foreach(var state in colliderStates)if(state.collider){
+            if(state.collider.enabled!=state.enabled)state.collider.enabled=state.enabled;
+            if(state.collider.isTrigger!=state.trigger)state.collider.isTrigger=state.trigger;
         }
     }
     static Transform Resolve(Transform root,int[] path){if(path==null)return null;foreach(int i in path){if(i>=root.childCount)return null;root=root.GetChild(i);}return root;}
@@ -41,16 +37,19 @@ public sealed class ReplicaSourceColliders : MonoBehaviour {
             Physics.IgnoreLayerCollision(BodyLayer,i,i!=0&&i!=WallLayer&&i!=BodyLayer);
         }
     }
-    public static void Apply(GameObject obj,string name,bool restorePivot=false){
+    public static void Apply(GameObject obj,string name,bool restorePivot=false,bool force=false){
         var component=obj?obj.GetComponent<ReplicaSourceColliders>():null;
         var visual=obj&&obj.transform.childCount>0?obj.transform.GetChild(0):null;
         // A recovered prefab may already carry the exact source collider
         // hierarchy. Keep the imported pivot normalization even when the
         // runtime marker lets us skip the expensive profile walk.
         if(restorePivot&&visual){visual.localPosition=Vector3.zero;visual.localRotation=Quaternion.identity;}
-        if(component&&component.IsConfiguredFor(name))return;
+        if(!force&&component&&component.IsConfiguredFor(name))return;
         LoadProfiles();
-        if(!profiles.TryGetValue(name,out var profile)||obj.transform.childCount==0)return;
+        // Imported replacements can share names with another theme's original
+        // models (e.g. Banana). Their hierarchy paths are not interchangeable.
+        var selectedProfiles=obj.GetComponent<ReplicaSourceIdentity>()?adapterProfiles:profiles;
+        if(!selectedProfiles.TryGetValue(name,out var profile)||obj.transform.childCount==0)return;
         // Source Instantiate sets the object pivot and Euler rotation; importer had recentered its visual.
         foreach(var node in profile.nodes){
             var target=Resolve(visual,node.indices);if(!target){Debug.LogError("Source collider hierarchy mismatch: "+name);continue;}
@@ -65,7 +64,7 @@ public sealed class ReplicaSourceColliders : MonoBehaviour {
                 // Fallback is retained for malformed/legacy prefabs; normal
                 // source prefabs have equal collider counts and stay on the
                 // allocation-free path above.
-                foreach(var old in existing){old.enabled=false;Destroy(old);}
+                foreach(var old in existing){old.enabled=false;if(Application.isPlaying)Destroy(old);else DestroyImmediate(old);}
                 existing=new Collider[node.colliders.Length];
                 for(int i=0;i<node.colliders.Length;i++){
                     var shape=node.colliders[i];
@@ -88,14 +87,22 @@ public sealed class ReplicaSourceColliders : MonoBehaviour {
         component=component??obj.GetComponent<ReplicaSourceColliders>() ?? obj.AddComponent<ReplicaSourceColliders>();
         component.pickObject=Resolve(visual,profile.col)?.gameObject;
         component.configuredSourceName=name;
+        var states=new List<ColliderState>();
+        foreach(var node in profile.nodes){
+            var target=Resolve(visual,node.indices);if(!target)continue;
+            foreach(var collider in target.GetComponents<Collider>())states.Add(new ColliderState{collider=collider,enabled=collider.enabled,trigger=collider.isTrigger});
+        }
+        component.colliderStates=states.ToArray();
+        obj.GetComponent<ReplicaSourcePoolToken>()?.InvalidateComponents();
     }
 
     static void LoadProfiles(){
         if(profiles!=null)return;
         profiles=new Dictionary<string,Profile>(StringComparer.OrdinalIgnoreCase);
+        adapterProfiles=new Dictionary<string,Profile>(StringComparer.OrdinalIgnoreCase);
         var data=Resources.Load<TextAsset>("Replica/SourceColliders");
         if(data){var parsed=JsonUtility.FromJson<Data>(data.text);foreach(var p in parsed?.items??Array.Empty<Profile>())if(p!=null&&!string.IsNullOrEmpty(p.name))profiles[p.name]=p;}
-        foreach(var id in AdapterIds())if(ReplicaSourceCatalog.TryGetColliderProfile(id,out var source))profiles[id]=FromAdapter(source,id);
+        foreach(var id in AdapterIds())if(ReplicaSourceCatalog.TryGetColliderProfile(id,out var source))adapterProfiles[id]=FromAdapter(source,id);
     }
     static IEnumerable<string> AdapterIds(){return ReplicaSourceCatalog.GetIds();}
     static Profile FromAdapter(ReplicaSourceCatalog.ColliderProfile source,string id){

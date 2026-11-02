@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 5987216880571194022}
   - component: {fileID: 4060113970738720444}
   - component: {fileID: 8716837968668604001}
+  - component: {fileID: 2364323504685452863}
   m_Layer: 0
   m_Name: Pizza
   m_TagString: Collectable
@@ -163,6 +164,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &2364323504685452863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3394875380398197649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 9055047667225948420}
+  colliderStates:
+  - collider: {fileID: 1194070293054210269}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 5787143203654780938}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Pizza
 --- !u!1 &3537858995382131694
 GameObject:
   m_ObjectHideFlags: 0

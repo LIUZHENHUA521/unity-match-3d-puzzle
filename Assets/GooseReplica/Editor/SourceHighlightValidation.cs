@@ -60,10 +60,10 @@ public static class SourceHighlightValidation {
                 var before=Capture(null);feedback.Begin(country,camera,false);var lit=Capture(countryCount==0?"country-highlight-on.png":null);
                 Check(feedback.Selected==country&&fx.RendererCount>=countryRenderers.Length,"country press registers renderer "+countryPrefab.name);
                 int changedPixels=Changed(before,lit);Check(changedPixels>100,"country press renders highlight "+countryPrefab.name);
-                int yellow=0;for(int i=0;i<lit.Length;i++)if(lit[i].r>before[i].r+6&&lit[i].g>before[i].g+6&&lit[i].r>lit[i].b+20&&lit[i].g>lit[i].b+20)yellow++;
-                Check(yellow>10,"country press produces yellow pixels "+countryPrefab.name);
+                int blue=0;for(int i=0;i<lit.Length;i++)if(lit[i].b>before[i].b+6&&lit[i].b>lit[i].r+20&&lit[i].b>lit[i].g+10)blue++;
+                Check(blue>10,"country press produces blue pixels "+countryPrefab.name);
                 feedback.Cancel();Check(!fx.Target&&!fx.HasCommands&&Changed(before,Capture(null))<20,"country cancel clears highlight "+countryPrefab.name);
-                countryEvidence+=$" {countryPrefab.name}:{changedPixels}/{yellow}";countryCount++;
+                countryEvidence+=$" {countryPrefab.name}:{changedPixels}/{blue}";countryCount++;
                 UnityEngine.Object.DestroyImmediate(country);country=null;
             }
             Check(unreadableCount>0,"current countryside includes GPU-only imported meshes");
@@ -126,7 +126,7 @@ public static class SourceHighlightValidation {
                 coveredDelta+=centerDelta;fx.ClearAll();
             }
             report="PASS source profile; triangle overlay and width sine; stencil/4-direction geometry; shader support; selection switching; hidden/destroyed cancellation; immutable originals; camera buffer lifetime; real goose mesh render changed "+changed+" pixels and clearing left "+residual+"; isolated skins "+skinEvidence+"; AutoFind blue pixels "+blueShift+"; two tool slots and unscaled timeout during pause; 3-distance covered interior changed "+coveredDelta+" pixels; rendered capture\n";
-            report+=$"PASS GPU-only mesh; {countryCount} countryside prefabs ({unreadableCount} unreadable meshes): press produces yellow highlight, cancel clears. Changed/yellow pixels:"+countryEvidence+"\n";
+            report+=$"PASS GPU-only mesh; {countryCount} countryside prefabs ({unreadableCount} unreadable meshes): press produces blue highlight, cancel clears. Changed/blue pixels:"+countryEvidence+"\n";
         }catch(Exception e){report="FAIL "+e+"\n";}
         finally{
             if(cameraObject)UnityEngine.Object.DestroyImmediate(cameraObject);if(first)UnityEngine.Object.DestroyImmediate(first);if(second)UnityEngine.Object.DestroyImmediate(second);if(real)UnityEngine.Object.DestroyImmediate(real);if(country)UnityEngine.Object.DestroyImmediate(country);if(gpuOnly)UnityEngine.Object.DestroyImmediate(gpuOnly);if(rt){rt.Release();UnityEngine.Object.DestroyImmediate(rt);}

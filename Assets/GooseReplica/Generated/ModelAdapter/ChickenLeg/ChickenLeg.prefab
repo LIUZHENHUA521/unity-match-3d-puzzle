@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6107851149923662546}
   - component: {fileID: 953122049409129109}
   - component: {fileID: 8179010154287854894}
+  - component: {fileID: 2961000291713829920}
   m_Layer: 0
   m_Name: ChickenLeg
   m_TagString: Collectable
@@ -76,6 +77,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &2961000291713829920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830470215440344672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 6645556971533498193}
+  colliderStates:
+  - collider: {fileID: 2813557659315199239}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 2577941684106915824}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: ChickenLeg
 --- !u!1 &5795022766975336234
 GameObject:
   m_ObjectHideFlags: 0

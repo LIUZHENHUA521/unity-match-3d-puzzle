@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 8312334743117870809}
   - component: {fileID: 7019112056976553169}
   - component: {fileID: 3714968273930503200}
+  - component: {fileID: 3386888305387693275}
   m_Layer: 0
   m_Name: Donut
   m_TagString: Collectable
@@ -161,6 +162,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &3386888305387693275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4869629457496889767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 8182973621827184911}
+  colliderStates:
+  - collider: {fileID: 6026506787105441364}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 5405821380072772287}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Donut
 --- !u!1 &8182973621827184911
 GameObject:
   m_ObjectHideFlags: 0

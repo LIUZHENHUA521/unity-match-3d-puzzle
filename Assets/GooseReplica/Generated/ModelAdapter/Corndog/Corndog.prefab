@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 2841205409744070261}
   - component: {fileID: 4575393606906151581}
   - component: {fileID: 4608122380035742310}
+  - component: {fileID: 4688018473748893938}
   m_Layer: 0
   m_Name: Corndog
   m_TagString: Collectable
@@ -110,6 +111,27 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &4688018473748893938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503301747676384850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2464687d747b413fad93824a0148745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickObject: {fileID: 5990885400071997626}
+  colliderStates:
+  - collider: {fileID: 3704501128300089001}
+    enabled: 1
+    trigger: 0
+  - collider: {fileID: 5692568669646593546}
+    enabled: 1
+    trigger: 0
+  configuredSourceName: Corndog
 --- !u!1 &1748577631603483008
 GameObject:
   m_ObjectHideFlags: 0
