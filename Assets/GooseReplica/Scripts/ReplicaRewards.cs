@@ -10,7 +10,7 @@ public sealed class ReplicaRewards : MonoBehaviour {
     string endpoint;bool starting;
     public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');}
     void OnDestroy(){if(Instance==this)Instance=null;}
-    public void Begin(int theme,string tier,string themeId){if(!starting)StartCoroutine(StartChallenge(theme,tier,themeId));}
+    public void Begin(int theme,string tier,string themeId){if(ReplicaTestPrivileges.AccountEnabled){ReplicaFlow.Instance.Begin(theme);return;}if(!starting)StartCoroutine(StartChallenge(theme,tier,themeId));}
     IEnumerator StartChallenge(int theme,string tier,string themeId){
         var screen=ReplicaFlow.Instance.ScreenName;starting=true;ReplicaFlow.Instance.Notice("正在确认红包挑战资格…");Reply result=null;
         yield return Request("runs",JsonUtility.ToJson(new StartBody{requestId=Guid.NewGuid().ToString("N"),tier=tier,themeId=themeId}),r=>result=r);

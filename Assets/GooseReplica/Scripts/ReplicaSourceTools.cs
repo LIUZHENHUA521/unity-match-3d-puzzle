@@ -16,10 +16,16 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
     readonly List<GameObject>[] columns={new List<GameObject>(),new List<GameObject>(),new List<GameObject>()};
     int nextColumn;
     readonly int[] used=new int[3];
+    readonly int[] adUses=new int[3];
+    readonly int[] testUses=new int[3];
+    public static void RecordTestUse(int type){var owner=Ensure();if(owner&&type==1)owner.testUses[type]++;}
+    public static int TestUses(int type)=>instance&&type>=0&&type<3?instance.testUses[type]:0;
+    public static void RecordAdUse(int type){var owner=Ensure();if(owner&&type>=0&&type<3)owner.adUses[type]++;}
+    public static int AdUses(int type)=>instance?instance.adUses[type]:0;
     static int paidType=-1;
-    public static int Remaining(int type)=>Mathf.Max(0,1-UsedCount(type))+(ReplicaInvitations.Instance?ReplicaInvitations.Instance.Inventory(type):0);
-    public static bool CanUse(int type)=>type>=0&&type<3&&(paidType==type||UsedCount(type)<1||(ReplicaInvitations.Instance&&!ReplicaInvitations.Instance.Busy&&!ReplicaInvitations.Instance.HasPending&&ReplicaInvitations.Instance.Inventory(type)>0));
-    public static bool TrySpend(int type){if(UsedCount(type)>=1&&paidType!=type)return false;MarkUsed(type);return true;}
+    public static int Remaining(int type)=>(ReplicaInvitations.Instance?ReplicaInvitations.Instance.Inventory(type):0);
+    public static bool CanUse(int type)=>type>=0&&type<3&&((type==1&&ReplicaTestPrivileges.UnlimitedMagnet)||paidType==type||(ReplicaInvitations.Instance&&!ReplicaInvitations.Instance.Busy&&!ReplicaInvitations.Instance.HasPending&&ReplicaInvitations.Instance.Inventory(type)>0));
+    public static bool TrySpend(int type){if(paidType!=type)return false;MarkUsed(type);return true;}
     public static bool RunPaid(int type,Action action){int before=UsedCount(type);paidType=type;try{action();return UsedCount(type)>before;}finally{paidType=-1;}}
     public static void MarkUsed(int type){var owner=Ensure();if(owner&&type>=0&&type<3)owner.used[type]++;}
     public static int UsedCount(int type)=>instance&&type>=0&&type<3?instance.used[type]:0;
@@ -36,7 +42,7 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
     }
     void Awake(){instance=this;}
     void OnDestroy(){ClearStore();if(instance==this)instance=null;}
-    public static void Reset(){ReplicaSourceToolVisual.Reset();if(instance){instance.StopAllCoroutines();instance.EndShuffle();instance.ClearStore();Array.Clear(instance.used,0,instance.used.Length);}}
+    public static void Reset(){ReplicaSourceToolVisual.Reset();if(instance){instance.StopAllCoroutines();instance.EndShuffle();instance.ClearStore();Array.Clear(instance.used,0,instance.used.Length);Array.Clear(instance.adUses,0,instance.adUses.Length);Array.Clear(instance.testUses,0,instance.testUses.Length);}}
     void ClearStore(){foreach(var col in columns){foreach(var obj in col)if(obj){obj.transform.DOKill();ReplicaSourceObjectPool.Recycle(obj);}col.Clear();}nextColumn=0;}
 
     public static List<GameObject> ReturnCandidates(IList<GameObject> stack,int count=ReturnCount)=>stack.Where(x=>x).Take(Mathf.Max(0,count)).ToList();
@@ -77,7 +83,6 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
             owner.LayoutColumn(owner.nextColumn,obj);
             owner.nextColumn=(owner.nextColumn+1)%owner.columns.Length;
             obj.transform.DOScale(ReplicaSourceFlight.StoreScale(obj,obj.transform.localScale),StoreScaleSeconds).SetEase(StoreScaleEase);
-            ReplicaSourceToolVisual.Return(obj);
         }
     }
     public static void ReleaseStored(GameObject obj){

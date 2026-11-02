@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 public sealed class ReplicaRewardedVideo : MonoBehaviour {
-    [Serializable] public class Configuration {public string clearAdUnitId,timeAdUnitId;}
+    [Serializable] public class Configuration {public string clearAdUnitId,timeAdUnitId,toolAdUnitId;}
     [Serializable] class Reply {public string requestId,error;public bool completed;}
     Action<bool,string> callback;string requestId;
 #if UNITY_EDITOR
@@ -13,7 +13,9 @@ public sealed class ReplicaRewardedVideo : MonoBehaviour {
     [DllImport("__Internal")] static extern void GooseReviveAdShow(string target,string id,string request);
     [DllImport("__Internal")] static extern void GooseReviveAdCancel(string request);
 #endif
-    public void Show(bool timeout,Action<bool,string> done){
+    public void Show(bool timeout,Action<bool,string> done){ShowVideo(timeout,false,done);}
+    public void ShowTool(Action<bool,string> done){ShowVideo(false,true,done);}
+    void ShowVideo(bool timeout,bool tool,Action<bool,string> done){
         if(callback!=null){done(false,"广告正在播放，请稍候");return;}
         requestId=Guid.NewGuid().ToString("N");callback=done;
 #if UNITY_EDITOR
@@ -21,12 +23,12 @@ public sealed class ReplicaRewardedVideo : MonoBehaviour {
 #endif
         var asset=Resources.Load<TextAsset>("Replica/RewardedVideoConfig");
         var config=asset?JsonUtility.FromJson<Configuration>(asset.text):null;
-        string id=config==null?null:timeout?config.timeAdUnitId:config.clearAdUnitId;
-        if(string.IsNullOrWhiteSpace(id)||!id.StartsWith("adunit-",StringComparison.Ordinal)){Complete(requestId,false,"复活广告尚未配置，请稍后再试");return;}
+        string id=config==null?null:tool?config.toolAdUnitId:timeout?config.timeAdUnitId:config.clearAdUnitId;
+        if(string.IsNullOrWhiteSpace(id)||!id.StartsWith("adunit-",StringComparison.Ordinal)){Complete(requestId,false,"激励广告尚未配置，请稍后再试");return;}
 #if UNITY_WEBGL && !UNITY_EDITOR
         GooseReviveAdShow(gameObject.name,id,requestId);
 #else
-        Complete(requestId,false,"请在微信小游戏中观看复活视频");
+        Complete(requestId,false,"请在微信小游戏中观看视频");
 #endif
     }
     public void OnReviveAdReply(string json){

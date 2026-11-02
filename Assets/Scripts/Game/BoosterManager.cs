@@ -19,7 +19,7 @@ public class BoosterManager : Singleton<BoosterManager>
         if (ReplicaSourceTools.Enabled) {
             if (ReplicaSourceTools.Shuffling || !ReplicaSourceTools.CanUse(1)) return;
             var items=ReplicaSourceTools.AutoFindCandidates(InputController.Instance.objectsOnStack,LevelGenerator.Instance.objectsOnScene);
-            if(items.Count==0)return;
+            if(items.Count==0){ReplicaFlow.Instance.ShowTips("场上没有足够的同类物品可吸附");return;}
             if(!ReplicaSourceTools.TrySpend(1))return;ReplicaSourceAudio.Tool(25);
             for(int i=0;i<items.Count;i++)
                 InputController.Instance.AddObjectOnStack(items[i],false,true,i*.035f);

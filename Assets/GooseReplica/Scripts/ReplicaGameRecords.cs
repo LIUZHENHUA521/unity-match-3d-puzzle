@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 // Persists telemetry and qualified reward settlement separately; only the server issues vouchers.
 public sealed class ReplicaGameRecords : MonoBehaviour {
-    [Serializable] public class ToolUse { public int free,inventory; }
+    [Serializable] public class ToolUse { public int free,inventory,rewarded,test; }
     [Serializable] public class Record {
         public int schemaVersion=1,stage,initialCount,timeLimitSeconds,clearedCount;
         public string rewardTier,ruleVersion;
@@ -55,6 +55,7 @@ public sealed class ReplicaGameRecords : MonoBehaviour {
 #if UNITY_WEBGL && !UNITY_EDITOR
         try{active.platform=WeChatWASM.WX.GetSystemInfoSync().platform;}catch{}
 #endif
+        if(ReplicaFlow.Instance&&ReplicaFlow.Instance.UnlimitedMagnet)active.levelVersion=ReplicaTestPrivileges.LevelVersion;
         owner=null;started=false;activeSeconds=0;cleared=0;
     }
     public void StartRecord(){if(active==null||started)return;started=true;active.startedAt=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -77,7 +78,7 @@ public sealed class ReplicaGameRecords : MonoBehaviour {
         if(!started){active=null;return;}
         active.status=status;active.endReason=reason;active.endedAt=Math.Max(active.startedAt,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());active.activeDurationMs=Math.Min((long)(activeSeconds*1000),active.endedAt-active.startedAt);
         active.clearedCount=cleared;active.remainingSeconds=Mathf.Clamp(GameManager.Instance.currentLevelTime,0,active.timeLimitSeconds);
-        for(int i=0;i<3;i++){int used=ReplicaSourceTools.UsedCount(i);active.toolUsage[i].free=Math.Min(1,used);active.toolUsage[i].inventory=Math.Max(0,used-1);}
+        for(int i=0;i<3;i++){int used=ReplicaSourceTools.UsedCount(i);active.toolUsage[i].free=0;active.toolUsage[i].rewarded=ReplicaSourceTools.AdUses(i);active.toolUsage[i].test=ReplicaSourceTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
         active.toolReceipts=toolReceipts.ToArray();Add("finish",active,owner);active=null;started=false;
     }
     void Add(string action,Record record,string account){

@@ -17,24 +17,19 @@ public sealed class ReplicaResultView : MonoBehaviour {
         primary.onClick.AddListener(()=>{Click();main?.Invoke();});
         secondary.onClick.AddListener(()=>{Click();other?.Invoke();});
         share.onClick.AddListener(()=>{Click();onShare?.Invoke();});
-        StopAllCoroutines();StartCoroutine(Pop(Mathf.Clamp01(progress)));
+        ReplicaModalMotion.Play(gameObject);StopAllCoroutines();StartCoroutine(AnimateProgress(Mathf.Clamp01(progress)));
     }
     static void Click(){if(ReplicaFlow.Instance)ReplicaFlow.Instance.HomeClick();}
-    IEnumerator Pop(float target){
-        contentGroup.interactable=false;float elapsed=0;
+    IEnumerator AnimateProgress(float target){
+        float elapsed=0;
         while(elapsed<.75f){
             elapsed+=Time.unscaledDeltaTime;
-            float t=Mathf.Clamp01(elapsed/.42f),u=t-1;
-            float scale=1+2.70158f*u*u*u+1.70158f*u*u;
-            animatedContent.localScale=Vector3.one*Mathf.LerpUnclamped(.78f,1,scale);
-            contentGroup.alpha=Mathf.Clamp01(elapsed/.2f);
-            shade.color=new Color(0,0,0,.64f*Mathf.Clamp01(elapsed/.22f));
             float p=target*(1-Mathf.Pow(1-Mathf.Clamp01((elapsed-.16f)/.59f),3));
             fill.fillAmount=p;marker.anchoredPosition=new Vector2(Mathf.Lerp(-290,290,p),-140);
             yield return null;
         }
-        animatedContent.localScale=Vector3.one;contentGroup.alpha=1;fill.fillAmount=target;
+        fill.fillAmount=target;
         marker.anchoredPosition=new Vector2(Mathf.Lerp(-290,290,target),-140);
-        contentGroup.interactable=true;
+
     }
 }

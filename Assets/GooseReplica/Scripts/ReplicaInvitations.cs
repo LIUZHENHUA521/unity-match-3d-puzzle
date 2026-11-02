@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 // The server is authoritative. PlayerPrefs stores only an unfinished request, never rewards.
 public sealed class ReplicaInvitations : MonoBehaviour {
-    [Serializable] public class Reply {public string token,inviteCode,error,requestId;public int invited;public long createdAt;public int[] inventory;public bool refunded;public ReplicaMail[] mails;public int nextCursor;public bool attention;}
+    [Serializable] public class Reply {public string token,inviteCode,error,requestId;public int invited;public long createdAt;public int[] inventory;public bool refunded,unlimitedMagnet;public ReplicaMail[] mails;public int nextCursor;public bool attention;}
     [Serializable] class Bridge {public string code,inviter,error;public bool refresh;}
     [Serializable] class LoginBody {public string code,inviter;}
     [Serializable] class UseBody {public string requestId;public int type;}

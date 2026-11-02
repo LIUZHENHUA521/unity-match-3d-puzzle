@@ -54,7 +54,7 @@ public static class ReplicaGameplaySkinBuilder {
                 Image("Icon",rect,icons[i],new Vector2(.5f,.5f),new Vector2(0,19),new Vector2(i==0?71:i==1?74:69,i==0?81:i==1?80:71));
                 Image("Label artwork",rect,labels[i],new Vector2(.5f,.5f),new Vector2(0,-26),new Vector2(i==2?63:62,35));
                 var badge=Image("Remaining uses",rect,"image_number_circle-background",new Vector2(.5f,.5f),new Vector2(65,52.5f),new Vector2(44,44));
-                var number=Rect("Count",badge.transform,new Vector2(.5f,.5f),Vector2.zero,new Vector2(44,44)).gameObject.AddComponent<Text>();number.font=timer.font;number.fontSize=31;number.color=Color.white;number.alignment=TextAnchor.MiddleCenter;number.raycastTarget=false;number.text="1";number.verticalOverflow=VerticalWrapMode.Overflow;number.horizontalOverflow=HorizontalWrapMode.Overflow;
+                var number=Rect("Count",badge.transform,new Vector2(.5f,.5f),Vector2.zero,new Vector2(44,44)).gameObject.AddComponent<Text>();number.font=timer.font;number.fontSize=31;number.color=Color.white;number.alignment=TextAnchor.MiddleCenter;number.alignByGeometry=true;number.raycastTarget=false;number.text="1";number.verticalOverflow=VerticalWrapMode.Overflow;number.horizontalOverflow=HorizontalWrapMode.Overflow;
                 skin.quantities[i==0?0:i==1?1:2]=number;
             }
             view.bindings=bindings.ToArray();PrefabUtility.SaveAsPrefabAsset(root,UI+"GameHUD.prefab");

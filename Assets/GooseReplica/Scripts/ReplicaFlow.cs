@@ -10,6 +10,8 @@ public partial class ReplicaFlow : MonoBehaviour {
     public static ReplicaFlow Instance {get;private set;}
     public ReplicaTheme library;
     public bool IsPvp {get;private set;}
+    bool unlimitedMagnetRun;
+    public bool UnlimitedMagnet=>!IsPvp&&unlimitedMagnetRun;
     public bool ServerApplying {get;private set;}
     public bool BlocksGameplay {get;private set;}
     public int InitialCount {get;private set;}
@@ -81,11 +83,9 @@ public partial class ReplicaFlow : MonoBehaviour {
     void Update(){
         if(ScreenName=="game") {
             if(ReplicaSourceTools.Enabled){
-                var input=InputController.Instance;
-                bool ready=GameManager.Instance.GameIsPlaying()&&!BlocksGameplay&&!ReplicaSourceTools.Shuffling;
-                if(moveToolButton)moveToolButton.interactable=ready&&ReplicaSourceTools.CanUse(0)&&input.objectsOnStack.Count>0;
-                if(findToolButton)findToolButton.interactable=ready&&ReplicaSourceTools.CanUse(1)&&ReplicaSourceTools.CanAutoFind(input.objectsOnStack);
-                if(shuffleToolButton)shuffleToolButton.interactable=ready&&ReplicaSourceTools.CanUse(2);
+                if(moveToolButton)moveToolButton.interactable=true;
+                if(findToolButton)findToolButton.interactable=true;
+                if(shuffleToolButton)shuffleToolButton.interactable=true;
             }
             int t=Mathf.CeilToInt(GameManager.Instance.currentLevelTime);
             int count=LevelGenerator.Instance.objectsOnScene.Count;
@@ -97,6 +97,7 @@ public partial class ReplicaFlow : MonoBehaviour {
     }
 
     void Clear(){
+        ResetToolOffer();
         displayedTime=displayedCount=displayedPeer=-1;
         foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;peerText=null;if(tips)tips.Hide();BlocksGameplay=false;
     }
@@ -104,7 +105,7 @@ public partial class ReplicaFlow : MonoBehaviour {
     void Click(){if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
     public void SelectSound(){if(SettingsEffects&&library.selectSound)effects.PlayOneShot(library.selectSound);}
     public void MatchSound(){if(SettingsEffects&&library.matchSound)effects.PlayOneShot(library.matchSound);}
-    void StopBoard(bool preservePool=false){ResetRevival();if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Finish("quit","home");if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ReplicaSourceHighlight>();if(highlight)highlight.ClearAll();}ReplicaSourceAudio.ResetLevel();CancelSourceCreation();ReplicaSourcePhysics.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)ReplicaSourceObjectPool.Clear();resultShown=false;pendingPick=false;}
+    void StopBoard(bool preservePool=false){ResetToolOffer();ResetRevival();if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Finish("quit","home");if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ReplicaSourceHighlight>();if(highlight)highlight.ClearAll();}ReplicaSourceAudio.ResetLevel();CancelSourceCreation();ReplicaSourcePhysics.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)ReplicaSourceObjectPool.Clear();resultShown=false;pendingPick=false;}
     public void Home(){
         if(network)network.Disconnect();StopBoard();IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
         ReplicaHomeView.Create(this,page,ReplicaHomeView.Tab.Home);
@@ -144,12 +145,13 @@ public partial class ReplicaFlow : MonoBehaviour {
     }
     public void BeginReward(int theme,string tier){if(ReplicaRewards.Instance)ReplicaRewards.Instance.Begin(theme,tier,library.themes[theme].id);}
     public void BeginQualified(int theme,string runId,string tier,string version){
+        if(ReplicaTestPrivileges.AccountEnabled){Begin(theme);return;}unlimitedMagnetRun=false;
         if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=Today;ReplicaGameRecords.Instance.QualifiedRun(runId,tier,version);StartStage();
     }
     public void ShowRedPackets(){BlocksGameplay=true;var view=OpenModal("RedPackets");view.Bind("Close",()=>CloseModal());view.GetComponent<ReplicaRewardsView>().Connect();}
     public void Begin(int theme){
         // Ordinary MainLevel starts with the recovered first-stage row.
-        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=Today;if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.NewRun();StartStage();
+        if(network)network.Disconnect();StopBoard();IsPvp=false;unlimitedMagnetRun=ReplicaTestPrivileges.AccountEnabled;ThemeIndex=theme;Stage=1;runDate=Today;if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.NewRun();StartStage();
     }
     public void RestartStage(){if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Finish("quit","restart");StopBoard();StartStage();}
     public void NextStage(){
@@ -433,12 +435,35 @@ public partial class ReplicaFlow : MonoBehaviour {
         ReplicaInvitations.Instance.Refresh();
     }
     void UseTool(int type,Action action){
-        if(BlocksGameplay)return;
-        if(!ReplicaSourceTools.Enabled||IsPvp||ReplicaSourceTools.UsedCount(type)<1){action();return;}
+        if(ReplicaSourceTools.Enabled&&!IsPvp){
+            string reason=ToolUnavailableReason(type);
+            if(reason!=null){ShowTips(reason);return;}
+        }else if(BlocksGameplay)return;
+        if(!ReplicaSourceTools.Enabled||IsPvp){action();return;}
+        if(type==1&&UnlimitedMagnet){
+            if(ReplicaSourceTools.RunPaid(type,()=>{BoosterManager.Instance.CheckHintInteractibility();action();}))ReplicaSourceTools.RecordTestUse(type);
+            else ShowTips("当前无法使用吸附");
+            return;
+        }
         var service=ReplicaInvitations.Instance;
-        if(!service||!service.Ready||service.HasPending){Notice("道具服务尚未连接，请稍后重试");service?.Refresh();return;}
-        if(service.Busy)return;
-        StartCoroutine(UseInventory(type,action,service));
+        if(service&&(service.Busy||service.HasPending)){ShowTips("道具库存处理中，请稍后重试");return;}
+        if(service&&service.Ready&&service.Inventory(type)>0)StartCoroutine(UseInventory(type,action,service));
+        else ShowToolOffer(type,action);
+    }
+
+    public string ToolUnavailableReason(int type){
+        if(BlocksGameplay)return "请先关闭当前弹窗";
+        if(!GameManager.Instance.GameIsPlaying())return "当前无法使用道具，请在游戏中使用";
+        if(ReplicaSourceTools.Shuffling)return "正在洗牌，请稍候";
+        var input=InputController.Instance;
+        if(type==0&&input.objectsOnStack.Count==0)return "槽位中没有可移出的物品";
+        if(type==1){
+            if(input.objectsOnStack.Count==0)return "请先选择一个物品，再使用吸附";
+            if(input.objectsOnStack.Count>=7)return "槽位已满，暂时无法吸附";
+            if(!ReplicaSourceTools.CanAutoFind(input.objectsOnStack))return "槽位即将满，需要一对相同物品才能吸附";
+        }
+        if(type==2&&ReplicaSourceTools.ShuffleCandidates(LevelGenerator.Instance.objectsOnScene,input.objectsOnStack).Count==0)return "场上没有可洗牌的物品";
+        return null;
     }
     bool CanApplyInventory(int boardVersion)=>ScreenName=="game"&&ReplicaSourceTools.Enabled&&creationVersion==boardVersion&&GameManager.Instance.GameIsPlaying();
     IEnumerator UseInventory(int type,Action action,ReplicaInvitations service){
@@ -542,7 +567,7 @@ public partial class ReplicaFlow : MonoBehaviour {
     }
     ReplicaUIView OpenModal(string prefab){
         if(modal){modal.gameObject.SetActive(false);Destroy(modal.gameObject);}
-        var view=ReplicaUIView.Load(prefab,page);modal=(RectTransform)view.transform;return view;
+        var view=ReplicaUIView.Load(prefab,page);modal=(RectTransform)view.transform;ReplicaModalMotion.Play(view.gameObject);return view;
     }
     void CloseModal(bool resume=false){
         if(modal){modal.gameObject.SetActive(false);Destroy(modal.gameObject);modal=null;}
