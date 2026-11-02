@@ -5,7 +5,7 @@ public class ReplicaTheme : ScriptableObject {
     // Serialized dependency keeps the source level catalog in WebGL/WeChat
     // builds even though gameplay also supports Resources.Load lookup.
     public ReplicaSourceLevelPlan sourceLevelCatalog;
-    public string pvpEndpoint="https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com";
+    public string pvpEndpoint="https://9nanimal.cn";
     public AudioClip homeMusic,gameMusic,pvpMusic,clickSound,selectSound,matchSound,winSound,loseSound;
     public Font font;
 }

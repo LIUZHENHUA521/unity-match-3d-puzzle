@@ -21,12 +21,8 @@ public class BoosterManager : Singleton<BoosterManager>
             var items=ReplicaSourceTools.AutoFindCandidates(InputController.Instance.objectsOnStack,LevelGenerator.Instance.objectsOnScene);
             if(items.Count==0)return;
             if(!ReplicaSourceTools.TrySpend(1))return;ReplicaSourceAudio.Tool(25);
-            if(Camera.main)ReplicaSourceHighlight.For(Camera.main).ShowAutoFind(items);
-            foreach(var item in items){
-                var stack=InputController.Instance.objectsOnStack;int index=stack.FindLastIndex(x=>x&&x.name==item.name);index=index<0?stack.Count:index+1;
-                var slot=ReplicaTray.Instance?ReplicaTray.Instance.SlotPosition(index):new Vector3(-1+index*.333f,.3f,-1.62f);
-                InputController.Instance.AddObjectOnStack(item,false);ReplicaSourceToolVisual.AutoFind(item,slot);
-            }
+            for(int i=0;i<items.Count;i++)
+                InputController.Instance.AddObjectOnStack(items[i],false,true,i*.035f);
             CheckHintInteractibility();return;
         }
         StartCoroutine(FindPossibleMatch());

@@ -20,7 +20,7 @@ public sealed class ReplicaSettingsSkin : MonoBehaviour {
         }
         support.onClick.AddListener(()=>{
             ReplicaFlow.Instance.HomeClick();
-            supportStatus.text="客服功能尚未接入";
+            ReplicaCustomerService.Open();
         });
     }
 }

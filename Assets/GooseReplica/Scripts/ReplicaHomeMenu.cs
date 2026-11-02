@@ -20,7 +20,7 @@ public sealed class ReplicaHomeMenu : MonoBehaviour {
   var parentScale=transform.lossyScale;var scale=artwork.lossyScale;
   content.localScale=new Vector3(scale.x/parentScale.x,scale.y/parentScale.y,1);
  }
- public void Connect(ReplicaFlow flow){var view=GetComponent<ReplicaUIView>();view.Bind("Dismiss",()=>Destroy(gameObject));view.Bind("Settings",()=>{Destroy(gameObject);flow.ShowSettings(false);});view.Bind("Mail",()=>{Destroy(gameObject);flow.ShowMailbox();});view.Bind("Card",()=>{Destroy(gameObject);flow.ShowUserProfile();});view.Bind("Service",()=>flow.ShowHomeFeatureNotice("客服功能尚未接入"));view.Get<Button>("Cash").GetComponentInChildren<Text>().text="我的红包";view.Bind("Cash",()=>{Destroy(gameObject);flow.ShowRedPackets();});service=ReplicaInvitations.Instance;if(service){service.MailChanged+=Refresh;Refresh();service.RefreshMail();}}
+ public void Connect(ReplicaFlow flow){var view=GetComponent<ReplicaUIView>();view.Bind("Dismiss",()=>Destroy(gameObject));view.Bind("Settings",()=>{Destroy(gameObject);flow.ShowSettings(false);});view.Bind("Mail",()=>{Destroy(gameObject);flow.ShowMailbox();});view.Bind("Card",()=>{Destroy(gameObject);flow.ShowUserProfile();});view.Bind("Service",()=>{Destroy(gameObject);ReplicaCustomerService.Open();});view.Get<Button>("Cash").GetComponentInChildren<Text>().text="我的红包";view.Bind("Cash",()=>{Destroy(gameObject);flow.ShowRedPackets();});service=ReplicaInvitations.Instance;if(service){service.MailChanged+=Refresh;Refresh();service.RefreshMail();}}
  void Refresh(){mailDot.SetActive(service&&service.MailAttention);}
  void OnDestroy(){if(service)service.MailChanged-=Refresh;}
 }

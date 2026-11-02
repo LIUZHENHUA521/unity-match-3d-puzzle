@@ -77,7 +77,7 @@ public static class SourceToolsFramesValidation {
         Check(Mathf.Abs(GameManager.Instance.currentLevelTime-time)<.001f,"shuffle suspends countdown");
         Time.timeScale=0;yield return null;var positions=moving.Select(x=>x.transform.position).ToArray();
         yield return new WaitForSecondsRealtime(.1f);
-        Check(ReplicaSourceTools.Shuffling&&moving.Select((x,i)=>i==0||Vector3.Distance(x.transform.position,positions[i])<.001f).All(x=>x),"shuffle rotation pauses with scaled time");
+        Check(ReplicaSourceTools.Shuffling&&moving.Select((x,i)=>i==0||Vector3.Distance(x.transform.position,positions[i])<.001f).All(x=>x),"shuffle motion pauses with scaled time");
         Time.timeScale=1;float deadline=Time.realtimeSinceStartup+4;
         while(ReplicaSourceTools.Shuffling&&Time.realtimeSinceStartup<deadline)yield return null;
         Check(!ReplicaSourceTools.Shuffling&&board.Count==6&&moving.Skip(1).All(x=>x&&x.GetComponent<Collider>().enabled)&&input.objectsOnStack.SequenceEqual(new[]{moving[0]})&&!input.IsBusy,"shuffle completes preserving six objects and collisions");

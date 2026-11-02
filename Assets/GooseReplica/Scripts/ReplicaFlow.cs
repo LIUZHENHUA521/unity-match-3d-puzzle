@@ -22,7 +22,7 @@ public partial class ReplicaFlow : MonoBehaviour {
     public string LastResult {get;private set;}
     public int TodaySeed {get;private set;}
     public float AppliedModelSize {get;private set;}=1f;
-    Canvas canvas;RectTransform page,modal;Text timer,remaining,peerText,toast;
+    Canvas canvas;RectTransform page,modal;Text timer,remaining,peerText;ReplicaTips tips;
     ReplicaPilePhysics pilePhysics;
     ReplicaLayeredPile layeredPile;
     ReplicaStagePreloader stagePreloader;
@@ -68,6 +68,9 @@ public partial class ReplicaFlow : MonoBehaviour {
         diagnostics=gameObject.AddComponent<ReplicaDiagnostics>();
         network=gameObject.AddComponent<ReplicaNetwork>();network.Received=Receive;
         endpoint=PlayerPrefs.GetString("goose.endpoint",library.pvpEndpoint);
+        if(endpoint.TrimEnd('/')=="https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com"||endpoint.TrimEnd('/')=="https://lzh.tax") {
+            PlayerPrefs.DeleteKey("goose.endpoint");PlayerPrefs.Save();endpoint=library.pvpEndpoint;
+        }
         gameObject.AddComponent<ReplicaInvitations>().Initialize(endpoint);gameObject.AddComponent<ReplicaGameRecords>().Initialize(endpoint);gameObject.AddComponent<ReplicaRewards>().Initialize(endpoint);Home();
 #if UNITY_WEBGL && !UNITY_EDITOR
         WeChatWASM.WX.ReportGameStart();
@@ -95,7 +98,7 @@ public partial class ReplicaFlow : MonoBehaviour {
 
     void Clear(){
         displayedTime=displayedCount=displayedPeer=-1;
-        foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;peerText=null;toast=null;BlocksGameplay=false;
+        foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;peerText=null;if(tips)tips.Hide();BlocksGameplay=false;
     }
     void Music(AudioClip clip){if(music.clip!=clip){music.clip=clip;if(clip)music.Play();}music.mute=!SettingsMusic;}
     void Click(){if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
@@ -156,8 +159,7 @@ public partial class ReplicaFlow : MonoBehaviour {
         // could show its first batch.
         layeredPile.TakePresentation(out var reusedPresentation,out var reusedBoundary);
         StopBoard(true);Stage=2;StartStage(reusedPresentation,reusedBoundary,false);
-        var notice=ReplicaUIView.Load("Notice",page);notice.Get<Text>("Message").text="进入最后一关";
-        Destroy(notice.gameObject,1f);
+        ShowTips("进入最后一关");
     }
     void StartStage(ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null,bool countAttempt=true){
         if(!IsPvp){
@@ -532,9 +534,11 @@ public partial class ReplicaFlow : MonoBehaviour {
         GameManager.Instance.gameStatus=GameManager.GameStatus.FINISH;Result(win,title,reason);
     }
     public void ShowHomeFeatureNotice(string message){Notice(message);}
-    public void Notice(string value){
-        if(!toast)toast=ReplicaUIView.Load("Notice",page).Get<Text>("Message");toast.text=value;
-        if(modal)modal.SetAsLastSibling();
+    public void Notice(string value){ShowTips(value);}
+    public void ShowTips(string message){
+        if(string.IsNullOrWhiteSpace(message)||!canvas)return;
+        if(!tips)tips=ReplicaTips.Create(canvas.transform);
+        tips.Show(message);
     }
     ReplicaUIView OpenModal(string prefab){
         if(modal){modal.gameObject.SetActive(false);Destroy(modal.gameObject);}

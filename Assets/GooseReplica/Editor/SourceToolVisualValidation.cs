@@ -28,7 +28,7 @@ public static class SourceToolVisualValidation {
             report="PASS source tool visuals: 3 source prefab hierarchies, 10 native systems (duration, flags, maxima, lifetime/speed and active modules), shader support including exact distortion port, original cutout store board, serialized beam duration/scale. Full native JSON roundtrip recorded by importer.\n";
         }catch(Exception e){report="FAIL source tool visuals: "+e+"\n";}Directory.CreateDirectory("Temp");File.WriteAllText("Temp/goose-source-tool-visual-validation.txt",report);Debug.Log(report);
     }
-    public static IEnumerator RunFrames(){float scale=Time.timeScale;float aspect=Camera.main.aspect;bool physics=Physics.autoSimulation;string failure=null;var core=Core();while(true){bool more=false;try{more=core.MoveNext();}catch(Exception e){failure=e.ToString();}if(!more||failure!=null)break;yield return core.Current;}(core as IDisposable)?.Dispose();ReplicaFlow.Instance.Home();Time.timeScale=scale;Physics.autoSimulation=physics;Camera.main.aspect=aspect;string report=failure==null?"PASS source tool visuals runtime: actual imported models, first-store board/three return trails, hide on final repick, native auto-find beams and blue profiles, unscaled return/find clocks with scaled background/particles, shuffle six-system effect; Home cancels particles, board and pending callbacks. PNG captures retained.\n":"FAIL source tool visuals runtime: "+failure+"\n";File.WriteAllText("Temp/goose-source-tool-visual-frames-validation.txt",report);Debug.Log(report);}
+    public static IEnumerator RunFrames(){float scale=Time.timeScale;float aspect=Camera.main.aspect;bool physics=Physics.autoSimulation;string failure=null;var core=Core();while(true){bool more=false;try{more=core.MoveNext();}catch(Exception e){failure=e.ToString();}if(!more||failure!=null)break;yield return core.Current;}(core as IDisposable)?.Dispose();ReplicaFlow.Instance.Home();Time.timeScale=scale;Physics.autoSimulation=physics;Camera.main.aspect=aspect;string report=failure==null?"PASS source tool visuals runtime: actual imported models, first-store board/three return trails, hide on final repick, native auto-find beams and blue profiles, unscaled return/find clocks with scaled background/particles, object-only shuffle with scaled pause; Home cancels particles, board and pending callbacks. PNG captures retained.\n":"FAIL source tool visuals runtime: "+failure+"\n";File.WriteAllText("Temp/goose-source-tool-visual-frames-validation.txt",report);Debug.Log(report);}
     static void Setup(int theme=0){ReplicaFlow.Instance.Begin(theme);ReplicaFlow.Instance.NextStage();SourceCreationTestSupport.FinishPending(ReplicaFlow.Instance);GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;}
     static IEnumerator Core(){
         Time.timeScale=1;Physics.autoSimulation=false;Camera.main.aspect=9f/16;Setup();yield return null;
@@ -39,25 +39,23 @@ public static class SourceToolVisualValidation {
         yield return new WaitForSeconds(.3f);Capture("source-tool-store-settled.png");Close(ReplicaSourceToolVisual.BackgroundPosition,ReplicaSourceToolVisual.StoreShowZ,"shown store endpoint");Check(ReplicaSourceToolVisual.PooledEffectCount>=3,"returned source trails are pooled by prefab name");
         foreach(var item in items)input.AddObjectOnStack(item);yield return new WaitForSeconds(.35f);Close(ReplicaSourceToolVisual.BackgroundPosition,ReplicaSourceToolVisual.StoreHideZ,"last re-pick hides board");
         ReplicaFlow.Instance.Home();Check(!ReplicaSourceToolVisual.HasBackground&&ReplicaSourceToolVisual.ActiveEffectCount==0,"home destroys store visuals");Setup();yield return null;
-        var type=board.Where(x=>x&&x.activeInHierarchy).GroupBy(x=>x.name).First(g=>g.Count()>=3).ToArray();input.AddObjectOnStack(type[0]);yield return new WaitForSeconds(.4f);BoosterManager.Instance.HintButton();yield return new WaitForSeconds(.06f);Check(ReplicaSourceToolVisual.ActiveEffectCount==2,"two native lightning beams");Check(ReplicaSourceHighlight.For(Camera.main).ToolTargetCount==2,"two Lighting profiles");Capture("source-tool-autofind.png");yield return new WaitForSeconds(.35f);Check(ReplicaSourceToolVisual.ActiveEffectCount==0,"beam lifetime ends");Check(ReplicaSourceToolVisual.PooledEffectCount>=2,"auto-find beams return to named pool");
+        var type=board.Where(x=>x&&x.activeInHierarchy).GroupBy(x=>x.name).First(g=>g.Count()>=3).ToArray();input.AddObjectOnStack(type[0]);yield return new WaitForSeconds(.4f);BoosterManager.Instance.HintButton();yield return new WaitForSeconds(.06f);Check(ReplicaSourceToolVisual.ActiveEffectCount==0,"magnetic pickup has no beams");Check(ReplicaSourceHighlight.For(Camera.main).ToolTargetCount==0,"magnetic pickup has no highlight profiles");Capture("source-tool-autofind.png");yield return new WaitForSeconds(.35f);Check(ReplicaSourceToolVisual.ActiveEffectCount==0,"beam lifetime ends");
         var stats="";
         for(int theme=0;theme<3;theme++){
             ReplicaFlow.Instance.Home();Setup(theme);yield return null;
             var candidates=ReplicaSourceTools.ShuffleCandidates(board,input.objectsOnStack);int before=Visible(candidates);
             Check(before>0,"theme has visible shuffle candidates");
-            Check(ReplicaSourceTools.MessUp(),"native shuffle starts");yield return new WaitForSeconds(.2f);Check(ReplicaSourceToolVisual.ActiveEffectCount==1,"one original shuffle prefab with six systems");
-            var effect=GameObject.Find("FX_Tool_Messup");Check(effect&&effect.transform.parent==Camera.main.transform,"Messup uses source camera anchor");Check(Vector3.Distance(effect.transform.localPosition,new Vector3(0,0,1))<.00001f&&Vector3.Distance(effect.transform.localScale,Vector3.one*.1f)<.00001f,"source MessToolPoint local matrix");
+            Check(ReplicaSourceTools.MessUp(),"object-only shuffle starts");yield return new WaitForSeconds(.2f);
+            Check(ReplicaSourceToolVisual.ActiveEffectCount==0&&!GameObject.Find("FX_Tool_Messup"),"shuffle spawns no particles");
             if(theme==0){
-                var particle=effect.GetComponent<ParticleSystem>();Time.timeScale=0;
-                // ParticleSystem may consume the already-computed delta in this frame.
-                // Take the baseline after entering a fully paused frame.
-                yield return null;yield return null;float particleTime=particle.time;
+                Time.timeScale=0;yield return null;yield return null;
+                var positions=candidates.Select(x=>x.transform.position).ToArray();
                 yield return new WaitForSecondsRealtime(.12f);
-                Close(particle.time,particleTime,"source shuffle particles keep scaled native clock");Time.timeScale=1;
+                Check(candidates.Select((x,i)=>Vector3.Distance(x.transform.position,positions[i])<.00001f).All(x=>x),"shuffle motion pauses");Time.timeScale=1;
             }
-            int early=Visible(candidates);Check(early>0,"shuffle may not rotate all visible objects offscreen at .2s, theme "+theme);
+            int early=Visible(candidates);Check(early>0,"shuffle keeps objects visible at .2s, theme "+theme);
             Capture("source-tool-shuffle-"+theme+".png");if(theme==0)Capture("source-tool-shuffle.png");
-            yield return new WaitForSeconds(.35f);int late=Visible(candidates);Check(late>0,"shuffle may not rotate all visible objects offscreen at .55s, theme "+theme);stats+=ReplicaSourceEnvironment.CurrentName+": before="+before+", .2s="+early+", .55s="+late+"\n";
+            yield return new WaitForSeconds(.35f);int late=Visible(candidates);Check(late>0,"shuffle keeps objects visible at .55s, theme "+theme);stats+=ReplicaSourceEnvironment.CurrentName+": before="+before+", .2s="+early+", .55s="+late+"\n";
             ReplicaFlow.Instance.Home();Check(!ReplicaSourceToolVisual.HasBackground&&ReplicaSourceToolVisual.ActiveEffectCount==0,"Home clears active shuffle effect");yield return new WaitForSecondsRealtime(.1f);Check(ReplicaSourceToolVisual.ActiveEffectCount==0&&!ReplicaSourceToolVisual.HasBackground,"cancelled effects do not return");
         }
         File.WriteAllText("visual-captures/source-tool-shuffle-visibility.txt",stats);Debug.Log("SOURCE_SHUFFLE_VISIBLE\n"+stats);

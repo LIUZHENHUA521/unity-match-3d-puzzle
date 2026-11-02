@@ -9,7 +9,7 @@ using UnityEngine;
 // Acquisition/advertising remain local-only; invitation inventory is authorized by ReplicaInvitations.
 public sealed class ReplicaSourceTools : MonoBehaviour {
     public const int ReturnCount=3;
-    public const float StoreSeconds=.3f,StoreScaleSeconds=.2f;
+    public const float StoreSeconds=.36f,StoreScaleSeconds=.2f;
     // WX metadata field defaults: 3=OutSine, 26=InBack, 27=OutBack.
     public const Ease StoreXEase=Ease.OutSine,StoreYEase=Ease.InBack,StoreZEase=Ease.OutBack,StoreScaleEase=Ease.InBack;
     static ReplicaSourceTools instance;
@@ -26,7 +26,7 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
     bool shuffling;
     readonly List<ShuffleItem> moving=new List<ShuffleItem>();
     public static bool Shuffling=>instance&&instance.shuffling;
-    sealed class ShuffleItem { public GameObject obj;public Rigidbody body;public Vector3 target;public float speed,distance;public Dictionary<Collider,bool> colliders; }
+    sealed class ShuffleItem { public GameObject obj;public Rigidbody body;public Vector3 start,target;public Quaternion rotation,tilt;public float delay,lift;public bool wasKinematic;public Dictionary<Collider,bool> colliders; }
     public static bool Enabled=>InputController.Instance&&InputController.Instance.UsesSourceFlight;
     public static int StoredCount=>instance?instance.columns.Sum(x=>x.Count(o=>o)):0;
     public static bool IsStored(GameObject obj)=>obj&&instance&&instance.columns.Any(x=>x.Contains(obj));
@@ -74,7 +74,7 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
             if(LevelGenerator.Instance){var board=LevelGenerator.Instance.objectsOnScene;board.Remove(obj);board.Add(obj);}
             if(StoredCount==0)ReplicaSourceToolVisual.SetStoreVisible(true);
             owner.columns[owner.nextColumn].Add(obj);
-            owner.LayoutColumn(owner.nextColumn);
+            owner.LayoutColumn(owner.nextColumn,obj);
             owner.nextColumn=(owner.nextColumn+1)%owner.columns.Length;
             obj.transform.DOScale(ReplicaSourceFlight.StoreScale(obj,obj.transform.localScale),StoreScaleSeconds).SetEase(StoreScaleEase);
             ReplicaSourceToolVisual.Return(obj);
@@ -127,53 +127,80 @@ public sealed class ReplicaSourceTools : MonoBehaviour {
         if(!TrySpend(2))return false;owner.StartCoroutine(owner.Shuffle(candidates));return true;
     }
     IEnumerator Shuffle(List<GameObject> candidates){
-        shuffling=true;InputController.Instance.CancelSelection();ReplicaSourceToolVisual.MessUp();
+        shuffling=true;InputController.Instance.CancelSelection();
         var targets=candidates.Select(x=>x.transform.position).ToList();
         ReorderForShuffle(candidates,(a,b)=>UnityEngine.Random.Range(a,b));
         targets.Sort((a,b)=>a.y.CompareTo(b.y));
-        Vector3 axis=ShuffleAxis(ReplicaSourceEnvironment.CurrentName);
-        float maxDistance=0;
         for(int i=0;i<candidates.Count;i++){
             var obj=candidates[i];var body=obj.GetComponent<Rigidbody>();
-            var item=new ShuffleItem{obj=obj,body=body,target=targets[i],speed=UnityEngine.Random.Range(540f,720f),
-                distance=Vector3.Cross(obj.transform.position,axis).magnitude,
+            // Deterministic variation avoids consuming gameplay randomness for decoration.
+            var item=new ShuffleItem{obj=obj,body=body,start=obj.transform.position,target=targets[i],
+                rotation=obj.transform.rotation,tilt=Quaternion.Euler(i%2==0?12f:-12f,0,i%3==0?9f:-9f),
+                delay=(i%4)*.025f,lift=.45f+(i%3)*.12f,wasKinematic=body&&body.isKinematic,
                 colliders=obj.GetComponentsInChildren<Collider>(true).ToDictionary(c=>c,c=>c.enabled)};
-            moving.Add(item);maxDistance=Mathf.Max(maxDistance,item.distance);
-            if(body)body.isKinematic=true;foreach(var c in item.colliders.Keys)c.enabled=false;
+            moving.Add(item);obj.transform.DOKill();
+            if(body){if(!body.isKinematic){body.velocity=Vector3.zero;body.angularVelocity=Vector3.zero;}body.isKinematic=true;}
+            foreach(var c in item.colliders.Keys)c.enabled=false;
         }
         float elapsed=0;
-        do{
-            elapsed+=Time.deltaTime;yield return null;
+        while(elapsed<1.075f){
             foreach(var item in moving)if(item.obj){
-                float ratio=maxDistance>0?item.distance/maxDistance:0;
-                item.obj.transform.RotateAround(Vector3.zero,axis,item.speed*Time.deltaTime*Mathf.Lerp(1.2f,.15f,ratio));
-                var pos=item.obj.transform.position;pos.y=Mathf.Lerp(pos.y,item.target.y,Time.deltaTime*2);item.obj.transform.position=pos;
+                float t=Mathf.Clamp(elapsed-item.delay,0,1),height,tilt;
+                Vector3 position;
+                if(t<.15f){
+                    float u=t/.15f;u=1-(1-u)*(1-u);
+                    position=item.start;height=item.lift*u;tilt=u;
+                }else if(t<.7f){
+                    float u=(t-.15f)/.55f;float eased=u*u*(3-2*u);
+                    position=Vector3.Lerp(item.start,item.target,eased);
+                    height=item.lift+Mathf.Sin(u*Mathf.PI)*item.lift*.6f;tilt=1;
+                }else{
+                    float u=(t-.7f)/.3f;
+                    position=item.target;
+                    // Touch down, then a small upward bounce; never dip below the target.
+                    height=u<.7f?item.lift*(1-(u/.7f)*(u/.7f)):
+                        Mathf.Sin((u-.7f)/.3f*Mathf.PI)*item.lift*.1f;
+                    tilt=1-u*u*(3-2*u);
+                }
+                item.obj.transform.position=position+Vector3.up*Mathf.Max(0,height);
+                item.obj.transform.rotation=item.rotation*Quaternion.Slerp(Quaternion.identity,item.tilt,tilt);
             }
-        }while(elapsed<=1f);
-        foreach(var item in moving)if(item.obj){
-            foreach(var c in item.colliders)if(c.Key)c.Key.enabled=c.Value;
-            item.obj.transform.DOMove(item.target,.3f).SetUpdate(true);
+            yield return null;elapsed+=Time.deltaTime;
         }
-        yield return new WaitForSeconds(.3f);
-        foreach(var item in moving)if(item.obj){item.obj.transform.DOKill();item.obj.transform.position=item.target;}
+        foreach(var item in moving)if(item.obj){item.obj.transform.position=item.target;item.obj.transform.rotation=item.rotation;}
         EndShuffle();
     }
     void EndShuffle(){
         foreach(var item in moving){
-            if(item.obj)item.obj.transform.DOKill();
+            if(item.obj){item.obj.transform.DOKill();item.obj.transform.rotation=item.rotation;}
+            if(item.body)item.body.isKinematic=item.wasKinematic;
             foreach(var c in item.colliders)if(c.Key)c.Key.enabled=c.Value;
             // Source ends per candidate: scale one, CheckVisible, then CheckRigid(depth=1).
             if(item.body&&ReplicaLayeredPile.Instance)ReplicaLayeredPile.Instance.FinishSourceShuffle(item.body);
         }
         moving.Clear();shuffling=false;
     }
-    void LayoutColumn(int column){
+    void LayoutColumn(int column,GameObject newlyMoved=null){
         var items=columns[column];items.RemoveAll(x=>!x);
         for(int i=0;i<items.Count;i++){
             var obj=items[i];obj.transform.DOKill();var pos=StorePosition(column,i,items.Count);
-            obj.transform.DOMoveX(pos.x,StoreSeconds).SetEase(StoreXEase);
-            obj.transform.DOMoveY(pos.y,StoreSeconds).SetEase(StoreYEase);
-            obj.transform.DOMoveZ(pos.z,StoreSeconds).SetEase(StoreZEase);
+            if(obj==newlyMoved){
+                // Queue the moved objects visibly: a short side-slide first, then a
+                // clean handoff into the storage slot. The stagger makes the three
+                // objects read as a deliberate sequence instead of one clump.
+                var camera=Camera.main;var side=camera?camera.transform.right*.72f:Vector3.right*.72f;
+                var handoff=obj.transform.position+side+Vector3.up*.08f;
+                var sequence=DOTween.Sequence().SetUpdate(true);
+                sequence.AppendInterval(i*.055f);
+                sequence.Append(obj.transform.DOMove(handoff,.12f).SetEase(Ease.OutQuad));
+                sequence.Append(obj.transform.DOMove(pos,.24f).SetEase(Ease.InOutSine));
+                var settleRotation=obj.transform.rotation*Quaternion.Euler(0,0,(i%2==0?7f:-7f));
+                sequence.Join(obj.transform.DORotateQuaternion(settleRotation,.16f).SetEase(Ease.OutQuad));
+            }else{
+                obj.transform.DOMoveX(pos.x,StoreSeconds).SetEase(StoreXEase);
+                obj.transform.DOMoveY(pos.y,StoreSeconds).SetEase(StoreYEase);
+                obj.transform.DOMoveZ(pos.z,StoreSeconds).SetEase(StoreZEase);
+            }
         }
     }
 }

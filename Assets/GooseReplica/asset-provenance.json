@@ -2740,22 +2740,27 @@
     "name": "S_ButtonClick",
     "type": "AudioClip",
     "file": "Assets/GooseReplica/Resources/GooseArt/Audio/S_ButtonClick.wav",
-    "bundle": "sound_assets_default_cd82bd8550e1171ebef200dd3d3d46f7.bundle",
-    "pathId": 2931244295099250133
+    "source": "https://opengameart.org/content/zippo-click-sound",
+    "sourceFile": "https://opengameart.org/sites/default/files/zipclick.flac",
+    "author": "dawith (submitted by qubodup)",
+    "license": "CC0",
+    "conversion": "Lossless FLAC decode to 16-bit PCM WAV, original 44100 Hz stereo"
   },
   {
     "name": "S_Lose",
     "type": "AudioClip",
     "file": "Assets/GooseReplica/Resources/GooseArt/Audio/S_Lose.wav",
-    "bundle": "sound_assets_default_cd82bd8550e1171ebef200dd3d3d46f7.bundle",
-    "pathId": 3536777117014374874
+    "source": "/Users/liuzhenhua/Desktop/code/crazyCombo/client/assets/resources/sounds/Lose.mp3",
+    "conversion": "MP3 decoded to 16-bit PCM WAV at original sample rate and channel count; no gain, EQ or trim",
+    "usage": "Shared with crazyCombo per user instruction, 2026-11-03"
   },
   {
     "name": "S_Win",
     "type": "AudioClip",
     "file": "Assets/GooseReplica/Resources/GooseArt/Audio/S_Win.wav",
-    "bundle": "sound_assets_default_cd82bd8550e1171ebef200dd3d3d46f7.bundle",
-    "pathId": 6668948703043795344
+    "source": "/Users/liuzhenhua/Desktop/code/crazyCombo/client/assets/resources/sounds/Win.mp3",
+    "conversion": "MP3 decoded to 16-bit PCM WAV at original sample rate and channel count; no gain, EQ or trim",
+    "usage": "Shared with crazyCombo per user instruction, 2026-11-03"
   },
   {
     "name": "SceneMainHotPot_Icon",

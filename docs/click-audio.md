@@ -19,3 +19,23 @@ Combine validation: Unity imported and decoded pop3, ID 23 resolved to pop3, and
 ## Brighter combine variant (2026-10-29)
 
 Default combine ID 23 now selects pop3_bright.wav. Derived from the preserved pop3.ogg with FFmpeg `treble=g=3:f=1800,volume=6dB`: gentle +3 dB high shelf at 1.8 kHz, plus +6 dB gain. Saved as 24-bit PCM WAV to avoid another lossy source encode. Same 13,985 stereo frames at 44,100 Hz. Sample peak -5.666 dBFS, no clipped samples. Clicking, pitch sequencing and event timing unchanged. WeChat needs a new build/upload to receive this change.
+
+## Cartoon Pop replacement (2026-11-02)
+
+Default combine ID 23 now selects `unfa_cartoon_pop.wav`: Cartoon Pop (Clean) by unfa, CC0, https://freesound.org/people/unfa/sounds/245645/ . Source is the author page’s public high-quality MP3 preview, https://cdn.freesound.org/previews/245/245645_1038806-hq.mp3 (original FLAC requires login). Decoded to 16-bit PCM WAV, 48 kHz stereo, 8,254 frames (~0.172 seconds); converting does not restore lossless source quality. No gain, EQ, pitch or timing changes. Unity import uses PCM, original sample rate, no normalization or mono conversion. Previous pop assets retained.
+
+Validation: WAV decoded and catalog ID 23 verified; git diff check passed. Live Unity editor did not complete the temporary import validation; editor playback and device playback remain unverified.
+
+
+## UI button click replacement (2026-11-03)
+
+UI button clicks now use Zippo click sound by dawith (submitted by qubodup), CC0: https://opengameart.org/content/zippo-click-sound . Downloaded original https://opengameart.org/sites/default/files/zipclick.flac and losslessly decoded to `Assets/GooseReplica/Resources/GooseArt/Audio/S_ButtonClick.wav` (16-bit PCM, 44,100 Hz stereo, 22,049 frames, ~0.500 seconds). No gain, EQ, trim or pitch changes. Preserved the asset GUID so ThemeLibrary.clickSound and ReplicaBuilder keep resolving to the replacement. Unity import uses PCM with normalization disabled and preloading enabled. Item selection and combine audio are unchanged.
+
+Validation: source/output decoded PCM comparison, WAV format and existing button reference verified. In-editor/device playback not tested; existing WeChat builds need rebuilding to include the replacement.
+
+
+## Shared success / failure sounds (2026-11-03)
+
+Replaced `GooseArt/Audio/S_Win.wav` and `S_Lose.wav` with decoded copies of `/Users/liuzhenhua/Desktop/code/crazyCombo/client/assets/resources/sounds/Win.mp3` and `Lose.mp3`, as requested. Confirmed the source main and result scenes reference these clips for victory and failure. Decoded to 16-bit PCM WAV at original sample rate/channels without gain, EQ or trimming; this does not restore the MP3's lost information. Unity import uses PCM, normalization disabled and preloading enabled. Asset GUIDs preserved, so ThemeLibrary and ReplicaBuilder retain their existing references. Result playback timing, volume and effects toggle are unchanged.
+
+Validation: both output clips decode successfully and their PCM SHA-256 hashes match the source MP3s decoded to the same format; ThemeLibrary GUID references verified; JSON parses and git diff check passed. In-editor/device playback remains untested. Existing WeChat builds require rebuilding to include these assets.

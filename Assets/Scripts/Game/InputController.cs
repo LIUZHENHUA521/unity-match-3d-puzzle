@@ -117,7 +117,10 @@ public class InputController : Singleton<InputController>
         if (Input.GetMouseButton(0)) UpdatePointer(Input.mousePosition);
         if (Input.GetMouseButtonUp(0)) EndPointer(Input.mousePosition);
     }
-    public void AddObjectOnStack(GameObject obj,bool playSound=true)
+    sealed class MagnetFlight { public Vector3 start; public Quaternion rotation; public float started,delay; }
+    readonly Dictionary<GameObject,MagnetFlight> magnetFlights=new Dictionary<GameObject,MagnetFlight>();
+    const float MagnetSeconds=.5f;
+    public void AddObjectOnStack(GameObject obj,bool playSound=true,bool magnetic=false,float magnetDelay=0)
     {
         if (ReplicaSourceTools.Shuffling || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
             objectsOnStack.Count >= 7 || objectsOnStack.Contains(obj)) return;
@@ -151,7 +154,7 @@ public class InputController : Singleton<InputController>
         boardColliders[obj]=colliderStates;
         objectsOnStack.Add(obj);
         objectsOnStack = objectsOnStack.GroupBy(x => x.name).SelectMany(g => g).ToList();
-        if(UsesSourceFlight){SourcePick(obj);ReplicaSourceTools.ReleaseStored(obj);return;}
+        if(UsesSourceFlight){if(magnetic)magnetFlights[obj]=new MagnetFlight{start=obj.transform.position,rotation=obj.transform.rotation,started=Time.unscaledTime,delay=magnetDelay};SourcePick(obj);ReplicaSourceTools.ReleaseStored(obj);return;}
         Reposition();
         if (resolution != null) StopCoroutine(resolution);
         resolution = StartCoroutine(Resolve());
@@ -161,7 +164,8 @@ public class InputController : Singleton<InputController>
         // CheckLevelState runs at each EndCombine, not after every concurrent match has finished.
         // A later pickup invalidates an earlier completion checkpoint until a new callback runs.
         sourceCompletionCheckReady=false;
-        LastFlightDuration=ReplicaSourceFlight.MoveSeconds;
+        LastFlightDuration=magnetFlights.TryGetValue(obj,out var magnet)?MagnetSeconds+magnet.delay:ReplicaSourceFlight.MoveSeconds;
+        float flightSeconds=LastFlightDuration;
         var initial=scales[obj];var target=ReplicaSourceFlight.PickScale(obj,initial);
         var display=ReplicaTrayDisplayBinding.For(obj);if(display)target*=display.pose.scale;
         sourceFlying.Add(obj);
@@ -169,10 +173,10 @@ public class InputController : Singleton<InputController>
         obj.transform.DOScale(initial*ReplicaSourceFlight.ScalePeak,ReplicaSourceFlight.ScalePeakSeconds)
             .SetUpdate(true).SetEase(Ease.OutQuad).OnComplete(()=>{
                 if(!obj)return;
-                obj.transform.DOScale(target,ReplicaSourceFlight.MoveSeconds-ReplicaSourceFlight.ScalePeakSeconds)
+                obj.transform.DOScale(target,flightSeconds-ReplicaSourceFlight.ScalePeakSeconds)
                     .SetUpdate(true).SetEase(Ease.InSine).OnComplete(()=>{
                         if(!obj)return;
-                        sourceFlying.Remove(obj);
+                        sourceFlying.Remove(obj);magnetFlights.Remove(obj);
                         if(objectsOnStack.Contains(obj)&&!arrivedObject.Contains(obj))arrivedObject.Add(obj);
                         obj.transform.DOPunchScale(initial*ReplicaSourceFlight.PunchScale,ReplicaSourceFlight.PunchSeconds,1,1);
                     });
@@ -209,6 +213,29 @@ public class InputController : Singleton<InputController>
             float spacing=ReplicaTray.Instance?Vector3.Distance(ReplicaTray.Instance.SlotPosition(0),ReplicaTray.Instance.SlotPosition(1)):ReplicaTray.SourcePointSpacing;
             slot=ReplicaTrayDisplaySettings.Position(display?display.pose:null,slot,cameraRotation,spacing);
             var rotation=display?ReplicaTrayDisplaySettings.Rotation(display.pose,cameraRotation):Camera.main?cameraRotation*Quaternion.Euler(-90,0,0):Quaternion.identity;
+            if(magnetFlights.TryGetValue(obj,out var magnet)){
+                float elapsed=Mathf.Max(0,Time.unscaledTime-magnet.started);
+                float remaining=Mathf.Max(.001f,MagnetSeconds+magnet.delay-elapsed);
+                var up=Camera.main?Camera.main.transform.up:Vector3.up;
+                var right=Camera.main?Camera.main.transform.right:Vector3.right;
+                var motion=DOTween.To(()=>elapsed,t=>{
+                    if(!obj)return;
+                    float local=Mathf.Clamp(t-magnet.delay,0,MagnetSeconds);
+                    var lifted=magnet.start+up*.28f;
+                    if(local<.12f){
+                        float u=local/.12f;
+                        obj.transform.position=Vector3.Lerp(magnet.start,lifted,u)+right*(Mathf.Sin(u*Mathf.PI*2)*.045f);
+                        obj.transform.rotation=magnet.rotation;
+                    }else{
+                        float u=Mathf.Clamp01((local-.12f)/.28f);
+                        obj.transform.position=Vector3.Lerp(lifted,slot,u*u);
+                        obj.transform.rotation=Quaternion.Slerp(magnet.rotation,rotation,u);
+                        if(local>.4f)obj.transform.position+=up*(Mathf.Sin((local-.4f)/.1f*Mathf.PI)*.06f);
+                    }
+                },MagnetSeconds+magnet.delay,remaining).SetEase(Ease.Linear).SetUpdate(true).SetTarget(obj.transform);
+                sourceMoves[obj]=new List<Tween>{motion};
+                continue;
+            }
             // RefreshContentDisplay applies the SAME .3 s to existing and incoming items.
             sourceMoves[obj]=new List<Tween>{
                 obj.transform.DOMoveX(slot.x,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.Linear),
@@ -222,6 +249,7 @@ public class InputController : Singleton<InputController>
         // The original old branch waits .3, converges the two sides .2, shrinks the centre .2,
         // checks completion, then keeps the zero-sized centre another .05 before compacting.
         yield return new WaitForSeconds(ReplicaSourceFlight.MoveSeconds);
+        while(items.Any(x=>x&&sourceFlying.Contains(x)))yield return null;
         if(!items[1])yield break;
         var center=items[1].transform.position;
         foreach(int i in new[]{0,2})if(items[i])items[i].transform.DOMove(center,ReplicaSourceFlight.MergeSeconds).SetEase(Ease.OutQuad);
@@ -240,7 +268,7 @@ public class InputController : Singleton<InputController>
     }
     private void RemoveSourceVisual(GameObject obj){
         if(!obj)return;
-        obj.transform.DOKill();sourceFlying.Remove(obj);sourceCombining.Remove(obj);sourceMoves.Remove(obj);
+        obj.transform.DOKill();magnetFlights.Remove(obj);sourceFlying.Remove(obj);sourceCombining.Remove(obj);sourceMoves.Remove(obj);
         scales.Remove(obj);boardColliders.Remove(obj);ReplicaSourceFlight.Forget(obj);ReplicaSourceAudio.Forget(obj);
         // LevelObjectPool.Recycle keeps the ObjectUnit for a later Get(objName);
         // only the logical board list is removed at combine time.
@@ -315,7 +343,7 @@ public class InputController : Singleton<InputController>
     bool MoveItemsIntoStore(List<GameObject> items){
         ReplicaSourceAudio.Tool(24);CancelPointer();
         foreach(var obj in items){
-            obj.transform.DOKill();sourceMoves.Remove(obj);sourceFlying.Remove(obj);
+            obj.transform.DOKill();magnetFlights.Remove(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
             objectsOnStack.Remove(obj);arrivedObject.Remove(obj);pickHistory.Remove(obj);
             var body=obj.GetComponent<Rigidbody>();body.isKinematic=true;body.detectCollisions=true;
             if(boardColliders.TryGetValue(obj,out var flags))foreach(var flag in flags)if(flag.Key)flag.Key.enabled=flag.Value;
@@ -359,7 +387,7 @@ public class InputController : Singleton<InputController>
         foreach (var item in objectsOnStack) if (item) item.transform.DOKill();
         foreach(var item in sourceCombining)if(item){item.transform.DOKill();ReplicaSourceFlight.Forget(item);ReplicaSourceAudio.Forget(item);ReplicaSourceObjectPool.Recycle(item);}
         foreach(var item in LevelGenerator.Instance.objectsOnScene)ReplicaSourceFlight.Forget(item);
-        sourceCombining.Clear();sourceFlying.Clear();sourceMoves.Clear();sourceCompletionCheckReady=true;
+        magnetFlights.Clear();sourceCombining.Clear();sourceFlying.Clear();sourceMoves.Clear();sourceCompletionCheckReady=true;
         objectsOnStack.Clear(); arrivedObject.Clear(); scales.Clear(); boardColliders.Clear(); pickHistory.Clear();
     }
 }

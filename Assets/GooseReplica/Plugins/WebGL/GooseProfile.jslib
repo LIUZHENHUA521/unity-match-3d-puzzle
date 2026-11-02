@@ -40,5 +40,30 @@ mergeInto(LibraryManager.library, {
   var text=UTF8ToString(value),version=GooseProfile.generation;
   if(typeof wx==='undefined')return;
   wx.setClipboardData({data:text,success:function(){GooseProfile.emit(version,{state:'copied',message:'用户 ID 已复制'});},fail:function(){GooseProfile.emit(version,{state:'copyFailed',message:'复制失败，请重试'});}});
+ },
+ GooseCustomerServiceOpen:function(){
+  var url='https://work.weixin.qq.com/kfid/kfc902f4f13994cca54',corpId='ww18ea30e9ed7eee49';
+  if(typeof wx==='undefined'){
+   if(typeof window!=='undefined'&&typeof window.alert==='function')window.alert('请在微信小游戏中联系客服');
+   return;
+  }
+  var prompted=false;
+  function toast(message){if(typeof wx.showToast==='function')wx.showToast({title:message,icon:'none'});}
+  function fallback(){
+   if(prompted)return;prompted=true;
+   if(typeof wx.showModal!=='function'){toast('客服打开失败，请稍后重试');return;}
+   wx.showModal({title:'暂时无法打开客服',content:'可以复制一锅消不完客服链接，在微信中打开。',confirmText:'复制链接',
+    success:function(res){
+     if(!res.confirm)return;
+     if(typeof wx.setClipboardData!=='function'){toast('复制失败，请稍后重试');return;}
+     try{wx.setClipboardData({data:url,success:function(){toast('客服链接已复制');},fail:function(){toast('复制失败，请稍后重试');}});}catch(e){toast('复制失败，请稍后重试');}
+    }
+   });
+  }
+  if(typeof wx.openCustomerServiceChat!=='function'){fallback();return;}
+  try{wx.openCustomerServiceChat({extInfo:{url:url},corpId:corpId,fail:function(error){
+   if(error&&/cancel/i.test(error.errMsg||''))return;
+   fallback();
+  }});}catch(e){fallback();}
  }
 });
