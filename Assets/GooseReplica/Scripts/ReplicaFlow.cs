@@ -144,13 +144,21 @@ public partial class ReplicaFlow : MonoBehaviour {
             view.Text("Play"+i+"Text",got?"再挑战":"去解锁");view.Bind("Play"+i,()=>Begin(index));
         }
     }
+    ReplicaDailyLevel dailyLevel;
+    public string SourceEnvironmentForTheme(int theme){return library.themes[theme].sourceEnvironment;}
     public void BeginReward(int theme,string tier){if(ReplicaRewards.Instance)ReplicaRewards.Instance.Begin(theme,tier,library.themes[theme].id);}
-    public void BeginQualified(int theme,string runId,string tier,string version){
-        if(ReplicaTestPrivileges.AccountEnabled){Begin(theme);return;}unlimitedMagnetRun=false;
-        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=Today;ReplicaGameRecords.Instance.QualifiedRun(runId,tier,version);StartStage();
+    public void BeginQualified(int theme,string runId,string tier,string version,ReplicaDailyLevel level=null){
+        if(ReplicaTestPrivileges.AccountEnabled){BeginDailyPractice(theme,level);return;}unlimitedMagnetRun=false;dailyLevel=level;
+        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=level!=null?level.date:Today;ReplicaGameRecords.Instance.QualifiedRun(runId,tier,version,level);StartStage();
     }
     public void ShowRedPackets(){BlocksGameplay=true;var view=OpenModal("RedPackets");view.Bind("Close",()=>CloseModal());view.GetComponent<ReplicaRewardsView>().Connect();}
+    public void BeginDailyPractice(int theme,ReplicaDailyLevel level){
+        if(level==null){Begin(theme);return;}
+        if(network)network.Disconnect();StopBoard();IsPvp=false;unlimitedMagnetRun=ReplicaTestPrivileges.AccountEnabled;dailyLevel=level;ThemeIndex=theme;Stage=1;runDate=level.date;
+        if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.NewDailyRun(level);StartStage();
+    }
     public void Begin(int theme){
+        dailyLevel=null;
         // Ordinary MainLevel starts with the recovered first-stage row.
         if(network)network.Disconnect();StopBoard();IsPvp=false;unlimitedMagnetRun=ReplicaTestPrivileges.AccountEnabled;ThemeIndex=theme;Stage=1;runDate=Today;if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.NewRun();StartStage();
     }
@@ -172,13 +180,13 @@ public partial class ReplicaFlow : MonoBehaviour {
             PlayerPrefs.Save();
         }
         var date=DateTime.ParseExact(runDate,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture).AddHours(4);
-        TodaySeed=ChallengePlan.DailySeed(CurrentTheme.id,Stage,date);
+        TodaySeed=dailyLevel!=null&&!IsPvp?dailyLevel.seed:ChallengePlan.DailySeed(CurrentTheme.id,Stage,date);
         bool sourceTutorial=!IsPvp&&Stage==1;
         var source=sourceTutorial||Stage==2? (sourceTutorial?ReplicaSourceLevelPlan.GetTutorial(CurrentTheme.sourceEnvironment):ReplicaSourceLevelPlan.Get(CurrentTheme.sourceEnvironment)) : null;
         var prefabs=source!=null?source.prefabs:CurrentTheme.prefabs;
-        IReplicaSourceRandom sourceRandom=source!=null?ReplicaSourceGlobalRandom.Instance:null;
-        var tiles=sourceTutorial?ReplicaSourceLevelPlan.GenerateFirstStage(source,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
-        Spawn(tiles,TodaySeed,source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);
+        IReplicaSourceRandom sourceRandom=dailyLevel!=null&&!IsPvp?dailyLevel.RandomForStage(Stage):source!=null?ReplicaSourceGlobalRandom.Instance:null;
+        var tiles=dailyLevel!=null&&!IsPvp?ReplicaDailyLevel.Generate(prefabs.Length,sourceTutorial?source.layers:dailyLevel.layers,sourceRandom):sourceTutorial?ReplicaSourceLevelPlan.GenerateFirstStage(source,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
+        Spawn(tiles,TodaySeed,dailyLevel!=null&&!IsPvp&&Stage==2?dailyLevel.seconds:source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);
         if(sourceTutorial)stagePreloader.Begin(CurrentTheme.sourceEnvironment);
 
     }
@@ -209,7 +217,7 @@ public partial class ReplicaFlow : MonoBehaviour {
         GameManager.Instance.currentLevelTime=seconds;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(layered){
             AppliedModelSize=ReplicaSourceProfile.ModelSizeMultiplier;
-            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true,reusedPresentation,reusedBoundary,sourceTutorial?4f:(float?)null);
+            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true,reusedPresentation,reusedBoundary,sourceTutorial?4f:dailyLevel!=null&&!IsPvp?dailyLevel.limitHeight:(float?)null);
             var random=sourceRandom??ReplicaSourceGlobalRandom.Instance;
             // LoopCreateObj builds all descriptions bottom-to-top, then List.Sort compares Y.
             // Rotation is sampled later, at CreateUnitObj, in the sorted creation order.

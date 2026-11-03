@@ -9,7 +9,7 @@ public sealed class ReplicaGameRecords : MonoBehaviour {
     [Serializable] public class ToolUse { public int free,inventory,rewarded,test; }
     [Serializable] public class Record {
         public int schemaVersion=1,stage,initialCount,timeLimitSeconds,clearedCount;
-        public string rewardTier,ruleVersion;
+        public string rewardTier,ruleVersion,challengeTier,levelGeneratorVersion;public int levelSeed;
         public string[] toolReceipts=new string[0];
         public string recordId,runId,mode="solo",themeId,levelDate,levelVersion="2026-10-31-v1",clientVersion,platform,status,endReason;
         public long startedAt,endedAt,activeDurationMs;
@@ -21,6 +21,7 @@ public sealed class ReplicaGameRecords : MonoBehaviour {
     [Serializable] class Receipt {public bool ok;public string recordId,voucherId,rewardError;}
     public static ReplicaGameRecords Instance {get;private set;}
     const string QueueKey="goose.records.queue.v1";
+    ReplicaDailyLevel dailyLevel;
     Queue queue;Record active;string owner,endpoint,runId,rewardTier,ruleVersion;
     readonly List<string> toolReceipts=new List<string>();bool started,hidden,notified;double activeSeconds;int cleared;
     readonly List<Pending> unbound=new List<Pending>();
@@ -45,13 +46,15 @@ public sealed class ReplicaGameRecords : MonoBehaviour {
 #endif
         if(Instance==this)Instance=null;
     }
-    public void NewRun(){runId=Guid.NewGuid().ToString("N");rewardTier=null;ruleVersion=null;}
-    public void QualifiedRun(string id,string tier,string version){runId=id;rewardTier=tier;ruleVersion=version;}
+    public void NewRun(){dailyLevel=null;runId=Guid.NewGuid().ToString("N");rewardTier=null;ruleVersion=null;}
+    public void NewDailyRun(ReplicaDailyLevel level){NewRun();dailyLevel=level;}
+    public void QualifiedRun(string id,string tier,string version,ReplicaDailyLevel level=null){runId=id;rewardTier=tier;ruleVersion=version;dailyLevel=level;}
     public void InventoryReceipt(string id){if(active!=null&&started&&!string.IsNullOrEmpty(id))toolReceipts.Add(id);}
     public void Prepare(string theme,int stage,string date,int count,int seconds){
         if(string.IsNullOrEmpty(runId))NewRun();
         toolReceipts.Clear();
         active=new Record{rewardTier=rewardTier,ruleVersion=ruleVersion,recordId=Guid.NewGuid().ToString("N"),runId=runId,themeId=theme,stage=stage,levelDate=date,initialCount=count,timeLimitSeconds=seconds,clientVersion=Application.version,platform=Application.platform.ToString()};
+        if(dailyLevel!=null){active.levelVersion=dailyLevel.version;active.levelSeed=dailyLevel.seed;active.levelGeneratorVersion=dailyLevel.generatorVersion;active.challengeTier=dailyLevel.tier;}
 #if UNITY_WEBGL && !UNITY_EDITOR
         try{active.platform=WeChatWASM.WX.GetSystemInfoSync().platform;}catch{}
 #endif
