@@ -13,6 +13,25 @@ public static class FirstStageValidation {
         readonly ReplicaSourceRandom random=new ReplicaSourceRandom(42);
         public float Range(float min,float max){calls.Add(new Vector2(min,max));return random.Range(min,max);}
     }
+    public static void ValidatePlans(){
+        checks=0;
+        var library=Resources.Load<ReplicaTheme>("Replica/ThemeLibrary");
+        foreach(var theme in library.themes){
+            var profile=ReplicaSourceLevelPlan.GetTutorial(theme.sourceEnvironment);
+            Check(ReferenceEquals(profile.prefabs,ReplicaSourceLevelPlan.Get(theme.sourceEnvironment).prefabs),"shared theme prefab references");
+            Check(profile.seconds==0&&profile.limitHeight==4,"tutorial time and height retained");
+            var selections=new HashSet<string>();
+            for(int seed=0;seed<1000;seed++){
+                var plan=ReplicaSourceLevelPlan.GenerateFirstStage(profile,new ReplicaSourceRandom(seed));
+                Check(plan.Count==15&&plan.Select(t=>t.id).Distinct().Count()==15,"15 unique objects");
+                Check(plan.GroupBy(t=>t.type).Select(g=>g.Count()).OrderBy(n=>n).SequenceEqual(new[]{3,6,6}),"three types, complete triples");
+                Check(plan.All(t=>t.type>=0&&t.type<profile.prefabs.Length&&profile.prefabs[t.type]&&t.layer==0&&t.height==6f),"valid theme models and tutorial positions");
+                selections.Add(string.Join(",",plan.Select(t=>t.type).Distinct().OrderBy(t=>t)));
+            }
+            Check(selections.Count>1,"selection varies across seeds");
+        }
+        Debug.Log("PASS first-stage theme plans: "+checks+" assertions");
+    }
     public static void Start(){var driver=new GameObject("First stage validation").AddComponent<SourceValidationDriver>();driver.StartCoroutine(Run(driver));}
     static IEnumerator Run(SourceValidationDriver driver){
         checks=0;string failure=null;var flow=ReplicaFlow.Instance;float oldScale=Time.timeScale;double oldBudget=flow.CreationBudgetOverride;
@@ -24,14 +43,13 @@ public static class FirstStageValidation {
     }
     static IEnumerator Core(){
         var flow=ReplicaFlow.Instance;flow.Home();Time.timeScale=1;var board=LevelGenerator.Instance.objectsOnScene;
-        for(int theme=0;theme<3;theme++){
+        for(int theme=0;theme<flow.library.themes.Length;theme++){
             string environment=flow.library.themes[theme].sourceEnvironment;
             var profile=ReplicaSourceLevelPlan.GetTutorial(environment);var random=new RecordingRandom();
             var plan=ReplicaSourceLevelPlan.GenerateFirstStage(profile,random);
-            Check(plan.Count==15&&plan.Count(t=>t.type==0)==3,"15 objects with three targets");
-            Check(plan.Where(t=>t.type!=0).GroupBy(t=>t.type).Select(g=>g.Count()).OrderBy(n=>n).SequenceEqual(new[]{6,6}),"two ordinary types each six");
-            Check(random.calls.Take(3).All(c=>c==new Vector2(0,1))&&random.calls[3].y==profile.ordinaryTypes.Length,"target draws precede ordinary selection");
-            Check(plan.Skip(12).All(t=>t.type==0),"targets appended before common position sort");
+            Check(ReferenceEquals(profile.prefabs,ReplicaSourceLevelPlan.Get(environment).prefabs),"first stage uses exact second-stage prefabs");
+            Check(plan.Count==15&&plan.GroupBy(t=>t.type).Select(g=>g.Count()).OrderBy(n=>n).SequenceEqual(new[]{3,6,6}),"three random types with complete triples");
+            Check(plan.All(t=>t.type>=0&&t.type<profile.prefabs.Length),"all types belong to theme");
             flow.Begin(theme);
             Check(flow.Stage==1&&flow.InitialCount==15&&board.Count==1&&flow.CreationInProgress,"entry emits first batch only");
             Check(InputController.Instance.UsesSourceFlight&&ReplicaSourceTools.Enabled,"first stage uses common input and source tools");
@@ -45,7 +63,7 @@ public static class FirstStageValidation {
             Check(board.All(o=>o.GetComponentsInChildren<Renderer>(true).Any(r=>r.enabled&&r.gameObject.activeInHierarchy)),"all fifteen visible");
             var visual=GameObject.Find(environment+" source visuals");var shell=GameObject.Find(environment+" source collision reference");
             int visualId=visual.GetInstanceID(),shellId=shell.GetInstanceID();
-            // Actual source picks/triples, starting with targets: they alone cannot win.
+            // Clear every triple; a partial clear must not advance the stage.
             var triples=board.GroupBy(o=>o.name).OrderBy(g=>g.Key=="type_0"?0:1).SelectMany(g=>g.Select((o,i)=>new{o,i}).GroupBy(x=>x.i/3).Select(gr=>gr.Select(x=>x.o).ToArray())).ToArray();
             for(int i=0;i<triples.Length;i++){
                 foreach(var obj in triples[i])InputController.Instance.AddObjectOnStack(obj);
@@ -62,7 +80,7 @@ public static class FirstStageValidation {
         Check(board.Count==0&&ReplicaSourceObjectPool.PooledCount==0&&!flow.GetComponent<ReplicaStagePreloader>().Running,"cancel mid-preload has no late objects");
         flow.Begin(0);flow.NextStage();Check(flow.Stage==2&&board.Count>0&&board.Count<=ReplicaFlow.HiddenCreationSliceLimit,"early transition falls back to normal source creation");flow.Home();
         // Warm-up is inert, and original / adapted models with the same name cannot collide.
-        var banana=ReplicaSourceLevelPlan.GetTutorial("GroceryStore").prefabs.First(p=>p.name=="Banana");
+        var banana=Resources.Load<ReplicaSourceLevelPlan>("Replica/FirstStageCatalog").profiles[0].prefabs[0];
         var adapted=ReplicaSourceLevelPlan.Get("CountrysideStove").prefabs.First(p=>p.name=="Banana");
         UnityEngine.Random.InitState(197);var before=UnityEngine.Random.state;
         ReplicaSourceObjectPool.Prepare(banana);ReplicaSourceObjectPool.Prepare(adapted);

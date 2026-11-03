@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public static class ReplicaMailBuilder {
  const string Root="Assets/GooseReplica/Resources/Replica/";
- static Font Font=>AssetDatabase.LoadAssetAtPath<Font>(Root+"Fonts/GooseSans.otf");
+ static Font Font=>AssetDatabase.LoadAssetAtPath<Font>(Root+"Fonts/DefaultChinese.otf");
  public static RectTransform Rect(string n,Transform p,float x,float y,float w,float h){var r=new GameObject(n,typeof(RectTransform)).GetComponent<RectTransform>();r.SetParent(p,false);r.sizeDelta=new Vector2(w,h);r.anchoredPosition=new Vector2(x,y);return r;}
  static Sprite Sprite(string n)=>AssetDatabase.LoadAssetAtPath<Sprite>(Root+"MailSkinPS/"+n+".png");
  static Image Pic(string n,string asset,Transform p,float x,float y,float w,float h){var im=Rect(n,p,x,y,w,h).gameObject.AddComponent<Image>();im.sprite=Sprite(asset);im.raycastTarget=false;return im;}

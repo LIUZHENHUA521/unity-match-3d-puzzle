@@ -23,6 +23,7 @@ public sealed class ReplicaUIView : MonoBehaviour {
         var prefab=Resources.Load<ReplicaUIView>("Replica/UI/"+name);
         if(!prefab)throw new InvalidOperationException("Missing UI prefab: Replica/UI/"+name);
         var view=Instantiate(prefab,parent,false);
+        ReplicaDefaultFont.Apply(view.gameObject);
         if(parent && name!="CollectionTray"){
             var rect=(RectTransform)view.transform;rect.anchorMin=Vector2.zero;rect.anchorMax=Vector2.one;
             rect.offsetMin=rect.offsetMax=Vector2.zero;rect.localScale=Vector3.one;rect.localRotation=Quaternion.identity;

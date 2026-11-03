@@ -21,7 +21,7 @@ public sealed class ReplicaHomeView : MonoBehaviour {
         }
         if(home.signIn)home.signIn.onClick.AddListener(()=>{flow.HomeClick();flow.ShowHomeFeatureNotice("七日签到功能尚未接入");});
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});
-        if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();flow.ShowHomeFeatureNotice("游戏圈功能尚未接入");});
+        if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();ReplicaGameCommunity.Open();});
         if(home.challenge)home.challenge.onClick.AddListener(()=>{flow.HomeClick();flow.ShowThemes();});
         if(!home.artwork)home.Layout();return home;
     }

@@ -21,7 +21,7 @@ public static class ReplicaReviveBuilder {
         var fit=Rect("720 x 1280 layout",root,0,0,720,1280);root.gameObject.AddComponent<ReplicaUIFitContent>().content=fit;
         var c=Rect("Animated content",fit,0,0,720,1280);var v=root.gameObject.AddComponent<ReplicaReviveView>();v.shade=shade;v.animatedContent=c;v.group=c.gameObject.AddComponent<CanvasGroup>();
         Pic("Panel","panel",c,0,0);
-        var label=Rect("Completion",c,0,405,660,76).gameObject.AddComponent<Text>();label.font=AssetDatabase.LoadAssetAtPath<Font>(Root+"Fonts/GooseSans.otf");label.fontSize=48;label.fontStyle=FontStyle.Bold;label.color=Color.white;label.alignment=TextAnchor.MiddleCenter;label.verticalOverflow=VerticalWrapMode.Overflow;label.raycastTarget=false;label.text="关卡已完成：58%";v.progress=label;
+        var label=Rect("Completion",c,0,405,660,76).gameObject.AddComponent<Text>();label.font=AssetDatabase.LoadAssetAtPath<Font>(Root+"Fonts/DefaultChinese.otf");label.fontSize=48;label.fontStyle=FontStyle.Bold;label.color=Color.white;label.alignment=TextAnchor.MiddleCenter;label.verticalOverflow=VerticalWrapMode.Overflow;label.raycastTarget=false;label.text="关卡已完成：58%";v.progress=label;
         Pic("Icon",timeout?"clock":"broom",c,0,101);
         Pic("Description",timeout?"time-message":"clear-message",c,0,-93);
         var status=Rect("Ad status",c,0,-307,510,45).gameObject.AddComponent<Text>();status.font=label.font;status.fontSize=23;status.color=new Color32(30,112,173,255);status.alignment=TextAnchor.MiddleCenter;status.verticalOverflow=VerticalWrapMode.Overflow;status.raycastTarget=false;status.text="观看完整视频后复活";v.status=status;

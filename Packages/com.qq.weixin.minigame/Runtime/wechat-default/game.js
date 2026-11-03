@@ -82,11 +82,11 @@ checkVersion().then((enable) => {
                 scaleMode: scaleMode.default,
                 // 以下配置的样式，尺寸相对设计宽高
                 textConfig: {
-                    firstStartText: '首次加载请耐心等待',
-                    downloadingText: ['正在加载资源'],
-                    compilingText: '编译中',
-                    initText: '初始化中',
-                    completeText: '开始游戏',
+                    firstStartText: '初次见面，正在准备游戏',
+                    downloadingText: ['正在布置温馨小屋'],
+                    compilingText: '快乐即将开启',
+                    initText: '马上就好',
+                    completeText: '欢迎回来',
                     textDuration: 1500,
                     // 文字样式
                     style: {
@@ -105,12 +105,12 @@ checkVersion().then((enable) => {
                         height: 24,
                         padding: 2,
                         bottom: 64,
-                        backgroundColor: '#07C160',
+                        backgroundColor: '#668B76',
                     },
                 },
                 // 一般不修改，控制icon样式
                 iconConfig: {
-                    visible: true,
+                    visible: false,
                     style: {
                         width: 64,
                         height: 23,

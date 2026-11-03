@@ -18,15 +18,22 @@ public sealed class ReplicaReviveView : MonoBehaviour {
     public void ConfigureTool(int type,Action accept,Action decline){
         string[] names={"移出","吸附","洗牌"};
         string[] icons={"image_btn_remove","image_btn_adsorpt","image_btn_shuffle"};
-        string[] descriptions={"将槽位中最前面的 3 个物品\n移到暂存区，腾出槽位", "自动寻找同类物品吸入槽位\n帮你凑齐一组三消", "重新打乱场上物品的位置\n寻找新的消除机会"};
+        string[] descriptions={"move-description","find-description","shuffle-description"};
         Configure(0,accept,decline);toolMode=true;progress.text=names[type]+"道具";
-        animatedContent.Find("Panel").GetComponent<Image>().sprite=Resources.Load<Sprite>("Replica/ProfileSkinPS/image_User_bg");
+        animatedContent.Find("Panel").GetComponent<Image>().sprite=Resources.Load<Sprite>("Replica/ReviveSkinPS/panel");
         progress.rectTransform.anchoredPosition=new Vector2(0,300);progress.rectTransform.sizeDelta=new Vector2(450,76);progress.fontSize=42;
+        progress.gameObject.SetActive(false);
+        // The revive panel includes its title; cover it with the matching blank ribbon.
+        AddToolArtwork("Tool title ribbon",animatedContent,new Vector2(-1,297.5f),"title-ribbon");
+        AddToolArtwork("Tool title",animatedContent,new Vector2(0,310),"title");
         status.rectTransform.anchoredPosition=new Vector2(0,-305);status.fontSize=20;
         var icon=animatedContent.Find("Icon").GetComponent<Image>();
         icon.sprite=Resources.Load<Sprite>("Replica/GameplaySkin/"+icons[type]);icon.preserveAspect=true;icon.rectTransform.sizeDelta=new Vector2(150,160);
+        AddToolArtwork("Tool icon background",animatedContent,icon.rectTransform.anchoredPosition,"icon-circle");
+        var circle=animatedContent.Find("Tool icon background").GetComponent<Image>();
+        circle.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
         var description=animatedContent.Find("Description");description.gameObject.SetActive(false);
-        AddToolText("Tool description",animatedContent,new Vector2(0,-65),new Vector2(520,100),descriptions[type],30,new Color32(30,112,173,255));
+        AddToolArtwork("Tool description",animatedContent,new Vector2(0,-65),descriptions[type]);
         var buttonImage=revive.GetComponent<Image>();buttonImage.sprite=Resources.Load<Sprite>("Replica/SettingsSkinPS/image_btn_blue02");buttonImage.preserveAspect=true;
         buttonImage.rectTransform.anchoredPosition=new Vector2(0,-205);
         buttonImage.rectTransform.sizeDelta=new Vector2(300,300*buttonImage.sprite.rect.height/buttonImage.sprite.rect.width);
@@ -34,6 +41,15 @@ public sealed class ReplicaReviveView : MonoBehaviour {
         var buttonLabel=revive.transform.Find("Tool ad label").GetComponent<Text>();buttonLabel.fontStyle=FontStyle.Bold;
         var outline=buttonLabel.gameObject.AddComponent<Outline>();outline.effectColor=new Color(0,.32f,.55f,.8f);outline.effectDistance=new Vector2(1,-1);
         status.text="";status.gameObject.SetActive(false);
+    }
+    void AddToolArtwork(string name,Transform parent,Vector2 position,string asset){
+        var sprite=Resources.Load<Sprite>("Replica/ToolTextSkinPS/"+asset);
+        if(!sprite)throw new InvalidOperationException("Missing tool text artwork: "+asset);
+        var obj=new GameObject(name,typeof(RectTransform),typeof(CanvasRenderer),typeof(Image));obj.transform.SetParent(parent,false);
+        var image=obj.GetComponent<Image>();image.sprite=sprite;image.preserveAspect=true;image.raycastTarget=false;
+        var rect=image.rectTransform;rect.anchoredPosition=position;
+        // Pixel dimensions map to the existing 720 x 1280 UI canvas, not the PSD's 1564px height.
+        rect.sizeDelta=sprite.rect.size;
     }
     void AddToolText(string name,Transform parent,Vector2 position,Vector2 size,string value,int fontSize,Color color){
         var obj=new GameObject(name,typeof(RectTransform),typeof(CanvasRenderer),typeof(Text));obj.transform.SetParent(parent,false);

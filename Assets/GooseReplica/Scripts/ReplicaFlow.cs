@@ -51,6 +51,7 @@ public partial class ReplicaFlow : MonoBehaviour {
         QualitySettings.antiAliasing=0;
         if(Camera.main){Camera.main.allowHDR=false;Camera.main.allowMSAA=false;}
 #endif
+        yield return ReplicaDefaultFont.Initialize();
         // One bounded shadow map covers the pot, including the camera's 12-unit height.
         QualitySettings.shadows=ShadowQuality.All;
         QualitySettings.shadowResolution=ShadowResolution.Medium;

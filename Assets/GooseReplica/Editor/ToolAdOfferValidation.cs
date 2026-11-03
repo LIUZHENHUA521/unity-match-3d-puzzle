@@ -31,7 +31,9 @@ public static class ToolAdOfferValidation {
    if(type==2)Assert(!ReplicaSourceTools.MessUp(),"direct shuffle bypassed payment");
    Tool(type).onClick.Invoke();yield return new WaitForSecondsRealtime(.5f);
    var view=UnityEngine.Object.FindObjectOfType<ReplicaReviveView>();Assert(view&&view.progress.text==new[]{"移出道具","吸附道具","洗牌道具"}[type],"wrong tool offer");
-   if(type==0)Capture();
+   Capture(type);
+   Assert(!view.progress.gameObject.activeSelf&&view.animatedContent.Find("Tool title").GetComponent<Image>().sprite,"missing artwork title");
+   var artwork=view.animatedContent.Find("Tool description").GetComponent<Image>();Assert(artwork&&artwork.sprite&&artwork.rectTransform.sizeDelta==artwork.sprite.rect.size,"text artwork stretched");
    Assert(Time.timeScale==0&&ReplicaSourceTools.UsedCount(type)==0,"offer consumed effect or timer running");
    view.revive.onClick.Invoke();var cancelled=reply;reply(false,"");Assert(view.group.interactable&&ReplicaSourceTools.UsedCount(type)==0,"incomplete ad granted effect");
    view.revive.onClick.Invoke();var success=reply;reply(true,"");success(true,"");
@@ -53,10 +55,10 @@ public static class ToolAdOfferValidation {
   Assert(ads==0&&service.State!=null&&service.State.inventory[2]==1&&ReplicaSourceTools.UsedCount(2)==1&&ReplicaSourceTools.AdUses(2)==0,"inventory did not debit exactly once without ads: ads="+ads+", inventory="+service.Inventory(2)+", used="+ReplicaSourceTools.UsedCount(2)+", rewarded="+ReplicaSourceTools.AdUses(2)+", status="+service.Status);
 
  }
-    static void Capture(){
+    static void Capture(int type){
         var c=Camera.main;var canvases=UnityEngine.Object.FindObjectsOfType<Canvas>().Where(x=>x.isRootCanvas&&x.gameObject.activeInHierarchy).ToArray();var modes=canvases.Select(x=>x.renderMode).ToArray();var cameras=canvases.Select(x=>x.worldCamera).ToArray();var distances=canvases.Select(x=>x.planeDistance).ToArray();var rt=new RenderTexture(720,1280,24);rt.Create();var old=c.targetTexture;var active=RenderTexture.active;c.targetTexture=rt;
         for(int i=0;i<canvases.Length;i++){canvases[i].renderMode=RenderMode.ScreenSpaceCamera;canvases[i].worldCamera=c;canvases[i].planeDistance=1;}
-        Canvas.ForceUpdateCanvases();foreach(var fit in UnityEngine.Object.FindObjectsOfType<ReplicaUIFitContent>())fit.Fit();Canvas.ForceUpdateCanvases();c.Render();RenderTexture.active=rt;var tex=new Texture2D(720,1280,TextureFormat.RGB24,false);tex.ReadPixels(new Rect(0,0,720,1280),0,0);tex.Apply();File.WriteAllBytes("Temp/tool-offer-preview.png",tex.EncodeToPNG());c.targetTexture=old;RenderTexture.active=active;
+        Canvas.ForceUpdateCanvases();foreach(var fit in UnityEngine.Object.FindObjectsOfType<ReplicaUIFitContent>())fit.Fit();Canvas.ForceUpdateCanvases();c.Render();RenderTexture.active=rt;var tex=new Texture2D(720,1280,TextureFormat.RGB24,false);tex.ReadPixels(new Rect(0,0,720,1280),0,0);tex.Apply();File.WriteAllBytes("Temp/tool-offer-artwork-"+type+".png",tex.EncodeToPNG());c.targetTexture=old;RenderTexture.active=active;
         for(int i=0;i<canvases.Length;i++){canvases[i].renderMode=modes[i];canvases[i].worldCamera=cameras[i];canvases[i].planeDistance=distances[i];}UnityEngine.Object.Destroy(tex);rt.Release();UnityEngine.Object.Destroy(rt);
     }
 }

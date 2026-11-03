@@ -18,14 +18,20 @@ public static class WechatReleaseBuild {
             EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(release.scene,true)};
             PlayerSettings.defaultInterfaceOrientation=UIOrientation.Portrait;
             PlayerSettings.productName=release.projectName;
+            // Unity 2022 Personal requires the engine splash. The WeChat loading
+            // cover is configured separately and does not need the SDK logo.
+            PlayerSettings.SplashScreen.show=!Application.HasProLicense();
+            if(Application.HasProLicense())PlayerSettings.SplashScreen.showUnityLogo=false;
             PlayerSettings.WebGL.exceptionSupport=WebGLExceptionSupport.ExplicitlyThrownExceptionsOnly;
             PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.WebGL,ManagedStrippingLevel.Low);
             var library=AssetDatabase.LoadAssetAtPath<ReplicaTheme>("Assets/GooseReplica/Resources/Replica/ThemeLibrary.asset");
             library.pvpEndpoint=release.pvpEndpoint;
-            library.font=AssetDatabase.LoadAssetAtPath<Font>("Assets/GooseReplica/Resources/Replica/Fonts/GooseSans.otf");
+            library.font=AssetDatabase.LoadAssetAtPath<Font>("Assets/GooseReplica/Resources/Replica/Fonts/DefaultChinese.otf");
             if(!library.font)throw new Exception("Chinese font missing");
             EditorUtility.SetDirty(library);
             var config=WXConvertCore.config;
+            config.SDKOptions.PreloadWXFont=true;
+            config.ProjectConf.bgImageSrc="Assets/GooseReplica/Resources/Replica/HomeSkinPS/img_Homepage_bg2.jpg";
             config.ProjectConf.Appid=release.appid;
             config.ProjectConf.projectName=release.projectName;
             config.ProjectConf.relativeDST=Path.GetDirectoryName(release.output).Replace('\\','/');

@@ -7,7 +7,7 @@ public static class ReplicaResultBuilder {
     static RectTransform Rect(string name,Transform parent,float x,float y,float w,float h){var r=new GameObject(name,typeof(RectTransform)).GetComponent<RectTransform>();r.SetParent(parent,false);r.sizeDelta=new Vector2(w,h);r.anchoredPosition=new Vector2(x,y);return r;}
     static Image Pic(string name,string asset,Transform parent,float x,float y){var s=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"ResultSkinPS/"+asset+".png");if(!s)throw new Exception("Missing result sprite "+asset);var im=Rect(name,parent,x,y,s.rect.width,s.rect.height).gameObject.AddComponent<Image>();im.sprite=s;im.raycastTarget=false;return im;}
     static Button Button(Image im){im.raycastTarget=true;var b=im.gameObject.AddComponent<Button>();b.targetGraphic=im;return b;}
-    static Text Label(string name,Transform parent,float x,float y,float w,float h,int size){var t=Rect(name,parent,x,y,w,h).gameObject.AddComponent<Text>();t.font=AssetDatabase.LoadAssetAtPath<Font>(Root+"Fonts/GooseSans.otf");t.fontSize=size;t.fontStyle=FontStyle.Bold;t.color=Color.white;t.alignment=TextAnchor.MiddleCenter;t.raycastTarget=false;t.verticalOverflow=VerticalWrapMode.Overflow;return t;}
+    static Text Label(string name,Transform parent,float x,float y,float w,float h,int size){var t=Rect(name,parent,x,y,w,h).gameObject.AddComponent<Text>();t.font=AssetDatabase.LoadAssetAtPath<Font>(Root+"Fonts/DefaultChinese.otf");t.fontSize=size;t.fontStyle=FontStyle.Bold;t.color=Color.white;t.alignment=TextAnchor.MiddleCenter;t.raycastTarget=false;t.verticalOverflow=VerticalWrapMode.Overflow;return t;}
     [MenuItem("Goose Replica/UI/Build Result Screens")]
     public static void Build(){
         AssetDatabase.Refresh();

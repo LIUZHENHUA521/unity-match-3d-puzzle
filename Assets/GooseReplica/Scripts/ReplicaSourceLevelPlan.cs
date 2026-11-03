@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 
 // The packaged WX 2.1.12 ordinary MainLevel / level 2 rows (indices 1, 4, 5).
@@ -27,19 +26,17 @@ public sealed class ReplicaSourceLevelPlan : ScriptableObject {
         throw new InvalidOperationException("No source level profile for "+environment);
     }
 
-    static ReplicaSourceLevelPlan firstStage;
     public static Profile GetTutorial(string environment){
-        if(!firstStage)firstStage=Resources.Load<ReplicaSourceLevelPlan>("Replica/FirstStageCatalog");
-        if(!firstStage)throw new InvalidOperationException("Missing FirstStageCatalog; run Import First Stage Plans");
-        return firstStage.profiles.First(p=>p.environment==environment);
+        var challenge=Get(environment);
+        // Both stages use the exact same theme prefabs, including adapted models.
+        return new Profile {
+            environment=environment,sourceIndex=challenge.sourceIndex,seconds=0,limitHeight=4,
+            prefabs=challenge.prefabs,
+            layers=new[]{new ChallengeLayer(15,3,6f)}
+        };
     }
     public static System.Collections.Generic.List<ChallengeTile> GenerateFirstStage(Profile profile,IReplicaSourceRandom random){
-        // j38517 allocates the three targets BEFORE selecting ordinary types.
-        // The single-layer KFakeRandom still consumes one float draw per target.
-        for(int i=0;i<3;i++)random.Range(0f,1f);
-        var tiles=ChallengePlan.GenerateSource(random,profile.ordinaryTypes.Length,profile.layers);
-        foreach(var tile in tiles)tile.type=profile.ordinaryTypes[tile.type];
-        for(int i=0;i<3;i++)tiles.Add(new ChallengeTile{id=tiles.Count,type=0,layer=0,height=6f});
-        return tiles;
+        // Select three distinct theme types; equal triple budgets preserve 6/6/3 objects.
+        return ChallengePlan.GenerateSource(random,profile.prefabs.Length,profile.layers);
     }
 }
