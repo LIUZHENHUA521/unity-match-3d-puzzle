@@ -87,6 +87,16 @@ public sealed class ReplicaGameRecords : MonoBehaviour {
         var item=new Pending{reward=!string.IsNullOrEmpty(record.rewardTier),owner=account,action=action,json=JsonUtility.ToJson(record)};
         if(string.IsNullOrEmpty(account))unbound.Add(item);else{queue.items.Add(item);Save();}
     }
+    static string RewardErrorMessage(string error){
+        switch(error){
+            case "daily_quota_exhausted":return "通关已记录，今日红包名额已领完，本局未获得红包";
+            case "hourly_quota_exhausted":return "通关已记录，当前时段红包名额已领完，本局未获得红包";
+            case "daily_quota_claimed":return "通关已记录，今日已领取过该档位红包";
+            case "rewards_closed":return "通关已记录，红包挑战已关闭，本局未获得红包";
+            case "qualification_expired":return "通关已记录，本局红包资格已过期";
+            default:return "通关已记录，未获红包资格："+error;
+        }
+    }
     void Save(){PlayerPrefs.SetString(QueueKey,JsonUtility.ToJson(queue));PlayerPrefs.Save();}
     IEnumerator Upload(){
         float delay=1;
@@ -99,7 +109,7 @@ public sealed class ReplicaGameRecords : MonoBehaviour {
                 req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("Authorization","Bearer "+account.RecordToken);
                 yield return req.SendWebRequest();
                 Receipt receipt=null;if(req.result==UnityWebRequest.Result.Success){try{receipt=JsonUtility.FromJson<Receipt>(req.downloadHandler.text);}catch{}}
-                if(receipt!=null&&receipt.ok){if(item.reward&&item.action=="finish"&&ReplicaFlow.Instance){if(!string.IsNullOrEmpty(receipt.voucherId))ReplicaFlow.Instance.Notice("已获得红包凭证，可在我的红包查看");else if(!string.IsNullOrEmpty(receipt.rewardError))ReplicaFlow.Instance.Notice("通关已记录，未获红包资格："+receipt.rewardError);}
+                if(receipt!=null&&receipt.ok){if(item.reward&&item.action=="finish"&&ReplicaFlow.Instance){if(!string.IsNullOrEmpty(receipt.voucherId))ReplicaFlow.Instance.Notice("已获得红包凭证，可在我的红包查看");else if(!string.IsNullOrEmpty(receipt.rewardError))ReplicaFlow.Instance.Notice(RewardErrorMessage(receipt.rewardError));}
                     queue.items.Remove(item);Save();delay=1;continue;}
                 if(req.responseCode==401)account.RefreshRecordLogin();
                 else if(req.responseCode==400||req.responseCode==409){item.rejected=true;SyncError="rejected";Save();}

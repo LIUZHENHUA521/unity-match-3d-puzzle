@@ -16,9 +16,7 @@ public sealed class ReplicaRewards : MonoBehaviour {
         yield return Request("runs",JsonUtility.ToJson(new StartBody{requestId=Guid.NewGuid().ToString("N"),tier=tier,themeId=themeId}),r=>result=r);
         starting=false;if(ReplicaFlow.Instance.ScreenName!=screen)yield break;
         if(result!=null&&result.ok){ReplicaFlow.Instance.BeginQualified(theme,result.runId,result.rewardTier,result.ruleVersion);yield break;}
-        ReplicaFlow.Instance.Notice((result!=null?result.error:"网络不可用")+"；本局未取得红包资格，进入普通挑战");
-        yield return new WaitForSecondsRealtime(2);
-        if(ReplicaFlow.Instance.ScreenName==screen)ReplicaFlow.Instance.Begin(theme);
+        ReplicaFlow.Instance.Notice(result!=null&&!string.IsNullOrEmpty(result.error)?result.error:"网络暂不可用，请重试");
     }
     public IEnumerator Request(string action,string json,Action<Reply> completed){
         var account=ReplicaInvitations.Instance;
