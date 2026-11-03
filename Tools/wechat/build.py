@@ -152,6 +152,17 @@ for name in ('img_Blue_box1', 'img_GreyBlue_box', 'image_add_circle'):
         continue
     for asset in (image, meta):
         shutil.move(str(asset), str(excluded / asset.name))
+# Long music tracks dominate the remaining audio budget. Compress only the
+# release copy; preserve the source tracks, duration, channels and short effects.
+for relative in (
+    'Assets/GooseReplica/Audio/Licensed/Carefree.mp3.meta',
+    'Assets/GooseReplica/Resources/GooseArt/Audio/BGM_MainScene.wav.meta',
+    'Assets/GooseReplica/Resources/GooseArt/Audio/BGM_PVP.wav.meta',
+):
+    meta = stage / relative
+    text = meta.read_text()
+    text = re.sub(r'(?m)^(    quality: ).+$', r'\g<1>0.35', text)
+    meta.write_text(text)
 print(f'Staged {stage}; sprites kept={len(kept)}, excluded={len(removed)}', flush=True)
 if args.prepare_only:
     raise SystemExit(0)
