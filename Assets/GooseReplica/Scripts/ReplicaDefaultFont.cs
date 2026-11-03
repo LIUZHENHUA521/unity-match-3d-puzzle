@@ -14,7 +14,7 @@ public static class ReplicaDefaultFont {
         Current=Resources.Load<Font>("Replica/Fonts/DefaultChinese");
         if(!Current)throw new InvalidOperationException("Default Chinese fallback font is missing");
 #if UNITY_WEBGL && !UNITY_EDITOR
-        // The bundled SDK cannot get the common font on iOS. Use the complete
+        // The bundled SDK cannot get the common font on iOS. Use the common-Chinese
         // packaged fallback there instead of requesting an empty fallback URL.
         if(GooseCanLoadSystemFont()!=0) {
             bool completed=false;
