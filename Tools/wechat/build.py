@@ -161,7 +161,7 @@ for relative in (
 ):
     meta = stage / relative
     text = meta.read_text()
-    text = re.sub(r'(?m)^(    quality: ).+$', r'\g<1>0.35', text)
+    text = re.sub(r'(?m)^(    quality: ).+$', r'\g<1>0.15', text)
     meta.write_text(text)
 print(f'Staged {stage}; sprites kept={len(kept)}, excluded={len(removed)}', flush=True)
 if args.prepare_only:
