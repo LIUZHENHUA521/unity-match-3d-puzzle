@@ -21,7 +21,7 @@ count=meshoptimizer.simplify_with_attributes(reduced,indices,pos,uv,np.array([1.
 indices=reduced[:count]; used,indices=np.unique(indices,return_inverse=True); pos=pos[used];norm=norm[used];uv=uv[used]; indices=indices.astype(np.uint32)
 image=g['images'][g['textures'][g['materials'][0]['pbrMetallicRoughness']['baseColorTexture']['index']]['source']]; v=g['bufferViews'][image['bufferView']]
 im=Image.open(io.BytesIO(data[v.get('byteOffset',0):v.get('byteOffset',0)+v['byteLength']])).convert('RGB'); print('original texture',im.size); im.thumbnail((1024,1024))
-root=Path(__file__).resolve().parents[1]/'Assets/GooseReplica/Editor/MeshySource';root.mkdir(parents=True,exist_ok=True)
+root=Path(__file__).resolve().parents[1]/'Assets/Match3D/Editor/MeshySource';root.mkdir(parents=True,exist_ok=True)
 im.save(root/'hamster_apple.png',optimize=True)
 center=(pos.min(0)+pos.max(0))/2; scale=.43/np.ptp(pos,axis=0).max(); unity=(pos-center)*scale;unity[:,2]*=-1; unorm=norm.copy();unorm[:,2]*=-1
 tri=indices.reshape(-1,3)[:,[0,2,1]].flatten()

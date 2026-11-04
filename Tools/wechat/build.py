@@ -33,9 +33,9 @@ manifest.write_text(json.dumps(dependencies, indent=2) + '\n')
 
 # These sprites are looked up by name, including theme-specific names in YAML.
 # Keep every referenced name; the full reference collection stays in the source.
-source = '\n'.join(p.read_text() for p in (ROOT / 'Assets/GooseReplica/Scripts').glob('*.cs'))
+source = '\n'.join(p.read_text() for p in (ROOT / 'Assets/Match3D/Scripts').glob('*.cs'))
 names = set(re.findall(r'"([^"\n]+)"', source))
-themes = (ROOT / 'Assets/GooseReplica/Resources/Replica/ThemeLibrary.asset').read_text()
+themes = (ROOT / 'Assets/Match3D/Resources/Match3D/ThemeLibrary.asset').read_text()
 names.update(re.findall(r'^\s+gooseSprite: (.+)$', themes, re.M))
 # Prefab-based UI references sprites by GUID instead of Resources.Load names.
 # Retain those dependencies when trimming the reference art collection.
@@ -43,7 +43,7 @@ referenced_guids = set()
 for asset in (stage / 'Assets').rglob('*'):
     if asset.suffix in {'.prefab', '.unity', '.asset', '.mat', '.spriteatlas'}:
         referenced_guids.update(re.findall(r'guid: ([0-9a-f]{32})', asset.read_text(errors='ignore')))
-sprites = stage / 'Assets/GooseReplica/Resources/GooseArt/Sprites'
+sprites = stage / 'Assets/Match3D/Resources/GooseArt/Sprites'
 excluded = stage / 'BuildInputs/ReferenceSprites'
 excluded.mkdir(parents=True, exist_ok=True)
 kept, removed = [], []
@@ -63,10 +63,10 @@ reference_dirs = [
     # Only LevelEditorTab loads these 23 authoring thumbnails. No runtime asset
     # references their GUIDs; retain originals but exclude them from release.
     stage / 'Assets/Resources/Editor',
-    stage / 'Assets/GooseReplica/OriginalModels/Prefabs/Legacy',
+    stage / 'Assets/Match3D/OriginalModels/Prefabs/Legacy',
     # Authoring-only source exports are kept in the project for iteration but
     # must not enter the runtime WebGL package.
-    stage / 'Assets/GooseReplica/OriginalModels/Animations',
+    stage / 'Assets/Match3D/OriginalModels/Animations',
     stage / 'Assets/FoodPile/Editor',
 ]
 for reference_dir in reference_dirs:
@@ -74,14 +74,14 @@ for reference_dir in reference_dirs:
         target = excluded / reference_dir.name
         if target.exists(): shutil.rmtree(target)
         shutil.move(str(reference_dir), str(target))
-for reference_file in [stage / 'Assets/GooseReplica/OriginalModels/models.json',
-                       stage / 'Assets/GooseReplica/OriginalModels/animations.json']:
+for reference_file in [stage / 'Assets/Match3D/OriginalModels/models.json',
+                       stage / 'Assets/Match3D/OriginalModels/animations.json']:
     if reference_file.exists():
         shutil.move(str(reference_file), str(excluded / reference_file.name))
-replica_resources = stage / 'Assets/GooseReplica/Resources/Replica'
+replica_resources = stage / 'Assets/Match3D/Resources/Match3D'
 for reference_file in replica_resources.glob('Source*'):
     # SourceLevelCatalog is runtime data, not authoring evidence. It contains
-    # the first/second-stage prefab references used by ReplicaSourceLevelPlan;
+    # the first/second-stage prefab references used by LevelLayoutConfig;
     # moving it out makes the theme challenge callback throw in WeChat builds.
     if reference_file.name in {
         'SourceLevelCatalog.asset',
@@ -91,8 +91,8 @@ for reference_file in replica_resources.glob('Source*'):
         # asset directly during layered item creation, so moving these makes
         # the creation coroutine abort with a NullReferenceException.
         'SourceAudioItems.json',
-        # Runtime second-stage material/selection/combine audio.  ReplicaSourceAudio
-        # loads these clips by Resources path (Replica/SourceAudio/<name>) while
+        # Runtime second-stage material/selection/combine audio.  GameAudioCatalog
+        # loads these clips by Resources path (Match3D/SourceAudio/<name>) while
         # creating and selecting layered items.  Treating the directory as
         # authoring evidence leaves a valid-looking build with silent stage 2.
         'SourceAudio',
@@ -106,20 +106,20 @@ for reference_file in replica_resources.glob('Source*'):
         else: target.unlink()
     shutil.move(str(reference_file), str(target))
 
-# The imported theme prefabs under Resources/Replica/Scenes reference the
+# The imported theme prefabs under Resources/Match3D/Scenes reference the
 # generated materials, meshes and textures in SourceScenes.  That directory
 # is runtime data even though its contents originated as source-scene exports;
 # removing it leaves the theme object instantiable but visually untextured.
-source_scene_runtime = stage / 'Assets/GooseReplica/SourceScenes'
+source_scene_runtime = stage / 'Assets/Match3D/SourceScenes'
 if not source_scene_runtime.exists():
-    raise SystemExit('Missing runtime theme dependencies: Assets/GooseReplica/SourceScenes')
+    raise SystemExit('Missing runtime theme dependencies: Assets/Match3D/SourceScenes')
 runtime_audio = replica_resources / 'SourceAudio'
 if not runtime_audio.exists() or not any(runtime_audio.glob('*.wav')):
-    raise SystemExit('Missing runtime second-stage audio: Resources/Replica/SourceAudio')
+    raise SystemExit('Missing runtime second-stage audio: Resources/Match3D/SourceAudio')
 # The source models carry authoring-quality 1K/2K textures.  The experience
 # build uses the same models but imports these at 256px with Unity's
 # platform compression, keeping the initial WeChat package under its limit.
-texture_root = stage / 'Assets/GooseReplica/OriginalModels/Textures'
+texture_root = stage / 'Assets/Match3D/OriginalModels/Textures'
 for meta in texture_root.glob('*.png.meta'):
     text = meta.read_text()
     text = re.sub(r'(?m)^    maxTextureSize: \d+', '    maxTextureSize: 256', text)
@@ -155,9 +155,9 @@ for name in ('img_Blue_box1', 'img_GreyBlue_box', 'image_add_circle'):
 # Long music tracks dominate the remaining audio budget. Compress only the
 # release copy; preserve the source tracks, duration, channels and short effects.
 for relative in (
-    'Assets/GooseReplica/Audio/Licensed/Carefree.mp3.meta',
-    'Assets/GooseReplica/Resources/GooseArt/Audio/BGM_MainScene.wav.meta',
-    'Assets/GooseReplica/Resources/GooseArt/Audio/BGM_PVP.wav.meta',
+    'Assets/Match3D/Audio/Licensed/Carefree.mp3.meta',
+    'Assets/Match3D/Resources/GooseArt/Audio/BGM_MainScene.wav.meta',
+    'Assets/Match3D/Resources/GooseArt/Audio/BGM_PVP.wav.meta',
 ):
     meta = stage / relative
     text = meta.read_text()

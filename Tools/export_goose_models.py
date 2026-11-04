@@ -3,7 +3,7 @@
 import UnityPy,json,hashlib,re,sys
 from pathlib import Path
 from UnityPy.helpers.MeshHelper import MeshHandler
-root=Path(__file__).resolve().parents[1]/'Assets/GooseReplica/OriginalModels';root.mkdir(parents=True,exist_ok=True);(root/'Textures').mkdir(exist_ok=True)
+root=Path(__file__).resolve().parents[1]/'Assets/Match3D/OriginalModels';root.mkdir(parents=True,exist_ok=True);(root/'Textures').mkdir(exist_ok=True)
 e=UnityPy.load(sys.argv[1]);meshes={};mats={};textures={}
 def key(o):return hashlib.sha1((o.assets_file.name+':'+str(o.path_id)).encode()).hexdigest()[:16]
 def ref(o,p):

@@ -1,0 +1,26 @@
+PASS all Match3D prefabs load without missing scripts
+PASS scene scripts: Main Camera
+PASS scene scripts: Directional Light
+PASS scene scripts: Canvas
+PASS scene scripts: GameArea
+PASS scene scripts: -----SCRIPTS-----
+PASS scene scripts: LevelGenerator
+PASS scene scripts: InputController
+PASS scene scripts: BoosterManager
+PASS scene scripts: UIManager
+PASS scene scripts: ApplicationSettings
+PASS scene scripts: EventSystem
+PASS scene scripts: Cooking Pot
+PASS scene scripts: Shake Controller
+PASS scene scripts: Match3D Flow
+PASS random stream and generation replay fixtures
+PASS tool selection, matching and shuffle fixtures
+PASS home initializes after renamed scene and resource loads
+PASS object pool reuses identity and resets state
+PASS first stage creates 12 ordinary objects plus 3 targets
+PASS second stage creates 300 objects
+PASS pickup reaches tray
+PASS undo restores board object
+PASS matching triple clears tray and board
+PASS home clears gameplay objects
+ALL CHECKS PASSED

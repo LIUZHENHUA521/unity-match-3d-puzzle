@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
         // MainLevel tutorial rows carry limittime=[0], which means the source
         // game has no countdown for that stage. Keep zero as an inactive timer
         // instead of immediately showing the time-up popup every frame.
-        if (GameIsPlaying() && currentLevelTime > 0 && !ReplicaSourceTools.Shuffling && !BoosterManager.Instance.timeFreezed)
+        if (GameIsPlaying() && currentLevelTime > 0 && !BoardTools.Shuffling && !BoosterManager.Instance.timeFreezed)
         {
             currentLevelTime -= Time.deltaTime;
             TimeSpan duration = TimeSpan.FromSeconds(Mathf.Max(0, currentLevelTime));

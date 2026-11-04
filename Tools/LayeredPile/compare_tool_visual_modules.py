@@ -1,6 +1,6 @@
 import json,math
 from pathlib import Path
-P=Path('/Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle');S=P/'Assets/GooseReplica/SourceToolVisuals/Modules';R=P/'Builds/WechatProject/visual-captures/source-tool-module-roundtrip';errors=[];count=0
+P=Path('/Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle');S=P/'Assets/Match3D/SourceToolVisuals/Modules';R=P/'Builds/WechatProject/visual-captures/source-tool-module-roundtrip';errors=[];count=0
 # Object refs are intentionally remapped after restore; runtime native Unity emits owner refs not source CAB IDs.
 def compare(s,t,path):
  global count

@@ -1,0 +1,44 @@
+{
+  "BoardReplayRandom.cs": [
+    [
+      "// Production source path: j1345 passes straight through to Unity's shared native RNG.\n// It neither seeds nor saves/restores state, so other Unity draws remain part of the stream.",
+      "// Use Unity's shared RNG without reseeding or saving state. Other Unity draws\n// intentionally advance the same stream. Provenance: docs/refactoring/2026-11-04-naming.md."
+    ],
+    [
+      "// Explicit replay / validation only. The original session seed has not been recovered.\n// Keep test replays independent without resetting the production game's global RNG.",
+      "// Isolated replay stream for explicit seeds and validation. Preserve the\n// production RNG state around every draw; this does not reproduce an unknown seed."
+    ]
+  ],
+  "BoardItemPool.cs": [
+    [
+      "// Runtime counterpart of the shipped LevelObjectPool.  The source keeps ObjectUnit\n// instances in a per-name pool (Get/Recycle); it does not destroy a matched unit at\n// the end of the combine animation.  This pool is intentionally limited to the\n// layered source board.  Legacy authored levels keep their original Destroy path.",
+      "// Reuse layered-board items after their match animation, resetting state on checkout.\n// Buckets are keyed by prefab. Legacy authored levels retain their Destroy path.\n// Provenance: docs/refactoring/2026-11-04-naming.md."
+    ]
+  ],
+  "LayeredItemPile.cs": [
+    [
+      "// GetUnit(playSound=true) applies SetMinTouchHeight before BeClick, without an immediate scan.",
+      "// Record the selection height before click handling; defer the visibility scan.\n    // Behavior provenance: docs/refactoring/2026-11-04-naming.md."
+    ],
+    [
+      "// Source CheckRigid uses the dynamic visibility formula with depth=.5.",
+      "// Physics activity follows a separate dynamic height threshold with depth=.5."
+    ],
+    [
+      "// CheckRigid freezes below threshold only after growth has finished.",
+      "// Keep growing items active even when they fall below the physics threshold."
+    ]
+  ],
+  "Match3DThemePresentation.cs": [
+    [
+      "// Saved WX Main Camera world pose + CameraControl.Start / ScreenMa.GetScreenOffset(1,0).\n// WX LevelManager ctor/Awake select flatTopView (2); CameraControl.Start disables movement and rotation.\n// No height-follow or drag-orbit animation is wired into the normal solo input path.\n// See Tools/LayeredPile/camera-shadow-alignment.md for call-path evidence.",
+      "// Apply the fixed top-down camera pose and viewport offset for solo play.\n// The normal input path does not move, orbit or follow pile height.\n// Provenance and call-path evidence: Tools/LayeredPile/camera-shadow-alignment.md\n// and docs/refactoring/2026-11-04-naming.md."
+    ]
+  ],
+  "LevelLayoutConfig.cs": [
+    [
+      "// The packaged WX 2.1.12 ordinary MainLevel / level 2 rows (indices 1, 4, 5).\n// This is a separate catalog: it must not reorder the legacy tutorial/PVP type IDs.",
+      "// Theme-specific first- and second-stage layouts. Keep this catalog separate\n// so legacy tutorial/PVP type IDs retain their ordering.\n// Data provenance: docs/refactoring/2026-11-04-naming.md."
+    ]
+  ]
+}

@@ -16,11 +16,11 @@ public class BoosterManager : Singleton<BoosterManager>
     public void HintButton()
     {
         if (!GameManager.Instance.GameIsPlaying() || InputController.Instance.IsResolving || !hintButton.interactable) return;
-        if (ReplicaSourceTools.Enabled) {
-            if (ReplicaSourceTools.Shuffling || !ReplicaSourceTools.CanUse(1)) return;
-            var items=ReplicaSourceTools.AutoFindCandidates(InputController.Instance.objectsOnStack,LevelGenerator.Instance.objectsOnScene);
-            if(items.Count==0){ReplicaFlow.Instance.ShowTips("场上没有足够的同类物品可吸附");return;}
-            if(!ReplicaSourceTools.TrySpend(1))return;ReplicaSourceAudio.Tool(25);
+        if (BoardTools.Enabled) {
+            if (BoardTools.Shuffling || !BoardTools.CanUse(1)) return;
+            var items=BoardTools.AutoFindCandidates(InputController.Instance.objectsOnStack,LevelGenerator.Instance.objectsOnScene);
+            if(items.Count==0){Match3DFlow.Instance.ShowTips("场上没有足够的同类物品可吸附");return;}
+            if(!BoardTools.TrySpend(1))return;GameAudioCatalog.Tool(25);
             for(int i=0;i<items.Count;i++)
                 InputController.Instance.AddObjectOnStack(items[i],false,true,i*.035f);
             CheckHintInteractibility();return;
@@ -69,7 +69,7 @@ public class BoosterManager : Singleton<BoosterManager>
     public void CheckHintInteractibility() // If there is one box and all object are same in stack, player cant use this booster.
     {
         hintButton.interactable = GameManager.Instance.GameIsPlaying();
-        if(ReplicaSourceTools.Enabled){hintButton.interactable=hintButton.interactable&&ReplicaSourceTools.CanUse(1)&&ReplicaSourceTools.CanAutoFind(InputController.Instance.objectsOnStack);return;}
+        if(BoardTools.Enabled){hintButton.interactable=hintButton.interactable&&BoardTools.CanUse(1)&&BoardTools.CanAutoFind(InputController.Instance.objectsOnStack);return;}
         if (InputController.Instance.arrivedObject.Count >= 6)
         {
             bool allObjectsDifferent = true;
@@ -96,7 +96,7 @@ public class BoosterManager : Singleton<BoosterManager>
     #region Undo Booster
     public void Undo() // Remove the most recently collected object from the stack.
     {
-        if(ReplicaSourceTools.Enabled)InputController.Instance.MoveSourceItemsToStore();
+        if(BoardTools.Enabled)InputController.Instance.MoveSourceItemsToStore();
         else InputController.Instance.UndoLast();
     }
     private void CheckUndoInteractibility() // Check for undo button interactibility.

@@ -1,0 +1,45 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UI;
+[InitializeOnLoad]
+public static class UnlimitedMagnetValidation {
+ static UnlimitedMagnetValidation(){EditorApplication.update+=Poll;}
+ static void Poll(){
+  if(!File.Exists("Temp/run-unlimited-magnet")||EditorApplication.isCompiling||EditorApplication.isUpdating)return;
+  if(!EditorApplication.isPlayingOrWillChangePlaymode){EditorApplication.isPlaying=true;return;}
+  if(!Application.isPlaying||!Match3DFlow.Instance||Match3DFlow.Instance.ScreenName!="home")return;
+  File.Delete("Temp/run-unlimited-magnet");new GameObject("Unlimited Magnet Validation").AddComponent<BoardValidationDriver>().StartCoroutine(Run());
+ }
+ static IEnumerator Run(){
+  var records=Match3DGameRecords.Instance;records.StopAllCoroutines();records.enabled=false;typeof(Match3DGameRecords).GetProperty("Instance").SetValue(null,null);
+  var it=Checks();string result="PASS zero-inventory repeated magnet; no ads/modal; isolated counters; empty tray rejected; other tools ordinary; reset and ordinary account";
+  while(true){bool more=false;object next=null;try{more=it.MoveNext();if(more)next=it.Current;}catch(Exception e){result="FAIL "+e;break;}if(!more)break;yield return next;}
+  Match3DTestPrivileges.ForceForValidation=false;Match3DFlow.Instance.Home();typeof(Match3DGameRecords).GetProperty("Instance").SetValue(null,records);
+  File.WriteAllText("Temp/unlimited-magnet-validation.txt",result);EditorApplication.isPlaying=false;
+ }
+ static void Check(bool ok,string why){if(!ok)throw new Exception(why);}
+ static IEnumerator Checks(){
+  var flow=Match3DFlow.Instance;Match3DTestPrivileges.ForceForValidation=true;flow.Begin(0);BoardCreationTestSupport.FinishPending(flow);yield return null;yield return null;
+  Check(flow.UnlimitedMagnet,"flag not latched");Check(!BoardTools.CanUse(0)&&!BoardTools.CanUse(2),"other tools became free");
+  var hud=UnityEngine.Object.FindObjectOfType<Match3DGameplayHUD>();var button=hud.GetComponent<Match3DUIView>().Get<Button>("Hint");
+  Check(hud.quantities[1].text=="∞","missing infinity badge");
+  button.onClick.Invoke();Check(BoardTools.UsedCount(1)==0,"empty tray spent use");
+  for(int i=0;i<4;i++){
+   var input=InputController.Instance;
+   var obj=LevelGenerator.Instance.objectsOnScene.First(x=>x&&x.activeInHierarchy&&LayeredItemPile.Instance.CanPick(x.GetComponent<Rigidbody>()));
+   input.AddObjectOnStack(obj);int before=LevelGenerator.Instance.objectsOnScene.Count;button.onClick.Invoke();
+   Check(!flow.BlocksGameplay,"advertisement/modal opened");Check(BoardTools.UsedCount(1)==i+1&&BoardTools.TestUses(1)==i+1,"magnet did not run");
+   Check(BoardTools.Remaining(1)==0&&BoardTools.AdUses(1)==0,"inventory/ad side effect");
+   float deadline=Time.realtimeSinceStartup+8;while(input.IsBusy){Check(Time.realtimeSinceStartup<deadline,"animation stuck");yield return null;}
+   Check(LevelGenerator.Instance.objectsOnScene.Count==before-3,"did not match exactly three");Check(input.objectsOnStack.Count==0,"tray not empty");
+  }
+  flow.NextStage();BoardCreationTestSupport.FinishPending(flow);yield return null;Check(flow.UnlimitedMagnet&&BoardTools.TestUses(1)==0,"stage reset/privilege incorrect");
+  flow.RestartStage();BoardCreationTestSupport.FinishPending(flow);yield return null;Check(flow.UnlimitedMagnet,"restart lost privilege");
+  typeof(Match3DFlow).GetProperty("IsPvp").SetValue(flow,true);Check(!flow.UnlimitedMagnet&&!BoardTools.CanUse(1),"PVP privilege leaked");typeof(Match3DFlow).GetProperty("IsPvp").SetValue(flow,false);
+  flow.Home();Match3DTestPrivileges.ForceForValidation=false;flow.Begin(0);BoardCreationTestSupport.FinishPending(flow);yield return null;Check(!flow.UnlimitedMagnet&&!BoardTools.CanUse(1),"ordinary account became free");
+ }
+}

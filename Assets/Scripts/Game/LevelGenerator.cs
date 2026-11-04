@@ -9,7 +9,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     public List<GameObject> objectsOnScene; // All collectable objects with its count on scene.
     private void Awake()
     {
-        if (ReplicaFlow.Instance == null) InitializeLevel(); // Replica launch owns stage selection.
+        if (Match3DFlow.Instance == null) InitializeLevel(); // Match3D launch owns stage selection.
     }
     public void InitializeLevel()
     {
@@ -83,12 +83,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
     public void ClearBoard() { DestroyLevel(); }
     private void DestroyLevel()
     {
-        bool sourceBoard=ReplicaFlow.Instance&& !ReplicaFlow.Instance.IsPvp && (ReplicaFlow.Instance.Stage==1||ReplicaFlow.Instance.Stage==2);
+        bool sourceBoard=Match3DFlow.Instance&& !Match3DFlow.Instance.IsPvp && (Match3DFlow.Instance.Stage==1||Match3DFlow.Instance.Stage==2);
         for (int i = 0; i < objectsOnScene.Count; i++)
         {
             if (objectsOnScene[i]) {
                 DG.Tweening.DOTween.Kill(objectsOnScene[i].transform);
-                if(sourceBoard)ReplicaSourceObjectPool.Recycle(objectsOnScene[i]);
+                if(sourceBoard)BoardItemPool.Recycle(objectsOnScene[i]);
                 else {objectsOnScene[i].SetActive(false); Destroy(objectsOnScene[i]);}
             }
         }

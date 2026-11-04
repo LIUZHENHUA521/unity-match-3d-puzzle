@@ -1,0 +1,108 @@
+TAP version 13
+# Subtest: user tap opens the dedicated game account synchronously
+ok 1 - user tap opens the dedicated game account synchronously
+  ---
+  duration_ms: 1.37525
+  ...
+# Subtest: failed launch waits for confirmation before copying the same account link
+ok 2 - failed launch waits for confirmation before copying the same account link
+  ---
+  duration_ms: 0.419458
+  ...
+# Subtest: missing API and synchronous errors offer fallback
+ok 3 - missing API and synchronous errors offer fallback
+  ---
+  duration_ms: 0.503459
+  ...
+# Subtest: user cancellation does not show an error modal
+ok 4 - user cancellation does not show an error modal
+  ---
+  duration_ms: 0.793208
+  ...
+# Subtest: clipboard failure is visible and unsupported browser shows guidance
+ok 5 - clipboard failure is visible and unsupported browser shows guidance
+  ---
+  duration_ms: 0.7095
+  ...
+# Default font platform checks passed
+# Subtest: /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Tools/wechat/test-default-font.cjs
+ok 2 - /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Tools/wechat/test-default-font.cjs
+  ---
+  duration_ms: 25.127625
+  ...
+# Subtest: load completes before show; duplicate taps suppressed; instance reused then recreated after destroy
+ok 7 - load completes before show; duplicate taps suppressed; instance reused then recreated after destroy
+  ---
+  duration_ms: 3.626333
+  ...
+# Subtest: load/show rejection and synchronous errors report failure and permit retry
+ok 8 - load/show rejection and synchronous errors report failure and permit retry
+  ---
+  duration_ms: 1.94275
+  ...
+# Subtest: unsupported platform/API and missing link have visible guidance
+ok 9 - unsupported platform/API and missing link have visible guidance
+  ---
+  duration_ms: 0.820333
+  ...
+# Subtest: late completion of a destroyed page cannot show it or unlock a newer request
+ok 10 - late completion of a destroyed page cannot show it or unlock a newer request
+  ---
+  duration_ms: 1.269917
+  ...
+# Subtest: launch and warm invite query survive login; sharing does not fabricate rewards
+ok 11 - launch and warm invite query survive login; sharing does not fabricate rewards
+  ---
+  duration_ms: 1.309917
+  ...
+# Subtest: already authorized reads profile without prompting and requests no sensitive login data
+ok 12 - already authorized reads profile without prompting and requests no sensitive login data
+  ---
+  duration_ms: 1.231958
+  ...
+# Subtest: first permission uses actual user tap, scales render pixels to logical pixels, handles rejection then success
+ok 13 - first permission uses actual user tap, scales render pixels to logical pixels, handles rejection then success
+  ---
+  duration_ms: 0.753542
+  ...
+# Subtest: late callbacks from old popup cannot overwrite a newly opened account
+ok 14 - late callbacks from old popup cannot overwrite a newly opened account
+  ---
+  duration_ms: 0.326458
+  ...
+# Subtest: clipboard copies full account ID and reports failures
+ok 15 - clipboard copies full account ID and reports failures
+  ---
+  duration_ms: 0.373583
+  ...
+# Subtest: unsupported host degrades without exception
+ok 16 - unsupported host degrades without exception
+  ---
+  duration_ms: 0.604875
+  ...
+# Subtest: slow initial authorization read does not overwrite a newer native tap
+ok 17 - slow initial authorization read does not overwrite a newer native tap
+  ---
+  duration_ms: 0.307792
+  ...
+# PASS complete; incomplete; undefined close; duplicate callbacks; load/show errors; timeout; cancellation; stale promise
+# Subtest: /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Tools/wechat/test-revive-ads.cjs
+ok 6 - /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Tools/wechat/test-revive-ads.cjs
+  ---
+  duration_ms: 23.228833
+  ...
+# PASS: cancellation, room join, messages, stale callbacks, HTTP errors
+# Subtest: /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Tools/wechat/test-transport.cjs
+ok 7 - /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Tools/wechat/test-transport.cjs
+  ---
+  duration_ms: 23.55175
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 37.410333

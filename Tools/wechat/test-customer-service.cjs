@@ -6,7 +6,7 @@ const path=require('node:path');
 const url='https://work.weixin.qq.com/kfid/kfc902f4f13994cca54';
 function setup(wx,window){
  const library={};
- vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../Assets/GooseReplica/Plugins/WebGL/GooseProfile.jslib'),'utf8'),{LibraryManager:{library},mergeInto:Object.assign,wx,window});
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/GooseProfile.jslib'),'utf8'),{LibraryManager:{library},mergeInto:Object.assign,wx,window});
  return library.GooseCustomerServiceOpen;
 }
 test('user tap opens the dedicated game account synchronously',()=>{

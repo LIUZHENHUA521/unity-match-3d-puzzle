@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--source', type=Path, required=True)
 args = parser.parse_args()
-output = ROOT / 'Assets/GooseReplica/Resources/Replica/Fonts/DefaultChinese.otf'
+output = ROOT / 'Assets/Match3D/Resources/Match3D/Fonts/DefaultChinese.otf'
 characters = set(chr(c) for c in range(32, 127))
 for lead in range(0xA1, 0xF8):
     for trail in range(0xA1, 0xFF):
@@ -17,7 +17,7 @@ for lead in range(0xA1, 0xF8):
             characters.update(bytes((lead, trail)).decode('gb2312'))
         except UnicodeDecodeError:
             pass
-for path in (ROOT / 'Assets/GooseReplica').rglob('*'):
+for path in (ROOT / 'Assets/Match3D').rglob('*'):
     if path.suffix in {'.cs', '.json', '.asset', '.prefab', '.unity'}:
         characters.update(path.read_text(errors='ignore'))
 font = TTFont(args.source)

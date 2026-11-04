@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const source=fs.readFileSync('Assets/GooseReplica/Plugins/WebGL/GooseReviveAds.jslib','utf8');
+const source=fs.readFileSync('Assets/Match3D/Plugins/WebGL/GooseReviveAds.jslib','utf8');
 async function scenario(mode){
  const messages=[];let close,error,timer,shows=0,destroyed=0,resolveLoad;
  const ad={onClose:f=>close=f,onError:f=>error=f,offClose(){},offError(){},destroy(){destroyed++},load:()=>mode==='load-error'?Promise.reject(new Error()):mode==='pending'?new Promise(r=>resolveLoad=r):Promise.resolve(),show:()=>{shows++;return mode==='show-error'?Promise.reject(new Error()):Promise.resolve()}};

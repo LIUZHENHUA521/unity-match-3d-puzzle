@@ -8,9 +8,9 @@ public class FoodPileShake : MonoBehaviour
     private float nextShake;
     public void Shake()
     {
-        if (!GameManager.Instance.GameIsPlaying() || Time.time < nextShake || (ReplicaFlow.Instance && ReplicaFlow.Instance.BlocksGameplay)) return;
+        if (!GameManager.Instance.GameIsPlaying() || Time.time < nextShake || (Match3DFlow.Instance && Match3DFlow.Instance.BlocksGameplay)) return;
         nextShake = Time.time + 2;
-        if(ReplicaPilePhysics.Instance){ReplicaPilePhysics.Instance.ShakeAll();return;}
+        if(ItemPhysicsController.Instance){ItemPhysicsController.Instance.ShakeAll();return;}
         foreach (var obj in LevelGenerator.Instance.objectsOnScene)
         {
             if (!obj) continue;

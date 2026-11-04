@@ -12,7 +12,7 @@ public class InputController : Singleton<InputController>
     public bool IsResolving { get; private set; }
     private Coroutine resolution;
     public bool IsBusy => IsResolving || resolution != null || HasPendingVisuals;
-    public bool UsesSourceFlight => ReplicaFlow.Instance && !ReplicaFlow.Instance.IsPvp && (ReplicaFlow.Instance.Stage==1||ReplicaFlow.Instance.Stage==2);
+    public bool UsesSourceFlight => Match3DFlow.Instance && !Match3DFlow.Instance.IsPvp && (Match3DFlow.Instance.Stage==1||Match3DFlow.Instance.Stage==2);
     public bool HasPendingVisuals => sourceFlying.Count>0 || sourceCombining.Count>0;
     public bool CanEvaluateWin => !UsesSourceFlight || sourceCompletionCheckReady;
     readonly HashSet<GameObject> sourceFlying=new HashSet<GameObject>();
@@ -24,8 +24,8 @@ public class InputController : Singleton<InputController>
     private readonly List<GameObject> pickHistory = new List<GameObject>();
     private readonly Dictionary<GameObject, Vector3> scales = new Dictionary<GameObject, Vector3>();
     private readonly Dictionary<GameObject, Dictionary<Collider,bool>> boardColliders = new Dictionary<GameObject, Dictionary<Collider,bool>>();
-    private ReplicaSelectionFeedback selection;
-    private void Awake() { Input.multiTouchEnabled = false; selection=gameObject.AddComponent<ReplicaSelectionFeedback>(); }
+    private Match3DSelectionFeedback selection;
+    private void Awake() { Input.multiTouchEnabled = false; selection=gameObject.AddComponent<Match3DSelectionFeedback>(); }
     public void CancelSelection(){CancelPointer();activeFinger=-1;}
     private void ClearPointerTarget(){pressedObject=null;if(selection)selection.Cancel();}
     private void CancelPointer(){ClearPointerTarget();pointerHeld=false;pointerStartedOnUI=false;}
@@ -50,9 +50,9 @@ public class InputController : Singleton<InputController>
     {
         if (!camera.pixelRect.Contains(position) ||
             !Physics.Raycast(camera.ScreenPointToRay(position), out var hit, 100f,
-                             Physics.DefaultRaycastLayers & ~((1<<ReplicaSourceColliders.BodyLayer)|(1<<ReplicaSourceColliders.WallLayer)), QueryTriggerInteraction.Ignore)) return null;
+                             Physics.DefaultRaycastLayers & ~((1<<ItemColliderGeometry.BodyLayer)|(1<<ItemColliderGeometry.WallLayer)), QueryTriggerInteraction.Ignore)) return null;
         var body = hit.collider.attachedRigidbody;
-        return body && (!ReplicaLayeredPile.Instance || ReplicaLayeredPile.Instance.CanPick(body)) && body.CompareTag("Collectable") && (body.gameObject==pressedObject || ReplicaSourceTools.IsStored(body.gameObject) || !body.isKinematic || (ReplicaPilePhysics.Instance && ReplicaPilePhysics.Instance.Contains(body))) ? body.gameObject : null;
+        return body && (!LayeredItemPile.Instance || LayeredItemPile.Instance.CanPick(body)) && body.CompareTag("Collectable") && (body.gameObject==pressedObject || BoardTools.IsStored(body.gameObject) || !body.isKinematic || (ItemPhysicsController.Instance && ItemPhysicsController.Instance.Contains(body))) ? body.gameObject : null;
     }
     public GameObject PickAt(Vector2 screenPosition)
     {
@@ -64,7 +64,7 @@ public class InputController : Singleton<InputController>
     private void BeginPointer(Vector2 position)
     {
         CancelPointer();
-        if(ReplicaSourceTools.Shuffling||(IsBusy&&!UsesSourceFlight)||objectsOnStack.Count>=7)return;
+        if(BoardTools.Shuffling||(IsBusy&&!UsesSourceFlight)||objectsOnStack.Count>=7)return;
         PointerStarts++;pointerHeld=true;pointerStartedOnUI=PointerOnButton(position);
         UpdatePointer(position);
     }
@@ -83,7 +83,7 @@ public class InputController : Singleton<InputController>
             Mathf.Approximately(lastTargetPosition.y,position.y))return;
         ClearPointerTarget();pressedObject=target;lastTargetPosition=position;PointerHits++;
         // ObjectUnit.BeSelect exits for isStore; stored objects can still be released into the tray.
-        if(!ReplicaSourceTools.IsStored(target))selection.Begin(target,Camera.main,!(ReplicaFlow.Instance&&ReplicaFlow.Instance.IsPvp));
+        if(!BoardTools.IsStored(target))selection.Begin(target,Camera.main,!(Match3DFlow.Instance&&Match3DFlow.Instance.IsPvp));
         LastPickState="hit";
     }
     private void EndPointer(Vector2 position)
@@ -96,7 +96,7 @@ public class InputController : Singleton<InputController>
     }
     private void Update()
     {
-        if (!GameManager.Instance.GameIsPlaying() || (ReplicaFlow.Instance && ReplicaFlow.Instance.BlocksGameplay)) {
+        if (!GameManager.Instance.GameIsPlaying() || (Match3DFlow.Instance && Match3DFlow.Instance.BlocksGameplay)) {
             LastPickState="blocked";CancelPointer(); activeFinger = -1; return;
         }
         if (Input.touchCount > 0) {
@@ -122,28 +122,28 @@ public class InputController : Singleton<InputController>
     const float MagnetSeconds=.5f;
     public void AddObjectOnStack(GameObject obj,bool playSound=true,bool magnetic=false,float magnetDelay=0)
     {
-        if (ReplicaSourceTools.Shuffling || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
+        if (BoardTools.Shuffling || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
             objectsOnStack.Count >= 7 || objectsOnStack.Contains(obj)) return;
-        if (ReplicaFlow.Instance && ReplicaFlow.Instance.InterceptPick(obj)) return;
-        if(UsesSourceFlight&&playSound&&ReplicaLayeredPile.Instance)ReplicaLayeredPile.Instance.RecordSourceTouchHeight(obj.transform.position.y);
+        if (Match3DFlow.Instance && Match3DFlow.Instance.InterceptPick(obj)) return;
+        if(UsesSourceFlight&&playSound&&LayeredItemPile.Instance)LayeredItemPile.Instance.RecordSelectionHeight(obj.transform.position.y);
         if(selection&&selection.Selected==obj){if(UsesSourceFlight)selection.Commit();CancelPointer();}
-        if(!UsesSourceFlight)ReplicaSourceTools.ReleaseStored(obj);
+        if(!UsesSourceFlight)BoardTools.ReleaseStored(obj);
         AcceptedPicks++;LastPickState="picked";
-        if(playSound&&!UsesSourceFlight&&ReplicaFlow.Instance)ReplicaFlow.Instance.SelectSound();
+        if(playSound&&!UsesSourceFlight&&Match3DFlow.Instance)Match3DFlow.Instance.SelectSound();
         if(UsesSourceFlight)obj.transform.DOKill(false);
         pickHistory.Add(obj);
-        if(ReplicaLayeredPile.Instance)ReplicaLayeredPile.Instance.Detach(obj.GetComponent<Rigidbody>());
-        var trayDisplay=UsesSourceFlight?ReplicaTrayDisplayBinding.For(obj):null;
-        if(trayDisplay&&!ReplicaSourceTools.IsStored(obj))trayDisplay.CaptureBoardPose();
+        if(LayeredItemPile.Instance)LayeredItemPile.Instance.Detach(obj.GetComponent<Rigidbody>());
+        var trayDisplay=UsesSourceFlight?Match3DTrayDisplayBinding.For(obj):null;
+        if(trayDisplay&&!BoardTools.IsStored(obj))trayDisplay.CaptureBoardPose();
         scales[obj] = trayDisplay?trayDisplay.boardScale:obj.transform.localScale;
         var body = obj.GetComponent<Rigidbody>();
-        if (ReplicaPilePhysics.Instance) ReplicaPilePhysics.Instance.RemoveForPick(body);
+        if (ItemPhysicsController.Instance) ItemPhysicsController.Instance.RemoveForPick(body);
         if(UsesSourceFlight){
             // BeClick only freezes the body. No temporary dynamic state, velocity clear,
             // interpolation change or neighbour wake is part of this source path.
             body.isKinematic=true;body.detectCollisions=true;
-            obj.GetComponent<ReplicaSourceGooseAnimation>()?.EnterTray();
-            if(playSound)ReplicaSourceAudio.Select(obj);
+            obj.GetComponent<SpecialItemAnimation>()?.EnterTray();
+            if(playSound)GameAudioCatalog.Select(obj);
         }else{
             if(body.isKinematic)body.isKinematic=false;
             body.velocity=Vector3.zero;body.angularVelocity=Vector3.zero;
@@ -154,7 +154,7 @@ public class InputController : Singleton<InputController>
         boardColliders[obj]=colliderStates;
         objectsOnStack.Add(obj);
         objectsOnStack = objectsOnStack.GroupBy(x => x.name).SelectMany(g => g).ToList();
-        if(UsesSourceFlight){if(magnetic)magnetFlights[obj]=new MagnetFlight{start=obj.transform.position,rotation=obj.transform.rotation,started=Time.unscaledTime,delay=magnetDelay};SourcePick(obj);ReplicaSourceTools.ReleaseStored(obj);return;}
+        if(UsesSourceFlight){if(magnetic)magnetFlights[obj]=new MagnetFlight{start=obj.transform.position,rotation=obj.transform.rotation,started=Time.unscaledTime,delay=magnetDelay};SourcePick(obj);BoardTools.ReleaseStored(obj);return;}
         Reposition();
         if (resolution != null) StopCoroutine(resolution);
         resolution = StartCoroutine(Resolve());
@@ -164,21 +164,21 @@ public class InputController : Singleton<InputController>
         // CheckLevelState runs at each EndCombine, not after every concurrent match has finished.
         // A later pickup invalidates an earlier completion checkpoint until a new callback runs.
         sourceCompletionCheckReady=false;
-        LastFlightDuration=magnetFlights.TryGetValue(obj,out var magnet)?MagnetSeconds+magnet.delay:ReplicaSourceFlight.MoveSeconds;
+        LastFlightDuration=magnetFlights.TryGetValue(obj,out var magnet)?MagnetSeconds+magnet.delay:ItemFlightMotion.MoveSeconds;
         float flightSeconds=LastFlightDuration;
-        var initial=scales[obj];var target=ReplicaSourceFlight.PickScale(obj,initial);
-        var display=ReplicaTrayDisplayBinding.For(obj);if(display)target*=display.pose.scale;
+        var initial=scales[obj];var target=ItemFlightMotion.PickScale(obj,initial);
+        var display=Match3DTrayDisplayBinding.For(obj);if(display)target*=display.pose.scale;
         sourceFlying.Add(obj);
         // BeClick starts scale at release; RefreshContentDisplay starts all three axes immediately.
-        obj.transform.DOScale(initial*ReplicaSourceFlight.ScalePeak,ReplicaSourceFlight.ScalePeakSeconds)
+        obj.transform.DOScale(initial*ItemFlightMotion.ScalePeak,ItemFlightMotion.ScalePeakSeconds)
             .SetUpdate(true).SetEase(Ease.OutQuad).OnComplete(()=>{
                 if(!obj)return;
-                obj.transform.DOScale(target,flightSeconds-ReplicaSourceFlight.ScalePeakSeconds)
+                obj.transform.DOScale(target,flightSeconds-ItemFlightMotion.ScalePeakSeconds)
                     .SetUpdate(true).SetEase(Ease.InSine).OnComplete(()=>{
                         if(!obj)return;
                         sourceFlying.Remove(obj);magnetFlights.Remove(obj);
                         if(objectsOnStack.Contains(obj)&&!arrivedObject.Contains(obj))arrivedObject.Add(obj);
-                        obj.transform.DOPunchScale(initial*ReplicaSourceFlight.PunchScale,ReplicaSourceFlight.PunchSeconds,1,1);
+                        obj.transform.DOPunchScale(initial*ItemFlightMotion.PunchScale,ItemFlightMotion.PunchSeconds,1,1);
                     });
             });
         StartCoroutine(SourceHideColliders(obj));
@@ -198,7 +198,7 @@ public class InputController : Singleton<InputController>
         BoosterManager.Instance.CheckHintInteractibility();
     }
     private IEnumerator SourceHideColliders(GameObject obj){
-        yield return new WaitForSeconds(ReplicaSourceFlight.HideCollidersSeconds);
+        yield return new WaitForSeconds(ItemFlightMotion.HideCollidersSeconds);
         if(!obj||(!objectsOnStack.Contains(obj)&&!sourceCombining.Contains(obj)))yield break;
         var body=obj.GetComponent<Rigidbody>();if(body)body.detectCollisions=false;
         foreach(var collider in obj.GetComponentsInChildren<Collider>(true))collider.enabled=false;
@@ -207,12 +207,12 @@ public class InputController : Singleton<InputController>
         for(int i=0;i<objectsOnStack.Count;i++){
             var obj=objectsOnStack[i];if(!obj)continue;
             if(sourceMoves.TryGetValue(obj,out var old))foreach(var tween in old)if(tween.IsActive())tween.Kill();
-            var slot=ReplicaTray.Instance?ReplicaTray.Instance.SlotPosition(i):new Vector3(-1+i*.333f,.3f,-1.62f);
-            var display=ReplicaTrayDisplayBinding.For(obj);
+            var slot=Match3DTray.Instance?Match3DTray.Instance.SlotPosition(i):new Vector3(-1+i*.333f,.3f,-1.62f);
+            var display=Match3DTrayDisplayBinding.For(obj);
             var cameraRotation=Camera.main?Camera.main.transform.rotation:Quaternion.identity;
-            float spacing=ReplicaTray.Instance?Vector3.Distance(ReplicaTray.Instance.SlotPosition(0),ReplicaTray.Instance.SlotPosition(1)):ReplicaTray.SourcePointSpacing;
-            slot=ReplicaTrayDisplaySettings.Position(display?display.pose:null,slot,cameraRotation,spacing);
-            var rotation=display?ReplicaTrayDisplaySettings.Rotation(display.pose,cameraRotation):Camera.main?cameraRotation*Quaternion.Euler(-90,0,0):Quaternion.identity;
+            float spacing=Match3DTray.Instance?Vector3.Distance(Match3DTray.Instance.SlotPosition(0),Match3DTray.Instance.SlotPosition(1)):Match3DTray.SourcePointSpacing;
+            slot=Match3DTrayDisplaySettings.Position(display?display.pose:null,slot,cameraRotation,spacing);
+            var rotation=display?Match3DTrayDisplaySettings.Rotation(display.pose,cameraRotation):Camera.main?cameraRotation*Quaternion.Euler(-90,0,0):Quaternion.identity;
             if(magnetFlights.TryGetValue(obj,out var magnet)){
                 float elapsed=Mathf.Max(0,Time.unscaledTime-magnet.started);
                 float remaining=Mathf.Max(.001f,MagnetSeconds+magnet.delay-elapsed);
@@ -238,41 +238,41 @@ public class InputController : Singleton<InputController>
             }
             // RefreshContentDisplay applies the SAME .3 s to existing and incoming items.
             sourceMoves[obj]=new List<Tween>{
-                obj.transform.DOMoveX(slot.x,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.Linear),
-                obj.transform.DOMoveY(slot.y,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.OutQuad),
-                obj.transform.DOMoveZ(slot.z,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.Linear),
-                obj.transform.DORotateQuaternion(rotation,ReplicaSourceFlight.MoveSeconds).SetUpdate(true).SetEase(Ease.InQuad)
+                obj.transform.DOMoveX(slot.x,ItemFlightMotion.MoveSeconds).SetUpdate(true).SetEase(Ease.Linear),
+                obj.transform.DOMoveY(slot.y,ItemFlightMotion.MoveSeconds).SetUpdate(true).SetEase(Ease.OutQuad),
+                obj.transform.DOMoveZ(slot.z,ItemFlightMotion.MoveSeconds).SetUpdate(true).SetEase(Ease.Linear),
+                obj.transform.DORotateQuaternion(rotation,ItemFlightMotion.MoveSeconds).SetUpdate(true).SetEase(Ease.InQuad)
             };
         }
     }
     private IEnumerator SourceCombine(GameObject[] items){
         // The original old branch waits .3, converges the two sides .2, shrinks the centre .2,
         // checks completion, then keeps the zero-sized centre another .05 before compacting.
-        yield return new WaitForSeconds(ReplicaSourceFlight.MoveSeconds);
+        yield return new WaitForSeconds(ItemFlightMotion.MoveSeconds);
         while(items.Any(x=>x&&sourceFlying.Contains(x)))yield return null;
         if(!items[1])yield break;
         var center=items[1].transform.position;
-        foreach(int i in new[]{0,2})if(items[i])items[i].transform.DOMove(center,ReplicaSourceFlight.MergeSeconds).SetEase(Ease.OutQuad);
-        yield return new WaitForSeconds(ReplicaSourceFlight.MergeSeconds);
+        foreach(int i in new[]{0,2})if(items[i])items[i].transform.DOMove(center,ItemFlightMotion.MergeSeconds).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(ItemFlightMotion.MergeSeconds);
         RemoveSourceVisual(items[0]);RemoveSourceVisual(items[2]);
         if(items[1]){
-            items[1].transform.DOScale(Vector3.zero,ReplicaSourceFlight.ShrinkSeconds).SetEase(Ease.InBack);
+            items[1].transform.DOScale(Vector3.zero,ItemFlightMotion.ShrinkSeconds).SetEase(Ease.InBack);
         }
-        yield return new WaitForSeconds(ReplicaSourceFlight.ShrinkSeconds);
-        ReplicaSourceAudio.Combine(items[1]);
+        yield return new WaitForSeconds(ItemFlightMotion.ShrinkSeconds);
+        GameAudioCatalog.Combine(items[1]);
         sourceCompletionCheckReady=true;
-        if(ReplicaGameRecords.Instance)ReplicaGameRecords.Instance.Matched();
-        yield return new WaitForSeconds(ReplicaSourceFlight.FinalRemovalDelay);
+        if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Matched();
+        yield return new WaitForSeconds(ItemFlightMotion.FinalRemovalDelay);
         RemoveSourceVisual(items[1]);
         RepositionSource();BoosterManager.Instance.CheckHintInteractibility();
     }
     private void RemoveSourceVisual(GameObject obj){
         if(!obj)return;
         obj.transform.DOKill();magnetFlights.Remove(obj);sourceFlying.Remove(obj);sourceCombining.Remove(obj);sourceMoves.Remove(obj);
-        scales.Remove(obj);boardColliders.Remove(obj);ReplicaSourceFlight.Forget(obj);ReplicaSourceAudio.Forget(obj);
+        scales.Remove(obj);boardColliders.Remove(obj);ItemFlightMotion.Forget(obj);GameAudioCatalog.Forget(obj);
         // LevelObjectPool.Recycle keeps the ObjectUnit for a later Get(objName);
         // only the logical board list is removed at combine time.
-        ReplicaSourceObjectPool.Recycle(obj);
+        BoardItemPool.Recycle(obj);
     }
     private void Reposition()
     {
@@ -280,7 +280,7 @@ public class InputController : Singleton<InputController>
         for (int i=0; i<objectsOnStack.Count; i++) {
             var item = objectsOnStack[i];
             item.transform.DOKill();
-            var slot = ReplicaTray.Instance ? ReplicaTray.Instance.SlotPosition(i) : new Vector3(-1+i*.333f, .3f, -1.62f);
+            var slot = Match3DTray.Instance ? Match3DTray.Instance.SlotPosition(i) : new Vector3(-1+i*.333f, .3f, -1.62f);
             // Start travelling on release; selection already supplied the small lift.
             // Use a local easing approximation, not a recovered original animation curve.
             float moveTime = arrivedObject.Contains(item) ? .20f : .30f;
@@ -288,8 +288,8 @@ public class InputController : Singleton<InputController>
             item.transform.DORotate(Vector3.zero, moveTime).SetEase(Ease.OutQuad);
             if (LevelGenerator.Instance.foodPile) {
                 // Keep collected items within their slots; undo restores the enlarged board scale.
-                float slotScale = ReplicaFlow.Instance ? .6f / ReplicaFlow.BoardItemScale : .6f;
-                if(ReplicaTray.Instance)slotScale *= ReplicaTray.Instance.ItemScaleFactor;
+                float slotScale = Match3DFlow.Instance ? .6f / Match3DFlow.BoardItemScale : .6f;
+                if(Match3DTray.Instance)slotScale *= Match3DTray.Instance.ItemScaleFactor;
                 var renderers=item.GetComponentsInChildren<Renderer>();
                 if(renderers.Length>0){
                     // Evaluate unrotated, full-scale bounds before tray tweening.
@@ -297,7 +297,7 @@ public class InputController : Singleton<InputController>
                     item.transform.rotation=Quaternion.identity;item.transform.localScale=scales[item];
                     var bounds=renderers[0].bounds;foreach(var r in renderers)bounds.Encapsulate(r.bounds);
                     float maxSize=Mathf.Max(bounds.size.x,bounds.size.y,bounds.size.z);
-                    if(maxSize>0)slotScale=Mathf.Min(slotScale,.28f*(ReplicaTray.Instance?ReplicaTray.Instance.ItemScaleFactor:1)/maxSize);
+                    if(maxSize>0)slotScale=Mathf.Min(slotScale,.28f*(Match3DTray.Instance?Match3DTray.Instance.ItemScaleFactor:1)/maxSize);
                     item.transform.rotation=savedRotation;item.transform.localScale=savedScale;
                 }
                 item.transform.DOScale(scales[item] * slotScale, moveTime).SetEase(Ease.OutQuad);
@@ -320,7 +320,7 @@ public class InputController : Singleton<InputController>
                 objectsOnStack.Remove(item); arrivedObject.Remove(item); scales.Remove(item); boardColliders.Remove(item); pickHistory.Remove(item);
                 LevelGenerator.Instance.objectsOnScene.Remove(item); item.transform.DOKill(); Destroy(item);
             }
-            if (ReplicaFlow.Instance) ReplicaFlow.Instance.MatchSound();
+            if (Match3DFlow.Instance) Match3DFlow.Instance.MatchSound();
             Reposition();
             yield return new WaitForSeconds(.32f);
         }
@@ -331,25 +331,25 @@ public class InputController : Singleton<InputController>
     }
     public bool MoveSourceItemsToStore(int count=3)
     {
-        if(!UsesSourceFlight||ReplicaSourceTools.Shuffling||!ReplicaSourceTools.CanUse(0)||!GameManager.Instance.GameIsPlaying())return false;
-        var items=ReplicaSourceTools.ReturnCandidates(objectsOnStack,count);if(items.Count==0||!ReplicaSourceTools.TrySpend(0))return false;
+        if(!UsesSourceFlight||BoardTools.Shuffling||!BoardTools.CanUse(0)||!GameManager.Instance.GameIsPlaying())return false;
+        var items=BoardTools.ReturnCandidates(objectsOnStack,count);if(items.Count==0||!BoardTools.TrySpend(0))return false;
         return MoveItemsIntoStore(items);
     }
     // Revive moves every tray item without spending or resetting the ordinary move tool.
     public bool ReviveSourceTray(){
-        if(!UsesSourceFlight||ReplicaSourceTools.Shuffling||objectsOnStack.Count==0)return false;
+        if(!UsesSourceFlight||BoardTools.Shuffling||objectsOnStack.Count==0)return false;
         return MoveItemsIntoStore(objectsOnStack.Where(x=>x).ToList());
     }
     bool MoveItemsIntoStore(List<GameObject> items){
-        ReplicaSourceAudio.Tool(24);CancelPointer();
+        GameAudioCatalog.Tool(24);CancelPointer();
         foreach(var obj in items){
             obj.transform.DOKill();magnetFlights.Remove(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
             objectsOnStack.Remove(obj);arrivedObject.Remove(obj);pickHistory.Remove(obj);
             var body=obj.GetComponent<Rigidbody>();body.isKinematic=true;body.detectCollisions=true;
             if(boardColliders.TryGetValue(obj,out var flags))foreach(var flag in flags)if(flag.Key)flag.Key.enabled=flag.Value;
-            obj.GetComponent<ReplicaSourceGooseAnimation>()?.EnterStore();
+            obj.GetComponent<SpecialItemAnimation>()?.EnterStore();
         }
-        ReplicaSourceTools.Store(items);
+        BoardTools.Store(items);
         RepositionSource();BoosterManager.Instance.CheckHintInteractibility();return true;
     }
     public void UndoLast()
@@ -360,9 +360,9 @@ public class InputController : Singleton<InputController>
         objectsOnStack.Remove(obj); arrivedObject.Remove(obj);
         obj.transform.DOKill();
         obj.transform.localScale = scales[obj]; scales.Remove(obj);
-        var display=UsesSourceFlight?ReplicaTrayDisplayBinding.For(obj):null;
+        var display=UsesSourceFlight?Match3DTrayDisplayBinding.For(obj):null;
         if(display)obj.transform.DORotateQuaternion(display.boardRotation,.35f).SetEase(Ease.OutQuad);
-        obj.transform.DOMove(ReplicaLayeredPile.Instance && ReplicaLayeredPile.Instance.Running ? ReplicaLayeredPile.Instance.ReturnPosition() : LevelGenerator.Instance.CreateRandomPosition(), .35f).OnComplete(() => {
+        obj.transform.DOMove(LayeredItemPile.Instance && LayeredItemPile.Instance.Running ? LayeredItemPile.Instance.ReturnPosition() : LevelGenerator.Instance.CreateRandomPosition(), .35f).OnComplete(() => {
             if (!obj) return;
             var body = obj.GetComponent<Rigidbody>();
             body.isKinematic = false; body.detectCollisions = true;
@@ -374,19 +374,19 @@ public class InputController : Singleton<InputController>
                 foreach(var state in colliderStates)if(state.Key)state.Key.enabled=state.Value;
                 boardColliders.Remove(obj);
             }
-            if(ReplicaPilePhysics.Instance){ReplicaPilePhysics.Instance.Register(body);ReplicaPilePhysics.Instance.WakeNear(body.position);}
-            if(ReplicaLayeredPile.Instance)ReplicaLayeredPile.Instance.Register(body);
+            if(ItemPhysicsController.Instance){ItemPhysicsController.Instance.Register(body);ItemPhysicsController.Instance.WakeNear(body.position);}
+            if(LayeredItemPile.Instance)LayeredItemPile.Instance.Register(body);
         });
         Reposition();
         BoosterManager.Instance.CheckHintInteractibility();
     }
     public void ResetStack()
     {
-        CancelPointer(); activeFinger = -1;ReplicaSourceTools.Reset();
+        CancelPointer(); activeFinger = -1;BoardTools.Reset();
         StopAllCoroutines(); resolution = null; IsResolving = false;
         foreach (var item in objectsOnStack) if (item) item.transform.DOKill();
-        foreach(var item in sourceCombining)if(item){item.transform.DOKill();ReplicaSourceFlight.Forget(item);ReplicaSourceAudio.Forget(item);ReplicaSourceObjectPool.Recycle(item);}
-        foreach(var item in LevelGenerator.Instance.objectsOnScene)ReplicaSourceFlight.Forget(item);
+        foreach(var item in sourceCombining)if(item){item.transform.DOKill();ItemFlightMotion.Forget(item);GameAudioCatalog.Forget(item);BoardItemPool.Recycle(item);}
+        foreach(var item in LevelGenerator.Instance.objectsOnScene)ItemFlightMotion.Forget(item);
         magnetFlights.Clear();sourceCombining.Clear();sourceFlying.Clear();sourceMoves.Clear();sourceCompletionCheckReady=true;
         objectsOnStack.Clear(); arrivedObject.Clear(); scales.Clear(); boardColliders.Clear(); pickHistory.Clear();
     }

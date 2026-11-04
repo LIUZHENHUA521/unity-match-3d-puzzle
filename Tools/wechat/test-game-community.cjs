@@ -6,7 +6,7 @@ const path=require('node:path');
 function setup(wx,window){
  const library={},context={LibraryManager:{library},mergeInto:Object.assign,UTF8ToString:x=>x,wx,window,console:{warn(){}}};
  vm.createContext(context);
- vm.runInContext(fs.readFileSync(path.join(__dirname,'../../Assets/GooseReplica/Plugins/WebGL/GooseGameCommunity.jslib'),'utf8'),context);
+ vm.runInContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/GooseGameCommunity.jslib'),'utf8'),context);
  context.GooseGameCommunity=library.$GooseGameCommunity;
  return library.GooseGameCommunityOpen;
 }

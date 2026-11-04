@@ -4,7 +4,7 @@ import json
 import re
 
 project = Path(__file__).resolve().parents[2]
-root = project / 'Assets/GooseReplica/OriginalModels'
+root = project / 'Assets/Match3D/OriginalModels'
 models = json.loads((root / 'models.json').read_text())['models']
 items = []
 for model in models:
@@ -21,6 +21,6 @@ for model in models:
     wrapper = next(t[0] for t in transforms if t[1] == 0)
     visual = next(t for t in transforms if t[1] == wrapper)
     items.append({'name': model['name'], 'normalizedToSource': model['root']['scale']['x'] / visual[2]})
-output = project / 'Assets/GooseReplica/Resources/Replica/SourceSizes.json'
+output = project / 'Assets/Match3D/Resources/Match3D/SourceSizes.json'
 output.write_text(json.dumps({'items': items}, ensure_ascii=False, indent=2))
 print(f'Wrote {len(items)} size factors to {output}')
