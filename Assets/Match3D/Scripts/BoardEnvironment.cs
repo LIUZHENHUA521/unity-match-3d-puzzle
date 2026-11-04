@@ -17,6 +17,12 @@ public static class BoardEnvironment {
         data=JsonUtility.FromJson<Data>(asset.text);CurrentName=string.IsNullOrEmpty(name)?"Breakfast":name;
     }
     static Data Source {get {if(data==null)data=JsonUtility.FromJson<Data>(Resources.Load<TextAsset>("Match3D/SourceEnvironment").text);return data;}}
+    // Full container width, not the inset used to sample spawn centres.
+    public static float HorizontalHalfExtent {get {
+        float extent=0;
+        foreach(var border in Source.borders)extent=Mathf.Max(extent,Mathf.Abs(border.position.x)+Mathf.Abs(border.scale.x)*.5f);
+        return extent;
+    }}
     public static Border GetBorder(float height){
         var borders=Source.borders;
         for(int i=borders.Length-1;i>=0;i--)if(borders[i].position.y<=height)return borders[i];

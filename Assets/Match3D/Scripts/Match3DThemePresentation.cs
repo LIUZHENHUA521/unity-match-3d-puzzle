@@ -10,6 +10,8 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  public static readonly Quaternion SourceRotation=new Quaternion(.6560590267f,0,0,.7547096610f);
  public static Vector3 SourcePosition=>new Vector3(0,0,.5f)+SourceRotation*new Vector3(0,0,-30);
  GameObject visual;Camera camera;CameraFitter fitter;bool fitted,orthographic;Vector3 position;Quaternion rotation;float size,near,far,fov;Rect rect;CameraClearFlags clear;Color background;bool hdr;int culling;
+ float boardHalfWidth;
+ public const float EdgePadding=.03f; // Reserve 3% of screen width on either side.
  Collider[] legacyColliders;bool[] colliderStates;
  Renderer[] legacy;bool[] enabledStates;BoardLighting lighting;
  public void Begin(string theme){
@@ -25,12 +27,38 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
    legacy=pot.GetComponentsInChildren<Renderer>(true);enabledStates=legacy.Select(r=>r.enabled).ToArray();foreach(var r in legacy)r.enabled=false;
    legacyColliders=pot.GetComponentsInChildren<Collider>(true);colliderStates=legacyColliders.Select(c=>c.enabled).ToArray();foreach(var c in legacyColliders)c.enabled=false;
   }
+  boardHalfWidth=RequiredHalfWidth(LevelLayoutConfig.Get(theme).prefabs);
   camera=Camera.main;if(!camera)return;position=camera.transform.position;rotation=camera.transform.rotation;size=camera.orthographicSize;orthographic=camera.orthographic;near=camera.nearClipPlane;far=camera.farClipPlane;fov=camera.fieldOfView;rect=camera.rect;clear=camera.clearFlags;background=camera.backgroundColor;hdr=camera.allowHDR;culling=camera.cullingMask;
   fitter=camera.GetComponent<CameraFitter>();if(fitter){fitted=fitter.enabled;fitter.enabled=false;}
   camera.transform.SetPositionAndRotation(SourcePosition,SourceRotation);camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.clear;camera.allowHDR=false;camera.cullingMask=503;camera.orthographic=true;camera.nearClipPlane=.3f;camera.farClipPlane=1000;camera.rect=new Rect(0,0,1,1);Fit();
  }
  public static float Size(float aspect)=>6.5f*Mathf.Max(1,(9f/16)/Mathf.Max(.01f,aspect));
- public void Fit(){if(camera&&visual){camera.orthographicSize=Size(camera.aspect);camera.fieldOfView=60*Mathf.Max(1,(9f/16)/camera.aspect);}}
+ // Compute once when entering the theme, before creation growth/visibility changes.
+ // A sphere about the root pivot covers long/off-centre meshes at every rotation.
+ public static float ModelRadius(GameObject prefab){
+  float radius=0;
+  foreach(var renderer in prefab.GetComponentsInChildren<Renderer>(true)){
+   if(!renderer.enabled)continue;
+   Bounds bounds;
+   if(renderer is SkinnedMeshRenderer skin)bounds=skin.localBounds;
+   else {
+    var mesh=renderer.GetComponent<MeshFilter>();
+    if(!mesh||!mesh.sharedMesh)continue;
+    bounds=mesh.sharedMesh.bounds;
+   }
+   for(int i=0;i<8;i++){
+    var corner=bounds.center+Vector3.Scale(bounds.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1));
+    radius=Mathf.Max(radius,(renderer.transform.TransformPoint(corner)-prefab.transform.position).magnitude);
+   }
+  }
+  return radius*BoardLayoutSettings.ModelScale(prefab);
+ }
+ public static float RequiredHalfWidth(GameObject[] prefabs){
+  float radius=0;foreach(var prefab in prefabs)if(prefab)radius=Mathf.Max(radius,ModelRadius(prefab));
+  return (BoardEnvironment.HorizontalHalfExtent+radius)/(1-2*EdgePadding);
+ }
+ public static float Size(float aspect,float halfWidth)=>Mathf.Max(Size(aspect),halfWidth/Mathf.Max(.01f,aspect));
+ public void Fit(){if(camera&&visual){camera.orthographicSize=Size(camera.aspect,boardHalfWidth);camera.fieldOfView=60*Mathf.Max(1,(9f/16)/camera.aspect);}}
  void LateUpdate(){Fit();}
  public void End(){
   if(lighting)lighting.End();
