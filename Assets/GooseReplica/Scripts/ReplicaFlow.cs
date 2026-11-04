@@ -21,6 +21,7 @@ public partial class ReplicaFlow : MonoBehaviour {
     public int Stage {get;private set;}
     public int ThemeIndex {get;private set;}
     public string ScreenName {get;private set;}
+    public int ScreenVersion {get;private set;}
     public string LastResult {get;private set;}
     public int TodaySeed {get;private set;}
     public float AppliedModelSize {get;private set;}=1f;
@@ -98,6 +99,7 @@ public partial class ReplicaFlow : MonoBehaviour {
     }
 
     void Clear(){
+        ScreenVersion++;
         ResetToolOffer();
         displayedTime=displayedCount=displayedPeer=-1;
         foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;peerText=null;if(tips)tips.Hide();BlocksGameplay=false;
@@ -124,13 +126,8 @@ public partial class ReplicaFlow : MonoBehaviour {
         view.Bind("Close",()=>CloseModal());
     }
     public void ShowThemes(){
-        Clear();ScreenName="themes";var view=ReplicaUIView.Load("Themes",page);view.Bind("Back",Home);
-        for(int i=0;i<library.themes.Length;i++){
-            int index=i;var theme=library.themes[i];
-            view.Text("Name"+i,theme.title);view.Text("Description"+i,theme.subtitle);
-            view.Get<Image>("Goose"+i).sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+theme.gooseSprite);
-            view.Bind("Play"+i,()=>BeginReward(index,"elite"));
-        }
+        // Both home challenge entries use the sole countryside theme directly.
+        BeginReward(0,"elite");
     }
     public bool HasGoose(string id){return PlayerPrefs.GetInt("goose.collection."+id,0)>0;}
     public void ShowCollection(){

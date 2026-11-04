@@ -32,7 +32,7 @@ public static class HomeSkinValidation {
                 case 2:Check(flow.ScreenName=="pets-tab","pets placeholder");Button("Tab Home").onClick.Invoke();break;
                 case 3:Button("Settings").onClick.Invoke();Check(flow.BlocksGameplay,"settings opens");break;
                 case 4:UnityEngine.Object.FindObjectsOfType<Button>().First(b=>b.GetComponentInChildren<Text>()?.text=="完成").onClick.Invoke();Check(!flow.BlocksGameplay,"settings closes");Button("Rewards").onClick.Invoke();break;
-                case 5:Check(flow.BlocksGameplay,"reward explanation opens");UnityEngine.Object.FindObjectsOfType<Button>().First(b=>b.GetComponentInChildren<Text>()?.text=="知道了").onClick.Invoke();Check(!flow.BlocksGameplay,"reward explanation closes");Button("Elite").onClick.Invoke();Check(flow.ScreenName=="themes","elite opens theme selection");flow.Home();break;
+                case 5:Check(flow.BlocksGameplay,"reward explanation opens");UnityEngine.Object.FindObjectsOfType<Button>().First(b=>b.GetComponentInChildren<Text>()?.text=="知道了").onClick.Invoke();Check(!flow.BlocksGameplay,"reward explanation closes");Button("Elite").onClick.Invoke();Check(flow.ScreenName!="themes"&&flow.library.themes[0].sourceEnvironment=="CountrysideStove","elite skips theme selection and uses countryside");flow.Home();break;
                 case 6:Button("Bachelor").onClick.Invoke();Check(flow.ScreenName=="game"&&flow.ThemeIndex==0&&flow.Stage==1,"bachelor starts ordinary tutorial");Check(LevelGenerator.Instance.objectsOnScene.Count==12,"ordinary gameplay unchanged");flow.Home();break;
                 case 7:Check(flow.ScreenName=="home"&&LevelGenerator.Instance.objectsOnScene.Count==0,"return clears board");Finish(null);break;
             }

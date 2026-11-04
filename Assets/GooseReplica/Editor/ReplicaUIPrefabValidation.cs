@@ -39,7 +39,7 @@ public static class ReplicaUIPrefabValidation {
                 Check(Time.timeScale==1 && !View("PauseSettings").Get<Transform>("Home").gameObject.activeSelf,"home settings does not pause / hides return-home");
                 bool prior=Flow.SettingsEffects;Click("PauseSettings","Effects");Check(Flow.SettingsEffects!=prior,"effects toggle updates preference");Click("PauseSettings","Effects");
                 Click("PauseSettings","Close");Click("Home","Elite");break;
-            case 7:Check(Flow.ScreenName=="themes","theme page opens");Click("Themes","Back");break;
+            case 7:Check(Flow.ScreenName!="themes"&&Flow.library.themes[0].sourceEnvironment=="CountrysideStove","elite skips theme selection and uses countryside");Flow.Home();break;
             case 8:Click("Home","Bachelor");break;
             case 9:
                 Check(Flow.ScreenName=="game"&&Flow.Stage==1,"begin gameplay binding");

@@ -18,6 +18,18 @@ public sealed class ReplicaInvitations : MonoBehaviour {
     public string RecordToken=>token;
     public void RefreshRecordLogin(){if(!Busy&&!logging){token=null;Refresh();}}
     public bool Ready=>State!=null&&!string.IsNullOrEmpty(token);
+    // Share the startup login instead of treating an in-flight login as a failure.
+    public IEnumerator EnsureReady(Action<bool> completed,Func<bool> cancelled=null){
+        if(!Ready&&!Busy&&!logging)Refresh();
+        float deadline=Time.realtimeSinceStartup+35f;
+        while(!Ready&&(Busy||logging)&&Time.realtimeSinceStartup<deadline){
+            if(cancelled!=null&&cancelled()){completed(false);yield break;}
+            yield return null;
+        }
+        if(cancelled!=null&&cancelled()){completed(false);yield break;}
+        if(!Ready&&(Busy||logging))SetStatus("登录超时，请重试");
+        completed(Ready);
+    }
     public event Action Changed;
     public event Action MailChanged;
     public readonly System.Collections.Generic.List<ReplicaMail> Mails=new System.Collections.Generic.List<ReplicaMail>();
@@ -44,7 +56,7 @@ public sealed class ReplicaInvitations : MonoBehaviour {
     void SetStatus(string value){Status=value;Changed?.Invoke();}
     public void Refresh(){if(Busy||logging)return;
 #if UNITY_WEBGL && !UNITY_EDITOR
-        logging=true;loginDeadline=Time.realtimeSinceStartup+25;GooseInvitesLogin();
+        logging=true;loginDeadline=Time.realtimeSinceStartup+25;SetStatus("正在登录微信…");GooseInvitesLogin();
 #else
         SetStatus("请在微信小游戏中登录（编辑器仅预览）");
 #endif

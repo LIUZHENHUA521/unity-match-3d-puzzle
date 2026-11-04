@@ -5,7 +5,7 @@ using UnityEngine;
 public sealed class ReplicaHomeView : MonoBehaviour {
     public const string BachelorReward="2", EliteReward="10";
     public enum Tab { Home, Collection, Pets }
-    public UnityEngine.UI.Button signIn, invite, community, challenge;
+    public UnityEngine.UI.Button signIn, invite, community;
     public RectTransform artwork;
     ReplicaUIView view;
     Rect lastSafe;Vector2 lastSize;Vector2Int lastScreen;
@@ -17,12 +17,11 @@ public sealed class ReplicaHomeView : MonoBehaviour {
         ui.Bind("Tab Pets",()=>flow.ShowHomeTab(Tab.Pets));
         if(tab==Tab.Home){
             ui.Bind("Settings",()=>{var existing=home.GetComponentInChildren<ReplicaHomeMenu>();if(existing){Destroy(existing.gameObject);return;}var menu=ReplicaUIView.Load("HomeMenu",home.transform);var controller=menu.GetComponent<ReplicaHomeMenu>();controller.FollowArtwork(home.artwork);controller.Connect(flow);});ui.Bind("Rewards",()=>{if(home.artwork)flow.ShowHomeFeatureNotice("月底抽 iPad 活动尚未接入");else flow.ShowRewardInfo();});
-            ui.Bind("Bachelor",()=>flow.BeginReward(0,"bachelor"));ui.Bind("Elite",flow.ShowThemes);
+            ui.Bind("Bachelor",()=>flow.BeginReward(0,"bachelor"));ui.Bind("Elite",()=>flow.BeginReward(0,"elite"));
         }
         if(home.signIn)home.signIn.onClick.AddListener(()=>{flow.HomeClick();flow.ShowHomeFeatureNotice("七日签到功能尚未接入");});
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});
         if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();ReplicaGameCommunity.Open();});
-        if(home.challenge)home.challenge.onClick.AddListener(()=>{flow.HomeClick();flow.ShowThemes();});
         if(!home.artwork)home.Layout();return home;
     }
     void LateUpdate(){

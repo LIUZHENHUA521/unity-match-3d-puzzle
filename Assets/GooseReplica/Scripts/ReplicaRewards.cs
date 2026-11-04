@@ -12,21 +12,33 @@ public sealed class ReplicaRewards : MonoBehaviour {
     void OnDestroy(){if(Instance==this)Instance=null;}
     public void Begin(int theme,string tier,string themeId){if(!starting)StartCoroutine(StartChallenge(theme,tier,themeId));}
     IEnumerator StartChallenge(int theme,string tier,string themeId){
-        var screen=ReplicaFlow.Instance.ScreenName;bool testing=ReplicaTestPrivileges.AccountEnabled;starting=true;ReplicaFlow.Instance.Notice("正在确认红包挑战资格…");Reply result=null;
-        yield return Request(testing?"daily":"runs",JsonUtility.ToJson(new StartBody{requestId=Guid.NewGuid().ToString("N"),tier=tier,themeId=themeId}),r=>result=r,testing);
-        starting=false;if(ReplicaFlow.Instance.ScreenName!=screen)yield break;
-        if(result!=null&&result.ok){
-            var pool=ReplicaSourceLevelPlan.Get(ReplicaFlow.Instance.SourceEnvironmentForTheme(theme)).prefabs.Length;
-            if(result.level==null||result.level.tier!=tier||!result.level.IsValid(pool)){ReplicaFlow.Instance.Notice("每日关卡配置无效，请更新游戏或稍后重试");yield break;}
-            if(testing)ReplicaFlow.Instance.BeginDailyPractice(theme,result.level);
-            else ReplicaFlow.Instance.BeginQualified(theme,result.runId,result.rewardTier,result.ruleVersion,result.level);
-            yield break;
-        }
-        ReplicaFlow.Instance.Notice(result!=null&&!string.IsNullOrEmpty(result.error)?result.error:"网络暂不可用，请重试");
+        var flow=ReplicaFlow.Instance;int screen=flow.ScreenVersion;starting=true;
+        try{
+            var account=ReplicaInvitations.Instance;
+            if(account&&!account.Ready){
+                flow.Notice("正在登录微信，请稍候…");bool ready=false;
+                yield return account.EnsureReady(ok=>ready=ok,()=>!flow||flow.ScreenVersion!=screen);
+                if(!flow||flow.ScreenVersion!=screen)yield break;
+                if(!ready){flow.Notice(string.IsNullOrEmpty(account.Status)?"登录失败，请重试":account.Status);yield break;}
+            }
+            bool testing=ReplicaTestPrivileges.AccountEnabled;flow.Notice("正在确认红包挑战资格…");Reply result=null;
+            yield return Request(testing?"daily":"runs",JsonUtility.ToJson(new StartBody{requestId=Guid.NewGuid().ToString("N"),tier=tier,themeId=themeId}),r=>result=r,testing);
+            if(!flow||flow.ScreenVersion!=screen)yield break;
+            if(result!=null&&result.ok){
+                var pool=ReplicaSourceLevelPlan.Get(ReplicaFlow.Instance.SourceEnvironmentForTheme(theme)).prefabs.Length;
+                if(result.level==null||result.level.tier!=tier||!result.level.IsValid(pool)){ReplicaFlow.Instance.Notice("每日关卡配置无效，请更新游戏或稍后重试");yield break;}
+                if(testing)ReplicaFlow.Instance.BeginDailyPractice(theme,result.level);
+                else ReplicaFlow.Instance.BeginQualified(theme,result.runId,result.rewardTier,result.ruleVersion,result.level);
+                yield break;
+            }
+            ReplicaFlow.Instance.Notice(result!=null&&!string.IsNullOrEmpty(result.error)?result.error:"网络暂不可用，请重试");
+        }finally{starting=false;}
     }
     public IEnumerator Request(string action,string json,Action<Reply> completed,bool daily=false){
         var account=ReplicaInvitations.Instance;
-        if(!account||!account.Ready){completed(new Reply{error="请先完成微信登录"});yield break;}
+        if(!account){completed(new Reply{error="账号服务尚未就绪，请稍后重试"});yield break;}
+        bool ready=false;yield return account.EnsureReady(ok=>ready=ok);
+        if(!ready){completed(new Reply{error=string.IsNullOrEmpty(account.Status)?"登录失败，请重试":account.Status});yield break;}
         using(var req=new UnityWebRequest(endpoint+(daily?"/levels/":"/rewards/")+action,"POST")){
             req.uploadHandler=new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(json));req.downloadHandler=new DownloadHandlerBuffer();req.timeout=10;
             req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("Authorization","Bearer "+account.RecordToken);
