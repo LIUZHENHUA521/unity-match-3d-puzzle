@@ -26,6 +26,8 @@ public static class FirstStageValidation {
                 Check(plan.Count==15&&plan.Select(t=>t.id).Distinct().Count()==15,"15 unique objects");
                 Check(plan.GroupBy(t=>t.type).Select(g=>g.Count()).OrderBy(n=>n).SequenceEqual(new[]{3,6,6}),"three types, complete triples");
                 Check(plan.All(t=>t.type>=0&&t.type<profile.prefabs.Length&&profile.prefabs[t.type]&&t.layer==0&&t.height==6f),"valid theme models and tutorial positions");
+                Check(plan.Count(t=>profile.prefabs[t.type].name==profile.tutorialNames[0])==3,"three fixed target items");
+                Check(plan.All(t=>profile.tutorialNames.Contains(profile.prefabs[t.type].name)),"only curated tutorial models");
                 selections.Add(string.Join(",",plan.Select(t=>t.type).Distinct().OrderBy(t=>t)));
             }
             Check(selections.Count>1,"selection varies across seeds");

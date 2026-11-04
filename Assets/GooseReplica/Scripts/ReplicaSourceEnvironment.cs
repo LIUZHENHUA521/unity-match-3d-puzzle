@@ -66,10 +66,23 @@ public static class ReplicaSourceEnvironment {
                            y,border.position.z+random.Range(-1f,1f)*border.scale.z*.45f);
     }
     public static Quaternion Rotation(IReplicaSourceRandom random)=>Quaternion.Euler(random.Range(0f,1f)*360f,random.Range(0f,1f)*360f,random.Range(0f,1f)*360f);
-    public static GameObject CreateBoundary(){
-        var nodes=Source.nodes;var objects=new GameObject[nodes.Length];
+    public static GameObject CreateBoundary(bool firstStage=false){
+        var nodes=BoundaryNodes(firstStage);var objects=new GameObject[nodes.Length];
         for(int i=0;i<nodes.Length;i++)objects[i]=Build(nodes[i],nodes[i].parent<0?null:objects[nodes[i].parent].transform);
         return objects[0];
+    }
+    static Node[] BoundaryNodes(bool firstStage){
+        if(!firstStage)return Source.nodes;
+        var asset=Resources.Load<TextAsset>("Replica/Environments/"+CurrentName+"FirstStage");
+        if(!asset)throw new InvalidOperationException("Missing first-stage boundary: "+CurrentName);
+        return JsonUtility.FromJson<Data>(asset.text).nodes;
+    }
+    public static void UseSecondStageBoundary(GameObject boundary){
+        // WX InitLevelCol/j38503 selects Lv1Col for level 1 and Lv2AirWall for level 2.
+        // Retain scene/root ownership across transition, but replace the collision subtree.
+        foreach(Transform child in boundary.transform){child.gameObject.SetActive(false);UnityEngine.Object.Destroy(child.gameObject);}
+        var nodes=Source.nodes;var objects=new GameObject[nodes.Length];objects[0]=boundary;
+        for(int i=1;i<nodes.Length;i++)objects[i]=Build(nodes[i],objects[nodes[i].parent].transform);
     }
     static GameObject Build(Node n,Transform parent){
         var obj=new GameObject(n.name);obj.layer=ReplicaSourceColliders.WallLayer;obj.transform.SetParent(parent,false);

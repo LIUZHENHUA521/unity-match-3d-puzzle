@@ -42,7 +42,7 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
     void Awake(){Instance=this;}
     void OnDestroy(){Clear();if(Instance==this)Instance=null;}
     public static float Radius(float y)=>ReplicaSourceProfile.HalfExtent(y);
-    public void Begin(bool creating=false,ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null,float? limitHeight=null){
+    public void Begin(bool creating=false,ReplicaThemePresentation reusedPresentation=null,GameObject reusedBoundary=null,float? limitHeight=null,bool firstStage=false){
         Clear();optimizationElapsed=0;Running=true;Creating=creating;creationGrowthRunning=creating;creationClock=0;
         if(creating){
             // Avoid a loading stall feeding a long physics catch-up into the next
@@ -66,7 +66,8 @@ public sealed class ReplicaLayeredPile : MonoBehaviour {
             if(!presentation)presentation=gameObject.AddComponent<ReplicaThemePresentation>();
             presentation.Begin(ReplicaSourceEnvironment.CurrentName);
         }
-        boundary=reusedBoundary??ReplicaSourceEnvironment.CreateBoundary();
+        boundary=reusedBoundary??ReplicaSourceEnvironment.CreateBoundary(firstStage);
+        if(reusedBoundary&&!firstStage)ReplicaSourceEnvironment.UseSecondStageBoundary(boundary);
         boundary.name=ReplicaSourceEnvironment.CurrentName+" source collision reference";
         boundary.SetActive(true);
         // Creation growth is advanced from LateUpdate.  Keeping it on the

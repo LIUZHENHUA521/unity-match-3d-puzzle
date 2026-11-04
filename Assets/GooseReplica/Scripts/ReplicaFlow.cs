@@ -185,7 +185,7 @@ public partial class ReplicaFlow : MonoBehaviour {
         var source=sourceTutorial||Stage==2? (sourceTutorial?ReplicaSourceLevelPlan.GetTutorial(CurrentTheme.sourceEnvironment):ReplicaSourceLevelPlan.Get(CurrentTheme.sourceEnvironment)) : null;
         var prefabs=source!=null?source.prefabs:CurrentTheme.prefabs;
         IReplicaSourceRandom sourceRandom=dailyLevel!=null&&!IsPvp?dailyLevel.RandomForStage(Stage):source!=null?ReplicaSourceGlobalRandom.Instance:null;
-        var tiles=dailyLevel!=null&&!IsPvp?ReplicaDailyLevel.Generate(prefabs.Length,sourceTutorial?source.layers:dailyLevel.layers,sourceRandom):sourceTutorial?ReplicaSourceLevelPlan.GenerateFirstStage(source,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
+        var tiles=sourceTutorial?ReplicaSourceLevelPlan.GenerateFirstStage(source,sourceRandom):dailyLevel!=null&&!IsPvp?ReplicaDailyLevel.Generate(prefabs.Length,dailyLevel.layers,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
         Spawn(tiles,TodaySeed,dailyLevel!=null&&!IsPvp&&Stage==2?dailyLevel.seconds:source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);
         if(sourceTutorial)stagePreloader.Begin(CurrentTheme.sourceEnvironment);
 
@@ -217,7 +217,7 @@ public partial class ReplicaFlow : MonoBehaviour {
         GameManager.Instance.currentLevelTime=seconds;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(layered){
             AppliedModelSize=ReplicaSourceProfile.ModelSizeMultiplier;
-            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true,reusedPresentation,reusedBoundary,sourceTutorial?4f:dailyLevel!=null&&!IsPvp?dailyLevel.limitHeight:(float?)null);
+            ReplicaSourceEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true,reusedPresentation,reusedBoundary,sourceTutorial?4f:dailyLevel!=null&&!IsPvp?dailyLevel.limitHeight:(float?)null,sourceTutorial);
             var random=sourceRandom??ReplicaSourceGlobalRandom.Instance;
             // LoopCreateObj builds all descriptions bottom-to-top, then List.Sort compares Y.
             // Rotation is sampled later, at CreateUnitObj, in the sorted creation order.
