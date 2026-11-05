@@ -40,7 +40,17 @@ public partial class Match3DFlow : MonoBehaviour {
     public bool SettingsVibration {get {return PlayerPrefs.GetInt("goose.vibration",1)==1;} }
     ThemeEntry CurrentTheme {get {return library.themes[ThemeIndex];} }
     public static string Today {get {return DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd");} }
-    void Awake(){Instance=this;}
+    void Awake(){
+        Instance=this;
+        // Hide the inherited demo before SDK/font initialization can yield a frame.
+        // Keep its objects and colliders available to the existing gameplay services.
+        HideLegacyPresentation();
+    }
+    public static void HideLegacyPresentation(){
+        var pot=GameObject.Find("Cooking Pot");
+        if(pot)foreach(var renderer in pot.GetComponentsInChildren<Renderer>(true))renderer.enabled=false;
+        foreach(var c in FindObjectsOfType<Canvas>())c.gameObject.SetActive(false);
+    }
     System.Collections.IEnumerator Start(){
 #if UNITY_WEBGL && !UNITY_EDITOR
         bool sdkReady=false;
@@ -58,7 +68,6 @@ public partial class Match3DFlow : MonoBehaviour {
         QualitySettings.shadowResolution=ShadowResolution.Medium;
         QualitySettings.shadowDistance=20f;
         QualitySettings.shadowCascades=0;
-        foreach(var c in FindObjectsOfType<Canvas>())c.gameObject.SetActive(false);
         var uiRoot=Match3DUIView.Load("UIRoot",null);
         canvas=uiRoot.GetComponent<Canvas>();canvas.name="Goose UI";
         page=uiRoot.Get<RectTransform>("Page");

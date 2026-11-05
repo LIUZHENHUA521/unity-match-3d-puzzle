@@ -22,6 +22,10 @@ public sealed class ItemHighlight : MonoBehaviour {
     }
     readonly Group selection=new Group();readonly List<Group> toolGroups=new List<Group>();
     Camera view;CommandBuffer commands;Material mask;Mesh screenQuad;float toolsExpireAt;
+    // A host backbuffer can have depth without stencil. In that case the
+    // NotEqual outline passes cover the entire item in opaque black. Keep the
+    // surface feedback on WebGL without relying on the host framebuffer stencil.
+    public bool UseStencilOutlines {get;set;}=Application.platform!=RuntimePlatform.WebGLPlayer;
     public GameObject Target=>selection.target;
     public int DrawCount {get;private set;}
     public int RendererCount=>selection.parts.Count;
@@ -98,6 +102,10 @@ public sealed class ItemHighlight : MonoBehaviour {
         DrawCount++;
     }
     void DrawGroup(Group group){
+        if(!UseStencilOutlines){
+            foreach(var p in group.parts)if(Visible(p))for(int s=0;s<p.mesh.subMeshCount;s++)Draw(p,p.overlays[s],s);
+            return;
+        }
         commands.DrawMesh(screenQuad,Matrix4x4.identity,mask,0,1);DrawCount++;
         for(int i=0;i<4;i++){
             var d=Directions[i];group.glow[i].SetVector("_GlowDirection",new Vector4(d.x,d.y*view.aspect,0,0));

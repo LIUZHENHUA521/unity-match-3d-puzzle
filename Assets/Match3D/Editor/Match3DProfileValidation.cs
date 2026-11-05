@@ -7,6 +7,20 @@ using UnityEditor;
 using UnityEngine.UI;
 public static class Match3DProfileValidation {
  const string Output="work/profile-validation";
+ // Standalone layout proof: no account/network access or Play Mode is required.
+ public static void RenderLayout(){
+  Match3DProfileBuilder.Build();Directory.CreateDirectory(Output);
+  var cameraObject=new GameObject("Profile preview camera");var camera=cameraObject.AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.16f,.19f,.21f);camera.transform.position=new Vector3(0,0,-10);
+  var canvasObject=new GameObject("Profile preview",typeof(RectTransform),typeof(Canvas));var canvas=canvasObject.GetComponent<Canvas>();canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
+  var target=new RenderTexture(720,1280,24);target.Create();camera.targetTexture=target;
+  var instance=UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Resources/Match3D/UI/UserProfile.prefab"),canvas.transform,false);var view=instance.GetComponent<Match3DUserProfileView>();
+  if(!view.sync||view.sync.image.sprite.name!="img_add_photo"||instance.GetComponentsInChildren<Button>().Length!=6)throw new Exception("Profile controls mismatch");
+  if(instance.GetComponentsInChildren<Text>().Any(t=>t.text.Contains("同步微信资料")))throw new Exception("Legacy sync label remains");
+  view.nickname.text="玩家abcabc";view.userId.text=Match3DUserProfileView.ShortId("5e4631556a27abcdef123456");view.gender.text="男";view.location.text="北京市/北京市/昌平区";view.registered.text="2026-06-09 13:40:29";
+  Canvas.ForceUpdateCanvases();instance.GetComponent<Match3DUIFitContent>().Fit();Canvas.ForceUpdateCanvases();camera.Render();var old=RenderTexture.active;RenderTexture.active=target;var texture=new Texture2D(720,1280,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,720,1280),0,0);texture.Apply();File.WriteAllBytes(Output+"/restored-layout.png",texture.EncodeToPNG());RenderTexture.active=old;camera.targetTexture=null;
+  UnityEngine.Object.DestroyImmediate(texture);UnityEngine.Object.DestroyImmediate(canvasObject);UnityEngine.Object.DestroyImmediate(cameraObject);target.Release();UnityEngine.Object.DestroyImmediate(target);
+  File.WriteAllText(Output+"/layout-result.txt","PASS: PSD camera sprite, six controls, no legacy sync label; rendered 720x1280 using fixture values.\n");
+ }
  public static void Run(){if(!Application.isPlaying||!Match3DFlow.Instance)throw new Exception("Start Play Mode first");Directory.CreateDirectory(Output);File.WriteAllText(Output+"/result.txt","");new GameObject("Profile validation driver").AddComponent<BoardValidationDriver>().StartCoroutine(Guard(Check()));}
  static IEnumerator Guard(IEnumerator routine){while(true){object current;try{if(!routine.MoveNext())break;current=routine.Current;}catch(Exception e){File.AppendAllText(Output+"/result.txt","FAIL "+e);Debug.LogException(e);yield break;}yield return current;}File.AppendAllText(Output+"/result.txt","ALL PASSED\n");}
  static void Assert(bool value,string name){if(!value)throw new Exception(name);File.AppendAllText(Output+"/result.txt","PASS "+name+"\n");}
@@ -14,7 +28,7 @@ public static class Match3DProfileValidation {
  static IEnumerator Check(){
   var flow=Match3DFlow.Instance;var service=Match3DInvitations.Instance;flow.Home();service.Initialize("http://127.0.0.1:8098");service.OnInvitationBridge("{\"code\":\"profile-fixture-user\"}");yield return Idle(service);Assert(service.Ready&&service.State.createdAt>0,"server account and registration timestamp");
   var home=UnityEngine.Object.FindObjectOfType<Match3DHomeView>();home.GetComponent<Match3DUIView>().Get<Button>("Settings").onClick.Invoke();yield return Idle(service);var menu=UnityEngine.Object.FindObjectOfType<Match3DHomeMenu>();menu.GetComponent<Match3DUIView>().Get<Button>("Card").onClick.Invoke();yield return null;
-  var view=UnityEngine.Object.FindObjectOfType<Match3DUserProfileView>();Assert(view&&flow.BlocksGameplay,"personal card entry opens profile");Assert(view.gender.text=="未提供"&&view.location.text=="未提供"&&view.nickname.text=="微信玩家","missing authorization defaults");Assert(view.GetComponentsInChildren<InputField>().Length==0,"read-only profile has no edit fields");Assert(view.GetComponentsInChildren<Button>().Length==3,"only close, sync, copy controls; no camera");
+  var view=UnityEngine.Object.FindObjectOfType<Match3DUserProfileView>();Assert(view&&flow.BlocksGameplay,"personal card entry opens profile");Assert(view.gender.text=="未提供"&&view.location.text=="未提供"&&view.nickname.text=="微信玩家","missing authorization defaults");Assert(view.GetComponentsInChildren<InputField>().Length==0,"read-only profile has no edit fields");Assert(view.GetComponentsInChildren<Button>().Length==6,"close, camera sync, copy and three profile edit hints");
   view.OnWechatProfile("{\"state\":\"ready\",\"nickName\":\"微信玩家小鹅\",\"gender\":1,\"province\":\"浙江省\",\"city\":\"杭州市\"}");Assert(view.nickname.text=="微信玩家小鹅"&&view.gender.text=="男"&&view.location.text=="浙江省 / 杭州市","authorized data binding");Assert(view.registered.text.Contains(DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd")),"server date displayed");
   string clipboard=GUIUtility.systemCopyBuffer;try{view.copy.onClick.Invoke();Assert(GUIUtility.systemCopyBuffer==service.State.inviteCode,"copy full user ID despite abbreviated display");}finally{GUIUtility.systemCopyBuffer=clipboard;}
   Assert(Match3DUserProfileView.AllowedAvatar("https://thirdwx.qlogo.cn/mmopen/a/132")&&!Match3DUserProfileView.AllowedAvatar("https://thirdwx.qlogo.cn.evil.example/a")&&!Match3DUserProfileView.AllowedAvatar("http://thirdwx.qlogo.cn/a"),"avatar host policy");

@@ -130,6 +130,10 @@ for meta in texture_root.glob('*.png.meta'):
 # GPU compression only to the disposable release copy; preserve source artwork
 # and its resolution, sprite borders and layout in the working project. Release
 # textures above 1024px are scaled by Unity's importer, preserving sprite geometry.
+# Preserve the loading-page JPEG for runtime decoding without shipping a large
+# uncompressed GPU texture in the data package.
+shutil.copy2(replica_resources / 'HomeSkinPS/img_Homepage_bg2.jpg',
+             replica_resources / 'HomeBackgroundOriginal.bytes')
 for skin in ('GameplaySkin', 'HomeSkinPS', 'SettingsSkinPS', 'InviteSkinPS'):
     for meta in (replica_resources / skin).glob('*.meta'):
         text = meta.read_text()

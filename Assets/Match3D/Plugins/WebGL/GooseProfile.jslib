@@ -6,7 +6,7 @@ mergeInto(LibraryManager.library, {
   result:function(version,res){
    if(res&&res.userInfo&&!(res.errMsg&&res.errMsg.indexOf(':fail')>=0)){
     var u=res.userInfo;GooseProfile.emit(version,{state:'ready',nickName:typeof u.nickName==='string'?u.nickName:'',avatarUrl:typeof u.avatarUrl==='string'?u.avatarUrl:'',gender:Number(u.gender)||0,country:u.country||'',province:u.province||'',city:u.city||''});
-   }else GooseProfile.emit(version,{state:'denied',message:'未获取微信资料，可点击下方按钮重试'});
+   }else GooseProfile.emit(version,{state:'denied',message:'未获取微信资料，可点击头像旁的相机重试'});
   }
  },
  GooseProfileOpen__deps:['$GooseProfile'],
@@ -16,9 +16,9 @@ mergeInto(LibraryManager.library, {
   try{wx.getSetting({success:function(r){if(version!==GooseProfile.generation||readVersion!==GooseProfile.readVersion)return;
    if(r.authSetting&&r.authSetting['scope.userInfo']){
     if(typeof wx.getUserInfo!=='function'){GooseProfile.emit(version,{state:'unavailable',message:'当前微信暂不支持读取资料'});return;}
-    wx.getUserInfo({withCredentials:false,lang:'zh_CN',success:function(res){if(readVersion===GooseProfile.readVersion)GooseProfile.result(version,res);},fail:function(){if(readVersion!==GooseProfile.readVersion)return;GooseProfile.emit(version,{state:'denied',message:'微信资料读取失败，请点击同步重试'});}});
-   }else GooseProfile.emit(version,{state:'authorize',message:'点击同步微信资料，由微信确认授权'});
-  },fail:function(){if(readVersion!==GooseProfile.readVersion)return;GooseProfile.emit(version,{state:'authorize',message:'暂未读取到授权状态，可点击同步重试'});}});}catch(e){GooseProfile.emit(version,{state:'unavailable',message:'当前微信暂不支持读取资料'});}
+    wx.getUserInfo({withCredentials:false,lang:'zh_CN',success:function(res){if(readVersion===GooseProfile.readVersion)GooseProfile.result(version,res);},fail:function(){if(readVersion!==GooseProfile.readVersion)return;GooseProfile.emit(version,{state:'denied',message:'微信资料读取失败，请点击相机重试'});}});
+   }else GooseProfile.emit(version,{state:'authorize',message:'点击头像旁的相机，由微信确认授权'});
+  },fail:function(){if(readVersion!==GooseProfile.readVersion)return;GooseProfile.emit(version,{state:'authorize',message:'暂未读取到授权状态，可点击相机重试'});}});}catch(e){GooseProfile.emit(version,{state:'unavailable',message:'当前微信暂不支持读取资料'});}
  },
  GooseProfileBounds__deps:['$GooseProfile'],
  GooseProfileBounds:function(x,y,w,h,screenW,screenH){

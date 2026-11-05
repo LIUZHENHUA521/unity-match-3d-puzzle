@@ -9,8 +9,30 @@ public sealed class Match3DHomeView : MonoBehaviour {
     public RectTransform artwork;
     Match3DUIView view;
     Rect lastSafe;Vector2 lastSize;Vector2Int lastScreen;
+#if UNITY_WEBGL && !UNITY_EDITOR
+    static Sprite originalBackground;
+    static void RestoreOriginalBackground(Match3DUIView ui){
+        if(!originalBackground){
+            var jpg=Resources.Load<TextAsset>("Match3D/HomeBackgroundOriginal");
+            if(!jpg)return;
+            var texture=new Texture2D(2,2,TextureFormat.RGB24,false);
+            bool loaded=ImageConversion.LoadImage(texture,jpg.bytes,true);
+            Resources.UnloadAsset(jpg);
+            if(!loaded){Destroy(texture);return;}
+            texture.name="Home background original";
+            texture.wrapMode=TextureWrapMode.Clamp;
+            texture.filterMode=FilterMode.Bilinear;
+            originalBackground=Sprite.Create(texture,new Rect(0,0,texture.width,texture.height),new Vector2(.5f,.5f),100);
+        }
+        foreach(var image in ui.GetComponentsInChildren<UnityEngine.UI.Image>(true))
+            if(image.sprite&&image.sprite.name=="img_Homepage_bg2")image.sprite=originalBackground;
+    }
+#endif
     public static Match3DHomeView Create(Match3DFlow flow,RectTransform parent,Tab tab){
         var ui=Match3DUIView.Load(tab==Tab.Home?"Home":tab==Tab.Collection?"CollectionTab":"PetsTab",parent);
+#if UNITY_WEBGL && !UNITY_EDITOR
+        RestoreOriginalBackground(ui);
+#endif
         var home=ui.GetComponent<Match3DHomeView>();home.view=ui;
         ui.Bind("Tab Home",()=>flow.ShowHomeTab(Tab.Home));
         ui.Bind("Tab Collection",()=>flow.ShowHomeTab(Tab.Collection));
@@ -19,7 +41,8 @@ public sealed class Match3DHomeView : MonoBehaviour {
             ui.Bind("Settings",()=>{var existing=home.GetComponentInChildren<Match3DHomeMenu>();if(existing){Destroy(existing.gameObject);return;}var menu=Match3DUIView.Load("HomeMenu",home.transform);var controller=menu.GetComponent<Match3DHomeMenu>();controller.FollowArtwork(home.artwork);controller.Connect(flow);});ui.Bind("Rewards",()=>{if(home.artwork)flow.ShowHomeFeatureNotice("月底抽 iPad 活动尚未接入");else flow.ShowRewardInfo();});
             ui.Bind("Bachelor",()=>flow.BeginReward(0,"bachelor"));ui.Bind("Elite",()=>flow.BeginReward(0,"elite"));
         }
-        if(home.signIn)home.signIn.onClick.AddListener(()=>{flow.HomeClick();flow.ShowHomeFeatureNotice("七日签到功能尚未接入");});
+        // Keep the entry hidden until the seven-day sign-in feature is available.
+        if(home.signIn)home.signIn.gameObject.SetActive(false);
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});
         if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();Match3DGameCommunity.Open();});
         if(!home.artwork)home.Layout();return home;

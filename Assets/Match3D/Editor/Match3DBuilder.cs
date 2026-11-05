@@ -27,6 +27,7 @@ public static class Match3DBuilder {
         library.sourceLevelCatalog=AssetDatabase.LoadAssetAtPath<LevelLayoutConfig>("Assets/Match3D/Resources/Match3D/SourceLevelCatalog.asset");
         EditorSceneManager.OpenScene("Assets/Scenes/FoodPileChallenge.unity");
         var flow=new GameObject("Match3D Flow").AddComponent<Match3DFlow>();flow.library=library;
+        Match3DFlow.HideLegacyPresentation();
         EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(),Scene);
         var prior=EditorBuildSettings.scenes.Where(x=>x.path!=Scene).ToList();prior.Insert(0,new EditorBuildSettingsScene(Scene,true));EditorBuildSettings.scenes=prior.ToArray();
         AssetDatabase.SaveAssets();Debug.Log("GOOSE_REPLICA_BUILD_OK");
