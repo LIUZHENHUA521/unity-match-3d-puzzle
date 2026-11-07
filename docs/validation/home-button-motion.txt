@@ -1,0 +1,5 @@
+2026-11-07 Unity Editor Play Mode
+PASS: staggered entrance, paused-time playback, authored final transforms, press/release, exit cancellation, early disable cleanup, return-home replay.
+
+Design: Elite delay 0.08s; Bachelor delay 0.18s; duration 0.4s; rise 36 UI units; scale 0.92 -> 1.03 -> 1.00. Secondary entries fade in. Primary buttons press to 0.96 and restore on release/exit. Uses unscaled delta time. No continuous idle animation.
+Device/WeChat visual validation and upload not performed.

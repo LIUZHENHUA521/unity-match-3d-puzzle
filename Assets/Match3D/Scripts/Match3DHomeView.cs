@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Artwork and controls are authored in Home/CollectionTab/PetsTab prefabs.
-// Only the safe-area container follows device insets; button transforms stay authored.
+// Safe-area layout preserves authored button positions; entrance motion returns to them.
 public sealed class Match3DHomeView : MonoBehaviour {
     public const string BachelorReward="2", EliteReward="10";
     public enum Tab { Home, Collection, Pets }
@@ -45,7 +45,15 @@ public sealed class Match3DHomeView : MonoBehaviour {
         if(home.signIn)home.signIn.gameObject.SetActive(false);
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});
         if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();Match3DGameCommunity.Open();});
-        if(!home.artwork)home.Layout();return home;
+        if(!home.artwork)home.Layout();
+        if(tab==Tab.Home){
+            Match3DHomeButtonMotion.Attach(ui.Get<UnityEngine.UI.Button>("Elite"),.08f,true);
+            Match3DHomeButtonMotion.Attach(ui.Get<UnityEngine.UI.Button>("Bachelor"),.18f,true);
+            Match3DHomeButtonMotion.Attach(ui.Get<UnityEngine.UI.Button>("Settings"),0,false);
+            Match3DHomeButtonMotion.Attach(home.invite,.04f,false);
+            Match3DHomeButtonMotion.Attach(home.community,.08f,false);
+        }
+        return home;
     }
     void LateUpdate(){
         if(!view)return;
