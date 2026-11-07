@@ -52,7 +52,12 @@ public class ItemPhysicsController : MonoBehaviour {
         }
     }
     public void ShakeAll(){
-        foreach(var entry in entries.Values){if(!entry.body||!Eligible(entry.body))continue;if(entry.body.isKinematic)Activate(entry);ApplyShake(entry.body);}
+        foreach(var entry in entries.Values){
+            var body=entry.body;
+            if(!body||entry.selected||!body.gameObject.activeInHierarchy||!Eligible(body)||BoardTools.IsStored(body.gameObject)||
+                (InputController.Instance&&InputController.Instance.objectsOnStack.Contains(body.gameObject)))continue;
+            if(body.isKinematic)Activate(entry);ApplyShake(body);
+        }
     }
     void FixedUpdate(){if(Physics.autoSimulation)Step(Time.fixedDeltaTime);}
     public void Step(float delta){

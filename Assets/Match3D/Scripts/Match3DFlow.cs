@@ -82,6 +82,7 @@ public partial class Match3DFlow : MonoBehaviour {
         music=gameObject.AddComponent<AudioSource>();music.loop=true;music.volume=.25f;
         effects=gameObject.AddComponent<AudioSource>();effects.volume=.65f;
         pilePhysics=gameObject.AddComponent<ItemPhysicsController>();
+        gameObject.AddComponent<Match3DPhoneShake>();
         layeredPile=gameObject.AddComponent<LayeredItemPile>();
         gameObject.AddComponent<BoardItemPool>();
         stagePreloader=gameObject.AddComponent<Match3DStagePreloader>();
