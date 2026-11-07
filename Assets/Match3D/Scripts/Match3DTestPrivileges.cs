@@ -10,5 +10,7 @@ public static class Match3DTestPrivileges {
         var account=Match3DInvitations.Instance;
         return account&&account.Ready&&account.State.unlimitedMagnet;
     }}
-    public static bool UnlimitedMagnet=>Match3DFlow.Instance&&Match3DFlow.Instance.UnlimitedMagnet;
+    // Keep the existing account flag and record version compatible with the server.
+    public static bool UnlimitedTools=>Match3DFlow.Instance&&Match3DFlow.Instance.UnlimitedTools;
+    public static bool UnlimitedMagnet=>UnlimitedTools;
 }

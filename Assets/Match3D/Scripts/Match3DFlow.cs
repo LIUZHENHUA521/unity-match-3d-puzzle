@@ -11,7 +11,8 @@ public partial class Match3DFlow : MonoBehaviour {
     public Match3DTheme library;
     public bool IsPvp {get;private set;}
     bool unlimitedMagnetRun;
-    public bool UnlimitedMagnet=>!IsPvp&&unlimitedMagnetRun;
+    public bool UnlimitedTools=>!IsPvp&&unlimitedMagnetRun;
+    public bool UnlimitedMagnet=>UnlimitedTools;
     public bool ServerApplying {get;private set;}
     public bool BlocksGameplay {get;private set;}
     public int InitialCount {get;private set;}
@@ -455,9 +456,9 @@ public partial class Match3DFlow : MonoBehaviour {
             if(reason!=null){ShowTips(reason);return;}
         }else if(BlocksGameplay)return;
         if(!BoardTools.Enabled||IsPvp){action();return;}
-        if(type==1&&UnlimitedMagnet){
+        if(UnlimitedTools){
             if(BoardTools.RunPaid(type,()=>{BoosterManager.Instance.CheckHintInteractibility();action();}))BoardTools.RecordTestUse(type);
-            else ShowTips("当前无法使用吸附");
+            else ShowTips("当前无法使用道具");
             return;
         }
         var service=Match3DInvitations.Instance;
