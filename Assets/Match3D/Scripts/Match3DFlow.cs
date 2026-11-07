@@ -395,7 +395,7 @@ public partial class Match3DFlow : MonoBehaviour {
             string key="goose.result.best."+CurrentTheme.id+"."+Stage;
             float best=Mathf.Max(progress,PlayerPrefs.GetFloat(key,0));PlayerPrefs.SetFloat(key,best);PlayerPrefs.Save();
             var result=OpenModal(win?"ResultSuccess":"ResultFailure").GetComponent<Match3DResultView>();
-            result.Configure(PlayerPrefs.GetInt("goose.result.attempts",1),progress,best,win?(Action)Home:RestartStage,RestartStage,ShareResult);
+            result.Configure(PlayerPrefs.GetInt("goose.result.attempts",1),progress,best,win?(Action)Home:RestartStage,Home,ShareResult);
         }else{
         var view=OpenModal("Result");view.Text("Title",title);view.Text("Detail",detail);
         view.Get<Image>("Goose").sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+CurrentTheme.gooseSprite);

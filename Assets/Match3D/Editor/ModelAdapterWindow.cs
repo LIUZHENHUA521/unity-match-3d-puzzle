@@ -12,6 +12,7 @@ public sealed class ModelAdapterWindow : EditorWindow {
     string displayName = string.Empty;
     bool updateExisting;
     bool generateColliderDraft = true;
+    [SerializeField] ModelAdapterResourceOptions resourceOptions = new ModelAdapterResourceOptions();
     ModelAdapterReport report;
     Vector2 scroll;
     string batchSummary;
@@ -48,6 +49,17 @@ public sealed class ModelAdapterWindow : EditorWindow {
         displayName = EditorGUILayout.TextField("显示名称", displayName);
         updateExisting = EditorGUILayout.ToggleLeft("更新已有 ID（需要明确确认）", updateExisting);
         generateColliderDraft = EditorGUILayout.ToggleLeft("缺少 Pick/Body 时生成 BoxCollider 草稿", generateColliderDraft);
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("模型资源优化", EditorStyles.boldLabel);
+        EditorGUI.BeginChangeCheck();
+        resourceOptions.optimizeTextures = EditorGUILayout.ToggleLeft("生成独立的优化贴图和材质", resourceOptions.optimizeTextures);
+        using (new EditorGUI.DisabledScope(!resourceOptions.optimizeTextures)) {
+            resourceOptions.maxTextureSize = EditorGUILayout.IntPopup("贴图最大尺寸", resourceOptions.maxTextureSize, new[] { "512（默认）", "1024（更清晰）" }, new[] { 512, 1024 });
+            resourceOptions.compressTextures = EditorGUILayout.ToggleLeft("自动压缩贴图", resourceOptions.compressTextures);
+        }
+        resourceOptions.triangleWarning = Mathf.Max(1, EditorGUILayout.IntField("三角面提醒阈值", resourceOptions.triangleWarning));
+        if (EditorGUI.EndChangeCheck()) report = null;
+        EditorGUILayout.HelpBox("扫描只检查。生成时保留源文件，优化副本供新 Prefab 使用；不会自动减面。大小统计不是最终下载包体。", MessageType.Info);
         using (new EditorGUILayout.HorizontalScope()) {
             if (GUILayout.Button("扫描检查")) Scan();
             using (new EditorGUI.DisabledScope(report == null || report.HasErrors)) if (GUILayout.Button("生成适配 Prefab")) Generate();
@@ -60,6 +72,7 @@ public sealed class ModelAdapterWindow : EditorWindow {
         EditorGUILayout.HelpBox("批量生成按各模型名称设置 ID，使用上方碰撞草稿和更新选项。", MessageType.Info);
         EditorGUILayout.HelpBox("自动分配小 / 中 / 大档；未知名称默认中档。生成后可在「Goose / 槽内展示配置」分别调整棋盘大小与槽内姿态。", MessageType.Info);
         if (GUILayout.Button("打开道具展示配置")) TrayDisplayWindow.Open();
+        if (GUILayout.Button("编辑主题物品（添加 / 替换 / 移除）")) ThemeItemsEditorWindow.Open();
         scroll = EditorGUILayout.BeginScrollView(scroll);
         if (!string.IsNullOrEmpty(batchSummary)) {
             EditorGUILayout.HelpBox(batchSummary, MessageType.Info);
@@ -70,11 +83,24 @@ public sealed class ModelAdapterWindow : EditorWindow {
         EditorGUILayout.LabelField("尺寸", report.visualSize.ToString("F4") + " / 归一化 " + ModelAdapterRules.Format(report.normalizedScale));
         EditorGUILayout.LabelField("建议棋盘尺寸", SizeSummary(report));
         EditorGUILayout.LabelField("Collider", report.colliderCount + "，Pick=" + report.hasPickCollider + "，Body=" + report.hasBodyCollider);
+        DrawResources("源模型资源", report.sourceResources);
+        DrawResources("生成后资源", report.generatedResources);
         foreach (var issue in report.issues) {
             var type = issue.severity == ModelAdapterSeverity.Error ? MessageType.Error : issue.severity == ModelAdapterSeverity.Warning ? MessageType.Warning : MessageType.Info;
             EditorGUILayout.HelpBox("[" + issue.code + "] " + issue.message + (string.IsNullOrEmpty(issue.path) ? string.Empty : "\n" + issue.path), type);
         }
         EditorGUILayout.EndScrollView();
+    }
+
+    static void DrawResources(string title, ModelAdapterResourceStats stats) {
+        if (stats == null) return;
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+        EditorGUILayout.LabelField(ModelAdapterResources.Summary(stats));
+        EditorGUILayout.LabelField("引用源文件合计（去重）", EditorUtility.FormatBytes(stats.sourceFileBytes));
+        EditorGUILayout.LabelField("贴图编辑器内存", EditorUtility.FormatBytes(stats.textureMemoryBytes));
+        foreach (var texture in stats.textures)
+            EditorGUILayout.LabelField(texture.name + " · " + texture.width + "×" + texture.height + " · " + EditorUtility.FormatBytes(texture.memoryBytes) + (texture.embedded ? " · 内嵌" : ""), EditorStyles.wordWrappedLabel);
     }
 
     static string SizeSummary(ModelAdapterReport report){
@@ -87,7 +113,7 @@ public sealed class ModelAdapterWindow : EditorWindow {
         RefreshAssets();batchDetails.Clear();
         foreach(var path in assets){
             string id=ModelAdapterRules.NormalizeId(Path.GetFileNameWithoutExtension(path));
-            var scan=ModelAdapterService.Scan(path,id,id,generateColliderDraft,true).report;
+            var scan=ModelAdapterService.Scan(path,id,id,generateColliderDraft,true,resourceOptions).report;
             batchDetails.Add(id+"："+(scan.HasErrors?"检查失败，请单独扫描":SizeSummary(scan)));
         }
         batchSummary="整套尺寸预览（世界单位，全局倍率 1；已保存的手动倍率保留）";
@@ -97,7 +123,7 @@ public sealed class ModelAdapterWindow : EditorWindow {
         var inputs = assets.ToArray();
         if (inputs.Length == 0) return;
         PreviewBatchSizes();
-        if (!EditorUtility.DisplayDialog("确认批量尺寸分配", string.Join("\n", batchDetails)+"\n\n生成模型"+(updateExisting?"并更新已有 ID":"")+"；保留已保存的棋盘倍率和槽内配置。", "生成", "取消")) return;
+        if (!EditorUtility.DisplayDialog("确认批量尺寸分配", string.Join("\n", batchDetails)+"\n\n生成模型"+(updateExisting?"并更新已有 ID":"")+"；保留已保存的棋盘倍率和槽内配置。\n贴图：" + (resourceOptions.optimizeTextures ? resourceOptions.maxTextureSize + " / " + (resourceOptions.compressTextures ? "自动压缩" : "不压缩") : "沿用源设置"), "生成", "取消")) return;
         batchDetails.Clear();
         report = null;
         int succeeded = 0, failed = 0, processed = 0;
@@ -116,7 +142,7 @@ public sealed class ModelAdapterWindow : EditorWindow {
                         batchDetails.Add("跳过：" + inputs[i] + "\n本批次存在重复 ID：" + ids[i] + "，请先重命名模型。");
                     } else {
                         var result = ModelAdapterService.Generate(inputs[i], ids[i],
-                            Path.GetFileNameWithoutExtension(inputs[i]), updateExisting, generateColliderDraft);
+                            Path.GetFileNameWithoutExtension(inputs[i]), updateExisting, generateColliderDraft, resourceOptions);
                         if (result.HasErrors) {
                             failed++;
                             batchDetails.Add("失败/跳过：" + inputs[i] + "\n" + string.Join("\n", result.issues
@@ -124,7 +150,9 @@ public sealed class ModelAdapterWindow : EditorWindow {
                                 .Select(issue => "[" + issue.code + "] " + issue.message)));
                         } else {
                             succeeded++;
-                            batchDetails.Add("成功：" + result.generatedPrefabPath);
+                            batchDetails.Add("成功：" + result.generatedPrefabPath + "\n" + ModelAdapterResources.Summary(result.generatedResources)
+                                + "\n贴图编辑器内存：" + EditorUtility.FormatBytes(result.sourceResources.textureMemoryBytes) + " → " + EditorUtility.FormatBytes(result.generatedResources.textureMemoryBytes)
+                                + "\n" + string.Join("\n", result.issues.Where(issue => issue.severity == ModelAdapterSeverity.Warning).Select(issue => issue.message)));
                         }
                     }
                 } catch (Exception ex) {
@@ -145,12 +173,12 @@ public sealed class ModelAdapterWindow : EditorWindow {
 
     void Scan() {
         if (updateExisting) { logicalId = ModelAdapterRules.NormalizeId(logicalId); }
-        report = ModelAdapterService.Scan(assets[selected], logicalId, displayName, generateColliderDraft, updateExisting).report;
+        report = ModelAdapterService.Scan(assets[selected], logicalId, displayName, generateColliderDraft, updateExisting, resourceOptions).report;
         Repaint();
     }
     void Generate() {
         if (updateExisting && !EditorUtility.DisplayDialog("确认更新", "这会替换同逻辑 ID 的适配 prefab、尺寸、碰撞和音效映射。是否继续？", "继续", "取消")) return;
-        report = ModelAdapterService.Generate(assets[selected], logicalId, displayName, updateExisting, generateColliderDraft);
+        report = ModelAdapterService.Generate(assets[selected], logicalId, displayName, updateExisting, generateColliderDraft, resourceOptions);
         if (report.HasErrors) EditorUtility.DisplayDialog("适配失败", "请查看诊断报告：" + report.requestId, "确定"); else EditorUtility.DisplayDialog("适配完成", report.generatedPrefabPath, "确定");
         Repaint();
     }

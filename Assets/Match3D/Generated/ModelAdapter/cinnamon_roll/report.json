@@ -1,0 +1,122 @@
+{
+    "requestId": "8e47f97ccf12482c86b58ca0446b5841",
+    "inputPath": "Assets/Match3D/IncomingModels/fbx(unity)/cinnamon_roll.fbx",
+    "logicalId": "cinnamon_roll",
+    "displayName": "cinnamon_roll",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/cinnamon_roll/cinnamon_roll.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/cinnamon_roll/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.0213277339935303,
+    "visualSize": {
+        "x": 0.42102059721946719,
+        "y": 0.25384169816970827,
+        "z": 0.3930884003639221
+    },
+    "visualCenter": {
+        "x": 0.006644338369369507,
+        "y": 0.12580037117004395,
+        "z": -0.010486701503396035
+    },
+    "bottom": {
+        "x": 0.006644338369369507,
+        "y": -0.0011204779148101807,
+        "z": -0.010486701503396035
+    },
+    "longestSide": 0.42102059721946719,
+    "resourceOptions": {
+        "optimizeTextures": true,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 558,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 57325,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "tiny_treats_texture_1",
+                "path": "Assets/Match3D/IncomingModels/fbx(unity)/tiny_treats_texture_1.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 558,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 69039,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "texture_0",
+                "path": "Assets/Match3D/Generated/ModelAdapter/cinnamon_roll/Optimized/texture_0.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "558 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TEXTURE_SIZE",
+            "message": "tiny_treats_texture_1 当前 1024×1024，目标上限 512",
+            "path": "Assets/Match3D/IncomingModels/fbx(unity)/tiny_treats_texture_1.png"
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：558 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

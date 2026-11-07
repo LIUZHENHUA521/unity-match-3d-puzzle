@@ -71,6 +71,7 @@ public static class Match3DBuilder {
             else if(cmd=="kitchenbuild")KitchenSceneBuilder.Build();
             else if(cmd=="kitcheninspect")KitchenSceneBuilder.Inspect();
             else if(cmd=="modeladaptercheck")ModelAdapterValidation.RunMenu();
+            else if(cmd=="themeitemscheck")ThemeItemsEditorValidation.Run();
             else if(cmd=="layercheck")LayeredPileValidation.Run();
             else if(cmd=="selectionpreview")SelectionFeedbackValidation.Preview();
             else if(cmd=="heightphysicscheck")HeightPhysicsValidation.Run();

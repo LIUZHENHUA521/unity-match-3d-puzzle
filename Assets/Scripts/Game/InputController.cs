@@ -26,11 +26,11 @@ public class InputController : Singleton<InputController>
     private readonly Dictionary<GameObject, Dictionary<Collider,bool>> boardColliders = new Dictionary<GameObject, Dictionary<Collider,bool>>();
     private Match3DSelectionFeedback selection;
     private void Awake() { Input.multiTouchEnabled = false; selection=gameObject.AddComponent<Match3DSelectionFeedback>(); }
-    public void CancelSelection(){CancelPointer();activeFinger=-1;}
+    public void CancelSelection(){CancelPointer();activeFinger=null;}
     private void ClearPointerTarget(){pressedObject=null;if(selection)selection.Cancel();}
     private void CancelPointer(){ClearPointerTarget();pointerHeld=false;pointerStartedOnUI=false;}
-    private void OnDisable(){CancelPointer();activeFinger=-1;}
-    private void OnApplicationFocus(bool focus){if(!focus){CancelPointer();activeFinger=-1;}}
+    private void OnDisable(){CancelPointer();activeFinger=null;}
+    private void OnApplicationFocus(bool focus){if(!focus){CancelPointer();activeFinger=null;}}
     private GameObject pressedObject;
     private Vector2 lastTargetPosition;
     private bool pointerHeld, pointerStartedOnUI;
@@ -38,7 +38,7 @@ public class InputController : Singleton<InputController>
     public int PointerHits {get;private set;}
     public int AcceptedPicks {get;private set;}
     public string LastPickState {get;private set;}="idle";
-    private int activeFinger = -1;
+    private int? activeFinger;
     private bool PointerOnButton(Vector2 position)
     {
         if (!EventSystem.current) return false;
@@ -97,22 +97,26 @@ public class InputController : Singleton<InputController>
     private void Update()
     {
         if (!GameManager.Instance.GameIsPlaying() || (Match3DFlow.Instance && Match3DFlow.Instance.BlocksGameplay)) {
-            LastPickState="blocked";CancelPointer(); activeFinger = -1; return;
+            LastPickState="blocked";CancelPointer(); activeFinger = null; return;
         }
         if (Input.touchCount > 0) {
             for (int i = 0; i < Input.touchCount; i++) {
                 var touch = Input.GetTouch(i);
-                if (touch.phase == TouchPhase.Began && activeFinger < 0) {
+                // Like uGUI, a newly observed contact is a press even when Began
+                // was not sampled (a desktop click can arrive entirely between frames).
+                // Keep the identifier separate from the absence of a contact.
+                if (!activeFinger.HasValue && touch.phase != TouchPhase.Canceled) {
                     activeFinger = touch.fingerId; BeginPointer(touch.position);
-                } else if (touch.fingerId == activeFinger) {
-                    if (touch.phase == TouchPhase.Ended) { EndPointer(touch.position); activeFinger = -1; }
-                    else if (touch.phase == TouchPhase.Canceled) { LastPickState="cancel";CancelPointer(); activeFinger = -1; }
+                }
+                if (touch.fingerId == activeFinger) {
+                    if (touch.phase == TouchPhase.Ended) { EndPointer(touch.position); activeFinger = null; }
+                    else if (touch.phase == TouchPhase.Canceled) { LastPickState="cancel";CancelPointer(); activeFinger = null; }
                     else UpdatePointer(touch.position);
                 }
             }
             return; // A touch must not also be consumed as an emulated mouse click.
         }
-        if (activeFinger >= 0) { activeFinger = -1; CancelPointer(); return; }
+        if (activeFinger.HasValue) { activeFinger = null; CancelPointer(); return; }
         if (Input.GetMouseButtonDown(0)) BeginPointer(Input.mousePosition);
         if (Input.GetMouseButton(0)) UpdatePointer(Input.mousePosition);
         if (Input.GetMouseButtonUp(0)) EndPointer(Input.mousePosition);
@@ -382,7 +386,7 @@ public class InputController : Singleton<InputController>
     }
     public void ResetStack()
     {
-        CancelPointer(); activeFinger = -1;BoardTools.Reset();
+        CancelPointer(); activeFinger = null;BoardTools.Reset();
         StopAllCoroutines(); resolution = null; IsResolving = false;
         foreach (var item in objectsOnStack) if (item) item.transform.DOKill();
         foreach(var item in sourceCombining)if(item){item.transform.DOKill();ItemFlightMotion.Forget(item);GameAudioCatalog.Forget(item);BoardItemPool.Recycle(item);}

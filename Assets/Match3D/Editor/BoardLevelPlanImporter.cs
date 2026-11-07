@@ -11,8 +11,15 @@ public static class BoardLevelPlanImporter {
     const string Path="Assets/Match3D/Resources/Match3D/SourceLevelCatalog.asset";
     [MenuItem("Goose/Import Source Level Plans")]
     public static void Import(){
-        var source=JsonUtility.FromJson<Config>(File.ReadAllText("Assets/Match3D/Resources/Match3D/SourceLevelConfig.json"));
-        var profiles=source.themes.Select(t=>{
+        var profiles=ReadProfiles("Assets/Match3D/Resources/Match3D/SourceLevelConfig.json");
+        var asset=AssetDatabase.LoadAssetAtPath<LevelLayoutConfig>(Path);
+        if(!asset){asset=ScriptableObject.CreateInstance<LevelLayoutConfig>();AssetDatabase.CreateAsset(asset,Path);}
+        asset.profiles=profiles;EditorUtility.SetDirty(asset);AssetDatabase.SaveAssets();
+        Debug.Log("SOURCE_LEVEL_PLANS_IMPORTED: "+string.Join(", ",profiles.Select(x=>x.environment+"="+x.prefabs.Length)));
+    }
+    public static LevelLayoutConfig.Profile[] ReadProfiles(string sourcePath){
+        var source=JsonUtility.FromJson<Config>(File.ReadAllText(sourcePath));
+        return source.themes.Select(t=>{
             if(t.names.Length!=t.weights.Length)throw new InvalidOperationException("Source name/weight mismatch "+t.environment);
             bool customPaths=t.prefabPaths!=null && t.prefabPaths.Length>0;
             if(customPaths && t.prefabPaths.Length!=t.names.Length)throw new InvalidOperationException("Prefab path/name mismatch "+t.environment);
@@ -23,10 +30,6 @@ public static class BoardLevelPlanImporter {
             return new LevelLayoutConfig.Profile{environment=t.environment,sourceIndex=t.sourceIndex,seconds=t.seconds,limitHeight=t.limitHeight,prefabs=prefabs,tutorialNames=t.tutorialNames,
                 layers=t.layers.Select(l=>new ChallengeLayer(l.count,l.types,l.height){weights=(float[])t.weights.Clone()}).ToArray()};
         }).ToArray();
-        var asset=AssetDatabase.LoadAssetAtPath<LevelLayoutConfig>(Path);
-        if(!asset){asset=ScriptableObject.CreateInstance<LevelLayoutConfig>();AssetDatabase.CreateAsset(asset,Path);}
-        asset.profiles=profiles;EditorUtility.SetDirty(asset);AssetDatabase.SaveAssets();
-        Debug.Log("SOURCE_LEVEL_PLANS_IMPORTED: "+string.Join(", ",profiles.Select(x=>x.environment+"="+x.prefabs.Length)));
     }
     [MenuItem("Goose/Import First Stage Plans")]
     public static void ImportFirstStage(){

@@ -8,7 +8,12 @@ public static class Match3DRewardsBuilder {
   var go=PrefabUtility.LoadPrefabContents(root+"UI/Mailbox.prefab");
   try{
    go.name="RedPackets";var old=go.GetComponent<Match3DMailboxView>();var view=go.AddComponent<Match3DRewardsView>();
-   view.list=old.list;view.rowTemplate=old.rowTemplate;view.status=old.status;view.refresh=old.refresh;view.more=old.more;
+   view.list=old.list;view.rowTemplate=old.rowTemplate;view.status=old.status;view.more=old.more;
+   // Mailbox no longer has a refresh button; rewards still needs its own.
+   view.refresh=Object.Instantiate(old.more,old.more.transform.parent);
+   view.refresh.name="Refresh";
+   var refreshRect=(RectTransform)view.refresh.transform;
+   refreshRect.anchoredPosition=new Vector2(-115,refreshRect.anchoredPosition.y);
    view.refresh.GetComponentInChildren<Text>().text="刷新红包";
    var title=go.transform.Find("Content - edit UI here/Title");Object.DestroyImmediate(title.GetComponent<Image>());
    var text=title.gameObject.AddComponent<Text>();text.font=AssetDatabase.LoadAssetAtPath<Font>(root+"Fonts/DefaultChinese.otf");text.fontSize=40;text.fontStyle=FontStyle.Bold;text.text="我的红包";text.alignment=TextAnchor.MiddleCenter;text.color=new Color32(32,118,185,255);text.raycastTarget=false;((RectTransform)title).sizeDelta=new Vector2(300,62);

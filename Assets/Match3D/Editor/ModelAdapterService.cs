@@ -26,8 +26,11 @@ public static class ModelAdapterService {
             .Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(p => p).ToArray();
     }
 
-    public static ScanResult Scan(string inputPath, string requestedId, string displayName, bool generateColliderDraft, bool allowExisting = false) {
+    public static ScanResult Scan(string inputPath, string requestedId, string displayName, bool generateColliderDraft, bool allowExisting = false, ModelAdapterResourceOptions resourceOptions = null) {
         var report = new ModelAdapterReport { requestId = Guid.NewGuid().ToString("N"), inputPath = inputPath, displayName = displayName };
+        resourceOptions = resourceOptions ?? new ModelAdapterResourceOptions();
+        report.resourceOptions = JsonUtility.FromJson<ModelAdapterResourceOptions>(JsonUtility.ToJson(resourceOptions));
+        try { resourceOptions.Validate(); } catch (ArgumentException ex) { report.Add(ModelAdapterSeverity.Error, "RESOURCE_OPTIONS", ex.Message); }
         var result = new ScanResult { report = report };
         var source = AssetDatabase.LoadAssetAtPath<GameObject>(inputPath);
         if (!source) { report.Add(ModelAdapterSeverity.Error, "INPUT_LOAD", "无法加载模型或 Prefab", inputPath); return result; }
@@ -69,6 +72,8 @@ public static class ModelAdapterService {
             if (!string.Equals(instance.tag, "Collectable", StringComparison.Ordinal)) report.Add(ModelAdapterSeverity.Warning, "TAG_REPAIR", "生成时会设置 Collectable tag");
             var materialMissing = renderers.Any(r => r.sharedMaterials == null || r.sharedMaterials.Any(m => !m || !m.shader));
             if (renderers.Length == 0) report.Add(ModelAdapterSeverity.Error, "RENDERER_MISSING", "没有启用的 Renderer"); else if (materialMissing) report.Add(ModelAdapterSeverity.Error, "MATERIAL_MISSING", "存在空材质或无效 Shader"); else report.Add(ModelAdapterSeverity.Pass, "RENDERER_OK", "Renderer 和材质有效");
+            report.sourceResources = ModelAdapterResources.Inspect(instance, inputPath);
+            ModelAdapterResources.AddScanIssues(report, resourceOptions);
             result.colliders.AddRange(instance.GetComponentsInChildren<Collider>(true));
             report.colliderCount = result.colliders.Count;
             bool pick = false, body = false;
@@ -88,23 +93,26 @@ public static class ModelAdapterService {
         return result;
     }
 
-    public static ModelAdapterReport Generate(string inputPath, string logicalId, string displayName, bool updateExisting, bool generateColliderDraft) {
-        var scan = Scan(inputPath, logicalId, displayName, generateColliderDraft, updateExisting);
+    public static ModelAdapterReport Generate(string inputPath, string logicalId, string displayName, bool updateExisting, bool generateColliderDraft, ModelAdapterResourceOptions resourceOptions = null) {
+        var scan = Scan(inputPath, logicalId, displayName, generateColliderDraft, updateExisting, resourceOptions);
         if (!updateExisting && CatalogHasId(scan.report.logicalId)) scan.report.Add(ModelAdapterSeverity.Error, "ID_CONFLICT", "逻辑 ID 已存在，请选择更新模式", scan.report.logicalId);
         if (scan.report.HasErrors) { scan.report.status = "Error"; WriteDiagnostic(scan.report); return scan.report; }
         string request = scan.report.requestId;
-        string staging = OutputRoot + "/.staging/" + request;
+        string staging = OutputRoot + "/_staging/" + request;
         string finalDir = OutputRoot + "/" + scan.report.logicalId;
-        Directory.CreateDirectory(ToAbsolute(staging));
+        ModelAdapterResources.EnsureFolder(staging);
+        GameObject wrapper = null;
         try {
             var source = scan.source;
-            var wrapper = new GameObject(scan.report.logicalId) { tag = "Collectable" };
+            wrapper = new GameObject(scan.report.logicalId) { tag = "Collectable" };
             var identity = wrapper.AddComponent<BoardItemIdentity>(); identity.Configure(scan.report.logicalId, displayName, ItemCatalog.CurrentVersion);
             var body = wrapper.AddComponent<Rigidbody>(); body.mass = .15f; body.drag = .6f; body.angularDrag = .8f; body.interpolation = RigidbodyInterpolation.Interpolate; body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; body.isKinematic = false; body.detectCollisions = true;
             var visual = new GameObject("Visual"); visual.transform.SetParent(wrapper.transform, false);
             var geometry = new GameObject("Geometry"); geometry.transform.SetParent(visual.transform, false);
             var sourceInstance = (GameObject)PrefabUtility.InstantiatePrefab(source);
             if (!sourceInstance) sourceInstance = UnityEngine.Object.Instantiate(source);
+            if (scan.report.resourceOptions.optimizeTextures && PrefabUtility.IsPartOfPrefabInstance(sourceInstance))
+                PrefabUtility.UnpackPrefabInstance(sourceInstance, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
             sourceInstance.name = source.name; sourceInstance.transform.SetParent(geometry.transform, false);
             foreach (var rb in sourceInstance.GetComponentsInChildren<Rigidbody>(true)) UnityEngine.Object.DestroyImmediate(rb);
             float scale = scan.report.normalizedScale;
@@ -123,6 +131,7 @@ public static class ModelAdapterService {
             }
             var colliderProfile = BuildProfile(generatedColliders, visual.transform, scan.report.logicalId);
             if (colliderProfile.col == null || colliderProfile.realCol == null) throw new InvalidOperationException("Generated model needs both Pick and Body collider groups.");
+            ModelAdapterResources.Optimize(sourceInstance, staging + "/Optimized", scan.report.resourceOptions, scan.report);
             string prefabPath = staging + "/" + scan.report.logicalId + ".prefab";
             Directory.CreateDirectory(ToAbsolute(staging));
             PrefabUtility.SaveAsPrefabAsset(wrapper, prefabPath);
@@ -132,6 +141,10 @@ public static class ModelAdapterService {
             WriteReport(scan.report, staging + "/report.json");
             ReplaceStaging(staging, finalDir);
             scan.report.generatedPrefabPath = finalDir + "/" + scan.report.logicalId + ".prefab";
+            AssetDatabase.Refresh();
+            var generated = AssetDatabase.LoadAssetAtPath<GameObject>(scan.report.generatedPrefabPath);
+            scan.report.generatedResources = ModelAdapterResources.Inspect(generated, scan.report.generatedPrefabPath);
+            scan.report.Add(ModelAdapterSeverity.Pass, "GENERATED_RESOURCES", "生成后：" + ModelAdapterResources.Summary(scan.report.generatedResources) + "；贴图编辑器内存 " + EditorUtility.FormatBytes(scan.report.sourceResources.textureMemoryBytes) + " → " + EditorUtility.FormatBytes(scan.report.generatedResources.textureMemoryBytes) + "（不是下载包体）");
             scan.report.status = "Generated";
             UpsertCatalog(scan.report, colliderProfile, updateExisting);
             scan.report.previewPath = finalDir + "/index.html";
@@ -140,7 +153,12 @@ public static class ModelAdapterService {
             ModelAdapterPreview.Generate(scan.report, finalDir);
             WriteReport(scan.report, finalDir + "/report.json");
             return scan.report;
-        } catch (Exception ex) { scan.report.Add(ModelAdapterSeverity.Error, "GENERATE_FAILED", ex.Message); WriteDiagnostic(scan.report); if (Directory.Exists(ToAbsolute(staging))) Directory.Delete(ToAbsolute(staging), true); return scan.report; }
+        } catch (Exception ex) { scan.report.Add(ModelAdapterSeverity.Error, "GENERATE_FAILED", ex.Message); WriteDiagnostic(scan.report); AssetDatabase.DeleteAsset(staging); return scan.report; }
+        finally {
+            if (wrapper) UnityEngine.Object.DestroyImmediate(wrapper);
+            string stagingRoot = OutputRoot + "/_staging";
+            if (Directory.Exists(stagingRoot) && Directory.GetFileSystemEntries(stagingRoot).Length == 0) AssetDatabase.DeleteAsset(stagingRoot);
+        }
     }
 
     static ItemCatalog.ColliderProfile BuildProfile(List<Collider> colliders, Transform visual, string id) {
@@ -169,7 +187,21 @@ public static class ModelAdapterService {
     static Bounds TransformBounds(Transform t, Bounds local) { var points = new[] { new Vector3(local.min.x, local.min.y, local.min.z), new Vector3(local.min.x, local.min.y, local.max.z), new Vector3(local.min.x, local.max.y, local.min.z), new Vector3(local.min.x, local.max.y, local.max.z), new Vector3(local.max.x, local.min.y, local.min.z), new Vector3(local.max.x, local.min.y, local.max.z), new Vector3(local.max.x, local.max.y, local.min.z), new Vector3(local.max.x, local.max.y, local.max.z) }; var output = new Bounds(t.TransformPoint(points[0]), Vector3.zero); for (int i = 1; i < points.Length; i++) output.Encapsulate(t.TransformPoint(points[i])); return output; }
     static bool CatalogHasId(string id) { var text = AssetDatabase.LoadAssetAtPath<TextAsset>(CatalogPath); if (!text) return false; var data = JsonUtility.FromJson<ItemCatalog.Data>(text.text); return (data?.items ?? Array.Empty<ItemCatalog.Item>()).Any(x => x != null && string.Equals(x.id, id, StringComparison.OrdinalIgnoreCase)); }
     static void UpsertCatalog(ModelAdapterReport report, ItemCatalog.ColliderProfile profile, bool update) { var data = new ItemCatalog.Data { version = ItemCatalog.CurrentVersion, items = Array.Empty<ItemCatalog.Item>() }; var existing = AssetDatabase.LoadAssetAtPath<TextAsset>(CatalogPath); if (existing) data = JsonUtility.FromJson<ItemCatalog.Data>(existing.text) ?? data; var list = (data.items ?? Array.Empty<ItemCatalog.Item>()).ToList(); var index = list.FindIndex(x => x != null && string.Equals(x.id, report.logicalId, StringComparison.OrdinalIgnoreCase)); var old = index >= 0 ? list[index] : null; var item = new ItemCatalog.Item { id = report.logicalId, displayName = report.displayName, prefabPath = report.generatedPrefabPath, normalizedToSource = old != null ? old.normalizedToSource : ModelAdapterRules.DefaultGameplayScale, trayBaseScale = old != null ? old.trayBaseScale : ModelAdapterRules.DefaultGameplayScale, sizeTier = old?.sizeTier, sizeReason = old?.sizeReason, colliderProfile = profile, audioProfile = old != null && old.audioProfile != null ? old.audioProfile : new ItemCatalog.AudioProfile { name = report.logicalId, select = 1, usePitch = true } }; ModelAdapterSizing.Apply(item,report); if (index >= 0) { if (!update) throw new InvalidOperationException("Existing catalog entry requires Update mode."); list[index] = item; } else list.Add(item); data.items = list.ToArray(); Directory.CreateDirectory(ToAbsolute(Path.GetDirectoryName(CatalogPath))); File.WriteAllText(ToAbsolute(CatalogPath), JsonUtility.ToJson(data, true)); AssetDatabase.ImportAsset(CatalogPath); BoardLayoutSettings.ClearCache(); ItemColliderGeometry.ClearCache(); GameAudioCatalog.ClearCache(); }
-    static void ReplaceStaging(string staging, string finalDir) { var stagingAbsolute = ToAbsolute(staging); var finalAbsolute = ToAbsolute(finalDir); if (Directory.Exists(finalAbsolute)) Directory.Delete(finalAbsolute, true); Directory.Move(stagingAbsolute, finalAbsolute); }
+    static void ReplaceStaging(string staging, string finalDir) {
+        var stagingAbsolute = ToAbsolute(staging);
+        var finalAbsolute = ToAbsolute(finalDir);
+        // Existing scenes and size/tray overrides identify the prefab by GUID.
+        if (Directory.Exists(finalAbsolute)) {
+            foreach (string meta in Directory.GetFiles(finalAbsolute, "*.prefab.meta")) {
+                string replacement = Path.Combine(stagingAbsolute, Path.GetFileName(meta));
+                if (File.Exists(replacement)) File.Copy(meta, replacement, true);
+            }
+            Directory.Delete(finalAbsolute, true);
+        }
+        Directory.Move(stagingAbsolute, finalAbsolute);
+        // Otherwise Refresh recreates an empty staging folder from its orphaned .meta.
+        if (File.Exists(stagingAbsolute + ".meta")) File.Delete(stagingAbsolute + ".meta");
+    }
     static void WriteReport(ModelAdapterReport report, string path) { Directory.CreateDirectory(Path.GetDirectoryName(ToAbsolute(path))); File.WriteAllText(ToAbsolute(path), JsonUtility.ToJson(report, true)); AssetDatabase.ImportAsset(path); }
     static void WriteDiagnostic(ModelAdapterReport report) { string path = OutputRoot + "/_diagnostics/" + report.requestId + ".json"; Directory.CreateDirectory(ToAbsolute(Path.GetDirectoryName(path))); File.WriteAllText(ToAbsolute(path), JsonUtility.ToJson(report, true)); AssetDatabase.Refresh(); }
     static string ToAbsolute(string projectPath) => Path.GetFullPath(Path.Combine(Directory.GetParent(Application.dataPath).FullName, projectPath));

@@ -1,0 +1,108 @@
+{
+    "requestId": "72eed763274443c08b492d071ac4d9ea",
+    "inputPath": "Assets/Match3D/IncomingModels/quaternius/004_Bottle (Pc8dM9Ja4V)/Bottle.obj",
+    "logicalId": "Bottle",
+    "displayName": "Bottle",
+    "generatedPrefabPath": "",
+    "previewPath": "",
+    "status": "Error",
+    "normalizedScale": 0.26492840051651,
+    "visualSize": {
+        "x": 0.4516758918762207,
+        "y": 1.6230801343917847,
+        "z": 0.45167598128318789
+    },
+    "visualCenter": {
+        "x": 4.470348358154297e-8,
+        "y": 0.8104556202888489,
+        "z": -5.960464477539063e-8
+    },
+    "bottom": {
+        "x": 4.470348358154297e-8,
+        "y": -0.001084446907043457,
+        "z": -5.960464477539063e-8
+    },
+    "longestSide": 1.6230801343917847,
+    "resourceOptions": {
+        "optimizeTextures": true,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 220,
+        "meshCount": 1,
+        "materialCount": 4,
+        "sourceFileBytes": 64097,
+        "textureMemoryBytes": 0,
+        "textures": []
+    },
+    "generatedResources": {
+        "triangles": 0,
+        "meshCount": 0,
+        "materialCount": 0,
+        "sourceFileBytes": 0,
+        "textureMemoryBytes": 0,
+        "textures": []
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 2,
+            "code": "ID_CONFLICT",
+            "message": "逻辑 ID 已存在，请选择更新模式",
+            "path": "Bottle"
+        },
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "220 三角面 / 1 网格 / 4 材质 / 0 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "MODEL_TEXTURE_UNRESOLVED",
+            "message": "当前材质未引用贴图；启用优化后会尝试从模型副本提取内嵌贴图。纯色材质可忽略此提示。",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 2,
+            "code": "ID_CONFLICT",
+            "message": "逻辑 ID 已存在，请选择更新模式",
+            "path": "Bottle"
+        }
+    ]
+}

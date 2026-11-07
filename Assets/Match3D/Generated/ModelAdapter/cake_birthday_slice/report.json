@@ -1,0 +1,122 @@
+{
+    "requestId": "66249383d045479ebec8c2e614d51723",
+    "inputPath": "Assets/Match3D/IncomingModels/fbx(unity)/cake_birthday_slice.fbx",
+    "logicalId": "cake_birthday_slice",
+    "displayName": "cake_birthday_slice",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/cake_birthday_slice/cake_birthday_slice.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/cake_birthday_slice/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.5360884070396423,
+    "visualSize": {
+        "x": 0.466766893863678,
+        "y": 0.802106499671936,
+        "z": 0.610206127166748
+    },
+    "visualCenter": {
+        "x": -5.960464477539063e-8,
+        "y": 0.40105319023132326,
+        "z": -0.30477744340896609
+    },
+    "bottom": {
+        "x": -5.960464477539063e-8,
+        "y": -5.960464477539063e-8,
+        "z": -0.30477744340896609
+    },
+    "longestSide": 0.802106499671936,
+    "resourceOptions": {
+        "optimizeTextures": true,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 476,
+        "meshCount": 2,
+        "materialCount": 1,
+        "sourceFileBytes": 57229,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "tiny_treats_texture_1",
+                "path": "Assets/Match3D/IncomingModels/fbx(unity)/tiny_treats_texture_1.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 476,
+        "meshCount": 2,
+        "materialCount": 1,
+        "sourceFileBytes": 71440,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "texture_0",
+                "path": "Assets/Match3D/Generated/ModelAdapter/cake_birthday_slice/Optimized/texture_0.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "476 三角面 / 2 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TEXTURE_SIZE",
+            "message": "tiny_treats_texture_1 当前 1024×1024，目标上限 512",
+            "path": "Assets/Match3D/IncomingModels/fbx(unity)/tiny_treats_texture_1.png"
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：476 三角面 / 2 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

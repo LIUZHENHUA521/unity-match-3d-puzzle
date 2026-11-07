@@ -16,6 +16,9 @@ public sealed class ModelAdapterReport {
     public Vector3 visualCenter;
     public Vector3 bottom;
     public float longestSide;
+    public ModelAdapterResourceOptions resourceOptions;
+    public ModelAdapterResourceStats sourceResources;
+    public ModelAdapterResourceStats generatedResources;
     public bool hasRigidbody;
     public bool hasPickCollider;
     public bool hasBodyCollider;

@@ -1,0 +1,108 @@
+{
+    "requestId": "72df32b2f6be4ff4b08f49b7d82dc33d",
+    "inputPath": "Assets/Match3D/IncomingModels/quaternius/008_Chicken Leg/ChickenLeg.obj",
+    "logicalId": "ChickenLeg",
+    "displayName": "ChickenLeg",
+    "generatedPrefabPath": "",
+    "previewPath": "",
+    "status": "Error",
+    "normalizedScale": 0.30737051367759707,
+    "visualSize": {
+        "x": 1.3989630937576295,
+        "y": 0.5815131664276123,
+        "z": 0.6119472980499268
+    },
+    "visualCenter": {
+        "x": 0.08902496099472046,
+        "y": -0.0036574900150299074,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.08902496099472046,
+        "y": -0.29441407322883608,
+        "z": 0.0
+    },
+    "longestSide": 1.3989630937576295,
+    "resourceOptions": {
+        "optimizeTextures": true,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 288,
+        "meshCount": 1,
+        "materialCount": 2,
+        "sourceFileBytes": 86892,
+        "textureMemoryBytes": 0,
+        "textures": []
+    },
+    "generatedResources": {
+        "triangles": 0,
+        "meshCount": 0,
+        "materialCount": 0,
+        "sourceFileBytes": 0,
+        "textureMemoryBytes": 0,
+        "textures": []
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 2,
+            "code": "ID_CONFLICT",
+            "message": "逻辑 ID 已存在，请选择更新模式",
+            "path": "ChickenLeg"
+        },
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "288 三角面 / 1 网格 / 2 材质 / 0 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "MODEL_TEXTURE_UNRESOLVED",
+            "message": "当前材质未引用贴图；启用优化后会尝试从模型副本提取内嵌贴图。纯色材质可忽略此提示。",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 2,
+            "code": "ID_CONFLICT",
+            "message": "逻辑 ID 已存在，请选择更新模式",
+            "path": "ChickenLeg"
+        }
+    ]
+}
