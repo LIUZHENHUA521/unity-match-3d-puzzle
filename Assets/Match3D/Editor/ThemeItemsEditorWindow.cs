@@ -10,6 +10,14 @@ public sealed class ThemeItemsEditorWindow : EditorWindow {
     [SerializeField] int themeIndex;
     [SerializeField] string search = "";
     [SerializeField] bool showCandidates;
+    ThemeItemGamePreview gamePreview;
+    readonly Dictionary<GameObject, Texture2D> thumbnails = new Dictionary<GameObject, Texture2D>();
+    void ClearPreviews() {
+        foreach (var texture in thumbnails.Values) if (texture) DestroyImmediate(texture);
+        thumbnails.Clear(); gamePreview?.Dispose(); gamePreview = null;
+        Repaint();
+    }
+    void OnDisable() { EditorApplication.projectChanged -= ClearPreviews; ClearPreviews(); }
     Match3DTheme library;
     GameObject[] candidates = Array.Empty<GameObject>();
     List<string> errors = new List<string>();
@@ -24,6 +32,7 @@ public sealed class ThemeItemsEditorWindow : EditorWindow {
         window.Show();
     }
     void OnEnable() {
+        EditorApplication.projectChanged += ClearPreviews;
         saveChangesMessage = "主题物品有未保存修改，是否保存到关卡配置？";
         library = AssetDatabase.LoadAssetAtPath<Match3DTheme>("Assets/Match3D/Resources/Match3D/ThemeLibrary.asset");
         RefreshCandidates();
@@ -124,6 +133,8 @@ public sealed class ThemeItemsEditorWindow : EditorWindow {
                         float weight = EditorGUILayout.FloatField(row.weight);
                         if (!weight.Equals(row.weight)) { row.weight = weight; Changed(); }
                     }
+                    using (new EditorGUI.DisabledScope(!row.prefab))
+                        if (GUILayout.Button("预览", GUILayout.Width(60), GUILayout.Height(40))) ThemeItemPreviewWindow.Open(row.prefab);
                     if (GUILayout.Button("移除", GUILayout.Width(48), GUILayout.Height(40))) remove = i;
                 }
             }
@@ -158,9 +169,14 @@ public sealed class ThemeItemsEditorWindow : EditorWindow {
         return identity && !string.IsNullOrEmpty(identity.DisplayName) ? identity.DisplayName : prefab.name;
     }
     void DrawPreview(GameObject prefab, int size) {
-        Texture texture = prefab ? AssetPreview.GetAssetPreview(prefab) ?? AssetPreview.GetMiniThumbnail(prefab) : null;
-        GUILayout.Label(texture, GUILayout.Width(size), GUILayout.Height(size));
-        if (prefab && AssetPreview.IsLoadingAssetPreview(prefab.GetInstanceID())) Repaint();
+        var rect = GUILayoutUtility.GetRect(size, size, GUILayout.Width(size), GUILayout.Height(size));
+        if (!prefab || Event.current.type != EventType.Repaint) return;
+        if (!thumbnails.TryGetValue(prefab, out var texture) || !texture) {
+            if (gamePreview == null) gamePreview = new ThemeItemGamePreview();
+            texture = gamePreview.Thumbnail(prefab);
+            thumbnails[prefab] = texture;
+        }
+        GUI.DrawTexture(rect, texture, ScaleMode.ScaleToFit, false);
     }
     void DrawCandidates() {
         using (new EditorGUILayout.HorizontalScope()) {

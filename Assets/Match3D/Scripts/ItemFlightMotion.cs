@@ -9,6 +9,37 @@ public static class ItemFlightMotion {
     public const float PunchSeconds=.2f,PunchScale=.03f,HideCollidersSeconds=.05f;
     public const float MergeSeconds=.2f,ShrinkSeconds=.2f,FinalRemovalDelay=.05f;
     public const float MatchCheckSeconds=MoveSeconds+MergeSeconds+ShrinkSeconds;
+    public const float MagnetShakeSeconds=.11f,MagnetLiftSeconds=.12f,MagnetPullSeconds=.32f,MagnetLandSeconds=.1f;
+    public const float MagnetSeconds=MagnetShakeSeconds+MagnetLiftSeconds+MagnetPullSeconds+MagnetLandSeconds;
+    public const float MagnetStaggerSeconds=.07f;
+    public static Vector3 MagnetPosition(Vector3 start,Vector3 slot,Vector3 up,Vector3 right,float spacing,float elapsed){
+        float t=Mathf.Clamp(elapsed,0,MagnetSeconds);
+        if(t<MagnetShakeSeconds){
+            float u=t/MagnetShakeSeconds;
+            return start+right*(Mathf.Sin(u*Mathf.PI*4)*.035f*spacing*Mathf.Sin(u*Mathf.PI));
+        }
+        var lifted=start+up*(.32f*spacing);
+        if(t<MagnetShakeSeconds+MagnetLiftSeconds){
+            float u=(t-MagnetShakeSeconds)/MagnetLiftSeconds;
+            return Vector3.Lerp(start,lifted,1-(1-u)*(1-u));
+        }
+        float pullStart=MagnetShakeSeconds+MagnetLiftSeconds;
+        if(t<pullStart+MagnetPullSeconds){
+            float u=(t-pullStart)/MagnetPullSeconds,q=u*u;
+            float side=Vector3.Dot(start-slot,right)>=0?1:-1;
+            var control=lifted+up*(.45f*spacing)+right*(side*.28f*spacing);
+            return (1-q)*(1-q)*lifted+2*(1-q)*q*control+q*q*slot;
+        }
+        float landing=(t-pullStart-MagnetPullSeconds)/MagnetLandSeconds;
+        return slot+up*(Mathf.Sin(Mathf.Clamp01(landing)*Mathf.PI)*.065f*spacing);
+    }
+    public static Vector3 MagnetScale(Vector3 initial,Vector3 target,float elapsed){
+        float t=Mathf.Clamp(elapsed,0,MagnetSeconds),pullStart=MagnetShakeSeconds+MagnetLiftSeconds;
+        if(t<pullStart)return initial*(1+.1f*Mathf.SmoothStep(0,1,t/pullStart));
+        float u=(t-pullStart)/MagnetPullSeconds;
+        if(u<1)return Vector3.Lerp(initial*1.1f,target,u*u);
+        return target*(1+.06f*Mathf.Sin(Mathf.Clamp01((t-pullStart-MagnetPullSeconds)/MagnetLandSeconds)*Mathf.PI));
+    }
     [Serializable] class ItemList {public Item[] items;}
     [Serializable] class Item {public string name;public float pickScale,normalizedToPickScale;}
     static Dictionary<string,Item> data;

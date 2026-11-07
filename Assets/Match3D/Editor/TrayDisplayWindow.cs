@@ -19,7 +19,13 @@ public sealed class TrayDisplayWindow : EditorWindow {
         var settings=EnsureSettings();Undo.RecordObject(settings,"保存槽内展示");settings.Set(model,pose);EditorUtility.SetDirty(settings);AssetDatabase.SaveAssets();
     }
     public static void ResetPose(GameObject model){var settings=EnsureSettings();Undo.RecordObject(settings,"重置槽内展示");settings.Remove(model);EditorUtility.SetDirty(settings);AssetDatabase.SaveAssets();}
-    void OnEnable(){minSize=new Vector2(600,560);RefreshModels();Undo.undoRedoPerformed+=Reload;saveChangesMessage="道具展示配置尚未保存。";}
+    void OnEnable(){
+        minSize=new Vector2(600,560);
+        var pending=draft;float pendingMultiplier=boardMultiplier;bool pendingReset=resetTray,dirty=hasUnsavedChanges;
+        RefreshModels();
+        if(dirty&&pending!=null){draft=pending;boardMultiplier=pendingMultiplier;resetTray=pendingReset;hasUnsavedChanges=true;}
+        Undo.undoRedoPerformed+=Reload;saveChangesMessage="道具展示配置尚未保存。";
+    }
     void OnDisable(){Undo.undoRedoPerformed-=Reload;preview?.Dispose();preview=null;boardPreview?.Dispose();boardPreview=null;}
     void RefreshModels(){
         var previous=models.Length>0?models[Mathf.Clamp(selected,0,models.Length-1)]:null;measured=null;
@@ -54,6 +60,36 @@ public sealed class TrayDisplayWindow : EditorWindow {
         try{clone.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);var rs=clone.GetComponentsInChildren<Renderer>().Where(r=>r.enabled).ToArray();if(rs.Length==0)return measuredSize=0;
             var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);return measuredSize=Mathf.Max(bounds.size.x,bounds.size.y,bounds.size.z);
         }finally{DestroyImmediate(clone);}
+    }
+    Vector3 dragStartRotation;
+    bool dragStartDirty,dragStartReset;
+    int rotationControl;
+    void OnLostFocus(){if(rotationControl!=0&&GUIUtility.hotControl==rotationControl)GUIUtility.hotControl=0;rotationControl=0;}
+    void DragTrayRotation(Rect rect){
+        int id=GUIUtility.GetControlID("TrayPoseRotation".GetHashCode(),FocusType.Passive,rect);
+        EditorGUIUtility.AddCursorRect(rect,MouseCursor.RotateArrow);
+        var e=Event.current;
+        switch(e.GetTypeForControl(id)){
+            case EventType.MouseDown:
+                if(e.button!=0||!rect.Contains(e.mousePosition)||!draft.IsValid)return;
+                GUIUtility.hotControl=id;GUIUtility.keyboardControl=0;rotationControl=id;
+                dragStartRotation=draft.rotation;dragStartDirty=hasUnsavedChanges;dragStartReset=resetTray;e.Use();break;
+            case EventType.MouseDrag:
+                if(GUIUtility.hotControl!=id)return;
+                // Pre-multiply in camera space so dragging stays intuitive at every pose.
+                var delta=e.shift?Quaternion.AngleAxis(-e.delta.x*.6f,Vector3.forward)
+                    :Quaternion.AngleAxis(e.delta.y*.6f,Vector3.right)*Quaternion.AngleAxis(e.delta.x*.6f,Vector3.up);
+                var angles=(delta*Quaternion.Euler(draft.rotation)).eulerAngles;
+                draft.rotation=new Vector3(Mathf.DeltaAngle(0,angles.x),Mathf.DeltaAngle(0,angles.y),Mathf.DeltaAngle(0,angles.z));
+                hasUnsavedChanges=true;resetTray=false;e.Use();Repaint();break;
+            case EventType.MouseUp:
+                if(GUIUtility.hotControl!=id||e.button!=0)return;
+                GUIUtility.hotControl=0;rotationControl=0;e.Use();break;
+            case EventType.KeyDown:
+                if(GUIUtility.hotControl!=id||e.keyCode!=KeyCode.Escape)return;
+                draft.rotation=dragStartRotation;hasUnsavedChanges=dragStartDirty;resetTray=dragStartReset;
+                GUIUtility.hotControl=0;rotationControl=0;e.Use();Repaint();break;
+        }
     }
     void OnGUI(){
         if(models.Length==0){EditorGUILayout.HelpBox("没有找到关卡模型。",MessageType.Info);if(GUILayout.Button("刷新模型"))RefreshModels();return;}
@@ -100,7 +136,9 @@ public sealed class TrayDisplayWindow : EditorWindow {
             if(GUILayout.Button("重新读取")&&CanSwitch())Reload();
         }
         closeup=EditorGUILayout.ToggleLeft("放大查看中央格（完整七格预览用于检查邻格遮挡）",closeup);
+        EditorGUILayout.LabelField("在下方预览中拖拽旋转 · Shift + 左右拖拽调整平面转角 · Esc 取消本次拖拽",EditorStyles.wordWrappedMiniLabel);
         var rect=GUILayoutUtility.GetRect(560,closeup?310:220,GUILayout.ExpandWidth(true));
+        DragTrayRotation(rect);
         if(Event.current.type==EventType.Repaint&&draft.IsValid){
             if(preview==null)preview=new TrayDisplayPreview();preview.Select(models[selected]);
             GUI.DrawTexture(rect,preview.Render(rect,draft,3,closeup),ScaleMode.StretchToFill,false);

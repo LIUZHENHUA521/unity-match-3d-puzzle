@@ -5,6 +5,8 @@ using UnityEngine.Rendering;
 // Saved WX level0 SceneChange light + Medium quality profile. Never persist global settings.
 public sealed class BoardLighting : MonoBehaviour {
  public static readonly Quaternion SavedRotation=new Quaternion(-.07652297616004944f,-.8228871822357178f,.5578038692474365f,.07652299106121063f);
+ public static readonly Color ItemAmbientColor=new Color(1.4148107767105103f,1.4148107767105103f,1.4148107767105103f,1);
+ public const float ItemLightIntensity=.3799999952316284f;
  public Light SourceLight {get; private set;}
  public bool Active=>SourceLight;
  bool applied;Light[] previousLights;bool[] previousEnabled;Light sun;
@@ -27,7 +29,7 @@ public sealed class BoardLighting : MonoBehaviour {
   // WX data.unity3d / level0 RenderSettings 55. HDR values are not clamped or gamma-converted.
   // Flat=3 and Skybox reflection=0 are verified against UnityEngine.CoreModule enums.
   RenderSettings.ambientMode=AmbientMode.Flat;
-  RenderSettings.ambientSkyColor=new Color(1.4148107767105103f,1.4148107767105103f,1.4148107767105103f,1);
+  RenderSettings.ambientSkyColor=ItemAmbientColor;
   RenderSettings.ambientEquatorColor=new Color(.11400000005960464f,.125f,.13300000131130219f,1);
   RenderSettings.ambientGroundColor=new Color(.04699999839067459f,.0430000014603138f,.03500000014901161f,1);
   RenderSettings.ambientIntensity=1;
@@ -40,7 +42,7 @@ public sealed class BoardLighting : MonoBehaviour {
   // The package's zero serialized ambientProbe is not evidence of the evaluated runtime SH.
   // Leave Flat-mode probe generation to Unity; do not force a zero probe or schedule DynamicGI.
 
-  var g=new GameObject("Source SceneChange Directional Light");g.transform.SetParent(transform,false);g.transform.SetPositionAndRotation(new Vector3(0,3,0),SavedRotation);SourceLight=g.AddComponent<Light>();SourceLight.type=LightType.Directional;SourceLight.color=Color.white;SourceLight.intensity=.3799999952316284f;SourceLight.cullingMask=471;SourceLight.shadows=LightShadows.Hard;SourceLight.shadowResolution=LightShadowResolution.FromQualitySettings;SourceLight.shadowStrength=1;SourceLight.shadowBias=.05000000074505806f;SourceLight.shadowNormalBias=.4000000059604645f;SourceLight.shadowNearPlane=.20000000298023224f;SourceLight.renderMode=LightRenderMode.Auto;RenderSettings.sun=SourceLight;
+  var g=new GameObject("Source SceneChange Directional Light");g.transform.SetParent(transform,false);g.transform.SetPositionAndRotation(new Vector3(0,3,0),SavedRotation);SourceLight=g.AddComponent<Light>();SourceLight.type=LightType.Directional;SourceLight.color=Color.white;SourceLight.intensity=ItemLightIntensity;SourceLight.cullingMask=471;SourceLight.shadows=LightShadows.Hard;SourceLight.shadowResolution=LightShadowResolution.FromQualitySettings;SourceLight.shadowStrength=1;SourceLight.shadowBias=.05000000074505806f;SourceLight.shadowNormalBias=.4000000059604645f;SourceLight.shadowNearPlane=.20000000298023224f;SourceLight.renderMode=LightRenderMode.Auto;RenderSettings.sun=SourceLight;
  }
  // Use only if the caller has established the original LightAngle transform from its callback.
  public void SetAngle(Quaternion angle){if(SourceLight)SourceLight.transform.rotation=angle*SavedRotation;}

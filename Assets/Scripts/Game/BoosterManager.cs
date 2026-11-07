@@ -21,8 +21,9 @@ public class BoosterManager : Singleton<BoosterManager>
             var items=BoardTools.AutoFindCandidates(InputController.Instance.objectsOnStack,LevelGenerator.Instance.objectsOnScene);
             if(items.Count==0){Match3DFlow.Instance.ShowTips("场上没有足够的同类物品可吸附");return;}
             if(!BoardTools.TrySpend(1))return;GameAudioCatalog.Tool(25);
+            if(Camera.main)ItemHighlight.For(Camera.main).ShowAutoFind(items,ItemFlightMotion.MagnetShakeSeconds+ItemFlightMotion.MagnetLiftSeconds);
             for(int i=0;i<items.Count;i++)
-                InputController.Instance.AddObjectOnStack(items[i],false,true,i*.035f);
+                InputController.Instance.AddObjectOnStack(items[i],false,true,i*ItemFlightMotion.MagnetStaggerSeconds);
             CheckHintInteractibility();return;
         }
         StartCoroutine(FindPossibleMatch());

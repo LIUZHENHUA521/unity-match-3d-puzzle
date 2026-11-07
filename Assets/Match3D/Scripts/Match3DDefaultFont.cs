@@ -10,9 +10,12 @@ public static class Match3DDefaultFont {
 #if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")] static extern int GooseCanLoadSystemFont();
 #endif
-    public static IEnumerator Initialize() {
+    public static void InitializeFallback() {
         Current=Resources.Load<Font>("Match3D/Fonts/DefaultChinese");
         if(!Current)throw new InvalidOperationException("Default Chinese fallback font is missing");
+    }
+    public static IEnumerator Initialize() {
+        InitializeFallback();
 #if UNITY_WEBGL && !UNITY_EDITOR
         // The bundled SDK cannot get the common font on iOS. Use the common-Chinese
         // packaged fallback there instead of requesting an empty fallback URL.

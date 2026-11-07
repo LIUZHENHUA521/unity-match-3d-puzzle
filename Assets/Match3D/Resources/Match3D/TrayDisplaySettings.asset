@@ -12,6 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ac858042e83451ca01aed65b1da0b0, type: 3}
   m_Name: TrayDisplaySettings
   m_EditorClassIdentifier: 
+  boardEntries:
+  - prefab: {fileID: 0}
+    adapterId: ChickenLeg
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Hotdog
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: baguette
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: baguette_slice
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: bread_half
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: bread_roll
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: bread_slice
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: cake_birthday_cut
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: cake_chocolate
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: cookie
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: waffle
+    multiplier: 1
   entries:
   - prefab: {fileID: 0}
     adapterId: AppleGreen
@@ -56,12 +90,6 @@ MonoBehaviour:
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: ChickenLeg
-    pose:
-      rotation: {x: -65, y: 0, z: -25}
-      scale: 0.65
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Corndog
     pose:
       rotation: {x: -15, y: 0, z: -15}
@@ -104,12 +132,6 @@ MonoBehaviour:
       scale: 1.1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Hotdog
-    pose:
-      rotation: {x: -75, y: 0, z: -35}
-      scale: 0.9
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: IceCream
     pose:
       rotation: {x: -20, y: 0, z: -10}
@@ -150,4 +172,58 @@ MonoBehaviour:
     pose:
       rotation: {x: -90, y: 0, z: -20}
       scale: 0.9
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: ChickenLeg
+    pose:
+      rotation: {x: 0, y: 0, z: -100}
+      scale: 0.58
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: baguette_slice
+    pose:
+      rotation: {x: 18.998774, y: -4.818817, z: 24.662508}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: bread_half
+    pose:
+      rotation: {x: -40.98651, y: 63.120796, z: 11.195439}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: bread_roll
+    pose:
+      rotation: {x: -53.53537, y: -11.346649, z: 11.627209}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: bread_slice
+    pose:
+      rotation: {x: -0.6915283, y: 2.9833689, z: -0.9850464}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: cake_birthday_cut
+    pose:
+      rotation: {x: -31.543365, y: 9.514324, z: 14.946135}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: cake_chocolate
+    pose:
+      rotation: {x: -22.276093, y: 7.193523, z: 16.139238}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: cookie
+    pose:
+      rotation: {x: -40.056885, y: 3.5335784, z: 23.444275}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: waffle
+    pose:
+      rotation: {x: -43.40335, y: 13.90292, z: 14.771894}
+      scale: 1
       offset: {x: 0, y: 0, z: 0}

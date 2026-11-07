@@ -44,6 +44,20 @@ public sealed class BoardToolVisual : MonoBehaviour {
         // Original then waits two realtime seconds before pool removal and ParticleSystem.Stop.
         yield return new WaitForSecondsRealtime(2);Recycle(fx);
     }
+    public static void MagnetTrail(GameObject item,float delay){var owner=Ensure();if(owner&&item)owner.StartCoroutine(owner.FollowMagnet(item,delay));}
+    IEnumerator FollowMagnet(GameObject item,float delay){
+        yield return new WaitForSecondsRealtime(delay+ItemFlightMotion.MagnetShakeSeconds+ItemFlightMotion.MagnetLiftSeconds);
+        if(!item||!item.activeInHierarchy)yield break;
+        var fx=Spawn("FX_Tool_ReturnBack");if(!fx)yield break;
+        fx.transform.position=item.transform.position;fx.transform.localScale=Vector3.one*.45f;
+        var particles=fx.GetComponent<ParticleSystem>();particles.Play(true);
+        float elapsed=0;
+        while(item&&item.activeInHierarchy&&elapsed<ItemFlightMotion.MagnetPullSeconds){
+            fx.transform.position=item.transform.position;elapsed+=Time.unscaledDeltaTime;yield return null;
+        }
+        particles.Stop(true,ParticleSystemStopBehavior.StopEmitting);
+        yield return new WaitForSecondsRealtime(.15f);Recycle(fx);
+    }
     public static void AutoFind(GameObject item,Vector3 slot){var owner=Ensure();if(owner&&item)owner.StartCoroutine(owner.FindBeam(item,slot+Vector3.forward*.5f));}
     IEnumerator FindBeam(GameObject item,Vector3 origin){
         var fx=Spawn("FX_Tool_AutoFind");if(!fx)yield break;fx.transform.position=origin;fx.transform.localScale=Vector3.zero;fx.GetComponent<ParticleSystem>().Play(true);

@@ -123,7 +123,7 @@ public class InputController : Singleton<InputController>
     }
     sealed class MagnetFlight { public Vector3 start; public Quaternion rotation; public float started,delay; }
     readonly Dictionary<GameObject,MagnetFlight> magnetFlights=new Dictionary<GameObject,MagnetFlight>();
-    const float MagnetSeconds=.5f;
+    const float MagnetSeconds=ItemFlightMotion.MagnetSeconds;
     public void AddObjectOnStack(GameObject obj,bool playSound=true,bool magnetic=false,float magnetDelay=0)
     {
         if (BoardTools.Shuffling || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
@@ -173,6 +173,17 @@ public class InputController : Singleton<InputController>
         var initial=scales[obj];var target=ItemFlightMotion.PickScale(obj,initial);
         var display=Match3DTrayDisplayBinding.For(obj);if(display)target*=display.pose.scale;
         sourceFlying.Add(obj);
+        if(magnet!=null){
+            float elapsed=0;
+            DOTween.To(()=>elapsed,t=>{
+                elapsed=t;if(obj)obj.transform.localScale=ItemFlightMotion.MagnetScale(initial,target,t-magnet.delay);
+            },flightSeconds,flightSeconds).SetUpdate(true).SetEase(Ease.Linear).SetTarget(obj.transform).OnComplete(()=>{
+                if(!obj)return;
+                sourceFlying.Remove(obj);magnetFlights.Remove(obj);
+                if(objectsOnStack.Contains(obj)&&!arrivedObject.Contains(obj))arrivedObject.Add(obj);
+            });
+            BoardToolVisual.MagnetTrail(obj,magnet.delay);
+        }else{
         // BeClick starts scale at release; RefreshContentDisplay starts all three axes immediately.
         obj.transform.DOScale(initial*ItemFlightMotion.ScalePeak,ItemFlightMotion.ScalePeakSeconds)
             .SetUpdate(true).SetEase(Ease.OutQuad).OnComplete(()=>{
@@ -185,6 +196,7 @@ public class InputController : Singleton<InputController>
                         obj.transform.DOPunchScale(initial*ItemFlightMotion.PunchScale,ItemFlightMotion.PunchSeconds,1,1);
                     });
             });
+        }
         StartCoroutine(SourceHideColliders(obj));
         RepositionSource();
         // DelayToCheckContent executes its match scan BEFORE its first yield.
@@ -225,16 +237,14 @@ public class InputController : Singleton<InputController>
                 var motion=DOTween.To(()=>elapsed,t=>{
                     if(!obj)return;
                     float local=Mathf.Clamp(t-magnet.delay,0,MagnetSeconds);
-                    var lifted=magnet.start+up*.28f;
-                    if(local<.12f){
-                        float u=local/.12f;
-                        obj.transform.position=Vector3.Lerp(magnet.start,lifted,u)+right*(Mathf.Sin(u*Mathf.PI*2)*.045f);
-                        obj.transform.rotation=magnet.rotation;
-                    }else{
-                        float u=Mathf.Clamp01((local-.12f)/.28f);
-                        obj.transform.position=Vector3.Lerp(lifted,slot,u*u);
-                        obj.transform.rotation=Quaternion.Slerp(magnet.rotation,rotation,u);
-                        if(local>.4f)obj.transform.position+=up*(Mathf.Sin((local-.4f)/.1f*Mathf.PI)*.06f);
+                    obj.transform.position=ItemFlightMotion.MagnetPosition(magnet.start,slot,up,right,spacing,local);
+                    float pullStart=ItemFlightMotion.MagnetShakeSeconds+ItemFlightMotion.MagnetLiftSeconds;
+                    float turn=Mathf.Clamp01((local-pullStart)/ItemFlightMotion.MagnetPullSeconds);
+                    obj.transform.rotation=Quaternion.Slerp(magnet.rotation,rotation,turn);
+                    if(local<pullStart){
+                        float shake=local/ItemFlightMotion.MagnetShakeSeconds;
+                        float angle=local<ItemFlightMotion.MagnetShakeSeconds?Mathf.Sin(shake*Mathf.PI*4)*3*Mathf.Sin(shake*Mathf.PI):-5*Mathf.Sin((local-ItemFlightMotion.MagnetShakeSeconds)/ItemFlightMotion.MagnetLiftSeconds*Mathf.PI);
+                        obj.transform.rotation=Quaternion.AngleAxis(angle,Vector3.Cross(right,up))*magnet.rotation;
                     }
                 },MagnetSeconds+magnet.delay,remaining).SetEase(Ease.Linear).SetUpdate(true).SetTarget(obj.transform);
                 sourceMoves[obj]=new List<Tween>{motion};

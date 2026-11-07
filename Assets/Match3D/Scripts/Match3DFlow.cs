@@ -26,6 +26,7 @@ public partial class Match3DFlow : MonoBehaviour {
     public string LastResult {get;private set;}
     public int TodaySeed {get;private set;}
     public float AppliedModelSize {get;private set;}=1f;
+    CanvasGroup startupInput;
     Canvas canvas;RectTransform page,modal;Text timer,remaining,peerText;Match3DTips tips;
     ItemPhysicsController pilePhysics;
     LayeredItemPile layeredPile;
@@ -46,6 +47,14 @@ public partial class Match3DFlow : MonoBehaviour {
         // Hide the inherited demo before SDK/font initialization can yield a frame.
         // Keep its objects and colliders available to the existing gameplay services.
         HideLegacyPresentation();
+        // Paint the real home before any SDK/font coroutine can suspend startup.
+        Match3DDefaultFont.InitializeFallback();
+        var uiRoot=Match3DUIView.Load("UIRoot",null);
+        canvas=uiRoot.GetComponent<Canvas>();canvas.name="Goose UI";
+        page=uiRoot.Get<RectTransform>("Page");
+        startupInput=uiRoot.gameObject.AddComponent<CanvasGroup>();
+        startupInput.interactable=false;
+        Match3DHomeView.Create(this,page,Match3DHomeView.Tab.Home);
     }
     public static void HideLegacyPresentation(){
         var pot=GameObject.Find("Cooking Pot");
@@ -69,9 +78,7 @@ public partial class Match3DFlow : MonoBehaviour {
         QualitySettings.shadowResolution=ShadowResolution.Medium;
         QualitySettings.shadowDistance=20f;
         QualitySettings.shadowCascades=0;
-        var uiRoot=Match3DUIView.Load("UIRoot",null);
-        canvas=uiRoot.GetComponent<Canvas>();canvas.name="Goose UI";
-        page=uiRoot.Get<RectTransform>("Page");
+        Match3DDefaultFont.Apply(canvas.gameObject);
         music=gameObject.AddComponent<AudioSource>();music.loop=true;music.volume=.25f;
         effects=gameObject.AddComponent<AudioSource>();effects.volume=.65f;
         pilePhysics=gameObject.AddComponent<ItemPhysicsController>();
@@ -86,6 +93,7 @@ public partial class Match3DFlow : MonoBehaviour {
             PlayerPrefs.DeleteKey("goose.endpoint");PlayerPrefs.Save();endpoint=library.pvpEndpoint;
         }
         gameObject.AddComponent<Match3DInvitations>().Initialize(endpoint);gameObject.AddComponent<Match3DGameRecords>().Initialize(endpoint);gameObject.AddComponent<Match3DRewards>().Initialize(endpoint);Home();
+        startupInput.interactable=true;
 #if UNITY_WEBGL && !UNITY_EDITOR
         WeChatWASM.WX.ReportGameStart();
 #endif
@@ -496,7 +504,6 @@ public partial class Match3DFlow : MonoBehaviour {
         if(ingame&&Match3DInvitations.Instance&&Match3DInvitations.Instance.Busy)return;
         if(ingame&&!IsPvp)Time.timeScale=0;BlocksGameplay=true;
         var view=OpenModal("PauseSettings");view.Text("Title",ingame?"暂停 / 设置":"设置");
-        AddMusicCredit(view);
         Action close=()=>CloseModal(ingame&&!IsPvp);
         view.Bind("Close",close);view.Bind("Continue",close);view.Text("ContinueText",ingame?"继续游戏":"完成");
         SettingToggle(view,"Music",SettingsMusic,value=>{PlayerPrefs.SetInt("goose.music",value?1:0);music.mute=!value;PlayerPrefs.Save();});
@@ -505,18 +512,6 @@ public partial class Match3DFlow : MonoBehaviour {
         view.Show("Home",ingame);view.Bind("Home",Home);
         var skin=view.GetComponent<Match3DSettingsSkin>();
         if(skin){view.Show("Continue",false);view.Show("Home",false);skin.BindSupport(ingame);}
-    }
-    static void AddMusicCredit(Match3DUIView view){
-        var title=view.Get<Text>("Title");
-        var credit=new GameObject("Music Credit",typeof(RectTransform),typeof(CanvasRenderer),typeof(Text));
-        credit.transform.SetParent(title.transform.parent,false);
-        var rect=(RectTransform)credit.transform;
-        rect.anchorMin=rect.anchorMax=new Vector2(.5f,1);
-        rect.anchoredPosition=new Vector2(0,-1240);rect.sizeDelta=new Vector2(650,120);
-        var text=credit.GetComponent<Text>();text.font=title.font;text.fontSize=20;
-        text.alignment=TextAnchor.MiddleCenter;text.color=new Color(.3f,.18f,.09f);
-        text.raycastTarget=false;
-        text.text="Music: Carefree — Kevin MacLeod\nincompetech.com · CC BY 4.0\nhttps://creativecommons.org/licenses/by/4.0/";
     }
     void SettingToggle(Match3DUIView view,string key,bool value,Action<bool> change){
         bool current=value;var skin=view.GetComponent<Match3DSettingsSkin>();
