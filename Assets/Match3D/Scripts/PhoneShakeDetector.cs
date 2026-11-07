@@ -1,29 +1,16 @@
 using UnityEngine;
 
-// Acceleration is in g on both Unity mobile and WeChat. Require a reversal,
-// rather than treating a single bump or an orientation change as a shake.
-public sealed class PhoneShakeDetector {
-    public const float Threshold=1.1f, Cooldown=2f;
-    Vector3 gravity,firstImpulse;
-    float lastSample,firstTime,nextAllowed;
-    bool initialized,hasImpulse;
-    public void Reset(){initialized=false;hasImpulse=false;}
-    public bool Sample(Vector3 acceleration,float now){
-        if(float.IsNaN(acceleration.sqrMagnitude)||float.IsInfinity(acceleration.sqrMagnitude))return false;
-        if(!initialized||now-lastSample>.25f||now<lastSample){
-            gravity=acceleration;lastSample=now;initialized=true;hasImpulse=false;return false;
-        }
-        float dt=now-lastSample;lastSample=now;
-        if(dt<=0)return false;
-        gravity=Vector3.Lerp(gravity,acceleration,dt/(.25f+dt));
-        var impulse=acceleration-gravity;
-        if(now<nextAllowed){hasImpulse=false;return false;}
-        if(hasImpulse&&now-firstTime>.45f)hasImpulse=false;
-        if(impulse.sqrMagnitude<Threshold*Threshold)return false;
-        if(hasImpulse&&now-firstTime>=.06f&&Vector3.Dot(firstImpulse,impulse)<-.25f*firstImpulse.magnitude*impulse.magnitude){
-            hasImpulse=false;nextAllowed=now+Cooldown;return true;
-        }
-        if(!hasImpulse){firstImpulse=impulse;firstTime=now;hasImpulse=true;}
-        return false;
+// WX 2.1.12 LevelManager.ShakePhone (j83399): continuous force, not ShakeObj.
+public static class PhoneShakeDetector {
+    public const float Threshold=2f,MaxExcess=4f;
+    public const float DefaultForce=7f,IosForce=6f;
+    public static Vector3 Force(Vector3 acceleration,float interval,float fixedDeltaTime,bool ios){
+        float magnitude=acceleration.magnitude;
+        if(float.IsNaN(magnitude)||float.IsInfinity(magnitude)||float.IsNaN(interval)||float.IsInfinity(interval)||
+            fixedDeltaTime<=0||float.IsNaN(fixedDeltaTime)||float.IsInfinity(fixedDeltaTime)||magnitude<=Threshold)return Vector3.zero;
+        // Source maps accelerometer x/y/z to world x/z/y, preserving signs.
+        var direction=new Vector3(acceleration.x,acceleration.z,acceleration.y)/magnitude;
+        float timing=Mathf.Clamp(interval,.033f,1f)*5f*6f/fixedDeltaTime*.02f;
+        return direction*(Mathf.Clamp(magnitude-Threshold,0,MaxExcess)*(ios?IosForce:DefaultForce)*timing);
     }
 }

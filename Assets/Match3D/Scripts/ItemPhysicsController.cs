@@ -59,6 +59,18 @@ public class ItemPhysicsController : MonoBehaviour {
             if(body.isKinematic)Activate(entry);ApplyShake(body);
         }
     }
+    // Source ObjectUnit.CanShake/AddForce: dynamic bodies only, with no velocity reset or torque.
+    public int ApplyPhoneShake(Vector3 force){
+        if(force.sqrMagnitude==0)return 0;
+        int affected=0;
+        foreach(var entry in entries.Values){
+            var body=entry.body;
+            if(!body||body.isKinematic||entry.selected||!body.gameObject.activeInHierarchy||BoardTools.IsStored(body.gameObject)||
+                (InputController.Instance&&InputController.Instance.objectsOnStack.Contains(body.gameObject)))continue;
+            body.AddForce(force,ForceMode.Force);affected++;
+        }
+        return affected;
+    }
     void FixedUpdate(){if(Physics.autoSimulation)Step(Time.fixedDeltaTime);}
     public void Step(float delta){
         var started=System.Diagnostics.Stopwatch.GetTimestamp();

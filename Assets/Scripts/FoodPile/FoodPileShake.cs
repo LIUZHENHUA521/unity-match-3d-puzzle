@@ -12,7 +12,7 @@ public class FoodPileShake : MonoBehaviour
     public bool TryShake()
     {
         if (!CanShakeGameplay || Time.unscaledTime < nextShake) return false;
-        nextShake = Time.unscaledTime + PhoneShakeDetector.Cooldown;
+        nextShake = Time.unscaledTime + 2f; // Legacy button/Space toss only; phone input has no cooldown.
         if(InputController.Instance)InputController.Instance.CancelSelection();
         if(ItemPhysicsController.Instance){ItemPhysicsController.Instance.ShakeAll();return true;}
         foreach (var obj in LevelGenerator.Instance.objectsOnScene)
