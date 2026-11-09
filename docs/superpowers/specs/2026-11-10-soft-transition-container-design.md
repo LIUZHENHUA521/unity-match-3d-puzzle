@@ -4,11 +4,12 @@ User approved the “短段圆滑” candidate in the interactive comparison on 
 
 Final revision: the user explicitly selected an upright short-transition
 container after identifying the unwanted lean. Stage 2 tilt is now 0 degrees.
-Its camera faces straight down the container axis. The latest user correction
-makes the first-stage pan transform authoritative for both stages. Stage 2 keeps
-that exact transform and derives its camera position from the first-stage camera
-coordinates of the pan center, preserving the pan's screen position at any aspect.
-This supersedes the earlier pan translation and fixed stage-2 framing offset. Shape radii, height, transition band and item sizes stay
+Both stages now retain the exact first-stage camera pose and pan transform for the
+entire run. Stage transitions reuse the presentation without any camera/pan pose
+writes. Aligning only the pan center while rotating the camera changed the rim,
+handle and backdrop projection and caused a visible twitch; that approach is
+superseded. An upright collision shell does not require a straight-down camera.
+Shape radii, height, transition band and item sizes stay
 fixed. The side-view height gap is partly the existing hidden/parked lower-item
 mechanism, and is not claimed to be eliminated by straightening the shell.
 Stage 1 retains its original 25-box hierarchy, spawn sampling, pan and camera pose.

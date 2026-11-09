@@ -9,15 +9,8 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  public const int SourceControlMode=2; // LevelControlType.flatTopView, not an inspector tuning option.
  public static readonly Quaternion SourceRotation=new Quaternion(.6560590267f,0,0,.7547096610f);
  public static Vector3 SourcePosition=>new Vector3(0,0,.5f)+SourceRotation*new Vector3(0,0,-30);
- public static readonly Quaternion SecondStageRotation=Quaternion.Euler(90,0,0);
- // Preserve the first-stage pan anchor in camera space while looking straight
- // down in stage 2. Both stages keep the exact authored pan transform.
- public static Vector3 SecondStagePosition(Vector3 panCenter){
-  var anchorInFirstView=Quaternion.Inverse(SourceRotation)*(panCenter-SourcePosition);
-  return panCenter-SecondStageRotation*anchorInFirstView;
- }
  GameObject visual;Camera camera;CameraFitter fitter;bool fitted,orthographic;Vector3 position;Quaternion rotation;float size,near,far,fov;Rect rect;CameraClearFlags clear;Color background;bool hdr;int culling;
- Transform pan;Vector3 panOriginalPosition;
+ Transform pan;
  public static readonly Vector3 PanBowlLocalCenter=new Vector3(.105f,0,0);
  public Vector3 PanBowlCenter=>pan?pan.TransformPoint(PanBowlLocalCenter):Vector3.zero;
  Collider[] legacyColliders;bool[] colliderStates;
@@ -26,7 +19,7 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
   End();var prefab=Resources.Load<GameObject>("Match3D/Scenes/"+theme);if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
   visual=Instantiate(prefab);visual.name=theme+" source visuals";
   AddPanCollision(visual);
-  pan=visual.transform.Find("Grab3D Frying Pan");if(pan)panOriginalPosition=pan.localPosition;
+  pan=visual.transform.Find("Grab3D Frying Pan");
   if(!lighting)lighting=GetComponent<BoardLighting>();if(!lighting)lighting=gameObject.AddComponent<BoardLighting>();lighting.Begin();
   // The source theme prefab owns the complete backdrop. Hide the legacy
   // Cooking Pot while the source presentation is active so the two bowls do
@@ -41,13 +34,9 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
   fitter=camera.GetComponent<CameraFitter>();if(fitter){fitted=fitter.enabled;fitter.enabled=false;}
   camera.transform.SetPositionAndRotation(SourcePosition,SourceRotation);camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.clear;camera.allowHDR=false;camera.cullingMask=503;camera.orthographic=true;camera.nearClipPlane=.3f;camera.farClipPlane=1000;camera.rect=new Rect(0,0,1,1);Fit();
  }
- // The first-stage pan is the reference for both world placement and screen
- // position. Only the stage-2 camera direction changes for the upright shell.
- public void SetStage(bool firstStage){
-  if(pan)pan.localPosition=panOriginalPosition;
-  if(!camera)return;
-  camera.transform.SetPositionAndRotation(firstStage?SourcePosition:SecondStagePosition(PanBowlCenter),firstStage?SourceRotation:SecondStageRotation);
- }
+ // The visual and camera are owned by this presentation for the whole run.
+ // Stage transitions reuse them without pose changes; a vertical collider does
+ // not require rotating the camera. Begin also restores this pose on a restart.
  public static void AddPanCollision(GameObject scene){
   var pan=scene.transform.Find("Grab3D Frying Pan");if(!pan)return;
   // The replacement mesh sits above the recovered source floor. Match its inner

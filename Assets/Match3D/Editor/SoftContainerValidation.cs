@@ -90,6 +90,7 @@ public static class SoftContainerValidation {
             var presentation=flow.GetComponents<Match3DThemePresentation>().Single(p=>p.Active);
             Check(Vector3.Distance(presentation.PanBowlCenter,new Vector3(.05f,.36f,-.04f))<.001f,"first-stage authored pan position");
             Check(Quaternion.Angle(Camera.main.transform.rotation,Match3DThemePresentation.SourceRotation)<.001f,"first-stage authored camera pose");
+            var firstCameraPosition=Camera.main.transform.position;var firstCameraRotation=Camera.main.transform.rotation;
             var firstPanWorld=presentation.PanBowlCenter;
             var firstPanViewport=Camera.main.WorldToViewportPoint(firstPanWorld);
             var oldColliders=original.GetComponentsInChildren<Collider>(true);
@@ -99,11 +100,11 @@ public static class SoftContainerValidation {
             Check(oldColliders.All(c=>!c||!c.gameObject.activeInHierarchy),"first-stage walls disabled before simulation");
             Check(boundary.transform.parent==original.transform,"boundary owner reused across stages");
             var camera=Camera.main;
-            Check(Vector3.Distance(camera.transform.forward,Vector3.down)<.00001f,"second-stage camera faces down the container axis");
+            Check(Vector3.Distance(camera.transform.position,firstCameraPosition)<.00001f&&Quaternion.Angle(camera.transform.rotation,firstCameraRotation)<.001f,"both stages retain the complete first-stage camera pose");
             Check(Vector3.Distance(presentation.PanBowlCenter,firstPanWorld)<.00001f,"stage 2 preserves first-stage pan world position");
             var projectedPan=camera.WorldToViewportPoint(presentation.PanBowlCenter);
             Check(Vector2.Distance(projectedPan,firstPanViewport)<.00001f,"pan screen position remains unchanged across stages");
-            var aligned= presentation.PanBowlCenter;presentation.SetStage(false);
+            var aligned= presentation.PanBowlCenter;presentation.Fit();
             Check(Vector3.Distance(aligned,presentation.PanBowlCenter)<.0001f,"pan alignment does not accumulate");
             foreach(var c in GameObject.Find(BoardEnvironment.CurrentName+" source visuals").transform.Find("Grab3D Frying Pan").GetComponentsInChildren<Collider>())Check(c is MeshCollider&&c.enabled,"pan visual keeps attached solid mesh");
             var board=LevelGenerator.Instance.objectsOnScene;Check(board.Count==300,"second stage count");

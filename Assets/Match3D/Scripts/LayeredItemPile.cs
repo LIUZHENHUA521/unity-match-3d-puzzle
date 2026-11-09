@@ -67,7 +67,6 @@ public sealed class LayeredItemPile : MonoBehaviour {
             if(!presentation)presentation=gameObject.AddComponent<Match3DThemePresentation>();
             presentation.Begin(BoardEnvironment.CurrentName);
         }
-        presentation.SetStage(firstStage);
         boundary=reusedBoundary??BoardEnvironment.CreateBoundary(firstStage);
         if(reusedBoundary&&!firstStage)BoardEnvironment.UseSecondStageBoundary(boundary);
         boundary.name=BoardEnvironment.CurrentName+(firstStage?" first stage container":" short transition container");
