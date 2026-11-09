@@ -24,6 +24,7 @@ public sealed class ItemColliderGeometry : MonoBehaviour {
     public bool IsConfiguredFor(string name)=>pickObject&&colliderStates!=null&&string.Equals(configuredSourceName,name,StringComparison.OrdinalIgnoreCase);
     public void SetVisible(bool visible){if(pickObject)pickObject.SetActive(visible);}
     public void RestoreConfiguredColliderState(){
+        GetComponent<ItemMeshPicking>()?.RestoreBroadPhase();
         if(colliderStates==null)return;
         foreach(var state in colliderStates)if(state.collider){
             if(state.collider.enabled!=state.enabled)state.collider.enabled=state.enabled;
@@ -44,12 +45,12 @@ public sealed class ItemColliderGeometry : MonoBehaviour {
         // hierarchy. Keep the imported pivot normalization even when the
         // runtime marker lets us skip the expensive profile walk.
         if(restorePivot&&visual){visual.localPosition=Vector3.zero;visual.localRotation=Quaternion.identity;}
-        if(!force&&component&&component.IsConfiguredFor(name))return;
+        if(!force&&component&&component.IsConfiguredFor(name)){ItemMeshPicking.Prepare(obj,component.pickObject);return;}
         LoadProfiles();
         // Imported replacements can share names with another theme's original
         // models (e.g. Banana). Their hierarchy paths are not interchangeable.
         var selectedProfiles=obj.GetComponent<BoardItemIdentity>()?adapterProfiles:profiles;
-        if(!selectedProfiles.TryGetValue(name,out var profile)||obj.transform.childCount==0)return;
+        if(!selectedProfiles.TryGetValue(name,out var profile)||obj.transform.childCount==0){ItemMeshPicking.Prepare(obj,obj);return;}
         // Source Instantiate sets the object pivot and Euler rotation; importer had recentered its visual.
         foreach(var node in profile.nodes){
             var target=Resolve(visual,node.indices);if(!target){Debug.LogError("Source collider hierarchy mismatch: "+name);continue;}
@@ -87,6 +88,7 @@ public sealed class ItemColliderGeometry : MonoBehaviour {
         component=component??obj.GetComponent<ItemColliderGeometry>() ?? obj.AddComponent<ItemColliderGeometry>();
         component.pickObject=Resolve(visual,profile.col)?.gameObject;
         component.configuredSourceName=name;
+        ItemMeshPicking.Prepare(obj,component.pickObject);
         var states=new List<ColliderState>();
         foreach(var node in profile.nodes){
             var target=Resolve(visual,node.indices);if(!target)continue;

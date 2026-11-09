@@ -122,6 +122,7 @@ public sealed class BoardItemPool : MonoBehaviour
         foreach (var r in token.Renderers) if(r&&!r.enabled)r.enabled = true;
         obj.SetActive(true);
         obj.GetComponent<ItemColliderGeometry>()?.RestoreConfiguredColliderState();
+        obj.GetComponent<ItemMeshPicking>()?.RestoreBroadPhase();
         var body = token.Body;
         if (body) body.detectCollisions = true;
         return obj;

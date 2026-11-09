@@ -14,6 +14,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     public void InitializeLevel()
     {
         StopAllCoroutines();
+        ItemColliderGeometry.ConfigureLayers();
         GameManager.Instance.gameStatus = GameManager.GameStatus.PREPARING;
         if (foodPile != null) { CreateFoodPile(); return; }
         int currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
@@ -38,7 +39,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         for (int i = 0; i < spawnList.Count; i++) {
             var pos = new Vector3((i%3-1f)*.50f, .55f+(i/9)*.54f, ((i/3)%3-1f)*.50f+.15f);
             var rot = Quaternion.Euler((float)random.NextDouble()*30-15, random.Next(360), (float)random.NextDouble()*30-15);
-            objectsOnScene.Add(Instantiate(spawnList[i], pos, rot));
+            objectsOnScene.Add(CreateSelectable(spawnList[i], pos, rot));
         }
         GameManager.Instance.currentLevelTime = foodPile.timeLimit;
         StartCoroutine(GameManager.Instance.DelayedGameStart(3f));
@@ -63,11 +64,17 @@ public class LevelGenerator : Singleton<LevelGenerator>
     {
         for (int i = 0; i < levelObjects.Count; i++)
         {
-            objectsOnScene.Add(Instantiate(levelObjects[i], CreateRandomPosition(), levelObjects[i].transform.rotation));
+            objectsOnScene.Add(CreateSelectable(levelObjects[i], CreateRandomPosition(), levelObjects[i].transform.rotation));
         }
         GameManager.Instance.currentLevelTime = levelData.TimeToFinish;
         StartCoroutine(GameManager.Instance.DelayedGameStart(1f));
         
+    }
+    static GameObject CreateSelectable(GameObject prefab, Vector3 position, Quaternion rotation)
+    {
+        var item = Instantiate(prefab, position, rotation);
+        ItemMeshPicking.Prepare(item, item);
+        return item;
     }
     public Vector3 CreateRandomPosition() // Create random position in Game Area.
     {

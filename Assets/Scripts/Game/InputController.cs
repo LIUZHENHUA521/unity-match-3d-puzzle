@@ -46,19 +46,42 @@ public class InputController : Singleton<InputController>
         EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = position }, results);
         return results.Any(r => r.gameObject.GetComponentInParent<UnityEngine.UI.Selectable>() != null);
     }
+    RaycastHit[] pickHits = new RaycastHit[32];
+    readonly HashSet<Rigidbody> pickBodies = new HashSet<Rigidbody>();
     private GameObject PickExact(Camera camera, Vector2 position)
     {
-        if (!camera.pixelRect.Contains(position) ||
-            !Physics.Raycast(camera.ScreenPointToRay(position), out var hit, 100f,
-                             Physics.DefaultRaycastLayers & ~((1<<ItemColliderGeometry.BodyLayer)|(1<<ItemColliderGeometry.WallLayer)), QueryTriggerInteraction.Ignore)) return null;
-        var body = hit.collider.attachedRigidbody;
-        return body && (!LayeredItemPile.Instance || LayeredItemPile.Instance.CanPick(body)) && body.CompareTag("Collectable") && (body.gameObject==pressedObject || BoardTools.IsStored(body.gameObject) || !body.isKinematic || (ItemPhysicsController.Instance && ItemPhysicsController.Instance.Contains(body))) ? body.gameObject : null;
+        if (!camera.pixelRect.Contains(position)) return null;
+        var ray = camera.ScreenPointToRay(position);
+        int count;
+        // A full buffer may have omitted the nearest mesh. Grow and retry rather
+        // than relying on Physics' unspecified hit order in a dense pile.
+        while ((count = Physics.RaycastNonAlloc(ray, pickHits, 100f, 1 << ItemColliderGeometry.PickLayer,
+                                               QueryTriggerInteraction.Ignore)) == pickHits.Length)
+            System.Array.Resize(ref pickHits, pickHits.Length * 2);
+        pickBodies.Clear();
+        Rigidbody nearest = null; float distance = 100f;
+        for (int i = 0; i < count; i++) {
+            var hit = pickHits[i]; var body = hit.collider.attachedRigidbody;
+            if (!body || !body.CompareTag("Collectable")) continue;
+            // Collider-only legacy objects may own multiple shapes: compare all
+            // their distances. Mesh items can be tested just once per query.
+            var geometry = body.GetComponent<ItemMeshPicking>() ?? body.gameObject.AddComponent<ItemMeshPicking>();
+            bool meshItem = geometry.HasRenderGeometry;
+            if (meshItem && !pickBodies.Add(body)) continue;
+            if (ItemMeshPicking.Raycast(body.gameObject, ray, distance, hit.distance, out float meshDistance)) {
+                nearest = body; distance = meshDistance;
+            }
+        }
+        var selected = nearest;
+        return selected && (!LayeredItemPile.Instance || LayeredItemPile.Instance.CanPick(selected)) &&
+            (selected.gameObject == pressedObject || BoardTools.IsStored(selected.gameObject) || !selected.isKinematic ||
+             (ItemPhysicsController.Instance && ItemPhysicsController.Instance.Contains(selected))) ? selected.gameObject : null;
     }
     public GameObject PickAt(Vector2 screenPosition)
     {
         var camera = Camera.main;
         if (!camera || !camera.pixelRect.Contains(screenPosition)) return null;
-        // WX CheckClickRay j13231 uses one ray. Nearby misses must not select another item.
+        // One screen ray; mesh refinement lets actual gaps expose rear items without nearby-ray snapping.
         return PickExact(camera, screenPosition);
     }
     private void BeginPointer(Vector2 position)

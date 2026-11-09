@@ -104,6 +104,7 @@ public static class ModelAdapterService {
         GameObject wrapper = null;
         try {
             var source = scan.source;
+            ItemPickingMeshPreparation.EnsureReadable(source);
             wrapper = new GameObject(scan.report.logicalId) { tag = "Collectable" };
             var identity = wrapper.AddComponent<BoardItemIdentity>(); identity.Configure(scan.report.logicalId, displayName, ItemCatalog.CurrentVersion);
             var body = wrapper.AddComponent<Rigidbody>(); body.mass = .15f; body.drag = .6f; body.angularDrag = .8f; body.interpolation = RigidbodyInterpolation.Interpolate; body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; body.isKinematic = false; body.detectCollisions = true;

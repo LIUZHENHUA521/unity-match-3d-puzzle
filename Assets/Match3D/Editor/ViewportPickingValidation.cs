@@ -38,20 +38,20 @@ public static class ViewportPickingValidation
             Check(input.PickAt(centre) == low, "uncovered item selectable");
             var edge = (Vector2)camera.WorldToScreenPoint(new Vector3(100.1f,0,0));
             float scale = Screen.width / 720f;
-            Check(input.PickAt(edge + Vector2.right * 10f * scale) == low, "small edge miss selects visible item");
+            Check(input.PickAt(edge + Vector2.right * 10f * scale) == null, "small edge miss does not snap outside the mesh");
             Check(input.PickAt(edge + Vector2.right * 60f * scale) == null, "distant empty space does not select");
             var cover = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cover.transform.position = new Vector3(100,2,0); cover.transform.localScale = Vector3.one;
             Physics.SyncTransforms();
-            Check(input.PickAt(centre) == null, "solid occluder blocks selection");
-            File.WriteAllText("Temp/viewport-picking-validation.txt", "PASS: pot width 9:16, 9:19.5, 3:4; first-hit occlusion; edge tolerance; far miss; invisible walls\n");
+            Check(input.PickAt(centre) == low, "non-pick-layer scene collider does not block selection");
+            File.WriteAllText("Temp/viewport-picking-validation.txt", "PASS: pot width 9:16, 9:19.5, 3:4; mesh occlusion; exact edge miss; far miss; pick-layer filtering\n");
             EditorApplication.Exit(0);
         } catch (Exception e) { Debug.LogException(e); EditorApplication.Exit(1); }
     }
     static GameObject Item(string name, Vector3 position)
     {
         var item = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        item.name = name; item.tag = "Collectable";
+        item.name = name; item.tag = "Collectable"; item.layer = ItemColliderGeometry.PickLayer;
         item.transform.position = position; item.transform.localScale = Vector3.one * .2f;
         item.AddComponent<Rigidbody>().useGravity = false;
         return item;
