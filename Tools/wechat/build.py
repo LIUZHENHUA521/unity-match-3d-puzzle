@@ -79,6 +79,9 @@ for reference_file in [stage / 'Assets/Match3D/OriginalModels/models.json',
     if reference_file.exists():
         shutil.move(str(reference_file), str(excluded / reference_file.name))
 replica_resources = stage / 'Assets/Match3D/Resources/Match3D'
+# The procedural container must never regain a dependency on exported wall data.
+if any((replica_resources / 'Environments').glob('*.json')):
+    raise SystemExit('Legacy container JSON found in runtime Resources; archive it outside Assets')
 for reference_file in replica_resources.glob('Source*'):
     # SourceLevelCatalog is runtime data, not authoring evidence. It contains
     # the first/second-stage prefab references used by LevelLayoutConfig;
@@ -97,7 +100,6 @@ for reference_file in replica_resources.glob('Source*'):
         # authoring evidence leaves a valid-looking build with silent stage 2.
         'SourceAudio',
         'SourceFlightItems.json',
-        'SourceEnvironment.json',
     }:
         continue
     target = excluded / reference_file.name

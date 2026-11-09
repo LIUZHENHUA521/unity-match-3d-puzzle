@@ -1,0 +1,116 @@
+{
+    "requestId": "1de9af9d1b5341fdbb250c04e06a150a",
+    "inputPath": "Assets/Match3D/IncomingModels/TastyKitchen/012_donut-chocolate/donut-chocolate.obj",
+    "logicalId": "Kitchen_donut-chocolate",
+    "displayName": "巧克力甜甜圈",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_donut-chocolate/Kitchen_donut-chocolate.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_donut-chocolate/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.5196000337600709,
+    "visualSize": {
+        "x": 0.2450585961341858,
+        "y": 0.08889225125312805,
+        "z": 0.282969206571579
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.044446125626564029,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.282969206571579,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 240,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 22395,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/012_donut-chocolate/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 240,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 32130,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/012_donut-chocolate/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "240 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：240 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

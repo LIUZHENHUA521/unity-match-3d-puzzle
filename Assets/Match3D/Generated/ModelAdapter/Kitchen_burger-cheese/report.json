@@ -1,0 +1,116 @@
+{
+    "requestId": "c9c8282bb8f1496f9ac19f4d50d48af7",
+    "inputPath": "Assets/Match3D/IncomingModels/TastyKitchen/005_burger-cheese/burger-cheese.obj",
+    "logicalId": "Kitchen_burger-cheese",
+    "displayName": "芝士汉堡",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_burger-cheese/Kitchen_burger-cheese.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_burger-cheese/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.1375662088394166,
+    "visualSize": {
+        "x": 0.3779999911785126,
+        "y": 0.2199999988079071,
+        "z": 0.3779999911785126
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.10999999940395355,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.3779999911785126,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 226,
+        "meshCount": 4,
+        "materialCount": 1,
+        "sourceFileBytes": 21428,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/005_burger-cheese/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 226,
+        "meshCount": 4,
+        "materialCount": 1,
+        "sourceFileBytes": 31132,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/005_burger-cheese/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "226 三角面 / 4 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：226 三角面 / 4 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

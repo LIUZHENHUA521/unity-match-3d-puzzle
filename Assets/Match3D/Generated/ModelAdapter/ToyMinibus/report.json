@@ -1,0 +1,110 @@
+{
+    "requestId": "e477148423fe4d8488c4d589c29fff78",
+    "inputPath": "Assets/Match3D/IncomingModels/ToyTheme/Minibus.prefab",
+    "logicalId": "ToyMinibus",
+    "displayName": "小巴士",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/ToyMinibus/ToyMinibus.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/ToyMinibus/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.0517258644104005,
+    "visualSize": {
+        "x": 0.20333866775035859,
+        "y": 0.15973445773124696,
+        "z": 0.4088517725467682
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.07988866418600083,
+        "z": 0.0051903873682022099
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.000021435320377349854,
+        "z": 0.0051903873682022099
+    },
+    "longestSide": 0.4088517725467682,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 2660,
+        "meshCount": 5,
+        "materialCount": 1,
+        "sourceFileBytes": 116634,
+        "textureMemoryBytes": 88080,
+        "textures": [
+            {
+                "name": "Toys_TextureAtlas",
+                "path": "Assets/Textures/Toys_TextureAtlas.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 256,
+                "height": 256,
+                "memoryBytes": 88080,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 2660,
+        "meshCount": 5,
+        "materialCount": 1,
+        "sourceFileBytes": 113800,
+        "textureMemoryBytes": 88080,
+        "textures": [
+            {
+                "name": "Toys_TextureAtlas",
+                "path": "Assets/Textures/Toys_TextureAtlas.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 256,
+                "height": 256,
+                "memoryBytes": 88080,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "2660 三角面 / 5 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：2660 三角面 / 5 网格 / 1 材质 / 1 贴图；贴图编辑器内存 86.0 KB → 86.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

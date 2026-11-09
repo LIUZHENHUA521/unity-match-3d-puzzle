@@ -1,0 +1,110 @@
+{
+    "requestId": "db142521e4c64e4195f51f0333f36fe7",
+    "inputPath": "Assets/Match3D/IncomingModels/ToyTheme/RugbyBall.prefab",
+    "logicalId": "ToyRugbyBall",
+    "displayName": "橄榄球",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/ToyRugbyBall/ToyRugbyBall.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/ToyRugbyBall/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.0390949249267579,
+    "visualSize": {
+        "x": 0.38660967350006106,
+        "y": 0.21865077316761018,
+        "z": 0.4138216972351074
+    },
+    "visualCenter": {
+        "x": -7.552112712971848e-9,
+        "y": 0.0008145788451656699,
+        "z": -8.271400453452316e-9
+    },
+    "bottom": {
+        "x": -7.552112712971848e-9,
+        "y": -0.1085108071565628,
+        "z": -8.271400453452316e-9
+    },
+    "longestSide": 0.4138216972351074,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 452,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 37452,
+        "textureMemoryBytes": 88080,
+        "textures": [
+            {
+                "name": "Toys_TextureAtlas",
+                "path": "Assets/Textures/Toys_TextureAtlas.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 256,
+                "height": 256,
+                "memoryBytes": 88080,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 452,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 44724,
+        "textureMemoryBytes": 88080,
+        "textures": [
+            {
+                "name": "Toys_TextureAtlas",
+                "path": "Assets/Textures/Toys_TextureAtlas.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 256,
+                "height": 256,
+                "memoryBytes": 88080,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "452 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：452 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 86.0 KB → 86.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

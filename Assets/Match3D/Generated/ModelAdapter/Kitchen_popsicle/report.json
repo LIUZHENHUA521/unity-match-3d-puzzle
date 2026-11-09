@@ -1,0 +1,116 @@
+{
+    "requestId": "dc4c8f07746d4b7195e78297923e9cde",
+    "inputPath": "Assets/Match3D/IncomingModels/TastyKitchen/017_popsicle/popsicle.obj",
+    "logicalId": "Kitchen_popsicle",
+    "displayName": "冰棒",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_popsicle/Kitchen_popsicle.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_popsicle/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.8775510191917419,
+    "visualSize": {
+        "x": 0.07500000298023224,
+        "y": 0.49000000953674319,
+        "z": 0.18000000715255738
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.24500000476837159,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.49000000953674319,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 156,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 16898,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/017_popsicle/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 156,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 26586,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/017_popsicle/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "156 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：156 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

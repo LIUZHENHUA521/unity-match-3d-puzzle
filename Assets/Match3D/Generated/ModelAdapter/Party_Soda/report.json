@@ -1,0 +1,102 @@
+{
+    "requestId": "7c4822eb7f2d4212b0774e75107f7bfd",
+    "inputPath": "Assets/Match3D/IncomingModels/FoodieParty/019_Soda/model.obj",
+    "logicalId": "Party_Soda",
+    "displayName": "汽水",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Party_Soda/Party_Soda.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Party_Soda/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.22361810505390168,
+    "visualSize": {
+        "x": 0.9117938876152039,
+        "y": 1.9229212999343873,
+        "z": 0.9117938280105591
+    },
+    "visualCenter": {
+        "x": 2.9802322387695315e-8,
+        "y": 0.9653376936912537,
+        "z": -1.4901161193847657e-7
+    },
+    "bottom": {
+        "x": 2.9802322387695315e-8,
+        "y": 0.0038770437240600588,
+        "z": -1.4901161193847657e-7
+    },
+    "longestSide": 1.9229212999343873,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 472,
+        "meshCount": 1,
+        "materialCount": 2,
+        "sourceFileBytes": 139287,
+        "textureMemoryBytes": 0,
+        "textures": []
+    },
+    "generatedResources": {
+        "triangles": 472,
+        "meshCount": 1,
+        "materialCount": 2,
+        "sourceFileBytes": 149000,
+        "textureMemoryBytes": 0,
+        "textures": []
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "472 三角面 / 1 网格 / 2 材质 / 0 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "MODEL_TEXTURE_UNRESOLVED",
+            "message": "当前材质未引用贴图；启用优化后会尝试从模型副本提取内嵌贴图。纯色材质可忽略此提示。",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：472 三角面 / 1 网格 / 2 材质 / 0 贴图；贴图编辑器内存 0 B → 0 B（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

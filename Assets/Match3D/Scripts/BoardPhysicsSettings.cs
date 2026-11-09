@@ -21,7 +21,7 @@ public static class BoardPhysicsSettings {
     public static void Apply(Rigidbody body){
         if(!Active||!body)return;
         body.mass=Mass;body.drag=Drag;body.angularDrag=AngularDrag;body.useGravity=true;
-        body.interpolation=RigidbodyInterpolation.None;body.collisionDetectionMode=CollisionDetectionMode.Discrete;
+        body.interpolation=RigidbodyInterpolation.None;body.collisionDetectionMode=body.GetComponent<BoardItemIdentity>()?CollisionDetectionMode.ContinuousDynamic:CollisionDetectionMode.Discrete;
         body.sleepThreshold=Sleep;body.maxDepenetrationVelocity=Depenetration;
         body.solverIterations=6;body.solverVelocityIterations=1;
         var token=body.GetComponent<BoardItemPoolToken>();token?.CacheComponents();

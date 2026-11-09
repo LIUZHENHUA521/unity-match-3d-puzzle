@@ -375,10 +375,23 @@ public class InputController : Singleton<InputController>
         obj.transform.DOKill();
         obj.transform.localScale = scales[obj]; scales.Remove(obj);
         var display=UsesSourceFlight?Match3DTrayDisplayBinding.For(obj):null;
+        bool layered=LayeredItemPile.Instance&&LayeredItemPile.Instance.Running;
+        var target=layered?LayeredItemPile.Instance.ReturnPosition():LevelGenerator.Instance.CreateRandomPosition();
+        if(layered&&BoardEnvironment.UsesSoftContainer){
+            var startRotation=obj.transform.rotation;
+            if(display)obj.transform.rotation=display.boardRotation;
+            target=SoftTransitionContainer.FittedPosition(obj,target);
+            obj.transform.rotation=startRotation;
+        }
         if(display)obj.transform.DORotateQuaternion(display.boardRotation,.35f).SetEase(Ease.OutQuad);
-        obj.transform.DOMove(LayeredItemPile.Instance && LayeredItemPile.Instance.Running ? LayeredItemPile.Instance.ReturnPosition() : LevelGenerator.Instance.CreateRandomPosition(), .35f).OnComplete(() => {
+        obj.transform.DOMove(target, .35f).OnComplete(() => {
             if (!obj) return;
             var body = obj.GetComponent<Rigidbody>();
+            if(layered&&BoardEnvironment.UsesSoftContainer){
+                if(display)obj.transform.rotation=display.boardRotation;
+                SoftTransitionContainer.Fit(obj);
+                body.position=obj.transform.position;body.rotation=obj.transform.rotation;
+            }
             body.isKinematic = false; body.detectCollisions = true;
             // Source pickups animate Transform in Update. Re-enabling interpolation here
             // lets the previous physics pose overwrite a later pickup's final tween pose.

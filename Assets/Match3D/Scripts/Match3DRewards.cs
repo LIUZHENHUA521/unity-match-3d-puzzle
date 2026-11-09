@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 public sealed class Match3DRewards : MonoBehaviour {
     [Serializable] public class Voucher {public string id,type,runId,recordId,rewardTier,status;public int money;public long createTime,expiresAt;}
     [Serializable] public class Reply {public bool ok;public string error,runId,rewardTier,ruleVersion;public Match3DDailyLevel level;public Voucher[] vouchers;public int nextCursor=-1;}
-    [Serializable] class StartBody {public string requestId,tier,themeId;public int levelProtocol=1;}
+    [Serializable] class StartBody {public string requestId,tier,themeId;public int levelProtocol=2;}
     public static Match3DRewards Instance {get;private set;}
     string endpoint;bool starting;
     public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');}
@@ -25,9 +25,8 @@ public sealed class Match3DRewards : MonoBehaviour {
             yield return Request(testing?"daily":"runs",JsonUtility.ToJson(new StartBody{requestId=Guid.NewGuid().ToString("N"),tier=tier,themeId=themeId}),r=>result=r,testing);
             if(!flow||flow.ScreenVersion!=screen)yield break;
             if(result!=null&&result.ok){
-                var pool=LevelLayoutConfig.Get(Match3DFlow.Instance.SourceEnvironmentForTheme(theme)).prefabs.Length;
-                if(result.level==null||result.level.tier!=tier||!result.level.IsValid(pool)){Match3DFlow.Instance.Notice("每日关卡配置无效，请更新游戏或稍后重试");yield break;}
-                if(testing)Match3DFlow.Instance.BeginDailyPractice(theme,result.level);
+                if(result.level==null||!Match3DModelThemes.TryGet(result.level.modelThemeId,flow.SourceEnvironmentForTheme(theme),out var profile)||result.level.tier!=tier||!result.level.IsValid(profile.prefabs.Length)){flow.Notice("每日关卡配置无效，请更新游戏或稍后重试");yield break;}
+                if(testing)Match3DFlow.Instance.ChooseTestTheme(theme,result.level);
                 else Match3DFlow.Instance.BeginQualified(theme,result.runId,result.rewardTier,result.ruleVersion,result.level);
                 yield break;
             }

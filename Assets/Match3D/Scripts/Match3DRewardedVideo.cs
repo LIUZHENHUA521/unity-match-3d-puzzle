@@ -20,6 +20,7 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
         requestId=Guid.NewGuid().ToString("N");callback=done;
 #if UNITY_EDITOR
         if(EditorShowOverride!=null){string request=requestId;EditorShowOverride((ok,error)=>Complete(request,ok,error));return;}
+        if(Match3DFlow.Instance&&Match3DFlow.Instance.LocalPreview){Complete(requestId,true,null);return;}
 #endif
         var asset=Resources.Load<TextAsset>("Match3D/RewardedVideoConfig");
         var config=asset?JsonUtility.FromJson<Configuration>(asset.text):null;

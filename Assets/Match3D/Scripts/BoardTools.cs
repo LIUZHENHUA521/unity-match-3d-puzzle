@@ -178,6 +178,11 @@ public sealed class BoardTools : MonoBehaviour {
     void EndShuffle(){
         foreach(var item in moving){
             if(item.obj){item.obj.transform.DOKill();item.obj.transform.rotation=item.rotation;}
+            if(item.obj&&item.body&&LayeredItemPile.Instance&&LayeredItemPile.Instance.Running&&BoardEnvironment.UsesSoftContainer){
+                LayeredItemPile.Instance.RestoreToolScale(item.body);
+                SoftTransitionContainer.Fit(item.obj);
+                item.body.position=item.obj.transform.position;
+            }
             if(item.body)item.body.isKinematic=item.wasKinematic;
             foreach(var c in item.colliders)if(c.Key)c.Key.enabled=c.Value;
             // Source ends per candidate: scale one, CheckVisible, then CheckRigid(depth=1).

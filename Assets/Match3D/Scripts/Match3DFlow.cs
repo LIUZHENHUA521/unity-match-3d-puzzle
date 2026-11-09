@@ -10,6 +10,7 @@ public partial class Match3DFlow : MonoBehaviour {
     public static Match3DFlow Instance {get;private set;}
     public Match3DTheme library;
     public bool IsPvp {get;private set;}
+    public bool LocalPreview {get;private set;}
     bool unlimitedMagnetRun;
     public bool UnlimitedTools=>!IsPvp&&unlimitedMagnetRun;
     public bool UnlimitedMagnet=>UnlimitedTools;
@@ -129,7 +130,7 @@ public partial class Match3DFlow : MonoBehaviour {
     public void MatchSound(){if(SettingsEffects&&library.matchSound)effects.PlayOneShot(library.matchSound);}
     void StopBoard(bool preservePool=false){ResetToolOffer();ResetRevival();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;pendingPick=false;}
     public void Home(){
-        if(network)network.Disconnect();StopBoard();IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
+        if(network)network.Disconnect();StopBoard();LocalPreview=false;IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
         Match3DHomeView.Create(this,page,Match3DHomeView.Tab.Home);
     }
     public void ShowHomeTab(Match3DHomeView.Tab tab){
@@ -161,22 +162,37 @@ public partial class Match3DFlow : MonoBehaviour {
         }
     }
     Match3DDailyLevel dailyLevel;
+    string CurrentModelThemeTitle => Match3DModelThemes.Title(ActiveModelTheme,CurrentTheme.title);
+    LevelLayoutConfig.Profile SourceProfile(bool tutorial=false) => Match3DModelThemes.Get(ActiveModelTheme,CurrentTheme.sourceEnvironment,tutorial);
     public string SourceEnvironmentForTheme(int theme){return library.themes[theme].sourceEnvironment;}
-    public void BeginReward(int theme,string tier){if(Match3DRewards.Instance)Match3DRewards.Instance.Begin(theme,tier,library.themes[theme].id);}
+    public void BeginReward(int theme,string tier){
+#if UNITY_EDITOR
+        // Editor play does not have a WeChat identity or reward qualification.
+        Begin(theme);LocalPreview=true;unlimitedMagnetRun=true;
+        ShowTips("编辑器本地试玩 · 道具免费 · 不发放红包");
+#else
+        if(Match3DRewards.Instance)Match3DRewards.Instance.Begin(theme,tier,library.themes[theme].id);
+#endif
+    }
     public void BeginQualified(int theme,string runId,string tier,string version,Match3DDailyLevel level=null){
-        if(Match3DTestPrivileges.AccountEnabled){BeginDailyPractice(theme,level);return;}unlimitedMagnetRun=false;dailyLevel=level;
+        if(Match3DTestPrivileges.AccountEnabled){BeginDailyPractice(theme,level);return;}unlimitedMagnetRun=false;runModelTheme=null;dailyLevel=level;
         if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=level!=null?level.date:Today;Match3DGameRecords.Instance.QualifiedRun(runId,tier,version,level);StartStage();
     }
     public void ShowRedPackets(){BlocksGameplay=true;var view=OpenModal("RedPackets");view.Bind("Close",()=>CloseModal());view.GetComponent<Match3DRewardsView>().Connect();}
     public void BeginDailyPractice(int theme,Match3DDailyLevel level){
         if(level==null){Begin(theme);return;}
+        runModelTheme=null;
         if(network)network.Disconnect();StopBoard();IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;dailyLevel=level;ThemeIndex=theme;Stage=1;runDate=level.date;
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewDailyRun(level);StartStage();
     }
     public void Begin(int theme){
-        dailyLevel=null;
+        dailyLevel=null;runModelTheme=null;
+#if UNITY_EDITOR
+        var selectedTheme=UnityEditor.EditorPrefs.GetString(EditorThemePreference,"");
+        if(Match3DModelThemes.TryGet(selectedTheme,SourceEnvironmentForTheme(theme),out _))runModelTheme=selectedTheme;
+#endif
         // Ordinary MainLevel starts with the recovered first-stage row.
-        if(network)network.Disconnect();StopBoard();IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;ThemeIndex=theme;Stage=1;runDate=Today;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewRun();StartStage();
+        if(network)network.Disconnect();StopBoard();LocalPreview=false;IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;ThemeIndex=theme;Stage=1;runDate=Today;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewRun();StartStage();
     }
     public void RestartStage(){if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","restart");StopBoard();StartStage();}
     public void NextStage(){
@@ -198,12 +214,12 @@ public partial class Match3DFlow : MonoBehaviour {
         var date=DateTime.ParseExact(runDate,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture).AddHours(4);
         TodaySeed=dailyLevel!=null&&!IsPvp?dailyLevel.seed:ChallengePlan.DailySeed(CurrentTheme.id,Stage,date);
         bool sourceTutorial=!IsPvp&&Stage==1;
-        var source=sourceTutorial||Stage==2? (sourceTutorial?LevelLayoutConfig.GetTutorial(CurrentTheme.sourceEnvironment):LevelLayoutConfig.Get(CurrentTheme.sourceEnvironment)) : null;
+        var source=sourceTutorial||Stage==2?SourceProfile(sourceTutorial):null;
         var prefabs=source!=null?source.prefabs:CurrentTheme.prefabs;
         IBoardRandom sourceRandom=dailyLevel!=null&&!IsPvp?dailyLevel.RandomForStage(Stage):source!=null?BoardGlobalRandom.Instance:null;
         var tiles=sourceTutorial?LevelLayoutConfig.GenerateFirstStage(source,sourceRandom):dailyLevel!=null&&!IsPvp?Match3DDailyLevel.Generate(prefabs.Length,dailyLevel.layers,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
         Spawn(tiles,TodaySeed,dailyLevel!=null&&!IsPvp&&Stage==2?dailyLevel.seconds:source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);
-        if(sourceTutorial)stagePreloader.Begin(CurrentTheme.sourceEnvironment);
+        if(sourceTutorial)stagePreloader.Begin(CurrentTheme.sourceEnvironment,SourceProfile());
 
     }
     public const float BoardItemScale = 1.5f;
@@ -233,13 +249,16 @@ public partial class Match3DFlow : MonoBehaviour {
         GameManager.Instance.currentLevelTime=seconds;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(layered){
             AppliedModelSize=BoardLayoutSettings.ModelSizeMultiplier;
-            BoardEnvironment.Select(CurrentTheme.sourceEnvironment);layeredPile.Begin(true,reusedPresentation,reusedBoundary,sourceTutorial?4f:dailyLevel!=null&&!IsPvp?dailyLevel.limitHeight:(float?)null,sourceTutorial);
+            float highestLayer=tiles.Max(t=>t.height);
+            float visibilityLimit=sourceTutorial?4f:dailyLevel!=null?dailyLevel.limitHeight:SourceProfile().limitHeight;
+            if(!sourceTutorial)visibilityLimit=BoardEnvironment.MapHeight(visibilityLimit,highestLayer);
+            BoardEnvironment.Select(CurrentTheme.sourceEnvironment,sourceTutorial);layeredPile.Begin(true,reusedPresentation,reusedBoundary,visibilityLimit,sourceTutorial);
             var random=sourceRandom??BoardGlobalRandom.Instance;
             // LoopCreateObj builds all descriptions bottom-to-top, then List.Sort compares Y.
             // Rotation is sampled later, at CreateUnitObj, in the sorted creation order.
             var descriptions=new List<BoardCreateInfo>(tiles.Count);float previousHeight=1.5f;
             foreach(var group in tiles.GroupBy(t=>t.layer).OrderBy(g=>g.Key)){
-                float height=group.First().height;
+                float height=sourceTutorial?group.First().height:BoardEnvironment.MapHeight(group.First().height,highestLayer);
                 foreach(var tile in group)descriptions.Add(new BoardCreateInfo{tile=tile,position=BoardEnvironment.Position(previousHeight,height,random)});
                 previousHeight=height; // saved _layerMinDistance = 0
             }
@@ -257,12 +276,13 @@ public partial class Match3DFlow : MonoBehaviour {
         }
         StartCoroutine(Ready(IsPvp));
     }
-    void CreateBoardItem(ChallengeTile tile,GameObject prefab,Vector3 position,Quaternion rotation,bool layered,bool sourceBoard=false){
+    GameObject CreateBoardItem(ChallengeTile tile,GameObject prefab,Vector3 position,Quaternion rotation,bool layered,bool sourceBoard=false){
         var obj=layered?BoardItemPool.Get(prefab,prefab.name):Instantiate(prefab);
         obj.transform.SetPositionAndRotation(position,rotation);
         bool sourceModel=layered||sourceBoard;
         obj.transform.localScale*=sourceModel?BoardLayoutSettings.ModelScale(prefab):BoardItemScale;
         ItemColliderGeometry.Apply(obj,prefab.name,sourceModel);
+        if(layered&&BoardEnvironment.UsesSoftContainer){SoftTransitionContainer.Fit(obj);position=obj.transform.position;}
         ItemFlightMotion.Bind(obj,prefab.name,layered,prefab);
         if(layered)GameAudioCatalog.Bind(obj,prefab.name);
         Match3DTrayDisplayBinding.Bind(obj,prefab);
@@ -273,6 +293,7 @@ public partial class Match3DFlow : MonoBehaviour {
         pilePhysics.Register(body,layered);
         LevelGenerator.Instance.objectsOnScene.Add(obj);
         if(layered){var goose=obj.GetComponent<SpecialItemAnimation>();goose?.InitializeSource();goose?.ReturnToPile();layeredPile.Register(body,initialHeight:position.y);}
+        return obj;
     }
     IEnumerator SourceCreationSteps(List<BoardCreateInfo> descriptions,GameObject[] prefabs,IBoardRandom random,int version){
         float wait=SourceCreateInterval(descriptions.Count);
@@ -291,11 +312,11 @@ public partial class Match3DFlow : MonoBehaviour {
                 if(version!=creationVersion)yield break;
                 slice.Restart();createdInSlice=0;
             }
-            var info=descriptions[i];CreateBoardItem(info.tile,prefabs[info.tile.type],info.position,BoardEnvironment.Rotation(random),true);
+            var info=descriptions[i];var created=CreateBoardItem(info.tile,prefabs[info.tile.type],info.position,BoardEnvironment.Rotation(random),true);
             double elapsed=slice.Elapsed.TotalMilliseconds;
             MaxCreationSliceMilliseconds=System.Math.Max(MaxCreationSliceMilliseconds,elapsed);
             createdInSlice++;
-            bool hiddenPreparation=Stage==2&&!layeredPile.IsInitiallyVisible(info.position.y);
+            bool hiddenPreparation=Stage==2&&!layeredPile.IsInitiallyVisible(created.transform.position.y);
 #if UNITY_EDITOR
             hiddenPreparation&=!UseLegacyCreationScheduleForValidation;
 #endif
@@ -374,7 +395,7 @@ public partial class Match3DFlow : MonoBehaviour {
         var view=Match3DUIView.Load(IsPvp?"PvpGameHUD":"GameHUD",page);
         gameplayHUD=view.GetComponent<Match3DGameplayHUD>();
         if(gameplayHUD)view.Show("Settings",false);
-        view.Text("Title",IsPvp?"好友对战":CurrentTheme.title+" · 第"+Stage+"关");
+        view.Text("Title",IsPvp?"好友对战":CurrentModelThemeTitle+" · 第"+Stage+"关");
         view.Bind("Pause",()=>ShowSettings(true));timer=view.Get<Text>("Timer");remaining=view.Get<Text>("Remaining");
         view.Show("Peer",IsPvp);peerText=IsPvp?view.Get<Text>("Peer"):null;
         view.Text("UndoText",!IsPvp?"移出":"撤回");moveToolButton=view.Bind("Undo",()=>UseTool(0,Undo));
@@ -396,7 +417,7 @@ public partial class Match3DFlow : MonoBehaviour {
         if(win&&Stage==1){NextStage();return true;}
         resultShown=true;GameManager.Instance.gameStatus=win?GameManager.GameStatus.FINISH:GameManager.GameStatus.FAIL;
         if(win&&Stage==2){PlayerPrefs.SetInt("goose.collection."+CurrentTheme.id,1);PlayerPrefs.SetString("goose.completed."+CurrentTheme.id,runDate);PlayerPrefs.Save();}
-        Result(win,win?(Stage==1?"第一关通过！":"抓到大鹅啦！"):"差一点就成功了",win?(Stage==1?"热身结束，真正的挑战来了":"已点亮 "+CurrentTheme.title+" 图鉴"):"同一关再试一次，留意槽位和遮挡");return true;
+        Result(win,win?(Stage==1?"第一关通过！":"抓到大鹅啦！"):"差一点就成功了",win?(Stage==1?"热身结束，真正的挑战来了":"已点亮 "+CurrentModelThemeTitle+" 图鉴"):"同一关再试一次，留意槽位和遮挡");return true;
     }
     void Result(bool win,string title,string detail){
         LastResult=title;BlocksGameplay=true;Time.timeScale=1;

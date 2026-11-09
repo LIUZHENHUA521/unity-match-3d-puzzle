@@ -67,9 +67,10 @@ public sealed class LayeredItemPile : MonoBehaviour {
             if(!presentation)presentation=gameObject.AddComponent<Match3DThemePresentation>();
             presentation.Begin(BoardEnvironment.CurrentName);
         }
+        presentation.SetStage(firstStage);
         boundary=reusedBoundary??BoardEnvironment.CreateBoundary(firstStage);
         if(reusedBoundary&&!firstStage)BoardEnvironment.UseSecondStageBoundary(boundary);
-        boundary.name=BoardEnvironment.CurrentName+" source collision reference";
+        boundary.name=BoardEnvironment.CurrentName+(firstStage?" first stage container":" short transition container");
         boundary.SetActive(true);
         // Creation growth is advanced from LateUpdate.  Keeping it on the
         // frame loop avoids a WebGL coroutine resuming several WaitForSeconds
@@ -244,7 +245,8 @@ public sealed class LayeredItemPile : MonoBehaviour {
     }
     public Vector3 ReturnPosition(){
         float y=entries.Count==0?1:entries.Where(e=>e.body).Select(e=>e.body.position.y).DefaultIfEmpty(1).Max()+.7f;
-        return new Vector3(0,Mathf.Min(y,36),.15f);
+        if(BoardEnvironment.IsFirstStage)return new Vector3(0,Mathf.Min(y,36),.15f);
+        return BoardEnvironment.GetBorder(Mathf.Min(y,SoftTransitionContainer.SpawnCeiling)).position;
     }
     void RestoreCreationTiming(){
         if(!ownsCreationTiming)return;

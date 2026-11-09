@@ -1,0 +1,116 @@
+{
+    "requestId": "b2fc6cd142344cbf9ea1754b105dfcbf",
+    "inputPath": "Assets/Match3D/IncomingModels/TastyKitchen/022_sundae/sundae.obj",
+    "logicalId": "Kitchen_sundae",
+    "displayName": "圣代",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_sundae/Kitchen_sundae.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_sundae/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.6438254117965698,
+    "visualSize": {
+        "x": 0.2231885939836502,
+        "y": 0.6678829193115234,
+        "z": 0.25771600008010867
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.3339414596557617,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.6678829193115234,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 560,
+        "meshCount": 3,
+        "materialCount": 1,
+        "sourceFileBytes": 40355,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/022_sundae/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 560,
+        "meshCount": 3,
+        "materialCount": 1,
+        "sourceFileBytes": 50042,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/022_sundae/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "560 三角面 / 3 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：560 三角面 / 3 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

@@ -20,6 +20,7 @@ public sealed class ThemeItemGamePreview : IDisposable {
         utility.camera.backgroundColor = new Color(.22f, .22f, .22f, 1);
     }
     public Texture Render(GameObject source, Rect rect, Vector2 orbit, float zoom) {
+        var theme=Match3DModelThemes.Find(null,source);utility.ambientColor=BoardLighting.AmbientFor(theme);utility.lights[0].intensity=BoardLighting.IntensityFor(theme);
         if (!source) return null;
         if (prefab != source || !instance) {
             if (instance) UnityEngine.Object.DestroyImmediate(instance);

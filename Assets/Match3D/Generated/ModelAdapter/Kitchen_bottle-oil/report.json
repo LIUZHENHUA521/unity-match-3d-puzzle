@@ -1,0 +1,116 @@
+{
+    "requestId": "c41ba308cb684763aa7e8f558dedfcc0",
+    "inputPath": "Assets/Match3D/IncomingModels/TastyKitchen/002_bottle-oil/bottle-oil.obj",
+    "logicalId": "Kitchen_bottle-oil",
+    "displayName": "食用油",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_bottle-oil/Kitchen_bottle-oil.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_bottle-oil/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.6915407180786133,
+    "visualSize": {
+        "x": 0.14000000059604646,
+        "y": 0.6218000054359436,
+        "z": 0.14000000059604646
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.3109000027179718,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.6218000054359436,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 192,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 19274,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/002_bottle-oil/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 192,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 28989,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/002_bottle-oil/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "192 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：192 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

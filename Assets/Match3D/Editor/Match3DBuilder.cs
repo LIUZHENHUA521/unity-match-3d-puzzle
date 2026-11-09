@@ -80,6 +80,7 @@ public static class Match3DBuilder {
             else if(cmd=="firststageimport")BoardLevelPlanImporter.ImportFirstStage();
             else if(cmd=="hiddenstartupcheck")HiddenStartupValidation.Start();
             else if(cmd=="firststagehudcheck")FirstStageHudValidation.Start();
+            else if(cmd=="localpreviewcheck")LocalPreviewValidation.Start();
             else if(cmd=="firststagecheck")FirstStageValidation.Start();
             else if(cmd=="creationprepare")BoardPrefabPreparation.Bake();
             else if(cmd=="creationbudgetcheck")CreationBudgetValidation.Start();

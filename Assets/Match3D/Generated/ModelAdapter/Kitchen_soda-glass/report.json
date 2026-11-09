@@ -1,0 +1,116 @@
+{
+    "requestId": "667ba025d4ca4eed90dd0d8a414989c9",
+    "inputPath": "Assets/Match3D/IncomingModels/TastyKitchen/021_soda-glass/soda-glass.obj",
+    "logicalId": "Kitchen_soda-glass",
+    "displayName": "杯装汽水",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_soda-glass/Kitchen_soda-glass.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_soda-glass/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.0400587320327759,
+    "visualSize": {
+        "x": 0.26179999113082888,
+        "y": 0.41343820095062258,
+        "z": 0.29672539234161379
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.20671910047531129,
+        "z": -0.034999996423721316
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.034999996423721316
+    },
+    "longestSide": 0.41343820095062258,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 192,
+        "meshCount": 3,
+        "materialCount": 1,
+        "sourceFileBytes": 20587,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/021_soda-glass/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 192,
+        "meshCount": 3,
+        "materialCount": 1,
+        "sourceFileBytes": 30306,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/021_soda-glass/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "192 三角面 / 3 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：192 三角面 / 3 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

@@ -15,14 +15,13 @@ public sealed class Match3DStagePreloader : MonoBehaviour {
     Coroutine worker;int version;
     readonly BoardRenderWarmup renderWarmup=new BoardRenderWarmup();
     public int RenderPreparedCount=>renderWarmup.PreparedCount;
-    public void Begin(string environment){
+    public void Begin(string environment,LevelLayoutConfig.Profile profile=null){
         Cancel();Environment=environment;Ready=false;PreparedCount=0;PreparedInstanceCount=0;Running=true;
-        worker=StartCoroutine(Prepare(environment,++version));
+        worker=StartCoroutine(Prepare(profile??LevelLayoutConfig.Get(environment),++version));
     }
-    IEnumerator Prepare(string environment,int generation){
+    IEnumerator Prepare(LevelLayoutConfig.Profile profile,int generation){
         // Let the first visible item render before spending the preload slice.
         yield return null;
-        var profile=LevelLayoutConfig.Get(environment);
         // Instance cloning must not compete with the tutorial's growth/physics.
         while(Match3DFlow.Instance&&Match3DFlow.Instance.CreationInProgress)yield return null;
         foreach(var prefab in profile.prefabs){

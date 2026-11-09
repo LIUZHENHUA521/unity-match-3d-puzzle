@@ -1,103 +1,54 @@
 using System;
 using UnityEngine;
 
-// Per-theme WX2.1.12 saved geometry; not a runtime capture.
+// Stage 1 preserves the original boundary; stage 2 uses the approved new shell.
 public static class BoardEnvironment {
     [Serializable] public class Border {public Vector3 position,scale;}
-    [Serializable] class Data {public Node[] nodes;public Border[] borders;public float[] changeAngleHeight;}
-    [Serializable] class Node {public string name;public bool active;public int layer,parent;public Vector3 position,scale;public Quaternion rotation;public Box[] boxes;}
-    [Serializable] class Box {public Vector3 center,size;public bool enabled,trigger,hasMaterial;public Surface material;}
-    [Serializable] class Surface {public string m_Name;public float dynamicFriction,staticFriction,bounciness;public int frictionCombine,bounceCombine;}
-    static Data data;
-    public static string CurrentName {get;private set;}="Breakfast";
-    public static void Select(string name){
-        string path=string.IsNullOrEmpty(name)?"Match3D/SourceEnvironment":"Match3D/Environments/"+name;
-        var asset=Resources.Load<TextAsset>(path);
-        if(!asset)throw new InvalidOperationException("Missing source environment: "+path);
-        data=JsonUtility.FromJson<Data>(asset.text);CurrentName=string.IsNullOrEmpty(name)?"Breakfast":name;
-    }
-    static Data Source {get {if(data==null)data=JsonUtility.FromJson<Data>(Resources.Load<TextAsset>("Match3D/SourceEnvironment").text);return data;}}
-    // Full container width, not the inset used to sample spawn centres.
-    public static float HorizontalHalfExtent {get {
-        float extent=0;
-        foreach(var border in Source.borders)extent=Mathf.Max(extent,Mathf.Abs(border.position.x)+Mathf.Abs(border.scale.x)*.5f);
-        return extent;
-    }}
+    public static string CurrentName {get;private set;}="CountrysideStove";
+    public static bool IsFirstStage {get;private set;}
+    public static bool UsesSoftContainer=>!IsFirstStage;
+    public static void Select(string name,bool firstStage=false){CurrentName=string.IsNullOrEmpty(name)?"CountrysideStove":name;IsFirstStage=firstStage;}
+    public static float HorizontalHalfExtent=>IsFirstStage?FirstStageContainer.HorizontalHalfExtent:SoftTransitionContainer.TopApothem/Mathf.Cos(Mathf.PI/SoftTransitionContainer.Sides);
     public static Border GetBorder(float height){
-        var borders=Source.borders;
-        for(int i=borders.Length-1;i>=0;i--)if(borders[i].position.y<=height)return borders[i];
-        return borders[0];
+        if(IsFirstStage){var border=FirstStageContainer.GetBorder(height);return new Border{position=border.position,scale=border.scale};}
+        float localHeight=height/Mathf.Cos(SoftTransitionContainer.TiltDegrees*Mathf.Deg2Rad);
+        float radius=SoftTransitionContainer.Apothem(localHeight);
+        return new Border{position=SoftTransitionContainer.ToWorld(new Vector3(0,localHeight,0)),scale=new Vector3(radius*2,0,radius*2)};
     }
-    // Inverse integral of a linear density, equivalent to GetWeightRandom for these increasing weights.
+    public static float MapHeight(float height,float highestLayer){
+        if(highestLayer<=SoftTransitionContainer.SpawnCeiling)return height;
+        return 1.5f+(height-1.5f)*(SoftTransitionContainer.SpawnCeiling-1.5f)/(highestLayer-1.5f);
+    }
     public static float WeightedHeight(float min,float max,float w0,float w1,double unit){
         if(Mathf.Approximately(w0,w1))return Mathf.Lerp(min,max,(float)unit);
         double t=unit*(w0+w1)/(Math.Sqrt(w0*w0+unit*(w1*w1-w0*w0))+w0);
         return Mathf.Lerp(min,max,(float)t);
     }
-    public static Vector3 Position(float min,float max,System.Random random){
-        float w0=GetBorder(min).scale.x,w1=GetBorder(max).scale.x;
-        float low=min,high=max;
-        // LoopCreateObj uses the first angle change strictly inside this height interval.
-        foreach(float split in Source.changeAngleHeight)if(split>min&&split<max){
-            float middle=GetBorder(split+.5f).scale.x;
-            double left=(w0+middle)*(split-min),right=(middle+w1)*(max-split);
-            if(random.NextDouble()*(left+right)<left){high=split;w1=middle;}
-            else{low=split;w0=middle;}break;
-        }
-        float y=WeightedHeight(low,high,w0,w1,random.NextDouble());var border=GetBorder(y);
-        return new Vector3(border.position.x+((float)random.NextDouble()*2-1)*border.scale.x*.45f,
-                           y,border.position.z+((float)random.NextDouble()*2-1)*border.scale.z*.45f);
+    public static float WeightedHeight(float min,float max,float w0,float w1,IBoardRandom random)=>WeightedHeight(min,max,w0,w1,random.Range(0,1));
+    public static Vector3 Position(float min,float max,System.Random random)=>IsFirstStage?FirstStageContainer.Position(min,max,random):Sample(min,max,random.NextDouble(),random.NextDouble(),random.NextDouble());
+    public static Vector3 Position(float min,float max,IBoardRandom random)=>IsFirstStage?FirstStageContainer.Position(min,max,random):Sample(min,max,random.Range(0,1),random.Range(0,1),random.Range(0,1));
+    static Vector3 Sample(float min,float max,double heightUnit,double edgeUnit,double radiusUnit){
+        min=Mathf.Clamp(min,.1f,SoftTransitionContainer.SpawnCeiling);max=Mathf.Clamp(max,min,SoftTransitionContainer.SpawnCeiling);
+        float y=WeightedHeight(min,max,GetBorder(min).scale.x,GetBorder(max).scale.x,heightUnit);
+        // Equal-area triangles sample the regular polygon without rejection draws.
+        float edge=(float)edgeUnit*SoftTransitionContainer.Sides;int sector=Mathf.Min(SoftTransitionContainer.Sides-1,(int)edge);
+        float h=y/Mathf.Cos(SoftTransitionContainer.TiltDegrees*Mathf.Deg2Rad);
+        var a=SoftTransitionContainer.Vertex(h,sector);var b=SoftTransitionContainer.Vertex(h,(sector+1)%SoftTransitionContainer.Sides);
+        var local=Vector3.Lerp(a,b,edge-sector)*Mathf.Sqrt((float)radiusUnit)*.85f;
+        // Keep the sampled world height for stable layer sorting despite tilt.
+        float angle=SoftTransitionContainer.TiltDegrees*Mathf.Deg2Rad;
+        local.y=(y+local.z*Mathf.Sin(angle))/Mathf.Cos(angle);
+        return SoftTransitionContainer.ToWorld(local);
     }
     public static Quaternion Rotation(System.Random random)=>Quaternion.Euler((float)random.NextDouble()*360,(float)random.NextDouble()*360,(float)random.NextDouble()*360);
-    // j16590, preserving the original float32 evaluation order and direct Range bounds.
-    public static float WeightedHeight(float min,float max,float w0,float w1,IBoardRandom random){
-        if(Mathf.Approximately(w0,w1))return random.Range(min,max);
-        float sample=random.Range(0f,(w0+w1)*1f*.5f);
-        float a=(sample+sample)/(w1-w0),b=(w0+w0)/(w1-w0);
-        return min+(max-min)*(Mathf.Sqrt(a+b*.25f*b)-b*.5f);
-    }
-    public static Vector3 Position(float min,float max,IBoardRandom random){
-        float w0=GetBorder(min).scale.x,w1=GetBorder(max).scale.x;
-        float low=min,high=max;
-        foreach(float split in Source.changeAngleHeight)if(split>min&&split<max){
-            float middle=GetBorder(split+.5f).scale.x;
-            // j29517 creates a new KFakeRandom, rolls once, then j16590 samples that interval.
-            float left=(w0+middle)*(split-min),right=(middle+w1)*(max-split);
-            if(random.Range(0f,left+right)<left){high=split;w1=middle;}
-            else{low=split;w0=middle;}break;
-        }
-        float y=WeightedHeight(low,high,w0,w1,random);var border=GetBorder(y);
-        // j13228 uses Range(-1,1), then scale * .45, X before Z.
-        return new Vector3(border.position.x+random.Range(-1f,1f)*border.scale.x*.45f,
-                           y,border.position.z+random.Range(-1f,1f)*border.scale.z*.45f);
-    }
-    public static Quaternion Rotation(IBoardRandom random)=>Quaternion.Euler(random.Range(0f,1f)*360f,random.Range(0f,1f)*360f,random.Range(0f,1f)*360f);
-    public static GameObject CreateBoundary(bool firstStage=false){
-        var nodes=BoundaryNodes(firstStage);var objects=new GameObject[nodes.Length];
-        for(int i=0;i<nodes.Length;i++)objects[i]=Build(nodes[i],nodes[i].parent<0?null:objects[nodes[i].parent].transform);
-        return objects[0];
-    }
-    static Node[] BoundaryNodes(bool firstStage){
-        if(!firstStage)return Source.nodes;
-        var asset=Resources.Load<TextAsset>("Match3D/Environments/"+CurrentName+"FirstStage");
-        if(!asset)throw new InvalidOperationException("Missing first-stage boundary: "+CurrentName);
-        return JsonUtility.FromJson<Data>(asset.text).nodes;
-    }
+    public static Quaternion Rotation(IBoardRandom random)=>Quaternion.Euler(random.Range(0,1)*360,random.Range(0,1)*360,random.Range(0,1)*360);
+    public static GameObject CreateBoundary(bool firstStage=false)=>firstStage?FirstStageContainer.CreateBoundary():SoftTransitionContainer.Create();
     public static void UseSecondStageBoundary(GameObject boundary){
-        // WX InitLevelCol/j38503 selects Lv1Col for level 1 and Lv2AirWall for level 2.
-        // Retain scene/root ownership across transition, but replace the collision subtree.
+        if(!boundary)throw new InvalidOperationException("Missing boundary during stage transition");
+        if(boundary.GetComponentInChildren<SoftTransitionContainer>())return;
+        // Stage transition has already removed the first-stage items. Disable the
+        // original subtree immediately so no old walls survive until frame end.
         foreach(Transform child in boundary.transform){child.gameObject.SetActive(false);UnityEngine.Object.Destroy(child.gameObject);}
-        var nodes=Source.nodes;var objects=new GameObject[nodes.Length];objects[0]=boundary;
-        for(int i=1;i<nodes.Length;i++)objects[i]=Build(nodes[i],objects[nodes[i].parent].transform);
+        var shell=SoftTransitionContainer.Create();shell.transform.SetParent(boundary.transform,true);
     }
-    static GameObject Build(Node n,Transform parent){
-        var obj=new GameObject(n.name);obj.layer=ItemColliderGeometry.WallLayer;obj.transform.SetParent(parent,false);
-        obj.transform.localPosition=n.position;obj.transform.localRotation=n.rotation;obj.transform.localScale=n.scale;
-        foreach(var shape in n.boxes){var box=obj.AddComponent<BoxCollider>();box.center=shape.center;box.size=shape.size;box.enabled=shape.enabled;box.isTrigger=shape.trigger;
-            box.contactOffset=BoardPhysicsSettings.Active?BoardPhysicsSettings.Contact:Physics.defaultContactOffset;
-            if(shape.hasMaterial&&shape.material!=null){var m=shape.material;box.sharedMaterial=Material(m);}else if(BoardPhysicsSettings.Active)box.sharedMaterial=BoardPhysicsSettings.DefaultSurface;}
-        obj.SetActive(n.active);return obj;
-    }
-    static readonly System.Collections.Generic.Dictionary<string,PhysicMaterial> materials=new System.Collections.Generic.Dictionary<string,PhysicMaterial>();
-    static PhysicMaterial Material(Surface m){string key=JsonUtility.ToJson(m);if(!materials.TryGetValue(key,out var value)){value=new PhysicMaterial(m.m_Name??"Source wall surface"){dynamicFriction=m.dynamicFriction,staticFriction=m.staticFriction,bounciness=m.bounciness,frictionCombine=(PhysicMaterialCombine)m.frictionCombine,bounceCombine=(PhysicMaterialCombine)m.bounceCombine};materials.Add(key,value);}return value;}
 }

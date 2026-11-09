@@ -54,7 +54,7 @@ public static class FirstStagePlacementValidation {
         for(int mode=0;mode<2;mode++){
             if(mode==0)flow.Begin(0);else flow.BeginDailyPractice(0,daily);
             Check(board.Count==1&&flow.CreationInProgress,"first batch must contain one item");
-            var shell=GameObject.Find(profile.environment+" source collision reference");
+            var shell=GameObject.Find(profile.environment+" first stage container");
             Check(shell.GetComponentsInChildren<Transform>().Any(t=>t.name=="Lv1Col"),"first-stage collision subtree");
             Check(board[0].transform.localScale==Vector3.zero&&board[0].GetComponent<Rigidbody>().isKinematic,"initial zero scale and held body");
             bool sawGrowth=false;float deadline=Time.realtimeSinceStartup+30;
@@ -78,7 +78,7 @@ public static class FirstStagePlacementValidation {
                 yield return new WaitForSeconds(.9f);
                 Check(flow.Stage==(i==triples.Length-1?2:1),"clear / stage transition");
             }
-            Check(GameObject.Find(profile.environment+" source collision reference")==shell,"boundary ownership retained");
+            Check(GameObject.Find(profile.environment+" short transition container")==shell,"boundary ownership retained");
             Check(!shell.GetComponentsInChildren<Transform>().Any(t=>t.name=="Lv1Col")&&shell.GetComponentsInChildren<Collider>().Length>0,"first-stage walls removed at stage 2");
             deadline=Time.realtimeSinceStartup+30;
             while(flow.CreationInProgress&&Time.realtimeSinceStartup<deadline)yield return null;

@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd1e84b6512a049fba7352f29874a8f4, type: 3}
   m_Name: ThemeLibrary
   m_EditorClassIdentifier: 
-  sourceLevelCatalog: {fileID: 11400000, guid: 0ebce4c3926cd4381bb3cd7b204489c3, type: 2}
-  pvpEndpoint: https://9nanimal.cn
   themes:
   - id: daily
-    sourceEnvironment: CountrysideStove
-    title: "\u4E61\u6751\u6BCF\u65E5\u6311\u6218"
-    subtitle: "\u539F\u7248\u4E61\u6751\u7269\u54C1\uFF0C\u6BCF\u5929\u4E00\u9053\u6311\u6218"
+    title: "\u5403\u8D27\u6D3E\u5BF9"
+    subtitle: "\u5403\u8D27\u96C6\u5408\uFF0C\u6BCF\u5929\u4E00\u9053\u6311\u6218"
     gooseSprite: Goose_Potato_2_Icon
+    sourceEnvironment: CountrysideStove
     prefabs:
     - {fileID: 1815187960369510949, guid: 8f24f6d6c2ab84d76bcdad5ea8189ec4, type: 3}
     - {fileID: 5801302684121750858, guid: 224f9b39914be4a9daa7f9b19c673cd9, type: 3}
@@ -60,6 +58,8 @@ MonoBehaviour:
       height: 24
       weights: []
     seconds: 600
+  sourceLevelCatalog: {fileID: 11400000, guid: 0ebce4c3926cd4381bb3cd7b204489c3, type: 2}
+  pvpEndpoint: https://9nanimal.cn
   homeMusic: {fileID: 8300000, guid: 77a2c97538d6402592c5a6763ff7faac, type: 3}
   gameMusic: {fileID: 8300000, guid: 77a2c97538d6402592c5a6763ff7faac, type: 3}
   pvpMusic: {fileID: 8300000, guid: fea7ea73e3c1047c9aa43f17e28ae5af, type: 3}

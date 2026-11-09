@@ -1,0 +1,116 @@
+{
+    "requestId": "1bf480de6a6c4244ae8660a6e1bdf4f6",
+    "inputPath": "Assets/Match3D/IncomingModels/TastyKitchen/019_skewer-vegetables/skewer-vegetables.obj",
+    "logicalId": "Kitchen_skewer-vegetables",
+    "displayName": "蔬菜串",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_skewer-vegetables/Kitchen_skewer-vegetables.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_skewer-vegetables/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.7206301093101502,
+    "visualSize": {
+        "x": 0.5967000126838684,
+        "y": 0.10767050087451935,
+        "z": 0.10854481905698776
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.053835250437259677,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.5967000126838684,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 176,
+        "meshCount": 3,
+        "materialCount": 1,
+        "sourceFileBytes": 20252,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/019_skewer-vegetables/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 176,
+        "meshCount": 3,
+        "materialCount": 1,
+        "sourceFileBytes": 29969,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/019_skewer-vegetables/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "176 三角面 / 3 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：176 三角面 / 3 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

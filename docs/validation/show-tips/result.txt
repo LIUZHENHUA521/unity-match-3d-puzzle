@@ -1,0 +1,11 @@
+PASS public ShowTips displays message
+PASS overlay never intercepts clicks
+PASS replacement restarts lifetime; legacy Notice uses same component
+PASS blank messages ignored
+PASS auto hides while paused and after Flow.StopAllCoroutines
+PASS long message wraps within screen margins
+PASS tips render above modal
+PASS navigation clears old message
+PASS existing home feature entry reuses tips after navigation
+PASS normal 1.5 second dismissal
+ALL PASSED

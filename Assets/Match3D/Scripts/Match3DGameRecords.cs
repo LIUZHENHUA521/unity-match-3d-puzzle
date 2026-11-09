@@ -85,6 +85,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         active.toolReceipts=toolReceipts.ToArray();Add("finish",active,owner);active=null;started=false;
     }
     void Add(string action,Record record,string account){
+        if(Match3DFlow.Instance&&Match3DFlow.Instance.LocalPreview)return;
         // Each live record reserves its terminal slot at start; never drop a queued terminal.
         if(action=="start"&&queue.items.Count+unbound.Count>=498){SyncError="queue_full";active=null;return;}
         var item=new Pending{reward=!string.IsNullOrEmpty(record.rewardTier),owner=account,action=action,json=JsonUtility.ToJson(record)};

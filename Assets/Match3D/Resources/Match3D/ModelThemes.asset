@@ -1,0 +1,456 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211f1f9a3c8774ec78d0ff5b1b7f04d9, type: 3}
+  m_Name: ModelThemes
+  m_EditorClassIdentifier: 
+  themes:
+  - id: playful-toys
+    ambientMultiplier: 0.65
+    lightMultiplier: 0.8
+    title: "\u840C\u8DA3\u73A9\u5177"
+    profile:
+      environment: CountrysideStove
+      sourceIndex: 1
+      seconds: 600
+      limitHeight: 21.5
+      prefabs:
+      - {fileID: 5851474809292128375, guid: 3b30f99548f0a47ed94827209b2a3526, type: 3}
+      - {fileID: 9113307795485484852, guid: 76361a644d7a543678cabb393cc7acff, type: 3}
+      - {fileID: 6108555988150772431, guid: 1ea6f362f65124101ad887be5ab5472f, type: 3}
+      - {fileID: 511507099449587084, guid: f99877bb1501b4b7ea269dec59806e53, type: 3}
+      - {fileID: 1246054768811628773, guid: 106c7cae725144bb6bb8b5e268aad5db, type: 3}
+      - {fileID: 280251462345418898, guid: 386c99631f77849e98f59ab74ffc6c1c, type: 3}
+      - {fileID: 7692448187335368399, guid: 24a34c6fddda642e19a8c9a23c13aeae, type: 3}
+      - {fileID: 3089410887327782519, guid: a7c358e913ead4bb59c3d31f83775467, type: 3}
+      - {fileID: 8096095923507080273, guid: 6d8d0b568879f4feeae75a0b19281446, type: 3}
+      - {fileID: 8162497127312529999, guid: ff7e35230a8af46e695b78d773ba1148, type: 3}
+      - {fileID: 773617628213502343, guid: 0e53e4dabb8f24ad6a8d67fa47e8dd2b, type: 3}
+      - {fileID: 4117585970823541306, guid: 7764dc99dbdde4f549aef64efb56f9ae, type: 3}
+      - {fileID: 1352752572409584015, guid: 43937585e8a29451f8e21e62e661f70f, type: 3}
+      - {fileID: 3203820890250303686, guid: 45d4e414151a14035971b52d8f38913a, type: 3}
+      - {fileID: 7544632656051230544, guid: 0a81b598ead464665aaca465570ff5fc, type: 3}
+      - {fileID: 3865282373201155366, guid: 2005d96f56e6248ffb3b893b512b0662, type: 3}
+      - {fileID: 2130445196559565206, guid: a5a5668eece8e4f57b436f9d9814dffe, type: 3}
+      - {fileID: 6953846327940219679, guid: 0fb8823ad3f7c4f6f88f5c6db3c90fd0, type: 3}
+      - {fileID: 459693545324796563, guid: c658db1757bba452b93ffba0be20d439, type: 3}
+      - {fileID: 2770017958041830002, guid: c40b2206da33e4811bffbdfed281c781, type: 3}
+      - {fileID: 1644375792107194136, guid: 52957a6b4d6284c68945386370b4976e, type: 3}
+      - {fileID: 6825088559092587899, guid: aaa6d12d3d75e4c3e8d070d2a18553d9, type: 3}
+      - {fileID: 2521737616316263662, guid: 92a7edf1f2e324913bda884aefda0578, type: 3}
+      tutorialNames:
+      - ToyDinosaur
+      - ToyDoll
+      - ToyBear
+      ordinaryTypes: 
+      layers:
+      - count: 150
+        types: 23
+        height: 14
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 60
+        types: 10
+        height: 18
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 8
+        height: 20
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 7
+        height: 22
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+  - id: tasty-kitchen
+    ambientMultiplier: 0.75
+    lightMultiplier: 0.85
+    title: "\u7F8E\u5473\u53A8\u623F"
+    profile:
+      environment: CountrysideStove
+      sourceIndex: 1
+      seconds: 600
+      limitHeight: 21.5
+      prefabs:
+      - {fileID: 7127797482938043330, guid: 0e162e320b0104530beaca0d9fd56692, type: 3}
+      - {fileID: 1466006929460767977, guid: 9c24480a9bbeb4bb581e4f693307eded, type: 3}
+      - {fileID: 6189205926019874263, guid: a5936559981f74e609cc44267014b2aa, type: 3}
+      - {fileID: 326494614797338450, guid: 0aa1c0680285b4091ae117bc3be7c6bb, type: 3}
+      - {fileID: 7381656931986655447, guid: 4427a3c43cd534ee48b4fc0b4724b7aa, type: 3}
+      - {fileID: 1674374316200244626, guid: 5afaa029d55804e30b04a1666948dbcf, type: 3}
+      - {fileID: 3576758768319294307, guid: 370cdb2c72f594c2683dbc95360bb25d, type: 3}
+      - {fileID: 2717170349206803420, guid: 309b9cc62737e417ba666e2397eb7ef2, type: 3}
+      - {fileID: 7612404688700707033, guid: dcbebcf212efb42c2ad44f8f3b144a55, type: 3}
+      - {fileID: 5002116841348076036, guid: 511534aacefcb48e5bae789033a2f59b, type: 3}
+      - {fileID: 4482082874644202118, guid: dca33d15d582a4e109dfd31974444f80, type: 3}
+      - {fileID: 1371142223881644295, guid: 736495a9c87fe4ad588fc7baf1ce3e07, type: 3}
+      - {fileID: 6720016831732041671, guid: 20cd0e87db6a0433ea65d8aadfc7cdcc, type: 3}
+      - {fileID: 8189777904183349029, guid: 775bbba743de346549b1234f33a3a860, type: 3}
+      - {fileID: 6305017649416754946, guid: f4579bae41f334767bf22174c70f2ce4, type: 3}
+      - {fileID: 2350978904380675954, guid: 9e8fa382799dc40f883de2982a7ded94, type: 3}
+      - {fileID: 7336727106528026718, guid: 63c406fcc87ba425c9f934341379d38c, type: 3}
+      - {fileID: 1750144860110728195, guid: 2cd9f816e1b2a45678f3007e66654ded, type: 3}
+      - {fileID: 43537926313461122, guid: c5f61c28710204505b0f00e0d0bc484b, type: 3}
+      - {fileID: 4505020107762522675, guid: b03a97d7f84c044d4b30d3fb7227f945, type: 3}
+      - {fileID: 8723825943650440753, guid: 931c5dd8600a7427f86b236dc027e95d, type: 3}
+      - {fileID: 4398613692869915121, guid: 4283b4bea944d46cc9aa520a0416350f, type: 3}
+      - {fileID: 8906632319977310658, guid: 5ef871a39d599436f9adc60aebcb540a, type: 3}
+      tutorialNames:
+      - Kitchen_bottle-oil
+      - Kitchen_bread
+      - Kitchen_bag-flat
+      ordinaryTypes: 
+      layers:
+      - count: 150
+        types: 23
+        height: 14
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 60
+        types: 10
+        height: 18
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 8
+        height: 20
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 7
+        height: 22
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+  - id: foodie-party
+    ambientMultiplier: 1
+    lightMultiplier: 1
+    title: "\u5403\u8D27\u6D3E\u5BF9"
+    profile:
+      environment: CountrysideStove
+      sourceIndex: 1
+      seconds: 600
+      limitHeight: 21.5
+      prefabs:
+      - {fileID: 6835747140437255443, guid: 12e536911ed944d599e4b69c59f676ed, type: 3}
+      - {fileID: 251005281280908187, guid: f229c7f628e1840809e31c084e6fb18b, type: 3}
+      - {fileID: 5911591839442767204, guid: 9374b4b40ac364e28ab66cba1636d333, type: 3}
+      - {fileID: 5207288538520292480, guid: a8995c27b09e7468e8f73a9af348458c, type: 3}
+      - {fileID: 1464375807199726847, guid: 25d8b2c77ef64455d84deb9e636c94cd, type: 3}
+      - {fileID: 3497632666545198760, guid: cbf7f04da45e649e28702faaaa13c77f, type: 3}
+      - {fileID: 3059138768231433150, guid: c59568f0853ed48fa873ea9eb0de8087, type: 3}
+      - {fileID: 2838287836838887997, guid: 5f6f840aa0df04a3bb73341bb4b36e53, type: 3}
+      - {fileID: 7007855349222749090, guid: fab5894a6815241858e80d6b87db38ea, type: 3}
+      - {fileID: 2576395576472084145, guid: f3f2392f36769479c899a36c1fe8ec8c, type: 3}
+      - {fileID: 3728672679583328073, guid: 766cf900a146544108a45ae8ad9e4e6e, type: 3}
+      - {fileID: 5736792627058326918, guid: 911d46aab122348a8978e99d04693659, type: 3}
+      - {fileID: 8738292232457371309, guid: f18ed41dce28241fab200c286073d379, type: 3}
+      - {fileID: 4006633790854212751, guid: 4e3e150c027124679af4fa795602ec8b, type: 3}
+      - {fileID: 2249021763032591613, guid: 5ec51d826e8004ceb9dd4fc8fa0a5f40, type: 3}
+      - {fileID: 4570569242069704551, guid: da9e2cdb6572a4670a1ff5f47839deb5, type: 3}
+      - {fileID: 519600522286867959, guid: 25932570e370f4b1dafed1cde6946dae, type: 3}
+      - {fileID: 6668519592970989917, guid: 00d59e07eee1a4837980576817be0b32, type: 3}
+      - {fileID: 4875612335462552596, guid: 0fa4056f440a04a6da1f51295393b448, type: 3}
+      - {fileID: 4471464656138276166, guid: 2d8132a59e73a448eb9fec23008b8a69, type: 3}
+      - {fileID: 354574596722578124, guid: 2822f747e4bf940979b9d4e556c1395a, type: 3}
+      - {fileID: 5073004541882166897, guid: 2b4d5790553374499ba18ef2cb81d009, type: 3}
+      - {fileID: 6083933264072553030, guid: b165a184dd70d4d7f9b9718f6479cc84, type: 3}
+      tutorialNames:
+      - Party_BreadSlice
+      - Party_ChocolateBar
+      - Party_Bottle
+      ordinaryTypes: 
+      layers:
+      - count: 150
+        types: 23
+        height: 14
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 60
+        types: 10
+        height: 18
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 8
+        height: 20
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 7
+        height: 22
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1

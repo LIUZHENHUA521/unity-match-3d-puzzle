@@ -33,6 +33,7 @@ public sealed class BoardSizePreview : IDisposable {
             foreach(var rb in item.GetComponentsInChildren<Rigidbody>(true)){rb.isKinematic=true;rb.detectCollisions=false;}
             foreach(var c in item.GetComponentsInChildren<Collider>(true))c.enabled=false;
         }
+        var theme=Match3DModelThemes.Find(null,source);utility.ambientColor=BoardLighting.AmbientFor(theme);utility.lights[0].intensity=BoardLighting.IntensityFor(theme);
         item.transform.SetPositionAndRotation(Vector3.zero,Quaternion.Euler(60,0,25));
         item.transform.localScale=source.transform.localScale*BoardLayoutSettings.BaseModelScale(source)*multiplier;
         float width=Match3DThemePresentation.Size(9f/16)*2*9f/16;

@@ -1,0 +1,116 @@
+{
+    "requestId": "553a1c4e6f1e40899a5756bbd8ff2f39",
+    "inputPath": "Assets/Match3D/IncomingModels/TastyKitchen/003_bowl-broth/bowl-broth.obj",
+    "logicalId": "Kitchen_bowl-broth",
+    "displayName": "汤碗",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_bowl-broth/Kitchen_bowl-broth.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Kitchen_bowl-broth/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.7415884733200073,
+    "visualSize": {
+        "x": 0.5262081623077393,
+        "y": 0.29030901193618777,
+        "z": 0.5798364281654358
+    },
+    "visualCenter": {
+        "x": 0.012027621269226075,
+        "y": 0.14515450596809388,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.012027621269226075,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.5798364281654358,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 404,
+        "meshCount": 2,
+        "materialCount": 1,
+        "sourceFileBytes": 31506,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/003_bowl-broth/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 404,
+        "meshCount": 2,
+        "materialCount": 1,
+        "sourceFileBytes": 41213,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/TastyKitchen/003_bowl-broth/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "404 三角面 / 2 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：404 三角面 / 2 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

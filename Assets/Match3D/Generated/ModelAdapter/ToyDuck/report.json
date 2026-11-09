@@ -1,0 +1,110 @@
+{
+    "requestId": "2c605d556aab4939af8913bd3f7d356d",
+    "inputPath": "Assets/Match3D/IncomingModels/ToyTheme/Duck.prefab",
+    "logicalId": "ToyDuck",
+    "displayName": "小鸭",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/ToyDuck/ToyDuck.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/ToyDuck/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.9428669214248658,
+    "visualSize": {
+        "x": 0.1640365570783615,
+        "y": 0.19863764941692353,
+        "z": 0.2213224172592163
+    },
+    "visualCenter": {
+        "x": 1.3526139097663759e-9,
+        "y": 0.09621505439281464,
+        "z": -0.015472098253667355
+    },
+    "bottom": {
+        "x": 1.3526139097663759e-9,
+        "y": -0.0031037703156471254,
+        "z": -0.015472098253667355
+    },
+    "longestSide": 0.2213224172592163,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 866,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 48730,
+        "textureMemoryBytes": 88080,
+        "textures": [
+            {
+                "name": "Toys_TextureAtlas",
+                "path": "Assets/Textures/Toys_TextureAtlas.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 256,
+                "height": 256,
+                "memoryBytes": 88080,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 866,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 55981,
+        "textureMemoryBytes": 88080,
+        "textures": [
+            {
+                "name": "Toys_TextureAtlas",
+                "path": "Assets/Textures/Toys_TextureAtlas.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 256,
+                "height": 256,
+                "memoryBytes": 88080,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": false,
+    "hasBodyCollider": false,
+    "colliderCount": 0,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "866 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：866 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 86.0 KB → 86.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

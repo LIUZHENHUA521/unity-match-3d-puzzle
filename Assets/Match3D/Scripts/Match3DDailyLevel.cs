@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [Serializable]
 public sealed class Match3DDailyLevel {
-    public string date,tier,sourceDate,version,generatorVersion;
+    public string date,tier,sourceDate,version,generatorVersion,modelThemeId;
     public int seed,seconds,initialCount;
     public float limitHeight;
     public ChallengeLayer[] layers;

@@ -31,8 +31,13 @@ public sealed class TrayDisplayWindow : EditorWindow {
         var previous=models.Length>0?models[Mathf.Clamp(selected,0,models.Length-1)]:null;measured=null;
         var catalog=Resources.Load<LevelLayoutConfig>("Match3D/SourceLevelCatalog");
         if(!catalog)return;
+        var themes=Resources.Load<Match3DModelThemes>("Match3D/ModelThemes");
+        var themed=(themes&&themes.themes!=null?themes.themes:Array.Empty<Match3DModelThemes.Entry>())
+            .Where(t=>t!=null&&t.profile!=null&&t.profile.prefabs!=null)
+            .SelectMany(t=>t.profile.prefabs.Where(m=>m).Select(m=>new{model=m,label=t.title+" / "+m.name}));
         var imported=AssetDatabase.FindAssets("t:Prefab",new[]{ModelAdapterService.OutputRoot}).Select(AssetDatabase.GUIDToAssetPath).Select(AssetDatabase.LoadAssetAtPath<GameObject>).Where(m=>m).Select(m=>new{model=m,label="已导入 / "+m.name});
-        var rows=catalog.profiles.SelectMany(p=>p.prefabs.Where(m=>m).Select(m=>new{model=m,label=ThemeLabel(p.environment)+" / "+m.name})).Concat(imported).GroupBy(x=>x.model).Select(g=>g.First()).ToArray();
+        // Prefer the daily model theme over the shared physical scene's legacy label.
+        var rows=themed.Concat(catalog.profiles.SelectMany(p=>p.prefabs.Where(m=>m).Select(m=>new{model=m,label=ThemeLabel(p.environment)+" / "+m.name}))).Concat(imported).GroupBy(x=>x.model).Select(g=>g.First()).ToArray();
         models=rows.Select(x=>x.model).ToArray();labels=rows.Select(x=>x.label).ToArray();selected=previous?Array.IndexOf(models,previous):0;selected=Mathf.Clamp(selected,0,Mathf.Max(0,models.Length-1));Reload();
     }
     static string ThemeLabel(string value)=>value=="CountrysideStove"?"乡村":value=="GroceryStore"?"小卖部":value=="Barbecue"?"烧烤摊":value;

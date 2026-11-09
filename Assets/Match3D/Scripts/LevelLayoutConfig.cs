@@ -29,7 +29,10 @@ public sealed class LevelLayoutConfig : ScriptableObject {
     }
 
     public static Profile GetTutorial(string environment){
-        var challenge=Get(environment);
+        return GetTutorial(Get(environment));
+    }
+    public static Profile GetTutorial(Profile challenge){
+        string environment=challenge.environment;
         var names=challenge.tutorialNames;
         if(names==null||names.Length<3||names.Distinct().Count()!=names.Length)
             throw new InvalidOperationException("First stage needs a target and distinct ordinary candidates: "+environment);
