@@ -13,6 +13,14 @@ Shape radii, height, transition band and item sizes stay
 fixed. The side-view height gap is partly the existing hidden/parked lower-item
 mechanism, and is not claimed to be eliminated by straightening the shell.
 Stage 1 retains its original 25-box hierarchy, spawn sampling, pan and camera pose.
+The upright second-stage shell has world origin (0, 0, -3). This fixed horizontal
+translation balances the ~3-unit upward projection of the main visible band at
+height ~21 under the shared 82-degree camera. It preserves all local dimensions,
+world Y heights and gravity; it does not continuously follow or move the pile.
+Spawn, containment, undo and shuffle share the translated coordinate conversion.
+Offsets/directions use rotation only, not position conversion. Low remaining piles
+must also stay visibly within the pan; this correction is not established merely
+by comparing empty-pan screenshots.
 This changes the solo container and necessary spawn integration, not a complete
 rewrite of the game or a legal clearance. Historical reverse-engineering records
 remain truthful and retained outside runtime assets.

@@ -40,18 +40,20 @@ public static class SoftContainerValidation {
         Check(!Resources.Load<TextAsset>("Match3D/Environments/CountrysideStove")&&!Resources.Load<TextAsset>("Match3D/SourceEnvironment"),"old container resources absent");
         var shell=SoftTransitionContainer.Create();var container=shell.GetComponent<SoftTransitionContainer>();var walls=shell.GetComponentsInChildren<Collider>();
         Check(Vector3.Distance(container.transform.up,Vector3.up)<.00001f,"stage 2 shell is upright");
-        Check(Vector3.Distance(SoftTransitionContainer.ToWorld(Vector3.up*26),Vector3.up*26)<.00001f,"container axis has no sideways drift");
+        Check(Vector3.Distance(SoftTransitionContainer.ToWorld(Vector3.up*26)-SoftTransitionContainer.ToWorld(Vector3.zero),Vector3.up*26)<.00001f,"container axis has no sideways drift");
+        Check(Vector3.Distance(container.transform.position,SoftTransitionContainer.Origin)<.00001f,"shell uses the shared placement origin");
+        Check(Vector3.Distance(SoftTransitionContainer.ToLocal(SoftTransitionContainer.ToWorld(new Vector3(1,12,2))),new Vector3(1,12,2))<.00001f,"translated position conversion round trips");
         Physics.SyncTransforms();var mesh=container.WallMesh;var triangles=mesh.triangles;var edges=new Dictionary<string,int>();
         for(int i=0;i<triangles.Length;i+=3)for(int j=0;j<3;j++){int a=triangles[i+j],b=triangles[i+(j+1)%3];string key=Math.Min(a,b)+":"+Math.Max(a,b);edges[key]=edges.TryGetValue(key,out int n)?n+1:1;}
         Check(edges.Values.All(n=>n==2),"wall closed manifold with annular rims");Check(!shell.GetComponentInChildren<MeshCollider>().convex,"hollow shell is not convex");
         foreach(float h in new[]{1f,10f,11f,12f,13f,14f,25f})for(int i=0;i<16;i++){
             float angle=i*Mathf.PI/8;var normal=new Vector3(Mathf.Cos(angle),0,Mathf.Sin(angle));
-            var ray=new Ray(SoftTransitionContainer.ToWorld(Vector3.up*h),SoftTransitionContainer.ToWorld(normal));
+            var ray=new Ray(SoftTransitionContainer.ToWorld(Vector3.up*h),SoftTransitionContainer.ToWorldDirection(normal));
             Check(walls[0].Raycast(ray,out var hit,10)&&Mathf.Abs(hit.distance-SoftTransitionContainer.Apothem(h))<.002f,"interior ray hits proper wall face at "+h+"/"+i);
         }
-        Check(!walls[0].Raycast(new Ray(SoftTransitionContainer.ToWorld(Vector3.up),SoftTransitionContainer.ToWorld(Vector3.up)),out _,24),"no disk across cavity");
-        Check(walls.Single(c=>c.name=="Container floor").Raycast(new Ray(SoftTransitionContainer.ToWorld(Vector3.up),SoftTransitionContainer.ToWorld(Vector3.down)),out var floor,2)&&Mathf.Abs(floor.distance-1)<.001f,"floor surface is local zero");
-        Check(walls.Single(c=>c.name=="Container ceiling").Raycast(new Ray(SoftTransitionContainer.ToWorld(Vector3.up*25),SoftTransitionContainer.ToWorld(Vector3.up)),out var lid,2)&&Mathf.Abs(lid.distance-1)<.001f,"safety lid keeps interior height 26");
+        Check(!walls[0].Raycast(new Ray(SoftTransitionContainer.ToWorld(Vector3.up),SoftTransitionContainer.ToWorldDirection(Vector3.up)),out _,24),"no disk across cavity");
+        Check(walls.Single(c=>c.name=="Container floor").Raycast(new Ray(SoftTransitionContainer.ToWorld(Vector3.up),SoftTransitionContainer.ToWorldDirection(Vector3.down)),out var floor,2)&&Mathf.Abs(floor.distance-1)<.001f,"floor surface is local zero");
+        Check(walls.Single(c=>c.name=="Container ceiling").Raycast(new Ray(SoftTransitionContainer.ToWorld(Vector3.up*25),SoftTransitionContainer.ToWorldDirection(Vector3.up)),out var lid,2)&&Mathf.Abs(lid.distance-1)<.001f,"safety lid keeps interior height 26");
         var catalog=Resources.Load<Match3DModelThemes>("Match3D/ModelThemes");Check(catalog&&catalog.themes.Length>=3,"three current model themes");
         var prefabs=catalog.themes.SelectMany(t=>t.profile.prefabs).Distinct().ToArray();var random=new System.Random(72131);
         foreach(float scale in new[]{.5f,1f,1.25f}){

@@ -10,13 +10,20 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
     public const float WallThickness=.3f,CeilingThickness=2f,Clearance=.04f,SpawnCeiling=24;
     public static readonly Quaternion Orientation=Quaternion.Euler(TiltDegrees,0,0);
     static readonly Quaternion InverseOrientation=Quaternion.Inverse(Orientation);
+    // Keep the shell upright and the shared 82-degree camera/pan fixed. At the
+    // main visible band (~21 units high), the camera projects vertical height
+    // upward by ~3 units. A fixed horizontal origin balances that offset while
+    // the narrow lower section still lands inside the authored pan.
+    public static readonly Vector3 Origin=new Vector3(0,0,-3f);
     static readonly float[] RingHeights={0,6,10,11,12,13,14,20,26};
     static readonly Vector2[] Normals=MakeNormals();
     Mesh wallMesh;
     PhysicMaterial wallMaterial;
     public Mesh WallMesh=>wallMesh;
-    public static Vector3 ToLocal(Vector3 world)=>InverseOrientation*world;
-    public static Vector3 ToWorld(Vector3 local)=>Orientation*local;
+    public static Vector3 ToLocal(Vector3 world)=>InverseOrientation*(world-Origin);
+    public static Vector3 ToWorld(Vector3 local)=>Origin+Orientation*local;
+    public static Vector3 ToLocalDirection(Vector3 direction)=>InverseOrientation*direction;
+    public static Vector3 ToWorldDirection(Vector3 direction)=>Orientation*direction;
     static Vector2[] MakeNormals(){var normals=new Vector2[Sides];for(int i=0;i<Sides;i++){float a=i*Mathf.PI*2/Sides;normals[i]=new Vector2(Mathf.Cos(a),Mathf.Sin(a));}return normals;}
 
     public static float DesignApothem(float h){
@@ -43,7 +50,7 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
         return true;
     }
     public static GameObject Create(){
-        var root=new GameObject("Short transition container");root.transform.rotation=Orientation;
+        var root=new GameObject("Short transition container");root.transform.SetPositionAndRotation(Origin,Orientation);
         var component=root.AddComponent<SoftTransitionContainer>();component.Build();return root;
     }
     void Build(){
@@ -106,7 +113,7 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
     public static Vector3 FittedPosition(GameObject obj,Vector3 desired){
         var points=SolidPoints(obj);var current=obj.transform.position;
         var min=Vector3.one*float.PositiveInfinity;var max=Vector3.one*float.NegativeInfinity;
-        for(int i=0;i<points.Count;i++){points[i]=ToLocal(points[i]-current);min=Vector3.Min(min,points[i]);max=Vector3.Max(max,points[i]);}
+        for(int i=0;i<points.Count;i++){points[i]=ToLocalDirection(points[i]-current);min=Vector3.Min(min,points[i]);max=Vector3.Max(max,points[i]);}
         var offset=(min+max)*.5f;float halfHeight=(max.y-min.y)*.5f;
         var center=ToLocal(desired)+offset;var supports=new float[Sides];float required=0;
         for(int i=0;i<Sides;i++){

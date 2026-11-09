@@ -32,7 +32,9 @@ public class ItemPhysicsController : MonoBehaviour {
         if(!SourceSelectionMode){body.useGravity=true;body.collisionDetectionMode=entry.detection;body.WakeUp();}
     }
     static void ApplyShake(Rigidbody body){
-        var inward=new Vector3(-body.position.x,0,.15f-body.position.z);
+        var center=LayeredItemPile.Instance&&LayeredItemPile.Instance.Running&&BoardEnvironment.UsesSoftContainer
+            ?SoftTransitionContainer.Origin:new Vector3(0,0,.15f);
+        var inward=new Vector3(center.x-body.position.x,0,center.z-body.position.z);
         body.velocity=Vector3.ClampMagnitude(body.velocity,1);
         body.AddForce(inward*.3f+Vector3.up*1.9f,ForceMode.VelocityChange);
         body.AddTorque(Random.insideUnitSphere*2,ForceMode.VelocityChange);
