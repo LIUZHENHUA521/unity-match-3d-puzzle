@@ -1,0 +1,35 @@
+{
+  "version": "0.1.45",
+  "commit": "5f43904af699fddf73778d9d5bb2100098783c22",
+  "sourceSha256": "f3bd6a5d536918963d151b830c5ce21a1e828fc40cf4dfc4f079ebc017a05e1c",
+  "trackedInputFiles": 5771,
+  "sourceSnapshot": "/Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/WechatPanReleaseSource-0.1.45",
+  "description": "修复真机锅面碰撞失效导致薄物品陷入锅底",
+  "uploadStatus": "success",
+  "experienceVersionStatus": "not set or verified: browser policy blocks mp.weixin.qq.com",
+  "submittedForReview": false,
+  "receipt": "Builds/Wechat/release-0.1.45-20261111-003821-584870-upload.json",
+  "size": {
+    "total": 31248837,
+    "packages": [
+      {
+        "name": "TOTAL",
+        "size": 31248837
+      },
+      {
+        "name": "main",
+        "size": 1697486
+      },
+      {
+        "name": "/data-package/",
+        "size": 23430343
+      },
+      {
+        "name": "/wasmcode/",
+        "size": 6121008
+      }
+    ]
+  },
+  "sourceUnchangedDuringRelease": true,
+  "standalonePlayerRegression": "108 cases passed; release guard rejects unreadable mesh"
+}

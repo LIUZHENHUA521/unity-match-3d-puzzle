@@ -17,6 +17,10 @@
 - 原始对照报告的后 6 组从 Y=22 开始，落在第一关安全顶板上方，不能作为锅底落下验证。最终回归已改成 Y=3/12，均从顶板下方落下。
 - 最终真实 Player 回归：巧克力、面包、瓶子 × 3 种尺寸 × 12 组姿态/落点/高度，共 108 组，全部通过。用模型真实顶点检查最低高度，避免旋转瓶子的包围盒空白角点造成误判。
 - 在隔离项目把 Read/Write 临时关掉，发布检查确实拒绝；恢复后通过，日志 `PAN_RELEASE_GUARD_REJECTED_UNREADABLE=True`。
-- fixtures 与复现步骤见 `Tools/Validation/PanPlayer/`，未加入正常游戏 Assets。
+- fixtures 与复现步骤见 `Tools/validation/PanPlayer/`，未加入正常游戏 Assets。
 
 报告：[错误日志](baseline-errors.txt)、[修改前](baseline.txt)、[相同条件修改后](fixed-comparison.txt)、[108 组运行包回归](regression.txt)。这是实际 macOS Player 验证，微信/iOS 真机表现仍需更新后确认。
+
+## 微信包
+
+0.1.45 从已提交源码 5f43904 的隔离快照构建，WebGL 导出、包检查及开发版本上传成功。确认构建输入保留 Read/Write，并排除诊断组件和场景。未设为体验版（公众平台受浏览器策略限制），未提审。见 release-0.1.45.json。
