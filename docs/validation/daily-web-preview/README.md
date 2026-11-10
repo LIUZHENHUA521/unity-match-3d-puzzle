@@ -10,4 +10,8 @@
 
 截图：[后台试玩](admin-preview.png)。
 
-部署版本与线上核验结果在交付后补录。不自动修改每日关卡排期，不发布微信正式版本。
+已部署 WebGL 版本 `20261111-1`，后台入口引用 `index-BrfNaFsS.js`。7 个游戏资源文件、3 个后台资源文件及后台 index 均 HTTP 200，SHA-256 与本地测试产物完全相同，详见 `deployment-manifest.json`。线上 Chrome 实际加载 CDN / gzip 回退 / WASM 成功，并还原第二关 300 个物品。
+
+入口：https://cloud1-1g0u68ow59705e3f-1312757046.tcloudbaseapp.com/admin/#/goose-daily-levels
+
+代码：Unity `d442802`、tasks `d780ca0`，均已推送。未修改每日排期或微信正式版本；本轮不需要更新云函数或游戏服务。
