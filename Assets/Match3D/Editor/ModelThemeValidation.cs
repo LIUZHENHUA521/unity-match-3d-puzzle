@@ -16,6 +16,11 @@ public static class ModelThemeValidation {
         Directory.CreateDirectory("docs/validation/model-themes");File.WriteAllText("docs/validation/model-themes/result.txt",error??"PASS: all three model themes; tutorial and 300-item challenge use selected pool; triple removal; deterministic retry; unknown theme rejected; legacy fallback retained.");
         UnityEngine.Object.Destroy(GameObject.Find("Model theme validation"));
     }
+    static void Background(string id){
+        var backdrop=UnityEngine.Object.FindObjectOfType<Match3DCameraBackdrop>();
+        Check(backdrop && backdrop.GetComponent<SpriteRenderer>().sprite==Match3DModelThemes.Find(id).background,id+" background selection");
+        PicnicBackdropBuilder.Capture();
+    }
     static IEnumerator Ready(){float until=Time.realtimeSinceStartup+60;while(Match3DFlow.Instance.CreationInProgress&&Time.realtimeSinceStartup<until)yield return null;Check(!Match3DFlow.Instance.CreationInProgress,"creation timeout");}
     static IEnumerator Core(){
         float until=Time.realtimeSinceStartup+60;while(!Match3DInvitations.Instance&&Time.realtimeSinceStartup<until)yield return null;
@@ -40,13 +45,13 @@ public static class ModelThemeValidation {
             Check(Mathf.Abs(RenderSettings.ambientSkyColor.r-expectedAmbient)<.001f,id+" theme ambient");
             Check(Mathf.Abs(RenderSettings.sun.intensity-BoardLighting.ItemLightIntensity*(id=="playful-toys"?.8f:id=="tasty-kitchen"?.85f:1f))<.001f,id+" theme light");
             var board=LevelGenerator.Instance.objectsOnScene;
-            Check(flow.Stage==1&&board.Count==15&&board.All(o=>names.Contains(o.GetComponent<BoardItemIdentity>().LogicalId)),id+" tutorial pool");
+            Check(flow.Stage==1&&board.Count==15&&board.All(o=>names.Contains(o.GetComponent<BoardItemIdentity>().LogicalId)),id+" tutorial pool");Background(id);
             var triple=board.GroupBy(o=>o.name).First().Take(3).ToArray();foreach(var item in triple)input.AddObjectOnStack(item);yield return new WaitForSeconds(1);
             Check(input.objectsOnStack.Count==0&&board.Count==12,id+" triple");
-            flow.NextStage();yield return Ready();Check(board.Count==300&&board.All(o=>names.Contains(o.GetComponent<BoardItemIdentity>().LogicalId)),id+" challenge pool");
+            flow.NextStage();yield return Ready();Check(board.Count==300&&board.All(o=>names.Contains(o.GetComponent<BoardItemIdentity>().LogicalId)),id+" challenge pool");Background(id);
             var order=board.Select(o=>o.GetComponent<BoardItemIdentity>().LogicalId).ToArray();
             yield return new WaitForSeconds(2);Directory.CreateDirectory("work/model-themes");ScreenCapture.CaptureScreenshot(Path.GetFullPath("work/model-themes/"+id+".png"));yield return null;
-            flow.RestartStage();yield return Ready();Check(order.SequenceEqual(board.Select(o=>o.GetComponent<BoardItemIdentity>().LogicalId)),id+" deterministic retry");flow.Home();
+            flow.RestartStage();yield return Ready();Check(order.SequenceEqual(board.Select(o=>o.GetComponent<BoardItemIdentity>().LogicalId)),id+" deterministic retry");Background(id);flow.Home();
         }
     }
 }

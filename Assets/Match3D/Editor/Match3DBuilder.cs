@@ -66,6 +66,7 @@ public static class Match3DBuilder {
             else if(cmd=="uicheck")Match3DUIPrefabValidation.Run();
             else if(cmd=="layoutcheck")Match3DUILayoutValidation.Run();
             else if(cmd=="gameplayskin")Match3DGameplaySkinBuilder.Build();
+            else if(cmd=="modelthemecheck")ModelThemeValidation.Start();
             else if(cmd=="picnicbuild")PicnicBackdropBuilder.Build();
             else if(cmd=="picniccapture")PicnicBackdropBuilder.Capture();
             else if(cmd=="kitchenbuild")KitchenSceneBuilder.Build();

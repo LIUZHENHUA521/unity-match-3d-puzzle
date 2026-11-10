@@ -5,6 +5,7 @@ using UnityEngine;
 public sealed class Match3DModelThemes : ScriptableObject {
     [Serializable] public sealed class Entry {
         public string id, title;
+        public Sprite background;
         public LevelLayoutConfig.Profile profile;
         [Range(.1f,2f)] public float ambientMultiplier=1f,lightMultiplier=1f;
     }

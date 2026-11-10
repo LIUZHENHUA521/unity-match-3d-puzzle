@@ -15,7 +15,7 @@ public static class WechatReleaseAssets {
         const string root = "Assets/Match3D/Resources/Match3D/";
         Atlas("WechatInvite", AssetDatabase.FindAssets("t:Texture2D", new[]{root+"InviteSkinPS"})
             .Select(AssetDatabase.GUIDToAssetPath).ToArray());
-        Atlas("WechatBackgrounds", new[]{root+"HomeSkinPS/img_Homepage_bg2.jpg", root+"GameplaySkin/img_picnic_bg.jpg"});
+        Atlas("WechatBackgrounds", new[]{root+"HomeSkinPS/img_Homepage_bg2.jpg", root+"ThemeBackgrounds/playful-toys.jpg", root+"ThemeBackgrounds/tasty-kitchen.jpg", root+"ThemeBackgrounds/foodie-party.jpg"});
 
         var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
         var renderers = scene.GetRootGameObjects().SelectMany(x=>x.GetComponentsInChildren<Renderer>(true)).ToArray();

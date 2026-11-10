@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   themes:
   - id: playful-toys
+    background: {fileID: 21300000, guid: 062c1cb1f1144960a3bf59fc75e82f7b, type: 3}
     ambientMultiplier: 0.65
     lightMultiplier: 0.8
     title: "\u840C\u8DA3\u73A9\u5177"
@@ -161,6 +162,7 @@ MonoBehaviour:
         - 1
         - 1
   - id: tasty-kitchen
+    background: {fileID: 21300000, guid: c2a0a12c3754484fa433efa055919e91, type: 3}
     ambientMultiplier: 0.75
     lightMultiplier: 0.85
     title: "\u7F8E\u5473\u53A8\u623F"
@@ -308,6 +310,7 @@ MonoBehaviour:
         - 1
         - 1
   - id: foodie-party
+    background: {fileID: 21300000, guid: 937d5943dcb84e60ac1ef6ff835ff777, type: 3}
     ambientMultiplier: 1
     lightMultiplier: 1
     title: "\u5403\u8D27\u6D3E\u5BF9"

@@ -4,7 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public sealed class Match3DCameraBackdrop : MonoBehaviour {
     public float distance = 60f;
-    void OnEnable() { Camera.onPreCull += Fit; }
+    void OnEnable() {
+        var flow = Match3DFlow.Instance;
+        var theme = Match3DModelThemes.Find(flow ? flow.ActiveModelTheme : null);
+        if (theme != null && theme.background) GetComponent<SpriteRenderer>().sprite = theme.background;
+        Camera.onPreCull += Fit;
+    }
     void OnDisable() { Camera.onPreCull -= Fit; }
     public void Fit(Camera camera) {
         if (!camera || camera != Camera.main || !camera.orthographic) return;

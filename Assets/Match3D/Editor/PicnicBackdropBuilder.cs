@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 public static class PicnicBackdropBuilder {
     const string Prefab = "Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab";
-    const string Image = "Assets/Match3D/Resources/sprite/img_picnic_bg.jpg";
+    const string Image = "Assets/Match3D/Resources/Match3D/ThemeBackgrounds/foodie-party.jpg";
     public static void Build() {
         if (EditorApplication.isPlaying) throw new Exception("Stop play mode first");
         var importer = (TextureImporter)AssetImporter.GetAtPath(Image);
@@ -23,9 +23,9 @@ public static class PicnicBackdropBuilder {
         try {
             foreach (var t in root.GetComponentsInChildren<Transform>(true))
                 if (t.name == "Table" || t.name.StartsWith("tableCoffeeSquare", StringComparison.OrdinalIgnoreCase)) t.gameObject.SetActive(false);
-            var old = root.transform.Find("PicnicBackground");
+            var old = root.transform.Find("ThemeBackground");
             if (old) UnityEngine.Object.DestroyImmediate(old.gameObject);
-            var g = new GameObject("PicnicBackground");g.transform.SetParent(root.transform, false);
+            var g = new GameObject("ThemeBackground");g.transform.SetParent(root.transform, false);
             var renderer = g.AddComponent<SpriteRenderer>();renderer.sprite = AssetDatabase.LoadAssetAtPath<Sprite>(Image);
             renderer.shadowCastingMode = ShadowCastingMode.Off;renderer.receiveShadows = false;
             g.AddComponent<Match3DCameraBackdrop>();
