@@ -15,7 +15,19 @@ public static class WechatReleaseAssets {
         const string root = "Assets/Match3D/Resources/Match3D/";
         Atlas("WechatInvite", AssetDatabase.FindAssets("t:Texture2D", new[]{root+"InviteSkinPS"})
             .Select(AssetDatabase.GUIDToAssetPath).ToArray());
-        Atlas("WechatBackgrounds", new[]{root+"HomeSkinPS/img_Homepage_bg2.jpg", root+"ThemeBackgrounds/playful-toys.jpg", root+"ThemeBackgrounds/tasty-kitchen.jpg", root+"ThemeBackgrounds/foodie-party.jpg"});
+        Atlas("WechatBackgrounds", new[]{root+"HomeSkinPS/img_Homepage_bg2.jpg"});
+        // Opaque gameplay backdrops need no alpha channel. Limit only release
+        // sprites to 1024px so their decoded textures fit the mini-game package.
+        var backgrounds = new[]{root+"ThemeBackgrounds/playful-toys.jpg", root+"ThemeBackgrounds/tasty-kitchen.jpg", root+"ThemeBackgrounds/foodie-party.jpg"};
+        foreach (var path in backgrounds) {
+            var importer=(TextureImporter)AssetImporter.GetAtPath(path);
+            var settings=importer.GetPlatformTextureSettings("WebGL");
+            settings.overridden=true; settings.maxTextureSize=1024;
+            settings.format=TextureImporterFormat.DXT1;
+            settings.textureCompression=TextureImporterCompression.CompressedHQ;
+            importer.SetPlatformTextureSettings(settings); importer.SaveAndReimport();
+        }
+        Atlas("WechatThemeBackgrounds", backgrounds, TextureImporterFormat.DXT1);
 
         var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
         var renderers = scene.GetRootGameObjects().SelectMany(x=>x.GetComponentsInChildren<Renderer>(true)).ToArray();
@@ -32,7 +44,7 @@ public static class WechatReleaseAssets {
         SpriteAtlasUtility.PackAllAtlases(BuildTarget.WebGL);
     }
 
-    static void Atlas(string name, string[] paths) {
+    static void Atlas(string name, string[] paths, TextureImporterFormat format=TextureImporterFormat.DXT5) {
         var sprites = paths.Select(p=>AssetDatabase.LoadAssetAtPath<Sprite>(p)).ToArray();
         if (sprites.Length==0 || sprites.Any(x=>x==null))
             throw new InvalidOperationException("Missing release atlas sprites: "+name);
@@ -44,7 +56,7 @@ public static class WechatReleaseAssets {
         atlas.SetTextureSettings(new SpriteAtlasTextureSettings{readable=false,generateMipMaps=false,sRGB=true,filterMode=FilterMode.Bilinear});
         var platform=atlas.GetPlatformSettings("WebGL");
         platform.overridden=true; platform.maxTextureSize=2048;
-        platform.format=TextureImporterFormat.DXT5; platform.textureCompression=TextureImporterCompression.CompressedHQ;
+        platform.format=format; platform.textureCompression=TextureImporterCompression.CompressedHQ;
         platform.compressionQuality=100; atlas.SetPlatformSettings(platform);
         atlas.Add(sprites); atlas.SetIncludeInBuild(true); EditorUtility.SetDirty(atlas);
         Debug.Log("WECHAT_SIZE: packed "+sprites.Length+" sprites into "+name);
