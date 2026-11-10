@@ -1,0 +1,40 @@
+{
+  "version": "0.1.44",
+  "commit": "6af1d8f2540ded5d5221984a6da02ecd4af8ed42",
+  "sourceSha256": "5a22e757890f63aa6389eb76b4da05a09f52173728b65f5d1232da900bc72f72",
+  "trackedInputFiles": 5771,
+  "description": "新增加时道具与领取奖励弹窗，调整玩具车入槽大小",
+  "uploadStatus": "success",
+  "experienceVersionStatus": "not set or verified: browser security policy denies mp.weixin.qq.com; user must activate 0.1.44 in version management",
+  "submittedForReview": false,
+  "receipt": "Builds/Wechat/release-0.1.44-20261110-235735-369271-upload.json",
+  "size": {
+    "total": 31249941,
+    "packages": [
+      {
+        "name": "TOTAL",
+        "size": 31249941
+      },
+      {
+        "name": "main",
+        "size": 1697486
+      },
+      {
+        "name": "/data-package/",
+        "size": 23431447
+      },
+      {
+        "name": "/wasmcode/",
+        "size": 6121008
+      }
+    ]
+  },
+  "sourceUnchangedDuringRelease": true,
+  "checks": [
+    "Existing reward popup report: 35 passed",
+    "Existing add-time report: 18 passed",
+    "Publish script: 5 passed",
+    "Transport, invitations, revive ads, default font checks passed",
+    "Unity WebGL export and package validation passed"
+  ]
+}
