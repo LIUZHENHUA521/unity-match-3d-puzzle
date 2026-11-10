@@ -56,6 +56,10 @@ public static class FirstStagePlacementValidation {
             Check(board.Count==1&&flow.CreationInProgress,"first batch must contain one item");
             var shell=GameObject.Find(profile.environment+" first stage container");
             Check(shell.GetComponentsInChildren<Transform>().Any(t=>t.name=="Lv1Col"),"first-stage collision subtree");
+            var walls=shell.GetComponentsInChildren<Transform>().Single(t=>t.name=="Lv1Col");
+            Check(Vector3.Distance(walls.up,Vector3.up)<.00001f,"first-stage container axis must be perpendicular to the ground");
+            for(float height=0;height<=30;height+=.5f)
+                Check(Mathf.Abs(FirstStageContainer.GetBorder(height).position.z)<.00001f,"first-stage spawn region must not drift with height");
             Check(board[0].transform.localScale==Vector3.zero&&board[0].GetComponent<Rigidbody>().isKinematic,"initial zero scale and held body");
             bool sawGrowth=false;float deadline=Time.realtimeSinceStartup+30;
             while(flow.CreationInProgress&&Time.realtimeSinceStartup<deadline){

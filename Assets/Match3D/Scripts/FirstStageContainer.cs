@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-// Original first-stage boundary and spawn rules retained at user request.
+// Original first-stage boundary shape and spawn rules, with an upright axis.
 // Stage 2 uses SoftTransitionContainer and never reads this data.
 public static class FirstStageContainer {
     [Serializable] public class Border {public Vector3 position,scale;}
