@@ -8,4 +8,4 @@
 - [x] 在 daily-levels.mjs 与 rewards.mjs 接入协议 3、公共日期快照，保留旧局结算与旧模式日切迁移。
 - [x] Unity 新增 Match3DDailySnapshot 数据与还原，在 Match3DFlow 内接入，分享携带日期档位；新增编辑器候选导入、生成快照、试玩与导出工具。
 - [x] 添加共享关服务端/后台回归及 Unity 快照还原验证；运行相关 Node suites、管理端 Vite 构建和隔离 Unity 验证。
-- [ ] 分仓提交推送；使用可用 CloudBase MCP 部署并核对云函数、专用服务和后台；构建上传微信开发版本并记录实际结果。
+- [x] 分仓提交推送；使用可用 CloudBase MCP 部署并核对云函数、专用服务和后台；构建上传微信开发版本并记录实际结果。
