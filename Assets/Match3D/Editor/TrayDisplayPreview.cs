@@ -10,6 +10,8 @@ public sealed class TrayDisplayPreview : IDisposable {
     readonly GameObject tray;
     readonly Match3DTraySkin skin;
     GameObject item,prefab;
+    ColliderPreviewOverlay overlay;
+    public void DrawColliders(Rect rect)=>overlay?.Draw(rect,utility.camera);
     Mesh frameMesh;Material frameMaterial;
     public const float PortraitAspect=9f/16;
     public static float WorldPerPoint=>Match3DThemePresentation.Size(PortraitAspect)*2*PortraitAspect/720f;
@@ -47,6 +49,7 @@ public sealed class TrayDisplayPreview : IDisposable {
         if(prefab==source&&item)return;
         if(item)UnityEngine.Object.DestroyImmediate(item);prefab=source;if(!source)return;
         item=UnityEngine.Object.Instantiate(source);item.name=source.name;item.hideFlags=HideFlags.HideAndDontSave;utility.AddSingleGO(item);
+        overlay=new ColliderPreviewOverlay(item);
         foreach(var body in item.GetComponentsInChildren<Rigidbody>(true)){body.isKinematic=true;body.detectCollisions=false;}
         foreach(var collider in item.GetComponentsInChildren<Collider>(true))collider.enabled=false;
         if(item.transform.childCount>0){item.transform.GetChild(0).localPosition=Vector3.zero;item.transform.GetChild(0).localRotation=Quaternion.identity;}

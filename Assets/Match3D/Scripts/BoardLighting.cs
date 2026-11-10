@@ -5,6 +5,9 @@ using UnityEngine.Rendering;
 // Saved WX level0 SceneChange light + Medium quality profile. Never persist global settings.
 public sealed class BoardLighting : MonoBehaviour {
  public static readonly Quaternion SavedRotation=new Quaternion(-.07652297616004944f,-.8228871822357178f,.5578038692474365f,.07652299106121063f);
+ // Keep the source azimuth, but shorten shadows from the tall upright pile.
+ // At 24 units above the bowl, an 8-degree tilt offsets the shadow by 3.4 units.
+ public static readonly Quaternion TopDownRotation=Quaternion.Euler(82f,-150f,0);
  public static readonly Color ItemAmbientColor=new Color(1.4148107767105103f,1.4148107767105103f,1.4148107767105103f,1);
  public const float ItemLightIntensity=.3799999952316284f;
  public static Color AmbientFor(Match3DModelThemes.Entry theme)=>ItemAmbientColor*(theme==null?1:theme.ambientMultiplier);
@@ -45,10 +48,10 @@ public sealed class BoardLighting : MonoBehaviour {
   // The package's zero serialized ambientProbe is not evidence of the evaluated runtime SH.
   // Leave Flat-mode probe generation to Unity; do not force a zero probe or schedule DynamicGI.
 
-  var g=new GameObject("Source SceneChange Directional Light");g.transform.SetParent(transform,false);g.transform.SetPositionAndRotation(new Vector3(0,3,0),SavedRotation);SourceLight=g.AddComponent<Light>();SourceLight.type=LightType.Directional;SourceLight.color=Color.white;SourceLight.intensity=IntensityFor(theme);SourceLight.cullingMask=471;SourceLight.shadows=LightShadows.Hard;SourceLight.shadowResolution=LightShadowResolution.FromQualitySettings;SourceLight.shadowStrength=1;SourceLight.shadowBias=.05000000074505806f;SourceLight.shadowNormalBias=.4000000059604645f;SourceLight.shadowNearPlane=.20000000298023224f;SourceLight.renderMode=LightRenderMode.Auto;RenderSettings.sun=SourceLight;
+  var g=new GameObject("Source SceneChange Directional Light");g.transform.SetParent(transform,false);g.transform.SetPositionAndRotation(new Vector3(0,3,0),TopDownRotation);SourceLight=g.AddComponent<Light>();SourceLight.type=LightType.Directional;SourceLight.color=Color.white;SourceLight.intensity=IntensityFor(theme);SourceLight.cullingMask=471;SourceLight.shadows=LightShadows.Hard;SourceLight.shadowResolution=LightShadowResolution.FromQualitySettings;SourceLight.shadowStrength=1;SourceLight.shadowBias=.05000000074505806f;SourceLight.shadowNormalBias=.4000000059604645f;SourceLight.shadowNearPlane=.20000000298023224f;SourceLight.renderMode=LightRenderMode.Auto;RenderSettings.sun=SourceLight;
  }
  // Use only if the caller has established the original LightAngle transform from its callback.
- public void SetAngle(Quaternion angle){if(SourceLight)SourceLight.transform.rotation=angle*SavedRotation;}
+ public void SetAngle(Quaternion angle){if(SourceLight)SourceLight.transform.rotation=angle*TopDownRotation;}
  public void End(){
   if(!applied)return;applied=false;if(SourceLight){SourceLight.enabled=false;Destroy(SourceLight.gameObject);SourceLight=null;}
   for(int i=0;i<previousLights.Length;i++)if(previousLights[i])previousLights[i].enabled=previousEnabled[i];previousLights=null;previousEnabled=null;

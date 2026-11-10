@@ -8,6 +8,8 @@ public sealed class TrayDisplayWindow : EditorWindow {
     GameObject[] models=Array.Empty<GameObject>();string[] labels=Array.Empty<string>();int selected;
     Match3DTrayDisplaySettings.Pose draft=new Match3DTrayDisplaySettings.Pose();
     TrayDisplayPreview preview;BoardSizePreview boardPreview;Vector2 scroll;bool closeup,resetTray;float boardMultiplier=1;
+    bool showColliders=true;
+    Quaternion boardDragStart;
     [MenuItem("Goose/槽内展示配置")]
     public static void Open(){GetWindow<TrayDisplayWindow>("道具展示配置");}
     public static Match3DTrayDisplaySettings EnsureSettings(){
@@ -96,6 +98,30 @@ public sealed class TrayDisplayWindow : EditorWindow {
                 GUIUtility.hotControl=0;rotationControl=0;e.Use();Repaint();break;
         }
     }
+    void DragBoardRotation(Rect rect){
+        int id=GUIUtility.GetControlID("BoardPreviewRotation".GetHashCode(),FocusType.Passive,rect);
+        EditorGUIUtility.AddCursorRect(rect,MouseCursor.RotateArrow);
+        var e=Event.current;
+        switch(e.GetTypeForControl(id)){
+            case EventType.MouseDown:
+                if(e.button!=0||!rect.Contains(e.mousePosition))return;
+                GUIUtility.hotControl=id;GUIUtility.keyboardControl=0;rotationControl=id;
+                boardDragStart=boardPreview.Rotation;e.Use();break;
+            case EventType.MouseDrag:
+                if(GUIUtility.hotControl!=id)return;
+                var camera=Match3DThemePresentation.SourceRotation;
+                var delta=e.shift?Quaternion.AngleAxis(-e.delta.x*.6f,Vector3.forward)
+                    :Quaternion.AngleAxis(e.delta.y*.6f,Vector3.right)*Quaternion.AngleAxis(e.delta.x*.6f,Vector3.up);
+                boardPreview.Rotation=camera*delta*Quaternion.Inverse(camera)*boardPreview.Rotation;
+                e.Use();Repaint();break;
+            case EventType.MouseUp:
+                if(GUIUtility.hotControl!=id||e.button!=0)return;
+                GUIUtility.hotControl=0;rotationControl=0;e.Use();break;
+            case EventType.KeyDown:
+                if(GUIUtility.hotControl!=id||e.keyCode!=KeyCode.Escape)return;
+                boardPreview.Rotation=boardDragStart;GUIUtility.hotControl=0;rotationControl=0;e.Use();Repaint();break;
+        }
+    }
     void OnGUI(){
         if(models.Length==0){EditorGUILayout.HelpBox("没有找到关卡模型。",MessageType.Info);if(GUILayout.Button("刷新模型"))RefreshModels();return;}
         scroll=EditorGUILayout.BeginScrollView(scroll);
@@ -121,12 +147,17 @@ public sealed class TrayDisplayWindow : EditorWindow {
         if(EditorGUI.EndChangeCheck())hasUnsavedChanges=true;
         EditorGUILayout.LabelField("最终最长边",(baseSize*boardMultiplier*BoardLayoutSettings.ModelSizeMultiplier).ToString("F2")+"（含当前全局倍率 "+BoardLayoutSettings.ModelSizeMultiplier.ToString("F2")+"×）");
         if(GUILayout.Button("恢复棋盘默认大小")){boardMultiplier=1;hasUnsavedChanges=true;}
+        showColliders=EditorGUILayout.ToggleLeft("显示碰撞体线框（绿色：物品实体碰撞范围）",showColliders);
+        if(boardPreview==null)boardPreview=new BoardSizePreview();
+        if(GUILayout.Button("重置预览角度"))boardPreview.Rotation=Quaternion.Euler(60,0,25);
         var boardRect=GUILayoutUtility.GetRect(560,260,GUILayout.ExpandWidth(true));
+        DragBoardRotation(boardRect);
         if(Event.current.type==EventType.Repaint&&Match3DTrayDisplaySettings.ValidBoardMultiplier(boardMultiplier)){
             if(boardPreview==null)boardPreview=new BoardSizePreview();
             GUI.DrawTexture(boardRect,boardPreview.Render(boardRect,model,boardMultiplier),ScaleMode.StretchToFill,false);
+            if(showColliders)boardPreview.DrawColliders(boardRect);
         }
-        EditorGUILayout.LabelField("棋盘预览固定为 9:16 游戏视野宽度；网格间距 1 世界单位，斜放展示；不改变游戏内随机朝向。",EditorStyles.wordWrappedMiniLabel);
+        EditorGUILayout.LabelField("棋盘预览固定为 9:16 游戏视野宽度；网格间距 1 世界单位；拖拽旋转，Shift + 拖拽调整平面转角，Esc 取消本次拖拽。仅用于查看，不保存到游戏姿态。",EditorStyles.wordWrappedMiniLabel);
         EditorGUILayout.Space();EditorGUILayout.LabelField("槽内展示",EditorStyles.boldLabel);
         EditorGUI.BeginChangeCheck();
         draft.rotation=EditorGUILayout.Vector3Field("角度（相对相机）",draft.rotation);
@@ -147,6 +178,7 @@ public sealed class TrayDisplayWindow : EditorWindow {
         if(Event.current.type==EventType.Repaint&&draft.IsValid){
             if(preview==null)preview=new TrayDisplayPreview();preview.Select(models[selected]);
             GUI.DrawTexture(rect,preview.Render(rect,draft,3,closeup),ScaleMode.StretchToFill,false);
+            if(showColliders)preview.DrawColliders(rect);
         }
         EditorGUILayout.LabelField("配置资产",SettingsPath,EditorStyles.wordWrappedMiniLabel);
         EditorGUILayout.EndScrollView();

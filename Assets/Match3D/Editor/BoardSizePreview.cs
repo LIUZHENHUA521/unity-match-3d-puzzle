@@ -6,6 +6,9 @@ using UnityEngine;
 public sealed class BoardSizePreview : IDisposable {
     readonly PreviewRenderUtility utility;
     GameObject item,prefab;
+    ColliderPreviewOverlay overlay;
+    public Quaternion Rotation=Quaternion.Euler(60,0,25);
+    public void DrawColliders(Rect rect)=>overlay?.Draw(rect,utility.camera);
     readonly Mesh grid;
     readonly Material material;
     public BoardSizePreview(){
@@ -30,11 +33,12 @@ public sealed class BoardSizePreview : IDisposable {
         if(prefab!=source||!item){
             if(item)UnityEngine.Object.DestroyImmediate(item);prefab=source;
             item=UnityEngine.Object.Instantiate(source);item.hideFlags=HideFlags.HideAndDontSave;utility.AddSingleGO(item);
+            overlay=new ColliderPreviewOverlay(item);
             foreach(var rb in item.GetComponentsInChildren<Rigidbody>(true)){rb.isKinematic=true;rb.detectCollisions=false;}
             foreach(var c in item.GetComponentsInChildren<Collider>(true))c.enabled=false;
         }
         var theme=Match3DModelThemes.Find(null,source);utility.ambientColor=BoardLighting.AmbientFor(theme);utility.lights[0].intensity=BoardLighting.IntensityFor(theme);
-        item.transform.SetPositionAndRotation(Vector3.zero,Quaternion.Euler(60,0,25));
+        item.transform.SetPositionAndRotation(Vector3.zero,Rotation);
         item.transform.localScale=source.transform.localScale*BoardLayoutSettings.BaseModelScale(source)*multiplier;
         float width=Match3DThemePresentation.Size(9f/16)*2*9f/16;
         utility.camera.orthographicSize=width*.5f/(rect.width/rect.height);
