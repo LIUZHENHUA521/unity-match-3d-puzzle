@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 public sealed class Match3DRewards : MonoBehaviour {
     [Serializable] public class Voucher {public string id,type,runId,recordId,rewardTier,status;public int money;public long createTime,expiresAt;}
     [Serializable] public class Reply {public bool ok;public string error,runId,rewardTier,ruleVersion;public Match3DDailyLevel level;public Voucher[] vouchers;public int nextCursor=-1;}
-    [Serializable] class StartBody {public string requestId,tier,themeId;public int levelProtocol=2;}
+    [Serializable] class StartBody {public string requestId,tier,themeId;public int levelProtocol=3;public string openingVersion=Match3DDailySnapshot.ResourceVersion;}
     public static Match3DRewards Instance {get;private set;}
     string endpoint;bool starting;
     readonly System.Collections.Generic.HashSet<string> presented=new System.Collections.Generic.HashSet<string>();

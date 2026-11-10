@@ -8,6 +8,7 @@ public partial class Match3DFlow {
     public const string EditorThemePreference="goose.editor.startTheme";
     public void ChooseTestTheme(int theme,Match3DDailyLevel level){
         if(!Match3DTestPrivileges.AccountEnabled)return;
+        if(level.generatorVersion=="shared-v2"){BeginDailyPractice(theme,level);return;}
         CloseModal();BlocksGameplay=true;
         var root=new GameObject("Test theme selection",typeof(RectTransform),typeof(Image));
         modal=(RectTransform)root.transform;modal.SetParent(page,false);modal.anchorMin=Vector2.zero;modal.anchorMax=Vector2.one;modal.offsetMin=modal.offsetMax=Vector2.zero;

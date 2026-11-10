@@ -218,6 +218,10 @@ public partial class Match3DFlow : MonoBehaviour {
         var source=sourceTutorial||Stage==2?SourceProfile(sourceTutorial):null;
         var prefabs=source!=null?source.prefabs:CurrentTheme.prefabs;
         IBoardRandom sourceRandom=dailyLevel!=null&&!IsPvp?dailyLevel.RandomForStage(Stage):source!=null?BoardGlobalRandom.Instance:null;
+        if(dailyLevel!=null&&!IsPvp&&dailyLevel.generatorVersion=="shared-v2"){
+            if(!dailyLevel.IsValid(prefabs.Length)){Notice("每日关卡版本不兼容，请更新游戏");return;}
+            SpawnDailyOpening(prefabs,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);return;
+        }
         var tiles=sourceTutorial?LevelLayoutConfig.GenerateFirstStage(source,sourceRandom):dailyLevel!=null&&!IsPvp?Match3DDailyLevel.Generate(prefabs.Length,dailyLevel.layers,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
         Spawn(tiles,TodaySeed,dailyLevel!=null&&!IsPvp&&Stage==2?dailyLevel.seconds:source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);
         if(sourceTutorial)stagePreloader.Begin(CurrentTheme.sourceEnvironment,SourceProfile());
@@ -277,13 +281,14 @@ public partial class Match3DFlow : MonoBehaviour {
         }
         StartCoroutine(Ready(IsPvp));
     }
-    GameObject CreateBoardItem(ChallengeTile tile,GameObject prefab,Vector3 position,Quaternion rotation,bool layered,bool sourceBoard=false){
+    GameObject CreateBoardItem(ChallengeTile tile,GameObject prefab,Vector3 position,Quaternion rotation,bool layered,bool sourceBoard=false,Match3DDailyItem openingItem=null){
         var obj=layered?BoardItemPool.Get(prefab,prefab.name):Instantiate(prefab);
         obj.transform.SetPositionAndRotation(position,rotation);
         bool sourceModel=layered||sourceBoard;
         obj.transform.localScale*=sourceModel?BoardLayoutSettings.ModelScale(prefab):BoardItemScale;
         ItemColliderGeometry.Apply(obj,prefab.name,sourceModel);
         if(layered&&BoardEnvironment.UsesSoftContainer){SoftTransitionContainer.Fit(obj);position=obj.transform.position;}
+        if(openingItem!=null){obj.transform.SetPositionAndRotation(openingItem.position,openingItem.rotation);obj.transform.localScale=openingItem.scale;position=openingItem.position;}
         ItemFlightMotion.Bind(obj,prefab.name,layered,prefab);
         if(layered)GameAudioCatalog.Bind(obj,prefab.name);
         Match3DTrayDisplayBinding.Bind(obj,prefab);
@@ -445,7 +450,7 @@ public partial class Match3DFlow : MonoBehaviour {
     }
     void ShareResult(){
 #if UNITY_WEBGL && !UNITY_EDITOR
-        WeChatWASM.WX.ShareAppMessage(new WeChatWASM.ShareAppMessageOption{title=GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH?"我通关成功啦！一起来挑战吧！":"差一点就通关啦，一起来挑战！"});
+        WeChatWASM.WX.ShareAppMessage(new WeChatWASM.ShareAppMessageOption{title=DailyShareTitle(GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH),query=dailyLevel==null?"":"dailyDate="+dailyLevel.date+"&dailyTier="+dailyLevel.tier});
 #else
         Notice("请在微信小游戏中分享给好友");
 #endif

@@ -130,6 +130,7 @@ public sealed class BoardTools : MonoBehaviour {
         for(int i=0;i<items.Count;i++){int index=random(0,items.Count);var value=items[index];items.RemoveAt(index);items.Add(value);}
     }
     public static bool MessUp(){
+        if(ItemPhysicsController.Instance)ItemPhysicsController.Instance.ReleaseDailyOpening();
         if(!Enabled||!CanUse(2)||Shuffling||!GameManager.Instance.GameIsPlaying())return false;
         var owner=Ensure();if(!owner)return false;
         // j65101 uses the monotone maxHeight after CheckObjMaxHeight, not a fresh upward peak.

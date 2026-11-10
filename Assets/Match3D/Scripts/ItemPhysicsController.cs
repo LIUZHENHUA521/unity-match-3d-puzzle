@@ -7,6 +7,15 @@ public class ItemPhysicsController : MonoBehaviour {
     class Entry {public Rigidbody body;public CollisionDetectionMode detection;public bool selected;}
     readonly Dictionary<Rigidbody,Entry> entries=new Dictionary<Rigidbody,Entry>();
     float heightCheckElapsed;
+    public bool DailyOpeningHeld {get;private set;}
+    readonly HashSet<Rigidbody> dailyDynamic=new HashSet<Rigidbody>();
+    public void HoldDailyOpening(){DailyOpeningHeld=true;dailyDynamic.Clear();}
+    public void RememberDailyBody(Rigidbody body,bool dynamic){if(dynamic)dailyDynamic.Add(body);}
+    public void ReleaseDailyOpening(){
+        if(!DailyOpeningHeld)return;DailyOpeningHeld=false;
+        foreach(var body in dailyDynamic)if(body&&entries.TryGetValue(body,out var entry))Activate(entry);
+        dailyDynamic.Clear();
+    }
     public double LastStepMilliseconds {get;private set;}
     static bool Eligible(Rigidbody body,float? thresholdOverride=null)=>!LayeredItemPile.Instance||LayeredItemPile.Instance.NeedsPhysics(body,thresholdOverride);
     public int ActiveCount {get {int count=0;foreach(var e in entries.Values)if(e.body&&!e.body.isKinematic&&!e.body.IsSleeping())count++;return count;}}
@@ -15,7 +24,7 @@ public class ItemPhysicsController : MonoBehaviour {
     public bool IsSettling {get {foreach(var e in entries.Values)if(e.body&&!e.selected&&((e.body.isKinematic&&Eligible(e.body))||(!e.body.isKinematic&&!e.body.IsSleeping())))return true;return false;}}
     void Awake(){Instance=this;}
     void OnDestroy(){if(Instance==this)Instance=null;}
-    public void SetSelected(Rigidbody body,bool selected){if(body&&entries.TryGetValue(body,out var entry))entry.selected=selected;}
+    public void SetSelected(Rigidbody body,bool selected){if(selected)ReleaseDailyOpening();if(body&&entries.TryGetValue(body,out var entry))entry.selected=selected;}
     public bool Contains(Rigidbody body)=>body&&entries.ContainsKey(body);
     public void Register(Rigidbody body,bool sourceCreation=false){
         if(!body||entries.ContainsKey(body))return;
@@ -39,7 +48,7 @@ public class ItemPhysicsController : MonoBehaviour {
         body.AddForce(inward*.3f+Vector3.up*1.9f,ForceMode.VelocityChange);
         body.AddTorque(Random.insideUnitSphere*2,ForceMode.VelocityChange);
     }
-    public void RemoveForPick(Rigidbody body){if(!body||!entries.Remove(body))return;WakeNear(body.position);}
+    public void RemoveForPick(Rigidbody body){ReleaseDailyOpening();if(!body||!entries.Remove(body))return;WakeNear(body.position);}
     public void WakeSelectionNeighbours(Vector3 position){WakeNear(position);}
     static bool SourceSelectionMode=>InputController.Instance&&InputController.Instance.UsesSourceFlight;
     public void WakeNear(Vector3 position){
@@ -54,6 +63,7 @@ public class ItemPhysicsController : MonoBehaviour {
         }
     }
     public void ShakeAll(){
+        ReleaseDailyOpening();
         foreach(var entry in entries.Values){
             var body=entry.body;
             if(!body||entry.selected||!body.gameObject.activeInHierarchy||!Eligible(body)||BoardTools.IsStored(body.gameObject)||
@@ -64,6 +74,7 @@ public class ItemPhysicsController : MonoBehaviour {
     // Source ObjectUnit.CanShake/AddForce: dynamic bodies only, with no velocity reset or torque.
     public int ApplyPhoneShake(Vector3 force){
         if(force.sqrMagnitude==0)return 0;
+        ReleaseDailyOpening();
         int affected=0;
         foreach(var entry in entries.Values){
             var body=entry.body;
@@ -87,9 +98,9 @@ public class ItemPhysicsController : MonoBehaviour {
         foreach(var entry in entries.Values)RefreshHeightState(entry.body);
     }
     public void RefreshHeightState(Rigidbody body,float? thresholdOverride=null){
-        if(!body||!entries.TryGetValue(body,out var entry)||entry.selected)return;
+        if(DailyOpeningHeld||!body||!entries.TryGetValue(body,out var entry)||entry.selected)return;
         if(Eligible(body,thresholdOverride)){if(body.isKinematic)Activate(entry);}
         else if(!body.isKinematic&&body.velocity.sqrMagnitude<=.04f)Park(body);
     }
-    public void Clear(){entries.Clear();heightCheckElapsed=0;LastStepMilliseconds=0;}
+    public void Clear(){DailyOpeningHeld=false;dailyDynamic.Clear();entries.Clear();heightCheckElapsed=0;LastStepMilliseconds=0;}
 }

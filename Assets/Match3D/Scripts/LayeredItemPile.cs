@@ -121,7 +121,7 @@ public sealed class LayeredItemPile : MonoBehaviour {
         return maxHeight;
     }
     public void RefreshVisibility(){
-        if(!Running||Creating)return;
+        if(!Running||Creating||(ItemPhysicsController.Instance&&ItemPhysicsController.Instance.DailyOpeningHeld))return;
         RefreshSourceMaxHeight();if(entries.Count==0)return;
         float u=Mathf.Clamp01((BoardLayoutSettings.MinVisibleY-touchHeight)/BoardLayoutSettings.MinVisibleY);
         float depth=Mathf.Lerp(BoardLayoutSettings.VisibleMin,BoardLayoutSettings.VisibleMax,u);
@@ -224,6 +224,10 @@ public sealed class LayeredItemPile : MonoBehaviour {
         optimizationElapsed+=Mathf.Max(0,delta);
         if(optimizationElapsed>=BoardLayoutSettings.OptimizationInterval){optimizationElapsed=0;RefreshVisibility();}
     }
+    public Match3DDailyStage CaptureDailyState(int stage)=>new Match3DDailyStage{stage=stage,touchHeight=touchHeight,maxHeight=maxHeight,threshold=Threshold,physicsThreshold=PhysicsThreshold};
+    public bool DailyVisible(Rigidbody body)=>entriesByBody.TryGetValue(body,out var e)&&e.visible;
+    public void RestoreDailyState(Match3DDailyStage state){touchHeight=state.touchHeight;maxHeight=state.maxHeight;Threshold=state.threshold;PhysicsThreshold=state.physicsThreshold;optimizationElapsed=0;}
+    public void RestoreDailyVisibility(Rigidbody body,bool visible){if(entriesByBody.TryGetValue(body,out var e))SetVisible(e,visible,false);}
     public void FinishSourceShuffle(Rigidbody body){
         if(!body)return;
         entriesByBody.TryGetValue(body,out var e);

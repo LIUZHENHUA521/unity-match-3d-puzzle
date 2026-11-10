@@ -5,18 +5,20 @@ using System.Collections.Generic;
 public sealed class Match3DDailyLevel {
     public string date,tier,sourceDate,version,generatorVersion,modelThemeId;
     public int seed,seconds,initialCount;
+    public string candidateId;
+    public Match3DDailySnapshot opening;
     public float limitHeight;
     public ChallengeLayer[] layers;
     public bool IsValid(int pool) {
         DateTime parsed;
         if(!DateTime.TryParseExact(date,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out parsed)||
-           (tier!="bachelor"&&tier!="elite")||string.IsNullOrEmpty(version)||generatorVersion!="daily-v1"||seed<=0||seconds<30||seconds>3600||layers==null||layers.Length<1||layers.Length>10)return false;
+           (tier!="bachelor"&&tier!="elite")||string.IsNullOrEmpty(version)||(generatorVersion!="daily-v1"&&generatorVersion!="shared-v2")||seed<=0||seconds<30||seconds>3600||layers==null||layers.Length<1||layers.Length>10)return false;
         int total=0;float previous=1.5f;
         foreach(var l in layers){
             if(l==null||l.count<3||l.count>600||l.count%3!=0||l.types<1||l.types>Math.Min(pool,l.count/3)||float.IsNaN(l.height)||float.IsInfinity(l.height)||l.height<=previous||l.height>30)return false;
             total+=l.count;previous=l.height;
         }
-        return total==initialCount&&total<=1200&&Math.Abs(limitHeight-(previous-.5f))<.001f;
+        return (generatorVersion!="shared-v2"||(opening!=null&&opening.IsValid(initialCount,pool)))&&total==initialCount&&total<=1200&&Math.Abs(limitHeight-(previous-.5f))<.001f;
     }
     public IBoardRandom RandomForStage(int stage) {return new Match3DDailyRandom(unchecked(seed^(stage*0x45d9f3b)));}
     // Positive budgets preserve exact per-layer counts and selected type counts for every valid configuration.
