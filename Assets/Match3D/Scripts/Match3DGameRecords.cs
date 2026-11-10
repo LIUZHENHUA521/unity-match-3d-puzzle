@@ -114,7 +114,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
                 req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("Authorization","Bearer "+account.RecordToken);
                 yield return req.SendWebRequest();
                 Receipt receipt=null;if(req.result==UnityWebRequest.Result.Success){try{receipt=JsonUtility.FromJson<Receipt>(req.downloadHandler.text);}catch{}}
-                if(receipt!=null&&receipt.ok){if(item.reward&&item.action=="finish"&&Match3DFlow.Instance){if(!string.IsNullOrEmpty(receipt.voucherId))Match3DFlow.Instance.Notice("已获得红包凭证，可在我的红包查看");else if(!string.IsNullOrEmpty(receipt.rewardError))Match3DFlow.Instance.Notice(RewardErrorMessage(receipt.rewardError));}
+                if(receipt!=null&&receipt.ok){if(item.reward&&item.action=="finish"&&Match3DFlow.Instance){if(!string.IsNullOrEmpty(receipt.voucherId)&&Match3DRewards.Instance)Match3DRewards.Instance.NotifyReceivedVoucher(receipt.voucherId,item.owner);else if(!string.IsNullOrEmpty(receipt.rewardError))Match3DFlow.Instance.Notice(RewardErrorMessage(receipt.rewardError));}
                     queue.items.Remove(item);Save();delay=1;continue;}
                 if(req.responseCode==401)account.RefreshRecordLogin();
                 else if(req.responseCode==400||req.responseCode==409){item.rejected=true;SyncError="rejected";Save();}

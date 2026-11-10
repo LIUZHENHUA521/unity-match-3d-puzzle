@@ -13,6 +13,7 @@
 | Collection | 大鹅图鉴 |
 | CollectionTab / PetsTab | 首页收藏／宠物标签页 |
 | Reward | 奖励说明弹窗 |
+| RewardReceived | 领取成功展示，支持多个道具、红包和可配置按钮文字 |
 | ModelSize | 模型大小调节弹窗 |
 | PvpLobby | 好友对战大厅，包含连接前后两组按钮 |
 | CollectionTray | 游戏中的七格收集槽外观 |

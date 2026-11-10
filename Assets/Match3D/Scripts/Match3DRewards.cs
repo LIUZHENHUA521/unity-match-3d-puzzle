@@ -8,6 +8,28 @@ public sealed class Match3DRewards : MonoBehaviour {
     [Serializable] class StartBody {public string requestId,tier,themeId;public int levelProtocol=2;}
     public static Match3DRewards Instance {get;private set;}
     string endpoint;bool starting;
+    readonly System.Collections.Generic.HashSet<string> presented=new System.Collections.Generic.HashSet<string>();
+    public void NotifyReceivedVoucher(string id,string owner){
+        if(string.IsNullOrEmpty(id)||string.IsNullOrEmpty(owner)||!presented.Add(owner+":"+id))return;
+        StartCoroutine(PresentVoucher(id,owner));
+    }
+    IEnumerator PresentVoucher(string id,string owner){
+        int cursor=0;Voucher found=null;
+        while(cursor>=0){
+            var account=Match3DInvitations.Instance;
+            if(!account||!account.Ready||account.State.inviteCode!=owner)yield break;
+            Reply reply=null;yield return Request("list","{\"cursor\":"+cursor+"}",r=>reply=r);
+            if(reply==null||!reply.ok)break;
+            found=Array.Find(reply.vouchers??new Voucher[0],v=>v.id==id);
+            if(found!=null||reply.nextCursor<=cursor)break;
+            cursor=reply.nextCursor;
+        }
+        var current=Match3DInvitations.Instance;
+        if(!current||!current.Ready||current.State.inviteCode!=owner||!Match3DFlow.Instance)yield break;
+        // The settlement already confirmed this voucher. Never guess an amount if detail lookup fails.
+        decimal? money=found!=null&&found.money>0?(decimal?)found.money:null;
+        Match3DFlow.Instance.ShowReceivedRewards(new[]{Match3DRewardItem.RedPacket(money)},receivedAt:found!=null?found.createTime:0);
+    }
     public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');}
     void OnDestroy(){if(Instance==this)Instance=null;}
     public void Begin(int theme,string tier,string themeId){if(!starting)StartCoroutine(StartChallenge(theme,tier,themeId));}

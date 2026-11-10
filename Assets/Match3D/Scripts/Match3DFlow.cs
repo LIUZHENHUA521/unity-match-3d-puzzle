@@ -15,7 +15,8 @@ public partial class Match3DFlow : MonoBehaviour {
     public bool UnlimitedTools=>!IsPvp&&unlimitedMagnetRun;
     public bool UnlimitedMagnet=>UnlimitedTools;
     public bool ServerApplying {get;private set;}
-    public bool BlocksGameplay {get;private set;}
+    bool blocksGameplay;
+    public bool BlocksGameplay {get=>blocksGameplay||(rewardPresenter&&rewardPresenter.IsShowing);private set=>blocksGameplay=value;}
     public int InitialCount {get;private set;}
     public bool CreationInProgress {get;private set;}
     public float PendingCreationWait {get;private set;}

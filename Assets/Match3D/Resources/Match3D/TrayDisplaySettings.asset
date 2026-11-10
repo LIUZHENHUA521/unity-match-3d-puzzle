@@ -50,9 +50,6 @@ MonoBehaviour:
     adapterId: ToyMinibus
     multiplier: 1
   - prefab: {fileID: 0}
-    adapterId: ToyCar
-    multiplier: 1
-  - prefab: {fileID: 0}
     adapterId: ToyBasketBall
     multiplier: 1
   - prefab: {fileID: 0}
@@ -220,6 +217,9 @@ MonoBehaviour:
   - prefab: {fileID: 0}
     adapterId: Party_Bottle
     multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: ToyCar
+    multiplier: 1
   entries:
   - prefab: {fileID: 0}
     adapterId: ToyBear
@@ -289,12 +289,6 @@ MonoBehaviour:
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
     adapterId: ToyMinibus
-    pose:
-      rotation: {x: -90, y: 0, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: ToyCar
     pose:
       rotation: {x: -90, y: 0, z: 0}
       scale: 1
@@ -628,4 +622,10 @@ MonoBehaviour:
     pose:
       rotation: {x: -22.786255, y: 21.565376, z: 30.310068}
       scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: ToyCar
+    pose:
+      rotation: {x: -90, y: 0, z: 0}
+      scale: 0.547
       offset: {x: 0, y: 0, z: 0}

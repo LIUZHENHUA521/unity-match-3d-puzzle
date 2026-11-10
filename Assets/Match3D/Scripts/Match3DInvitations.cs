@@ -103,9 +103,14 @@ public sealed class Match3DInvitations : MonoBehaviour {
     public void ReadMail(string id){if(!Busy&&Ready)StartCoroutine(MailOperation("read",id,0));}
     public void ClaimMail(string id,Action<bool> completed){if(Busy||!Ready){completed(false);return;}StartCoroutine(MailOperation("claim",id,0,completed));}
     IEnumerator MailOperation(string action,string id,int cursor,Action<bool> completed=null){
+        var claiming=action=="claim"?Mails.Find(mail=>mail.id==id&&!mail.claimed&&!mail.expired):null;
+        var received=claiming!=null&&claiming.rewards!=null?(int[])claiming.rewards.Clone():null;
+        string claimant=State!=null?State.inviteCode:null;
         if(cursor<0)yield break;Busy=true;Changed?.Invoke();bool success=false;
         yield return FetchMail(action,id,cursor,ok=>success=ok);
         Busy=false;Changed?.Invoke();MailChanged?.Invoke();completed?.Invoke(success);
+        if(success&&received!=null&&State!=null&&State.inviteCode==claimant&&Match3DFlow.Instance)
+            Match3DFlow.Instance.ShowReceivedTools(received);
     }
     IEnumerator FetchMail(string action,string id,int cursor,Action<bool> completed=null){
         Reply reply=null;yield return Request("mail/"+action,JsonUtility.ToJson(new MailBody{id=id,cursor=cursor}),r=>reply=r);

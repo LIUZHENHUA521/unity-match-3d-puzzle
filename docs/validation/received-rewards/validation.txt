@@ -1,0 +1,36 @@
+PASS non-positive quantities filtered
+PASS empty rewards do not block input
+PASS receipt overlays and blocks underlying input
+PASS default button uses PSD 46 px bold
+PASS PSD 4 px outer stroke
+PASS entrance completes while time scale is zero
+PASS receipt timestamp is supplied data in UTC+8
+PASS double click invokes callback once
+PASS closing receipt restores home input
+PASS all 2 rewards retain icons and quantities
+PASS overflow scrolling for 2 rewards
+PASS timestamp hidden when unspecified
+PASS all 4 rewards retain icons and quantities
+PASS overflow scrolling for 4 rewards
+PASS timestamp hidden when unspecified
+PASS all 5 rewards retain icons and quantities
+PASS overflow scrolling for 5 rewards
+PASS timestamp hidden when unspecified
+PASS custom button text
+PASS all 9 rewards retain icons and quantities
+PASS overflow scrolling for 9 rewards
+PASS timestamp hidden when unspecified
+PASS last reward reachable by scrolling
+PASS successive receipts queue instead of overwriting
+PASS receipt preserves underlying modal and its input block
+PASS late reward waits during active gameplay
+PASS queued receipt survives navigation
+PASS local mail fixture connected
+PASS failed claim does not display or credit rewards
+PASS actual mailbox claim credits and presents all four tools
+PASS successful mail detail closes before receipt
+PASS claim retry neither recredits nor repeats popup
+PASS confirmed voucher uses server amount
+PASS duplicate voucher acknowledgement suppressed
+PASS confirmed voucher with unavailable details never fabricates amount or time
+ALL PASSED
