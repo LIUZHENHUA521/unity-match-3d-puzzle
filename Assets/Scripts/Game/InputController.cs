@@ -378,7 +378,7 @@ public class InputController : Singleton<InputController>
         return MoveItemsIntoStore(objectsOnStack.Where(x=>x).ToList());
     }
     bool MoveItemsIntoStore(List<GameObject> items){
-        GameAudioCatalog.Tool(24);CancelPointer();
+        CancelPointer();
         foreach(var obj in items){
             obj.transform.DOKill();magnetFlights.Remove(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
             objectsOnStack.Remove(obj);arrivedObject.Remove(obj);pickHistory.Remove(obj);
