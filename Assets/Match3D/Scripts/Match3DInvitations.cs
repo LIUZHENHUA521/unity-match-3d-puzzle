@@ -39,13 +39,13 @@ public sealed class Match3DInvitations : MonoBehaviour {
     [Serializable] class MailBody {public string id;public int cursor;}
     string endpoint,token;bool logging;float loginDeadline;
     string PendingKey=>"goose.invites.pending."+(State!=null?State.inviteCode:"");
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
     [DllImport("__Internal")] static extern void GooseInvitesInit(string target);
     [DllImport("__Internal")] static extern void GooseInvitesLogin();
     [DllImport("__Internal")] static extern void GooseInvitesShare(string code);
 #endif
     public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         GooseInvitesInit(gameObject.name);
 #endif
         Refresh();
@@ -55,7 +55,7 @@ public sealed class Match3DInvitations : MonoBehaviour {
     public int Inventory(int type)=>Ready&&State.inventory!=null&&type>=0&&type<State.inventory.Length?State.inventory[type]:0;
     void SetStatus(string value){Status=value;Changed?.Invoke();}
     public void Refresh(){if(Busy||logging)return;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         logging=true;loginDeadline=Time.realtimeSinceStartup+25;SetStatus("正在登录微信…");GooseInvitesLogin();
 #else
         SetStatus("请在微信小游戏中登录（编辑器仅预览）");
@@ -122,7 +122,7 @@ public sealed class Match3DInvitations : MonoBehaviour {
         completed?.Invoke(reply!=null&&reply.mails!=null);
     }
     public void Share(){if(!Ready||HasPending){Refresh();return;}
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         GooseInvitesShare(State.inviteCode);SetStatus("好友首次进入游戏后，奖励会自动到账");
 #else
         SetStatus("请在微信小游戏中邀请好友");

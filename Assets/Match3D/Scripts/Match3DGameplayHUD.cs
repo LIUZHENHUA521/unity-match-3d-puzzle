@@ -42,7 +42,7 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
     }
     void RefreshPlatformSafeArea(){
         windowSize=new Vector2Int(Screen.width,Screen.height);platformTopFraction=0;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         try{
             var info=WeChatWASM.WX.GetWindowInfo();
             if(info.windowHeight>0){

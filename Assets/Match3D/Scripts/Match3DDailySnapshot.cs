@@ -69,7 +69,7 @@ public partial class Match3DFlow {
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.StartRecord();
         BoosterManager.Instance.BoostersInteractibility(true);
     }
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DAILY_WEB_PREVIEW
     public void PreviewDailyOpening(Match3DDailyLevel level,int stage){
         LocalPreview=true;BeginDailyPractice(0,level);LocalPreview=true;unlimitedMagnetRun=true;
         if(stage==2){StopBoard();Stage=2;StartStage();}

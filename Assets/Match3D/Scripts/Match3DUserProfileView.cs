@@ -12,7 +12,7 @@ public sealed class Match3DUserProfileView : MonoBehaviour {
  public Text nickname,userId,gender,location,registered,status;
  public RawImage avatar;public Texture defaultAvatar;public Button sync,copy,editNickname,editGender,editLocation;
  Match3DInvitations service;string account,avatarUrl;bool bridgeOpen;float deadline;Rect lastRect;Vector2 lastScreen;Texture2D ownedAvatar;UnityWebRequest avatarRequest;int avatarVersion;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
  [DllImport("__Internal")] static extern void GooseProfileOpen(string target);
  [DllImport("__Internal")] static extern void GooseProfileBounds(float x,float y,float w,float h,float screenW,float screenH);
  [DllImport("__Internal")] static extern void GooseProfileClose();
@@ -34,7 +34,7 @@ public sealed class Match3DUserProfileView : MonoBehaviour {
  public static string ShortId(string id)=>string.IsNullOrEmpty(id)?"未登录":id.Length>18?id.Substring(0,16)+"…":id;
  void OpenBridge(){
   bridgeOpen=true;lastRect=Rect.zero;lastScreen=Vector2.zero;deadline=Time.realtimeSinceStartup+15;status.text="正在读取微信资料…";
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
   GooseProfileOpen(gameObject.name);
 #else
   deadline=0;status.text="微信授权需在小游戏中进行";
@@ -42,7 +42,7 @@ public sealed class Match3DUserProfileView : MonoBehaviour {
  }
  void ProfileEditHint(){Match3DFlow.Instance.HomeClick();status.gameObject.SetActive(true);status.text="请在微信中修改资料，再点击相机同步";}
  void Sync(){status.gameObject.SetActive(true);Match3DFlow.Instance.HomeClick();if(!service||!service.Ready){service?.Refresh();return;}
-#if !UNITY_WEBGL || UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR || DAILY_WEB_PREVIEW
   status.text="微信授权需在小游戏中进行";
 #else
   // Normally the native transparent user-info button handles the physical tap.
@@ -50,7 +50,7 @@ public sealed class Match3DUserProfileView : MonoBehaviour {
 #endif
  }
  void CopyId(){status.gameObject.SetActive(true);if(!service||!service.Ready||string.IsNullOrEmpty(account))return;Match3DFlow.Instance.HomeClick();
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
   GooseProfileCopy(account);
 #else
   GUIUtility.systemCopyBuffer=account;status.text="用户 ID 已复制";
@@ -58,7 +58,7 @@ public sealed class Match3DUserProfileView : MonoBehaviour {
  }
  void LateUpdate(){
   if(deadline>0&&Time.realtimeSinceStartup>deadline){deadline=0;status.text="读取超时，可点击头像旁的相机重试";}
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
   if(!bridgeOpen||!sync||!sync.interactable)return;
   var corners=new Vector3[4];((RectTransform)sync.transform).GetWorldCorners(corners);var canvas=GetComponentInParent<Canvas>();var camera=canvas.renderMode==RenderMode.ScreenSpaceOverlay?null:canvas.worldCamera;
   Vector2 a=RectTransformUtility.WorldToScreenPoint(camera,corners[0]),b=RectTransformUtility.WorldToScreenPoint(camera,corners[2]);
@@ -86,7 +86,7 @@ public sealed class Match3DUserProfileView : MonoBehaviour {
  }
  void StopAvatar(){avatarVersion++;if(avatarRequest!=null){avatarRequest.Abort();avatarRequest.Dispose();avatarRequest=null;}StopAllCoroutines();if(ownedAvatar){Destroy(ownedAvatar);ownedAvatar=null;}}
  void CloseBridge(){if(!bridgeOpen)return;bridgeOpen=false;deadline=0;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
   GooseProfileClose();
 #endif
  }

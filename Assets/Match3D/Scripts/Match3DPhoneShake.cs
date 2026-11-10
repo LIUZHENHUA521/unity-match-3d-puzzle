@@ -10,13 +10,13 @@ public sealed class Match3DPhoneShake : MonoBehaviour {
         shaker=FindObjectOfType<FoodPileShake>();
         if(!shaker)shaker=gameObject.AddComponent<FoodPileShake>();
         ios=Application.platform==RuntimePlatform.IPhonePlayer;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         try{ios=string.Equals(WeChatWASM.WX.GetSystemInfoSync().platform,"ios",System.StringComparison.OrdinalIgnoreCase);}
         catch(System.Exception error){Debug.LogWarning("Phone shake platform detection failed: "+error.Message);}
 #endif
     }
     void OnEnable(){
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         WeChatWASM.WX.OnAccelerometerChange(OnAcceleration);
         WeChatWASM.WX.OnHide(OnHide);
         WeChatWASM.WX.OnShow(OnShow);
@@ -40,12 +40,12 @@ public sealed class Match3DPhoneShake : MonoBehaviour {
     void SetListening(bool value){
         if(listening==value)return;
         listening=value;lastSample=Time.unscaledTime;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         if(value)WeChatWASM.WX.StartAccelerometer(new WeChatWASM.StartAccelerometerOption{interval="game",fail=error=>Debug.LogWarning("Phone shake sensor unavailable: "+error.errMsg)});
         else WeChatWASM.WX.StopAccelerometer(new WeChatWASM.StopAccelerometerOption());
 #endif
     }
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
     void OnAcceleration(WeChatWASM.OnAccelerometerChangeListenerResult value){ProcessAcceleration(new Vector3((float)value.x,(float)value.y,(float)value.z));}
     void OnHide(WeChatWASM.GeneralCallbackResult value){hidden=true;SetListening(false);}
     void OnShow(WeChatWASM.OnShowListenerResult value){hidden=false;lastSample=Time.unscaledTime;}
@@ -53,7 +53,7 @@ public sealed class Match3DPhoneShake : MonoBehaviour {
     void OnApplicationPause(bool value){paused=value;if(value)SetListening(false);else lastSample=Time.unscaledTime;}
     void OnDisable(){
         SetListening(false);
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         WeChatWASM.WX.OffAccelerometerChange(OnAcceleration);
         WeChatWASM.WX.OffHide(OnHide);
         WeChatWASM.WX.OffShow(OnShow);

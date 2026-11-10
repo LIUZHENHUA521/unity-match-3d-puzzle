@@ -19,7 +19,7 @@ public sealed class Match3DRewardsView : MonoBehaviour {
  static string State(string s){switch(s){case "binding":return "待绑定兑换账号";case "available":return "待兑换";case "reviewing":return "审核中";case "paying":return "付款处理中";case "redeemed":return "已兑换";default:return "已过期或失效";}}
  void Open(Match3DRewards.Voucher v){if(dialog)return;var ui=Match3DUIView.Load("CommonDialog",transform);dialog=ui.GetComponent<Match3DCommonDialog>();string guide=v.status=="binding"?"兑换账号认证入口接入中，暂不可兑换。":v.rewardTier=="bachelor"?"请联系现有红包客服兑换。":"完成本游戏对应的游戏圈发帖任务，审核通过后兑换。";dialog.Configure("红包凭证",State(v.status)+"\n"+v.money+" 元\n"+v.id+"\n有效期至 "+DateTimeOffset.FromUnixTimeMilliseconds(v.expiresAt).ToOffset(TimeSpan.FromHours(8)).ToString("MM-dd HH:mm")+"\n"+guide,"返回","复制凭证",Close,()=>Copy(v.id));}
  void Copy(string id){
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
   WeChatWASM.WX.SetClipboardData(new WeChatWASM.SetClipboardDataOption{data=id,success=_=>{if(dialog)dialog.status.text="凭证已复制";},fail=_=>{if(dialog)dialog.status.text="复制失败，请重试";}});
 #else
   GUIUtility.systemCopyBuffer=id;if(dialog)dialog.status.text="凭证已复制";

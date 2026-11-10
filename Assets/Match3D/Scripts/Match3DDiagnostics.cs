@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 // Temporary on-device diagnosis. No data is uploaded; switches reset on leaving a board.
 public class Match3DDiagnostics : MonoBehaviour {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
     [DllImport("__Internal")] static extern int GooseDiagnosticValue(int field);
     static int Native(int field) => GooseDiagnosticValue(field);
 #else

@@ -31,18 +31,18 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         try{queue=JsonUtility.FromJson<Queue>(PlayerPrefs.GetString(QueueKey,""));}catch{}
         if(queue==null||queue.items==null)queue=new Queue();
         if(queue.items.Exists(x=>x.rejected))SyncError="rejected";
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         WeChatWASM.WX.OnHide(OnWechatHide);WeChatWASM.WX.OnShow(OnWechatShow);
 #endif
         StartCoroutine(Upload());
     }
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
     void OnWechatHide(WeChatWASM.GeneralCallbackResult data){hidden=true;}
     void OnWechatShow(WeChatWASM.OnShowListenerResult data){hidden=false;}
 #endif
     void OnApplicationPause(bool paused){hidden=paused;}
     void OnDestroy(){
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         WeChatWASM.WX.OffHide(OnWechatHide);WeChatWASM.WX.OffShow(OnWechatShow);
 #endif
         if(Instance==this)Instance=null;
@@ -56,7 +56,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         toolReceipts.Clear();
         active=new Record{rewardTier=rewardTier,ruleVersion=ruleVersion,recordId=Guid.NewGuid().ToString("N"),runId=runId,themeId=theme,stage=stage,levelDate=date,initialCount=count,timeLimitSeconds=seconds,clientVersion=Application.version,platform=Application.platform.ToString()};
         if(dailyLevel!=null){active.levelVersion=dailyLevel.version;active.levelSeed=dailyLevel.seed;active.levelGeneratorVersion=dailyLevel.generatorVersion;active.challengeTier=dailyLevel.tier;}
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         try{active.platform=WeChatWASM.WX.GetSystemInfoSync().platform;}catch{}
 #endif
         if(Match3DFlow.Instance&&Match3DFlow.Instance.UnlimitedMagnet)active.levelVersion=Match3DTestPrivileges.LevelVersion;

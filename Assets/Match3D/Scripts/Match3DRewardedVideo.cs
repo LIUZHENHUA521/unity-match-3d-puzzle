@@ -9,7 +9,7 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
 #if UNITY_EDITOR
     public static Action<Action<bool,string>> EditorShowOverride;
 #endif
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
     [DllImport("__Internal")] static extern void GooseReviveAdShow(string target,string id,string request);
     [DllImport("__Internal")] static extern void GooseReviveAdCancel(string request);
 #endif
@@ -20,13 +20,15 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
         requestId=Guid.NewGuid().ToString("N");callback=done;
 #if UNITY_EDITOR
         if(EditorShowOverride!=null){string request=requestId;EditorShowOverride((ok,error)=>Complete(request,ok,error));return;}
+#endif
+#if UNITY_EDITOR || DAILY_WEB_PREVIEW
         if(Match3DFlow.Instance&&Match3DFlow.Instance.LocalPreview){Complete(requestId,true,null);return;}
 #endif
         var asset=Resources.Load<TextAsset>("Match3D/RewardedVideoConfig");
         var config=asset?JsonUtility.FromJson<Configuration>(asset.text):null;
         string id=config==null?null:tool?config.toolAdUnitId:timeout?config.timeAdUnitId:config.clearAdUnitId;
         if(string.IsNullOrWhiteSpace(id)||!id.StartsWith("adunit-",StringComparison.Ordinal)){Complete(requestId,false,"激励广告尚未配置，请稍后再试");return;}
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         GooseReviveAdShow(gameObject.name,id,requestId);
 #else
         Complete(requestId,false,"请在微信小游戏中观看视频");
@@ -41,7 +43,7 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
         var done=callback;callback=null;requestId=null;done(completed,error);
     }
     public void Cancel(){
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         if(requestId!=null)GooseReviveAdCancel(requestId);
 #endif
         callback=null;requestId=null;

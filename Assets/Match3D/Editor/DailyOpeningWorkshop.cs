@@ -35,9 +35,15 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
         GUI.enabled=true;
         if(candidate!=null)EditorGUILayout.LabelField(candidate.date+" / "+candidate.tier+" / "+candidate.initialCount+" 个");
     }
+    static Match3DDailyLevel ParseCandidate(string json){
+        var level=JsonUtility.FromJson<Match3DDailyLevel>(json);
+        var opening=Newtonsoft.Json.Linq.JObject.Parse(json)["opening"];
+        if(level!=null&&(opening==null||opening.Type==Newtonsoft.Json.Linq.JTokenType.Null))level.opening=null;
+        return level;
+    }
     static void Load(string path){
         try{
-            var level=JsonUtility.FromJson<Match3DDailyLevel>(File.ReadAllText(path));
+            var level=ParseCandidate(File.ReadAllText(path));
             if(level==null||string.IsNullOrEmpty(level.candidateId)||level.seed<=0)throw new Exception("不是候选关卡文件");
             var copy=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level));copy.generatorVersion="daily-v1";
             if(!copy.IsValid(23))throw new Exception("候选参数无效");
@@ -51,7 +57,7 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
     static void Changed(PlayModeStateChange state){
         if(state==PlayModeStateChange.EnteredPlayMode){
             string path=SessionState.GetString(Pending,"");
-            if(path!=""){SessionState.EraseString(Pending);candidate=JsonUtility.FromJson<Match3DDailyLevel>(File.ReadAllText(path));previewImage=null;status="候选已打开，生成固定开局后可试玩。";}
+            if(path!=""){SessionState.EraseString(Pending);candidate=ParseCandidate(File.ReadAllText(path));previewImage=null;status="候选已打开，生成固定开局后可试玩。";}
             if(SessionState.GetBool(Validation,false))EditorApplication.delayCall+=()=>Start(true);
         }
         if(state==PlayModeStateChange.ExitingPlayMode){busy=false;candidate=null;previewImage=null;}

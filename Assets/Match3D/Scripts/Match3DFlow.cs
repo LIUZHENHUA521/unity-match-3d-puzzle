@@ -56,7 +56,9 @@ public partial class Match3DFlow : MonoBehaviour {
         page=uiRoot.Get<RectTransform>("Page");
         startupInput=uiRoot.gameObject.AddComponent<CanvasGroup>();
         startupInput.interactable=false;
+#if !DAILY_WEB_PREVIEW
         Match3DHomeView.Create(this,page,Match3DHomeView.Tab.Home);
+#endif
     }
     public static void HideLegacyPresentation(){
         var pot=GameObject.Find("Cooking Pot");
@@ -64,12 +66,12 @@ public partial class Match3DFlow : MonoBehaviour {
         foreach(var c in FindObjectsOfType<Canvas>())c.gameObject.SetActive(false);
     }
     System.Collections.IEnumerator Start(){
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         bool sdkReady=false;
         WeChatWASM.WX.InitSDK(code=>{sdkReady=true;Debug.Log("WX SDK init: "+code);});
         while(!sdkReady)yield return null;
 #endif
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         Application.targetFrameRate=60;
         QualitySettings.antiAliasing=0;
         if(Camera.main){Camera.main.allowHDR=false;Camera.main.allowMSAA=false;}
@@ -90,14 +92,19 @@ public partial class Match3DFlow : MonoBehaviour {
         stagePreloader=gameObject.AddComponent<Match3DStagePreloader>();
         gameObject.AddComponent<Match3DTray>();
         diagnostics=gameObject.AddComponent<Match3DDiagnostics>();
+#if !DAILY_WEB_PREVIEW
         network=gameObject.AddComponent<Match3DNetwork>();network.Received=Receive;
         endpoint=PlayerPrefs.GetString("goose.endpoint",library.pvpEndpoint);
         if(endpoint.TrimEnd('/')=="https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com"||endpoint.TrimEnd('/')=="https://lzh.tax") {
             PlayerPrefs.DeleteKey("goose.endpoint");PlayerPrefs.Save();endpoint=library.pvpEndpoint;
         }
         gameObject.AddComponent<Match3DInvitations>().Initialize(endpoint);gameObject.AddComponent<Match3DGameRecords>().Initialize(endpoint);gameObject.AddComponent<Match3DRewards>().Initialize(endpoint);Home();
+#else
+        LocalPreview=true;ScreenName="preview";
+        new GameObject("DailyWebPreview").AddComponent<DailyWebPreview>();
+#endif
         startupInput.interactable=true;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         WeChatWASM.WX.ReportGameStart();
 #endif
         yield break;
@@ -131,8 +138,13 @@ public partial class Match3DFlow : MonoBehaviour {
     public void MatchSound(){if(SettingsEffects&&library.matchSound)effects.PlayOneShot(library.matchSound);}
     void StopBoard(bool preservePool=false){ResetToolOffer();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");ResetRevival();if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;pendingPick=false;}
     public void Home(){
+#if DAILY_WEB_PREVIEW
+        if(DailyWebPreview.Instance)DailyWebPreview.Instance.Replay();
+        return;
+#else
         if(network)network.Disconnect();StopBoard();LocalPreview=false;IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
         Match3DHomeView.Create(this,page,Match3DHomeView.Tab.Home);
+#endif
     }
     public void ShowHomeTab(Match3DHomeView.Tab tab){
         if(tab==Match3DHomeView.Tab.Home){Home();return;}
@@ -140,6 +152,9 @@ public partial class Match3DFlow : MonoBehaviour {
         ScreenName=tab==Match3DHomeView.Tab.Collection?"collection-tab":"pets-tab";
         Music(library.homeMusic);Match3DHomeView.Create(this,page,tab);
     }
+#if DAILY_WEB_PREVIEW
+    public void SetDailyPreviewBusy(bool value){startupInput.interactable=!value;BlocksGameplay=value;}
+#endif
     public void HomeClick(){Click();}
     public void ShowRewardInfo(){
         BlocksGameplay=true;var view=OpenModal("Reward");
@@ -442,14 +457,14 @@ public partial class Match3DFlow : MonoBehaviour {
         view.Bind("Home",Home);
         }
         var clip=win?library.winSound:library.loseSound;if(SettingsEffects&&clip)effects.PlayOneShot(clip);
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         if(!win&&SettingsVibration)WeChatWASM.WX.VibrateShort(new WeChatWASM.VibrateShortOption{type="light"});
 #elif UNITY_IOS || UNITY_ANDROID
         if(!win&&SettingsVibration&&!Application.isEditor)Handheld.Vibrate();
 #endif
     }
     void ShareResult(){
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         WeChatWASM.WX.ShareAppMessage(new WeChatWASM.ShareAppMessageOption{title=DailyShareTitle(GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH),query=dailyLevel==null?"":"dailyDate="+dailyLevel.date+"&dailyTier="+dailyLevel.tier});
 #else
         Notice("请在微信小游戏中分享给好友");

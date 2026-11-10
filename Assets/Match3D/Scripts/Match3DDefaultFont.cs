@@ -7,7 +7,7 @@ using UnityEngine.UI;
 // All UI, including inactive prefab children, uses the font selected at startup.
 public static class Match3DDefaultFont {
     public static Font Current { get; private set; }
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
     [DllImport("__Internal")] static extern int GooseCanLoadSystemFont();
 #endif
     public static void InitializeFallback() {
@@ -16,7 +16,7 @@ public static class Match3DDefaultFont {
     }
     public static IEnumerator Initialize() {
         InitializeFallback();
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         // The bundled SDK cannot get the common font on iOS. Use the common-Chinese
         // packaged fallback there instead of requesting an empty fallback URL.
         if(GooseCanLoadSystemFont()!=0) {
