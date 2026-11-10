@@ -6,6 +6,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 [InitializeOnLoad] public static class PanCollisionValidation {
  static PanCollisionValidation(){EditorApplication.update+=Poll;}
+ public static void ValidatePlayerMeshes(){
+  foreach(var guid in AssetDatabase.FindAssets("t:Prefab",new[]{"Assets/Match3D/Resources/Match3D/Scenes"})){
+   var path=AssetDatabase.GUIDToAssetPath(guid);
+   var scene=AssetDatabase.LoadAssetAtPath<GameObject>(path);
+   var pan=scene.transform.Find("Grab3D Frying Pan");if(!pan)continue;
+   foreach(var filter in pan.GetComponentsInChildren<MeshFilter>(true))
+    if(!filter.sharedMesh||!filter.sharedMesh.isReadable)
+     throw new System.InvalidOperationException("Runtime pan collision requires a Read/Write enabled mesh: "+path+" / "+filter.name);
+  }
+ }
  static void Poll(){if(EditorApplication.isCompiling||EditorApplication.isUpdating||!File.Exists("Temp/pan-check"))return;var action=File.ReadAllText("Temp/pan-check").Trim();File.Delete("Temp/pan-check");try{if(action=="test")Test();else Inspect();}catch(System.Exception e){File.WriteAllText("Temp/pan-check-result",e.ToString());}}
  static void Test(){
  var scene=UnityEngine.SceneManagement.SceneManager.CreateScene("Pan collision regression",new UnityEngine.SceneManagement.CreateSceneParameters(UnityEngine.SceneManagement.LocalPhysicsMode.Physics3D));

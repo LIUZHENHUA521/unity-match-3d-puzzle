@@ -10,6 +10,7 @@ public static class WechatReleaseBuild {
 
     public static void Run() {
         try {
+            PanCollisionValidation.ValidatePlayerMeshes();
             HomeSkinAssets.Ensure();
             BoardPrefabPreparation.Bake();
             var release=JsonUtility.FromJson<ReleaseConfig>(File.ReadAllText("Tools/wechat/release.config.json"));

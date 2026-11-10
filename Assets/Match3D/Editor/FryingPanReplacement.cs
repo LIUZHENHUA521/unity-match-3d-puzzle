@@ -21,6 +21,9 @@ public static class FryingPanReplacement {
         if(EditorApplication.isPlaying)throw new InvalidOperationException("Stop play mode before replacing the prefab.");
         const string art="Assets/Match3D/Kitchen/Art/Grab3D/";
         var importer=(ModelImporter)AssetImporter.GetAtPath(Model);
+        // AddPanCollision cooks this mesh at runtime. Editor-only CPU mesh data
+        // hides a missing Read/Write flag until a player build is run.
+        if(!importer.isReadable){importer.isReadable=true;importer.SaveAndReimport();}
         importer.ExtractTextures(art+"Textures");AssetDatabase.Refresh();
         var texturePaths=Directory.GetFiles(art+"Textures","*.jpg");
         foreach(var path in texturePaths){
