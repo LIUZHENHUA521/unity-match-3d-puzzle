@@ -18,13 +18,14 @@ public sealed class ItemHighlight : MonoBehaviour {
     sealed class Part {public Renderer renderer;public Mesh mesh;public bool drawRenderer;public Material[] overlays;}
     sealed class Group {
         public GameObject target;public readonly List<Part> parts=new List<Part>();
-        public Material[] glow,outline;
+        public Material[] glow,outline;public Material screenHalo;
     }
     readonly Group selection=new Group();readonly List<Group> toolGroups=new List<Group>();
-    Camera view;CommandBuffer commands;Material mask;Mesh screenQuad;float toolsExpireAt;
+    static readonly int SilhouetteId=Shader.PropertyToID("_Match3DHighlightSilhouette");
+    Camera view;CommandBuffer commands;Material mask,silhouette;Mesh screenQuad;float toolsExpireAt;
     // A host backbuffer can have depth without stencil. In that case the
     // NotEqual outline passes cover the entire item in opaque black. Keep the
-    // surface feedback on WebGL without relying on the host framebuffer stencil.
+    // screen-space halo on WebGL without relying on the host framebuffer stencil.
     public bool UseStencilOutlines {get;set;}=Application.platform!=RuntimePlatform.WebGLPlayer;
     public GameObject Target=>selection.target;
     public int DrawCount {get;private set;}
@@ -37,7 +38,7 @@ public sealed class ItemHighlight : MonoBehaviour {
     static Material MaterialFor(string name){var shader=Resources.Load<Shader>("Match3D/Highlight/"+name);if(!shader)throw new System.InvalidOperationException("Missing source highlight shader "+name);return new Material(shader){hideFlags=HideFlags.HideAndDontSave};}
     void Awake(){view=GetComponent<Camera>();}
     void Ensure(){
-        if(commands!=null)return;if(!view)view=GetComponent<Camera>();mask=MaterialFor("Mask");
+        if(commands!=null)return;if(!view)view=GetComponent<Camera>();mask=MaterialFor("Mask");silhouette=MaterialFor("Silhouette");
         screenQuad=new Mesh{name="Source highlight stencil clear",hideFlags=HideFlags.HideAndDontSave};
         screenQuad.vertices=new[]{new Vector3(-1,-1,0),new Vector3(-1,1,0),new Vector3(1,1,0),new Vector3(1,-1,0)};screenQuad.triangles=new[]{0,1,2,0,2,3};
         commands=new CommandBuffer{name="Source Highlight Medium"};view.AddCommandBuffer(CameraEvent.AfterForwardAlpha,commands);
@@ -58,6 +59,9 @@ public sealed class ItemHighlight : MonoBehaviour {
         Ensure();group.target=item;group.glow=new Material[4];group.outline=new Material[4];
         var overlayColor=lighting?new Color(.0156862736f,.869899094f,1,1):OverlayColor;
         var glowColor=lighting?new Color(.133333340f,.941176534f,1,1):GlowColor;
+        group.screenHalo=MaterialFor("ScreenHalo");
+        group.screenHalo.SetColor("_HaloColor",glowColor);
+        group.screenHalo.SetColor("_EdgeColor",overlayColor);
         for(int i=0;i<4;i++){
             var glow=group.glow[i]=MaterialFor("Glow");var outline=group.outline[i]=MaterialFor("Outline");
             // Medium .5 factor times serialized pass alpha (.5 Lighting, 1 Pick); pass offset multiplies width.
@@ -104,6 +108,7 @@ public sealed class ItemHighlight : MonoBehaviour {
     void DrawGroup(Group group){
         if(!UseStencilOutlines){
             foreach(var p in group.parts)if(Visible(p))for(int s=0;s<p.mesh.subMeshCount;s++)Draw(p,p.overlays[s],s);
+            DrawScreenHalo(group);
             return;
         }
         commands.DrawMesh(screenQuad,Matrix4x4.identity,mask,0,1);DrawCount++;
@@ -117,6 +122,21 @@ public sealed class ItemHighlight : MonoBehaviour {
         }
         commands.DrawMesh(screenQuad,Matrix4x4.identity,mask,0,1);DrawCount++;
     }
+    // Build a union silhouette in a color-only texture. Neither pass needs stencil
+    // or samples the camera color buffer, so the WX host backbuffer is sufficient.
+    void DrawScreenHalo(Group group){
+        int width=Mathf.Max(1,view.pixelWidth),height=Mathf.Max(1,view.pixelHeight);
+        commands.GetTemporaryRT(SilhouetteId,width,height,0,FilterMode.Bilinear,RenderTextureFormat.ARGB32,RenderTextureReadWrite.Linear);
+        commands.SetRenderTarget(SilhouetteId);
+        commands.ClearRenderTarget(false,true,Color.clear);
+        foreach(var p in group.parts)if(Visible(p))for(int s=0;s<p.mesh.subMeshCount;s++)Draw(p,silhouette,s);
+        // Pixel sizes scale with the short screen edge, keeping the perceived width
+        // consistent across device pixel ratios and portrait render resolutions.
+        float scale=Mathf.Max(.5f,Mathf.Min(width,height)/720f);
+        group.screenHalo.SetVector("_HaloPixels",new Vector4(2f*scale,6f*scale*GlowPulse(Time.time),.65f+.2f*Mathf.Sin(Time.time*3*AnimationSpeed),0));
+        commands.Blit(SilhouetteId,BuiltinRenderTextureType.CameraTarget,group.screenHalo,0);DrawCount++;
+        commands.ReleaseTemporaryRT(SilhouetteId);
+    }
     // Clear ordinary selection only: AutoFind stays lit during the pick flight for source _pickMoveTime.
     public void Clear(){DisposeGroup(selection);if(commands!=null){commands.Clear();DrawCount=0;}}
     public void ClearTools(){foreach(var group in toolGroups)DisposeGroup(group);toolGroups.Clear();if(commands!=null){commands.Clear();DrawCount=0;}}
@@ -126,9 +146,10 @@ public sealed class ItemHighlight : MonoBehaviour {
         foreach(var p in group.parts){if(!p.drawRenderer&&p.mesh)Release(p.mesh);foreach(var m in p.overlays)if(m)Release(m);}group.parts.Clear();
         if(group.glow!=null)foreach(var m in group.glow)if(m)Release(m);
         if(group.outline!=null)foreach(var m in group.outline)if(m)Release(m);
+        if(group.screenHalo)Release(group.screenHalo);group.screenHalo=null;
         group.glow=null;group.outline=null;
     }
     static void Release(Object obj){if(Application.isPlaying)Destroy(obj);else DestroyImmediate(obj);}
     void OnDisable(){ClearAll();}
-    void OnDestroy(){ClearAll();if(commands!=null){if(view)view.RemoveCommandBuffer(CameraEvent.AfterForwardAlpha,commands);commands.Release();commands=null;}if(mask)Release(mask);if(screenQuad)Release(screenQuad);}
+    void OnDestroy(){ClearAll();if(commands!=null){if(view)view.RemoveCommandBuffer(CameraEvent.AfterForwardAlpha,commands);commands.Release();commands=null;}if(mask)Release(mask);if(silhouette)Release(silhouette);if(screenQuad)Release(screenQuad);}
 }

@@ -1,5 +1,13 @@
 GPU: Metal
-PASS compatible feedback: black=0, changed=42805, residual=0, autoChanged=42805
-D24_UNorm_S8_UInt actual=D32_SFloat_S8_UInt: visible=33157, newlyBlack=0
-PASS compatible feedback: black=0, changed=42805, residual=0, autoChanged=42805
-D16_UNorm actual=D16_UNorm: visible=33146, newlyBlack=30373
+PASS 512x512 compatible feedback: black=0, changed=9814, residual=0, autoChanged=9814, haloPixels=960
+D24_UNorm_S8_UInt actual=D32_SFloat_S8_UInt: visible=6215, newlyBlack=0
+PASS 512x512 compatible feedback: black=0, changed=9814, residual=0, autoChanged=9814, haloPixels=960
+D16_UNorm actual=D16_UNorm: visible=6215, newlyBlack=6004
+PASS 360x780 compatible feedback: black=0, changed=21100, residual=0, autoChanged=21100, haloPixels=1132
+D24_UNorm_S8_UInt actual=D32_SFloat_S8_UInt: visible=14466, newlyBlack=0
+PASS 360x780 compatible feedback: black=0, changed=21100, residual=0, autoChanged=21100, haloPixels=1132
+D16_UNorm actual=D16_UNorm: visible=14466, newlyBlack=14051
+PASS 720x1560 compatible feedback: black=0, changed=84400, residual=0, autoChanged=84400, haloPixels=4054
+D24_UNorm_S8_UInt actual=D32_SFloat_S8_UInt: visible=57857, newlyBlack=0
+PASS 720x1560 compatible feedback: black=0, changed=84400, residual=0, autoChanged=84400, haloPixels=4054
+D16_UNorm actual=D16_UNorm: visible=57857, newlyBlack=56197

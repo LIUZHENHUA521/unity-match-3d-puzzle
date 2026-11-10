@@ -7,7 +7,7 @@ using System.Linq;
 public sealed class Match3DThemePresentation : MonoBehaviour {
  public bool Active=>visual;
  public const int SourceControlMode=2; // LevelControlType.flatTopView, not an inspector tuning option.
- public static readonly Quaternion SourceRotation=new Quaternion(.6560590267f,0,0,.7547096610f);
+ public static readonly Quaternion SourceRotation=Quaternion.Euler(90f,0,0);
  public static Vector3 SourcePosition=>new Vector3(0,0,.5f)+SourceRotation*new Vector3(0,0,-30);
  GameObject visual;Camera camera;CameraFitter fitter;bool fitted,orthographic;Vector3 position;Quaternion rotation;float size,near,far,fov;Rect rect;CameraClearFlags clear;Color background;bool hdr;int culling;
  Transform pan;

@@ -10,11 +10,9 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
     public const float WallThickness=.3f,CeilingThickness=2f,Clearance=.04f,SpawnCeiling=24;
     public static readonly Quaternion Orientation=Quaternion.Euler(TiltDegrees,0,0);
     static readonly Quaternion InverseOrientation=Quaternion.Inverse(Orientation);
-    // Keep the shell upright and the shared 82-degree camera/pan fixed. At the
-    // main visible band (~21 units high), the camera projects vertical height
-    // upward by ~3 units. A fixed horizontal origin balances that offset while
-    // the narrow lower section still lands inside the authored pan.
-    public static readonly Vector3 Origin=new Vector3(0,0,-3f);
+    // Align the upright shell axis with the authored pan bowl center in XZ.
+    // A 90-degree camera needs no height-dependent projection compensation.
+    public static readonly Vector3 Origin=new Vector3(.05f,0,-.04f);
     static readonly float[] RingHeights={0,6,10,11,12,13,14,20,26};
     static readonly Vector2[] Normals=MakeNormals();
     Mesh wallMesh;
