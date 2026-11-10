@@ -63,6 +63,7 @@ public static class Match3DGameplaySkinBuilder {
         var country="Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab";root=PrefabUtility.LoadPrefabContents(country);
         try{root.GetComponentInChildren<Match3DCameraBackdrop>(true).GetComponent<SpriteRenderer>().sprite=AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Match3D/Resources/Match3D/ThemeBackgrounds/foodie-party.jpg");PrefabUtility.SaveAsPrefabAsset(root,country);}finally{PrefabUtility.UnloadPrefabContents(root);}
         AssetDatabase.SaveAssets();
+        AddTimeToolBuilder.Build();
     }
     static void BuildTray(){
         var root=PrefabUtility.LoadPrefabContents(UI+"CollectionTray.prefab");

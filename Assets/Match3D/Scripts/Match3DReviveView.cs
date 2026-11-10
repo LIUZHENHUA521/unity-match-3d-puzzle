@@ -16,8 +16,8 @@ public sealed class Match3DReviveView : MonoBehaviour {
         Match3DModalMotion.Play(gameObject);
     }
     public void ConfigureTool(int type,Action accept,Action decline){
-        string[] names={"移出","吸附","洗牌"};
-        string[] icons={"image_btn_remove","image_btn_adsorpt","image_btn_shuffle"};
+        string[] names={"移出","吸附","洗牌","加时"};
+        string[] icons={"image_btn_remove","image_btn_adsorpt","image_btn_shuffle","img_btn_clock"};
         string[] descriptions={"move-description","find-description","shuffle-description"};
         Configure(0,accept,decline);toolMode=true;progress.text=names[type]+"道具";
         animatedContent.Find("Panel").GetComponent<Image>().sprite=Resources.Load<Sprite>("Match3D/ReviveSkinPS/panel");
@@ -33,7 +33,8 @@ public sealed class Match3DReviveView : MonoBehaviour {
         var circle=animatedContent.Find("Tool icon background").GetComponent<Image>();
         circle.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
         var description=animatedContent.Find("Description");description.gameObject.SetActive(false);
-        AddToolArtwork("Tool description",animatedContent,new Vector2(0,-65),descriptions[type]);
+        if(type==BoardTools.AddTimeType)AddToolText("Tool description",animatedContent,new Vector2(0,-65),new Vector2(480,100),"增加 3 分钟游戏时间",32,new Color(0,.35f,.58f));
+        else AddToolArtwork("Tool description",animatedContent,new Vector2(0,-65),descriptions[type]);
         var buttonImage=revive.GetComponent<Image>();buttonImage.sprite=Resources.Load<Sprite>("Match3D/SettingsSkinPS/image_btn_blue02");buttonImage.preserveAspect=true;
         buttonImage.rectTransform.anchoredPosition=new Vector2(0,-205);
         buttonImage.rectTransform.sizeDelta=new Vector2(300,300*buttonImage.sprite.rect.height/buttonImage.sprite.rect.width);

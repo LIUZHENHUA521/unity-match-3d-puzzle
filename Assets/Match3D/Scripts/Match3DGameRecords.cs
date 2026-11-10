@@ -14,7 +14,8 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         public string recordId,runId,mode="solo",themeId,levelDate,levelVersion="2026-10-31-v1",clientVersion,platform,status,endReason;
         public long startedAt,endedAt,activeDurationMs;
         public float remainingSeconds;
-        public ToolUse[] toolUsage=new[]{new ToolUse(),new ToolUse(),new ToolUse()};
+        public bool timeReviveUsed;
+        public ToolUse[] toolUsage=new[]{new ToolUse(),new ToolUse(),new ToolUse(),new ToolUse()};
     }
     [Serializable] public class Pending { public string owner,action,json;public bool reward; public bool rejected; }
     [Serializable] public class Queue { public List<Pending> items=new List<Pending>(); }
@@ -80,8 +81,8 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         if(active==null)return;
         if(!started){active=null;return;}
         active.status=status;active.endReason=reason;active.endedAt=Math.Max(active.startedAt,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());active.activeDurationMs=Math.Min((long)(activeSeconds*1000),active.endedAt-active.startedAt);
-        active.clearedCount=cleared;active.remainingSeconds=Mathf.Clamp(GameManager.Instance.currentLevelTime,0,active.timeLimitSeconds);
-        for(int i=0;i<3;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=0;active.toolUsage[i].rewarded=BoardTools.AdUses(i);active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
+        active.clearedCount=cleared;active.remainingSeconds=Mathf.Max(0,GameManager.Instance.currentLevelTime);active.timeReviveUsed=Match3DFlow.Instance&&Match3DFlow.Instance.TimeReviveUsed;
+        for(int i=0;i<BoardTools.ToolCount;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=0;active.toolUsage[i].rewarded=BoardTools.AdUses(i);active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
         active.toolReceipts=toolReceipts.ToArray();Add("finish",active,owner);active=null;started=false;
     }
     void Add(string action,Record record,string account){

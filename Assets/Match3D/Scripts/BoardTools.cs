@@ -8,6 +8,13 @@ using UnityEngine;
 // WX ToolReturnBack / ToolAutoFind: j38482, j13232, j19860, j19862, j19259.
 // Acquisition/advertising remain local-only; invitation inventory is authorized by Match3DInvitations.
 public sealed class BoardTools : MonoBehaviour {
+    public const int ToolCount=4,AddTimeType=3,AddTimeSeconds=180;
+    public static bool AddTime(){
+        var flow=Match3DFlow.Instance;var game=GameManager.Instance;
+        if(!Enabled||!flow||flow.IsPvp||flow.Stage==1||!game||!game.GameIsPlaying()||game.currentLevelTime<=0||!CanUse(AddTimeType))return false;
+        if(!TrySpend(AddTimeType))return false;
+        game.currentLevelTime+=AddTimeSeconds;flow.ShowTips("时间 +3 分钟");return true;
+    }
     public const int ReturnCount=3;
     public const float StoreSeconds=.36f,StoreScaleSeconds=.2f;
     // WX metadata field defaults: 3=OutSine, 26=InBack, 27=OutBack.
@@ -15,20 +22,20 @@ public sealed class BoardTools : MonoBehaviour {
     static BoardTools instance;
     readonly List<GameObject>[] columns={new List<GameObject>(),new List<GameObject>(),new List<GameObject>()};
     int nextColumn;
-    readonly int[] used=new int[3];
-    readonly int[] adUses=new int[3];
-    readonly int[] testUses=new int[3];
-    public static void RecordTestUse(int type){var owner=Ensure();if(owner&&type>=0&&type<3)owner.testUses[type]++;}
-    public static int TestUses(int type)=>instance&&type>=0&&type<3?instance.testUses[type]:0;
-    public static void RecordAdUse(int type){var owner=Ensure();if(owner&&type>=0&&type<3)owner.adUses[type]++;}
+    readonly int[] used=new int[ToolCount];
+    readonly int[] adUses=new int[ToolCount];
+    readonly int[] testUses=new int[ToolCount];
+    public static void RecordTestUse(int type){var owner=Ensure();if(owner&&type>=0&&type<ToolCount)owner.testUses[type]++;}
+    public static int TestUses(int type)=>instance&&type>=0&&type<ToolCount?instance.testUses[type]:0;
+    public static void RecordAdUse(int type){var owner=Ensure();if(owner&&type>=0&&type<ToolCount)owner.adUses[type]++;}
     public static int AdUses(int type)=>instance?instance.adUses[type]:0;
     static int paidType=-1;
     public static int Remaining(int type)=>(Match3DInvitations.Instance?Match3DInvitations.Instance.Inventory(type):0);
-    public static bool CanUse(int type)=>type>=0&&type<3&&(Match3DTestPrivileges.UnlimitedTools||paidType==type||(Match3DInvitations.Instance&&!Match3DInvitations.Instance.Busy&&!Match3DInvitations.Instance.HasPending&&Match3DInvitations.Instance.Inventory(type)>0));
+    public static bool CanUse(int type)=>type>=0&&type<ToolCount&&(Match3DTestPrivileges.UnlimitedTools||paidType==type||(Match3DInvitations.Instance&&!Match3DInvitations.Instance.Busy&&!Match3DInvitations.Instance.HasPending&&Match3DInvitations.Instance.Inventory(type)>0));
     public static bool TrySpend(int type){if(paidType!=type)return false;MarkUsed(type);return true;}
     public static bool RunPaid(int type,Action action){int before=UsedCount(type);paidType=type;try{action();return UsedCount(type)>before;}finally{paidType=-1;}}
-    public static void MarkUsed(int type){var owner=Ensure();if(owner&&type>=0&&type<3)owner.used[type]++;}
-    public static int UsedCount(int type)=>instance&&type>=0&&type<3?instance.used[type]:0;
+    public static void MarkUsed(int type){var owner=Ensure();if(owner&&type>=0&&type<ToolCount)owner.used[type]++;}
+    public static int UsedCount(int type)=>instance&&type>=0&&type<ToolCount?instance.used[type]:0;
     bool shuffling;
     readonly List<ShuffleItem> moving=new List<ShuffleItem>();
     public static bool Shuffling=>instance&&instance.shuffling;

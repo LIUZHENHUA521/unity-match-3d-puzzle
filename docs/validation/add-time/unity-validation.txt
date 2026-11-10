@@ -1,0 +1,19 @@
+PASS fixture uses ordinary paid tools
+PASS four inventory counters
+PASS direct use cannot bypass payment
+PASS paid add-time grants exactly 180 seconds
+PASS repeated use adds another 180 seconds
+PASS add-time does not consume revival
+PASS zero stock opens paused add-time offer
+PASS incomplete advertisement grants no time
+PASS duplicate ad callbacks grant exactly once: time=639.1472, expected=639.1472, ads=1, scale=1
+PASS close preserves time and resumes play
+PASS stale callback cannot change a new board
+PASS inventory grants 180 seconds and consumes one without ads
+PASS failed debit grants no time and settles pending request
+PASS timeout revival independently grants original 300 seconds
+PASS add-time remains usable after revival
+PASS quit records keep extended time, fourth tool and revival before reset
+PASS finished board rejects add-time
+PASS untimed first stage never consumes add-time
+COMPLETE

@@ -71,9 +71,9 @@ public sealed class Match3DInvitations : MonoBehaviour {
         for(int attempt=0;attempt<(retry?2:1);attempt++){
             using(var req=new UnityWebRequest(endpoint+"/invites/"+route,"POST")){
                 req.uploadHandler=new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));req.downloadHandler=new DownloadHandlerBuffer();req.timeout=8;
-                req.SetRequestHeader("Content-Type","application/json");if(!string.IsNullOrEmpty(token))req.SetRequestHeader("Authorization","Bearer "+token);
+                req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("X-Goose-Tool-Count",BoardTools.ToolCount.ToString());if(!string.IsNullOrEmpty(token))req.SetRequestHeader("Authorization","Bearer "+token);
                 yield return req.SendWebRequest();
-                if(req.result==UnityWebRequest.Result.Success){Reply result=null;try{result=JsonUtility.FromJson<Reply>(req.downloadHandler.text);}catch{}if(result!=null&&result.inventory!=null&&result.inventory.Length==3){callback(result);yield break;}}
+                if(req.result==UnityWebRequest.Result.Success){Reply result=null;try{result=JsonUtility.FromJson<Reply>(req.downloadHandler.text);}catch{}if(result!=null&&result.inventory!=null&&(result.inventory.Length==3||result.inventory.Length==BoardTools.ToolCount)){callback(result);yield break;}}
                 if(req.responseCode>=400&&req.responseCode<500){if(req.responseCode==401){token=null;State=null;Mails.Clear();MailLoaded=false;MailAttention=false;MailChanged?.Invoke();}SetStatus(req.responseCode==401?"登录已失效，请刷新重新登录":req.responseCode==410?"邮件已过期":req.responseCode==409?"道具不足或请求已失效，请刷新后重试":"请求失败，请稍后重试");yield break;}
             }
         }

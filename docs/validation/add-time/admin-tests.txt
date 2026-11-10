@@ -1,0 +1,95 @@
+TAP version 13
+# Subtest: strict config validation rejects impossible layers, excessive budgets and invalid dates
+ok 1 - strict config validation rejects impossible layers, excessive budgets and invalid dates
+  ---
+  duration_ms: 1.56625
+  ...
+# Subtest: drafts do not activate; publish uses saved revision; future schedule never leaks into an earlier day
+ok 2 - drafts do not activate; publish uses saved revision; future schedule never leaks into an earlier day
+  ---
+  duration_ms: 2.264667
+  ...
+# Subtest: competing saves cannot silently overwrite drafts and invalid publication changes nothing
+ok 3 - competing saves cannot silently overwrite drafts and invalid publication changes nothing
+  ---
+  duration_ms: 0.319042
+  ...
+# Subtest: theme survives draft, publish, inherited date and version history independently per tier
+ok 4 - theme survives draft, publish, inherited date and version history independently per tier
+  ---
+  duration_ms: 2.344625
+  ...
+# Subtest: updates inventory atomically, preserves game fields and records actor/before/after
+ok 5 - updates inventory atomically, preserves game fields and records actor/before/after
+  ---
+  duration_ms: 1.126917
+  ...
+# Subtest: rejects stale inventory and stale revision without writes
+ok 6 - rejects stale inventory and stale revision without writes
+  ---
+  duration_ms: 0.3225
+  ...
+# Subtest: rejects invalid values, missing reason, unknown players
+ok 7 - rejects invalid values, missing reason, unknown players
+  ---
+  duration_ms: 0.2855
+  ...
+# Subtest: retry cannot overwrite subsequent game consumption; same-value save creates no history
+ok 8 - retry cannot overwrite subsequent game consumption; same-value save creates no history
+  ---
+  duration_ms: 0.239583
+  ...
+# Subtest: history bounded to latest 20 entries
+ok 9 - history bounded to latest 20 entries
+  ---
+  duration_ms: 0.838375
+  ...
+# Subtest: modern admin adds time to legacy wallet and compares all four fields
+ok 10 - modern admin adds time to legacy wallet and compares all four fields
+  ---
+  duration_ms: 0.245583
+  ...
+# Subtest: legacy admin writes preserve add-time instead of dropping the fourth balance
+ok 11 - legacy admin writes preserve add-time instead of dropping the fourth balance
+  ---
+  duration_ms: 0.102542
+  ...
+# Subtest: admin shows Beijing date and cumulative hourly quota; saves only quota and audit metadata
+ok 12 - admin shows Beijing date and cumulative hourly quota; saves only quota and audit metadata
+  ---
+  duration_ms: 2.086625
+  ...
+# Subtest: stable tie pagination and cursor bound to query
+ok 13 - stable tie pagination and cursor bound to query
+  ---
+  duration_ms: 7.835125
+  ...
+# Subtest: unknown filter applies before pagination and late terminal record stays win
+ok 14 - unknown filter applies before pagination and late terminal record stays win
+  ---
+  duration_ms: 0.6695
+  ...
+# Subtest: combined filters and related runs; malformed queries rejected
+ok 15 - combined filters and related runs; malformed queries rejected
+  ---
+  duration_ms: 0.320041
+  ...
+# Subtest: entrypoint denies unsigned expired disabled and unauthorized users for both actions
+ok 16 - entrypoint denies unsigned expired disabled and unauthorized users for both actions
+  ---
+  duration_ms: 3.9705
+  ...
+# Subtest: registered player list filters and paginates without exposing identity credentials
+ok 17 - registered player list filters and paginates without exposing identity credentials
+  ---
+  duration_ms: 0.688541
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 52.102625

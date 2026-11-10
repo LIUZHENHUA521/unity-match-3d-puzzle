@@ -5,12 +5,12 @@ using UnityEngine.UI;
 public sealed class Match3DGameplayHUD : MonoBehaviour {
     public RectTransform header,footer;
     public Text[] quantities;
-    readonly Image[] toolBackgrounds=new Image[3];
-    readonly Sprite[] normalBackgrounds=new Sprite[3];
+    readonly Image[] toolBackgrounds=new Image[BoardTools.ToolCount];
+    readonly Sprite[] normalBackgrounds=new Sprite[BoardTools.ToolCount];
     Sprite usedBackground;Texture2D usedTexture;
     void SetupToolBackgrounds(){
-        var view=GetComponent<Match3DUIView>();string[] keys={"Undo","Hint","Shuffle"};
-        for(int i=0;i<3;i++){
+        var view=GetComponent<Match3DUIView>();string[] keys={"Undo","Hint","Shuffle","AddTime"};
+        for(int i=0;i<BoardTools.ToolCount;i++){
             var button=view.Get<Button>(keys[i]);button.transition=Selectable.Transition.None;
             toolBackgrounds[i]=button.GetComponent<Image>();normalBackgrounds[i]=toolBackgrounds[i].sprite;
             toolBackgrounds[i].canvasRenderer.SetColor(Color.white);

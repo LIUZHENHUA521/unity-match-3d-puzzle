@@ -128,7 +128,7 @@ public partial class Match3DFlow : MonoBehaviour {
     void Click(){if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
     public void SelectSound(){if(SettingsEffects&&library.selectSound)effects.PlayOneShot(library.selectSound);}
     public void MatchSound(){if(SettingsEffects&&library.matchSound)effects.PlayOneShot(library.matchSound);}
-    void StopBoard(bool preservePool=false){ResetToolOffer();ResetRevival();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;pendingPick=false;}
+    void StopBoard(bool preservePool=false){ResetToolOffer();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");ResetRevival();if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;pendingPick=false;}
     public void Home(){
         if(network)network.Disconnect();StopBoard();LocalPreview=false;IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
         Match3DHomeView.Create(this,page,Match3DHomeView.Tab.Home);
@@ -403,6 +403,7 @@ public partial class Match3DFlow : MonoBehaviour {
         shuffleToolButton=view.Bind("Shuffle",()=>UseTool(2,()=>{if(BoardTools.Enabled)BoardTools.MessUp();else FindObjectOfType<FoodPileShake>().Shake();}));
         view.Text("HintText",IsPvp?"认输":"凑齐");
         findToolButton=view.Bind("Hint",()=>UseTool(1,()=>{if(IsPvp)network.Send(new Match3DMessage{type="surrender"});else BoosterManager.Instance.HintButton();}));
+        if(!IsPvp){view.Bind("AddTime",()=>UseTool(BoardTools.AddTimeType,()=>BoardTools.AddTime()));view.Show("AddTime",BoardTools.Enabled);}
         foreach(var key in new[]{"Undo","Shuffle","Hint"})view.Show(key,IsPvp||BoardTools.Enabled);
         view.Show("Freeze",false);view.Bind("Freeze",()=>BoosterManager.Instance.Freeze());
     }
@@ -498,8 +499,11 @@ public partial class Match3DFlow : MonoBehaviour {
     }
 
     public string ToolUnavailableReason(int type){
+        if(type<0||type>=BoardTools.ToolCount)return "道具类型无效";
         if(BlocksGameplay)return "请先关闭当前弹窗";
         if(!GameManager.Instance.GameIsPlaying())return "当前无法使用道具，请在游戏中使用";
+        if(type==BoardTools.AddTimeType&&(IsPvp||Stage==1))return "当前关卡不限时，无需使用加时";
+        if(type==BoardTools.AddTimeType&&GameManager.Instance.currentLevelTime<=0)return "时间已用完，请先完成复活";
         if(BoardTools.Shuffling)return "正在洗牌，请稍候";
         var input=InputController.Instance;
         if(type==0&&input.objectsOnStack.Count==0)return "槽位中没有可移出的物品";
