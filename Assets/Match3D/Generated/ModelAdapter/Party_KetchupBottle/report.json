@@ -46,9 +46,9 @@
         "textures": []
     },
     "hasRigidbody": false,
-    "hasPickCollider": false,
-    "hasBodyCollider": false,
-    "colliderCount": 0,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 2,
     "issues": [
         {
             "severity": 0,
@@ -87,15 +87,15 @@
             "path": ""
         },
         {
-            "severity": 1,
-            "code": "COLLIDER_DRAFT",
-            "message": "将根据视觉包围盒生成 Pick/Body BoxCollider",
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：236 三角面 / 1 网格 / 1 材质 / 0 贴图；贴图编辑器内存 0 B → 0 B（不是下载包体）",
             "path": ""
         },
         {
             "severity": 0,
-            "code": "GENERATED_RESOURCES",
-            "message": "生成后：236 三角面 / 1 网格 / 1 材质 / 0 贴图；贴图编辑器内存 0 B → 0 B（不是下载包体）",
+            "code": "BODY_FIT",
+            "message": "已生成 1 个贴形实体碰撞体；拾取独立",
             "path": ""
         }
     ]

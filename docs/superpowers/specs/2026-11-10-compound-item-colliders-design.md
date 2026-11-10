@@ -1,0 +1,15 @@
+# Shape-fitted item collision
+
+User approved replacing the current full-model boxes with the sphere/capsule/compound approach described from the inspected Goose assets.
+
+Scope: the 69 current model adapters. Keep original recovered source profiles, visible meshes, board/tray sizing, pick geometry and mesh-accurate picking, physics parameters and container geometry unchanged. No release requested.
+
+Fit in the editor, never during gameplay. Compare enclosing boxes, spheres and capsules in model and principal-axis coordinates. Recursively clip mesh triangles into spatial regions when two smaller primitives significantly reduce enclosed volume. A bounded number (at most eight) of primitives per item balances tighter outlines and mobile physics cost. Clip triangles rather than partition only vertices so large faces remain covered. Small padding provides continuous seams. Retain a box where the model is actually box-shaped; automatic approximation is not an exact surface or a copy of original-model dimensions.
+
+Bake primitive children under the existing Body root, retaining its index and all pick/visual transforms. Save the prefab and its complete collider profile together; preserve GUIDs, materials, sizes and audio. The adapter generation path must use the same fitter when it needs body geometry. Existing authored colliders remain authoritative. Regeneration is deterministic; the migration explicitly rebuilds only adapter bodies, invalidates cached configuration and exports before/after evidence.
+
+Validate in an isolated Unity project: compile; all 69 profiles match baked primitives; finite positive dimensions and at most eight bodies; all clipped triangles covered; runtime profile application and pool restoration preserve bodies; mesh-picking regression; multiple rotated drops and a dense pile without escape/non-finite motion. Export three-view mesh/collision comparisons and inspect representative round, elongated and complex items. Measure collider count and editor simulation cost; desktop results do not imply phone frame-rate guarantees.
+
+Review resolved: a split plan must save at least 2.5% of the initial enclosing primitive volume per additional shape and 12% of its parent region volume. Permit one level of lookahead for symmetric shapes that need two cuts before their empty corners disappear. Preserve `realCol` as the Body root even though its colliders now live on children. Verify baked child transforms alongside profile shapes and conservation of clipped triangle area. Compare seeded baseline and fitted dense piles with median/p95 step cost. The reviewer approved this direction; the user's existing approval covers implementation.
+
+Visual review refinement: flat models with a genuine projected central hole also try eight angular sectors. Preserve the hole when no sector covers its center, even if overlapping primitives' summed volume is slightly larger (capped at 1.15 times the initial primitive). Summed primitive volume is a conservative proxy, not union volume or an exact empty-space metric. This prevents the donut's hole remaining filled merely because a solid box is cheaper.

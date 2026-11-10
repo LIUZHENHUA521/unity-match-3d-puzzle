@@ -86,7 +86,7 @@ public static class ModelAdapterService {
             }
             report.hasPickCollider = pick; report.hasBodyCollider = body;
             if (result.colliders.Count == 0) {
-                if (generateColliderDraft) report.Add(ModelAdapterSeverity.Warning, "COLLIDER_DRAFT", "将根据视觉包围盒生成 Pick/Body BoxCollider"); else report.Add(ModelAdapterSeverity.Error, "COLLIDER_REQUIRED", "没有 Collider；勾选生成碰撞草稿后再生成");
+                if (generateColliderDraft) report.Add(ModelAdapterSeverity.Warning, "COLLIDER_DRAFT", "将生成拾取包围盒和贴合模型的组合实体碰撞体"); else report.Add(ModelAdapterSeverity.Error, "COLLIDER_REQUIRED", "没有 Collider；勾选生成碰撞草稿后再生成");
             } else { if (!pick) report.Add(ModelAdapterSeverity.Warning, "PICK_GROUP", "没有识别到 Pick 子树或 PickLayer=7"); if (!body) report.Add(ModelAdapterSeverity.Warning, "BODY_GROUP", "没有识别到 Body 子树或 BodyLayer=10"); }
             report.status = report.HasErrors ? "Error" : "Ready";
         } finally { UnityEngine.Object.DestroyImmediate(instance); }
@@ -124,13 +124,16 @@ public static class ModelAdapterService {
             bool generatedBody = generatedColliders.Any(c => c && !IsPick(c.transform));
             if (generateColliderDraft && (!generatedPick || !generatedBody)) {
                 if (!generatedPick) { var pick = new GameObject("Pick"); pick.layer = ItemColliderGeometry.PickLayer; pick.transform.SetParent(visual.transform, false); var pc = pick.AddComponent<BoxCollider>(); pc.size = scan.report.visualSize * scale; pc.isTrigger = false; generatedColliders.Add(pc); }
-                if (!generatedBody) { var real = new GameObject("Body"); real.layer = ItemColliderGeometry.BodyLayer; real.transform.SetParent(visual.transform, false); var rc = real.AddComponent<BoxCollider>(); rc.size = scan.report.visualSize * scale; generatedColliders.Add(rc); }
+                if (!generatedBody) { var real = new GameObject("Body"); real.layer = ItemColliderGeometry.BodyLayer; real.transform.SetParent(visual.transform, false); generatedColliders.AddRange(ItemBodyFitter.Generate(geometry.transform, real.transform)); }
             }
             foreach (var collider in generatedColliders) {
                 if (collider is MeshCollider) throw new InvalidOperationException("MeshCollider is not supported: " + collider.name);
                 collider.gameObject.layer = IsPick(collider.transform) ? ItemColliderGeometry.PickLayer : ItemColliderGeometry.BodyLayer;
             }
             var colliderProfile = BuildProfile(generatedColliders, visual.transform, scan.report.logicalId);
+            scan.report.colliderCount = generatedColliders.Count;
+            scan.report.hasPickCollider = colliderProfile.col != null;
+            scan.report.hasBodyCollider = colliderProfile.realCol != null;
             if (colliderProfile.col == null || colliderProfile.realCol == null) throw new InvalidOperationException("Generated model needs both Pick and Body collider groups.");
             ModelAdapterResources.Optimize(sourceInstance, staging + "/Optimized", scan.report.resourceOptions, scan.report);
             string prefabPath = staging + "/" + scan.report.logicalId + ".prefab";
@@ -162,7 +165,7 @@ public static class ModelAdapterService {
         }
     }
 
-    static ItemCatalog.ColliderProfile BuildProfile(List<Collider> colliders, Transform visual, string id) {
+    public static ItemCatalog.ColliderProfile BuildProfile(List<Collider> colliders, Transform visual, string id) {
         var profile = new ItemCatalog.ColliderProfile { name = id, nodes = new List<ItemCatalog.ColliderNode>().ToArray() };
         var grouped = colliders.Where(c => c).GroupBy(c => c.transform).ToArray();
         var nodes = new List<ItemCatalog.ColliderNode>();
@@ -172,6 +175,10 @@ public static class ModelAdapterService {
             if (node.layer == ItemColliderGeometry.PickLayer && profile.col == null) profile.col = node.indices;
             if (node.layer == ItemColliderGeometry.BodyLayer && profile.realCol == null) profile.realCol = node.indices;
         }
+        // Compound children keep their transforms in the prefab. realCol denotes
+        // the whole group, not whichever primitive happens to be enumerated first.
+        var bodyRoot = visual.Find("Body");
+        if (bodyRoot && bodyRoot.GetComponentsInChildren<Collider>(true).Any(c => c.gameObject.layer == ItemColliderGeometry.BodyLayer)) profile.realCol = PathIndices(visual, bodyRoot);
         profile.nodes = nodes.ToArray(); return profile;
     }
     static ItemCatalog.ColliderShape ToShape(Collider collider) {

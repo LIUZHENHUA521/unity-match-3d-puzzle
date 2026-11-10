@@ -1,0 +1,25 @@
+PASS front visible surface blocks rear
+PASS oversized front box no longer blocks exposed rear mesh
+PASS default-layer scene collider ignored
+PASS wall collider ignored
+PASS body collider ignored
+PASS nearest mesh wins even when rear bounding box is closer
+PASS ineligible visible front does not permit rear penetration
+PASS hidden render mesh does not intercept picking
+PASS disabled pick collider excluded
+PASS real hole between multiple meshes exposes rear
+PASS frame solid edge remains selectable
+PASS rotated negative nonuniform scale supported
+PASS conservative pick bounds cover visible mesh outside authored collider
+PASS unprofiled item reuse restores added pick bounds
+PASS press selects visible mesh
+PASS held slide switches to second visible mesh
+PASS slide into empty space cancels selection
+PASS 70 candidate hits grow buffer without dropping exposed target
+INFO dense 70-candidate 1000 queries: 71 ms (editor)
+PASS current skinned pose selectable: Goose_Farmer
+PASS current skinned pose selectable: Goose_SteelCup
+PASS current skinned pose selectable: Goose_Tomato
+PASS current skinned pose selectable: Goose_Watermelon
+PASS all item mesh assets readable: 172 prefabs, 154 distinct static meshes, 4 skinned renderers
+PASS runtime preparation covers all 69 adapted catalog items

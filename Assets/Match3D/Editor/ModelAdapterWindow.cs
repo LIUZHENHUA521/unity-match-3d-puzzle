@@ -48,7 +48,7 @@ public sealed class ModelAdapterWindow : EditorWindow {
         logicalId = EditorGUILayout.TextField("逻辑 ID", logicalId);
         displayName = EditorGUILayout.TextField("显示名称", displayName);
         updateExisting = EditorGUILayout.ToggleLeft("更新已有 ID（需要明确确认）", updateExisting);
-        generateColliderDraft = EditorGUILayout.ToggleLeft("缺少 Pick/Body 时生成 BoxCollider 草稿", generateColliderDraft);
+        generateColliderDraft = EditorGUILayout.ToggleLeft("补齐拾取框和贴形组合碰撞体", generateColliderDraft);
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("模型资源优化", EditorStyles.boldLabel);
         EditorGUI.BeginChangeCheck();
