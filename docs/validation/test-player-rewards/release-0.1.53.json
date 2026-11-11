@@ -1,0 +1,98 @@
+{
+  "version": "0.1.53",
+  "uploadedAt": "2026-11-11T21:22:11.490385+08:00",
+  "appid": "wx74f2d8722c02a6f4",
+  "unityCommit": "4c62ed61c52ae1b3a95b5aa94760b2954b3dc196",
+  "serverCommit": "bdd9743d2588a1872cf6ff5c37de2dafffb94e1a",
+  "serverVersion": "goose-3d-pvp-019",
+  "serverStatus": "normal",
+  "trafficPercent": 100,
+  "serverBuildId": 2612137965,
+  "downloadVerifiedFiles": [
+    "src/daily-level-contract.cjs",
+    "src/daily-levels.mjs",
+    "src/engine.mjs",
+    "src/invitations.mjs",
+    "src/mailbox.mjs",
+    "src/merchant-authorization.mjs",
+    "src/records.mjs",
+    "src/reward-quota.mjs",
+    "src/rewards.mjs",
+    "src/server.mjs",
+    "src/tools.mjs",
+    "Dockerfile",
+    "package.json",
+    "package-lock.json"
+  ],
+  "uploadReceipt": {
+    "size": {
+      "total": 30463955,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 30463955
+        },
+        {
+          "name": "main",
+          "size": 2518469
+        },
+        {
+          "name": "/data-package/",
+          "size": 21815725
+        },
+        {
+          "name": "/wasmcode/",
+          "size": 6129761
+        }
+      ]
+    }
+  },
+  "packageUnchangedDuringUpload": true,
+  "sourceHashes": {
+    "Assets/Match3D/Scripts/Match3DRewards.cs": "d90cddd57fa177a45911d1cc8badbf6c6ce6727847f53a7ee1dd56bae1790134",
+    "Assets/Match3D/Scripts/Match3DGameRecords.cs": "a09946bd5e6dc5cdc584f6dcc8eb572f136ea3fd74d70349b08ff967e9a31415",
+    "Assets/Match3D/Scripts/Match3DFlow.cs": "0bacc6f506345a018c74ed6b02e78ecb0fd880a8d139a58f8ea4215114ca8dda"
+  },
+  "health": [
+    {
+      "url": "https://9nanimal.cn/health",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "service": "goose-3d-pvp",
+        "rooms": 0
+      }
+    },
+    {
+      "url": "https://9nanimal.cn/invites/health",
+      "status": 200,
+      "body": {
+        "ready": true,
+        "database": true,
+        "loginConfigured": true
+      }
+    },
+    {
+      "url": "https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com/health",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "service": "goose-3d-pvp",
+        "rooms": 0
+      }
+    },
+    {
+      "url": "https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com/invites/health",
+      "status": 200,
+      "body": {
+        "ready": true,
+        "database": true,
+        "loginConfigured": true
+      }
+    }
+  ],
+  "experienceVersionSet": false,
+  "experienceBlocker": "Browser admin-enforced policy denies mp.weixin.qq.com; no workaround attempted",
+  "submittedForAudit": false,
+  "realDeviceTested": false
+}
