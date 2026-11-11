@@ -145,6 +145,7 @@ public partial class Match3DFlow : MonoBehaviour {
         StartupService<Match3DGameRecords>().Initialize(endpoint);
         StartupService<Match3DRewards>().Initialize(endpoint);
         StartupService<Match3DMerchantAuthorization>().Initialize(endpoint);
+        StartupService<Match3DCustomerService>().Initialize(endpoint);
         if(!Match3DInvitations.Instance)StartupService<Match3DInvitations>().Initialize(endpoint);
 #endif
             startupServicesReady=true;

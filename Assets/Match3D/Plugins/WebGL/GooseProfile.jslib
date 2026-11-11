@@ -41,8 +41,12 @@ mergeInto(LibraryManager.library, {
   if(typeof wx==='undefined')return;
   wx.setClipboardData({data:text,success:function(){GooseProfile.emit(version,{state:'copied',message:'用户 ID 已复制'});},fail:function(){GooseProfile.emit(version,{state:'copyFailed',message:'复制失败，请重试'});}});
  },
- GooseCustomerServiceOpen:function(){
-  var url='https://work.weixin.qq.com/kfid/kfc902f4f13994cca54',corpId='ww18ea30e9ed7eee49';
+ GooseCustomerServiceOpen:function(link){
+  var url=link?UTF8ToString(link):'',corpId='ww18ea30e9ed7eee49';
+  if(!/^https:\/\/work\.weixin\.qq\.com\/kf\/[^?#]+\?/.test(url)||url.indexOf('enc_scene=')<0||url.indexOf('scene_param=')<0){
+   if(typeof wx!=='undefined'&&typeof wx.showToast==='function')wx.showToast({title:'客服连接已失效，请返回游戏重试',icon:'none'});
+   return;
+  }
   if(typeof wx==='undefined'){
    if(typeof window!=='undefined'&&typeof window.alert==='function')window.alert('请在微信小游戏中联系客服');
    return;
