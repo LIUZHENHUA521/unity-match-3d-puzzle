@@ -1,0 +1,129 @@
+{
+  "version": "0.1.55",
+  "supersedes": "0.1.54",
+  "completedAt": "2026-11-11T21:51:25.692757+08:00",
+  "unityCommit": "84b5b66",
+  "gooseServiceCommit": "d51f318",
+  "mainServiceCommit": "de00573",
+  "services": {
+    "main": {
+      "version": "server-258",
+      "buildId": 2612145432,
+      "status": "normal",
+      "flowRatio": 100,
+      "configurationPreserved": true
+    },
+    "goose": {
+      "version": "goose-3d-pvp-021",
+      "buildId": 2612145647,
+      "status": "normal",
+      "flowRatio": 100,
+      "configurationPreserved": true
+    }
+  },
+  "verifiedMainFiles": [
+    "src/routes/wechat-kf.ts",
+    "src/services/wechat-kf-store.ts",
+    "src/services/wechat-kf-welcome.ts",
+    "src/services/wechat-kf-goose-voucher.ts",
+    "dist/routes/wechat-kf.js",
+    "dist/services/wechat-kf-store.js",
+    "dist/services/wechat-kf-welcome.js",
+    "dist/services/wechat-kf-goose-voucher.js"
+  ],
+  "verifiedGooseFiles": [
+    "src/invitations.mjs",
+    "src/customer-service.mjs",
+    "src/merchant-authorization.mjs",
+    "src/reward-quota.mjs",
+    "src/engine.mjs",
+    "src/records.mjs",
+    "src/rewards.mjs",
+    "src/server.mjs",
+    "src/mailbox.mjs",
+    "src/daily-levels.mjs",
+    "src/tools.mjs",
+    "src/daily-level-contract.cjs",
+    "Dockerfile",
+    "package.json",
+    "package-lock.json"
+  ],
+  "uploadReceipt": {
+    "size": {
+      "total": 30476022,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 30476022
+        },
+        {
+          "name": "main",
+          "size": 2518725
+        },
+        {
+          "name": "/data-package/",
+          "size": 21821250
+        },
+        {
+          "name": "/wasmcode/",
+          "size": 6136047
+        }
+      ]
+    }
+  },
+  "packageHashesUnchanged": true,
+  "tests": {
+    "customerService": 64,
+    "gooseServer": 69,
+    "jsBridge": 7,
+    "unityWebGL": "GOOSE_WECHAT_EXPORT_OK"
+  },
+  "existingPaymentTestFailures": 10,
+  "health": [
+    {
+      "url": "https://9nanimal.cn/health",
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"goose-3d-pvp\",\"rooms\":0}",
+      "error": ""
+    },
+    {
+      "url": "https://9nanimal.cn/invites/health",
+      "status": 200,
+      "body": "{\"ready\":true,\"database\":true,\"loginConfigured\":true}",
+      "error": ""
+    },
+    {
+      "url": "https://zvtba.naoyoulv.cn/api/wechat-kf/health",
+      "status": 0,
+      "body": "",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to zvtba.naoyoulv.cn:443 \n"
+    },
+    {
+      "url": "https://server-197372-5-1312757046.sh.run.tcloudbase.com/api/wechat-kf/health",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "route": "wechat-kf",
+        "configured": {
+          "corpId": true,
+          "secret": true,
+          "token": true,
+          "encodingAesKey": true
+        }
+      }
+    },
+    {
+      "url": "https://9nanimal.cn/invites/customer-service",
+      "status": 401,
+      "body": {
+        "error": "请重新登录"
+      }
+    }
+  ],
+  "healthNote": "Main service health verified using its live DefaultDomainName; MCP suggested an old custom hostname with a TLS failure.",
+  "databaseContextPermission": "ADMINONLY",
+  "experienceVersionSet": false,
+  "experienceBlocker": "Previously observed admin-enforced browser policy blocks mp.weixin.qq.com; no workaround attempted.",
+  "submittedForAudit": false,
+  "realDeviceTested": false
+}
