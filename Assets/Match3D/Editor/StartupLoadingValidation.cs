@@ -37,6 +37,8 @@ public static class StartupLoadingValidation {
         var instance=UnityEngine.Object.Instantiate(prefab);
         try{
             var view=instance.GetComponent<Match3DStartupView>();
+            view.LoadArtwork();
+            Check(view.artwork.sprite.texture.width==841&&view.artwork.sprite.texture.height==1870,"approved artwork keeps its full decoded resolution");
             var advice=instance.GetComponentsInChildren<Text>().Single(t=>t.name=="HealthAdvice");
             Check(advice.text==Match3DStartupView.HealthAdvice,"all source advice lines preserved");
             foreach(var c in advice.text.Where(c=>c!='\n').Distinct())Check(advice.font.HasCharacter(c),"missing packaged font glyph: "+c);
@@ -61,17 +63,19 @@ public static class StartupLoadingValidation {
                 viewport.sizeDelta=size;view.Fit();
                 var corners=new Vector3[4];artwork.GetWorldCorners(corners);
                 for(int i=0;i<corners.Length;i++)corners[i]=viewport.InverseTransformPoint(corners[i]);
-                Check(corners[0].x<=viewport.rect.xMin&&corners[0].y<=viewport.rect.yMin&&corners[2].x>=viewport.rect.xMax&&corners[2].y>=viewport.rect.yMax,
+                Check(corners[0].x<=viewport.rect.xMin+.01f&&corners[0].y<=viewport.rect.yMin+.01f&&corners[2].x>=viewport.rect.xMax-.01f&&corners[2].y>=viewport.rect.yMax-.01f,
                     "artwork covers all four viewport edges at "+size);
+                Check(Mathf.Abs(artwork.rect.width/artwork.rect.height-841f/1870)<.0001f,"artwork aspect ratio preserved at "+size);
                 Match3DStartupBuilder.Render(prefab,Output+"/loading-"+size.x+"x"+size.y+".png",size.x,size.y,false);
             }
             var template=File.ReadAllText("Packages/com.qq.weixin.minigame/Runtime/wechat-default/game.js");
-            Check(template.Contains("scaleMode: scaleMode.exactFit"),"SDK cover fills the viewport without letterboxing");
+            Check(template.Contains("scaleMode: scaleMode.noBorder")&&!template.Contains("scaleMode: scaleMode.exactFit"),"SDK cover uses uniform fill without stretching");
+            Check(File.Exists(Match3DStartupBuilder.ShortCoverPath)&&template.Contains("images/WechatCoverShort.jpg"),"short-screen SDK cover exists and is selected by the template");
             Check(File.Exists(Match3DStartupBuilder.CoverPath),"pre-engine WeChat cover exists");
             var exporter=File.ReadAllText("Assets/Match3D/Editor/WechatReleaseBuild.cs");
             Check(exporter.Contains("config.ProjectConf.bgImageSrc=WechatReleaseAssets.StartupCoverPath"),"release exporter uses the matching cover");
             Check(exporter.Contains("config.ProjectConf.HideAfterCallMain=false"),"cover remains through engine handoff");
-            File.WriteAllText(Output+"/assets.txt","PASS "+checks+" assertions: full-viewport artwork, source badge/advice, font glyphs, retry/error handling, monotonic progress, release cover binding; rendered 720x1280, 720x1560, 750x1334 and 720x1600.\n");
+            File.WriteAllText(Output+"/assets.txt","PASS "+checks+" assertions: approved 841x1870 artwork at original resolution, uniform full-viewport coverage, source badge/advice, font glyphs, retry/error handling, monotonic progress, two SDK cover ratios; rendered 720x1280, 720x1560, 750x1334 and 720x1600.\n");
         }finally{UnityEngine.Object.DestroyImmediate(instance);}
     }
 }

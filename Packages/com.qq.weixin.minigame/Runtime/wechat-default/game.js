@@ -67,6 +67,12 @@ checkVersion().then((enable) => {
         }
         // JS堆栈能显示更完整
         Error.stackTraceLimit = Infinity;
+        // Pick an authored cover close to this viewport, then crop uniformly.
+        // Neither artwork nor baked notice is stretched on long phones.
+        const startupWindow = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
+        const startupTall = startupWindow.windowHeight / startupWindow.windowWidth >= 2.05;
+        const startupScale = startupTall ? 1 : 0.8;
+        const startupFooter = startupTall ? 64 : 0;
         Object.assign(managerConfig, {
             // callmain结束后立即隐藏封面视频
             hideAfterCallmain: $HIDE_AFTER_CALLMAIN,
@@ -78,9 +84,8 @@ checkVersion().then((enable) => {
                  * !!注意：修改设计宽高和缩放模式后，需要修改文字和进度条样式。默认设计尺寸为667*375
                  */
                 designWidth: 720,
-                designHeight: 1280,
-                // Fill long phone screens instead of letterboxing the 720x1280 cover.
-                scaleMode: scaleMode.exactFit,
+                designHeight: startupTall ? 1600 : 1280,
+                scaleMode: scaleMode.noBorder,
                 // 以下配置的样式，尺寸相对设计宽高
                 textConfig: {
                     firstStartText: '正在准备一锅消不完',
@@ -91,21 +96,21 @@ checkVersion().then((enable) => {
                     textDuration: 1500,
                     // 文字样式
                     style: {
-                        bottom: 260,
-                        height: 28,
-                        width: 650,
-                        lineHeight: 28,
+                        bottom: 260 * startupScale + startupFooter,
+                        height: 28 * startupScale,
+                        width: 650 * startupScale,
+                        lineHeight: 28 * startupScale,
                         color: '#274a5f',
-                        fontSize: 22,
+                        fontSize: 22 * startupScale,
                     },
                 },
                 // 进度条样式
                 barConfig: {
                     style: {
-                        width: 450,
-                        height: 12,
+                        width: 450 * startupScale,
+                        height: 12 * startupScale,
                         padding: 1,
-                        bottom: 238,
+                        bottom: 238 * startupScale + startupFooter,
                         backgroundColor: '#6296b3',
                     },
                 },
@@ -121,7 +126,7 @@ checkVersion().then((enable) => {
                 // 加载页的素材配置
                 materialConfig: {
                     // 背景图或背景视频，两者都填时，先展示背景图，视频可播放后，播放视频
-                    backgroundImage: '$BACKGROUND_IMAGE',
+                    backgroundImage: startupTall ? '$BACKGROUND_IMAGE' : 'images/WechatCoverShort.jpg',
                     backgroundVideo: '$LOADING_VIDEO_URL',
                     iconImage: 'images/unity_logo.png', // icon图片，一般不更换
                 },

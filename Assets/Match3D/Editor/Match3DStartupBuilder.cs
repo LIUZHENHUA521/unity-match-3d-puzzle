@@ -9,6 +9,9 @@ using UnityEngine.UI;
 public static class Match3DStartupBuilder {
     const string AssetsRoot="Assets/Match3D/Resources/Match3D/";
     public const string CoverPath="Assets/Match3D/Art/Startup/WechatCover.png";
+    public const string ShortCoverPath="Assets/Match3D/Art/Startup/WechatCoverShort.png";
+    public const string ArtworkPath="Assets/Match3D/Art/Startup/ToyLoadingLong.png";
+    public const string ArtworkDataPath="Assets/Match3D/Art/Startup/ToyLoadingLong.bytes";
     static Match3DStartupBuilder(){EditorApplication.update+=Poll;}
     static void Poll(){
         if(!File.Exists("Temp/build-startup-loading")||EditorApplication.isCompiling||EditorApplication.isUpdating||EditorApplication.isPlayingOrWillChangePlaymode)return;
@@ -18,7 +21,14 @@ public static class Match3DStartupBuilder {
     }
     [MenuItem("Goose/UI/Build startup loading")]
     public static void Build(){
-        foreach(string name in new[]{"ToyLoading","Age8"}){
+        // Ship a full-resolution JPEG instead of a downscaled, block-compressed GPU texture.
+        var source=new Texture2D(2,2,TextureFormat.RGB24,false);
+        try{
+            if(!ImageConversion.LoadImage(source,File.ReadAllBytes(ArtworkPath)))throw new Exception("Cannot decode approved artwork");
+            File.WriteAllBytes(ArtworkDataPath,source.EncodeToJPG(95));
+        }finally{UnityEngine.Object.DestroyImmediate(source);}
+        AssetDatabase.ImportAsset(ArtworkDataPath);
+        foreach(string name in new[]{"Age8"}){
             string path=AssetsRoot+"Startup/"+name+".png";
             AssetDatabase.ImportAsset(path);
             var importer=(TextureImporter)AssetImporter.GetAtPath(path);
@@ -31,11 +41,9 @@ public static class Match3DStartupBuilder {
             root.gameObject.AddComponent<Image>().color=new Color32(168,218,246,255);
             var view=root.gameObject.AddComponent<Match3DStartupView>();
             var bindings=root.gameObject.AddComponent<Match3DUIView>();bindings.bindings=new Match3DUIView.Binding[0];
-            // Artwork fills the entire viewport, independently of the safe-area UI.
-            // It contains the title, so stretch rather than crop away either edge.
-            var artwork=Picture("Artwork",root,new Vector2(360,640),new Vector2(720,1280),"ToyLoading");
-            artwork.anchorMin=Vector2.zero;artwork.anchorMax=Vector2.one;
-            artwork.offsetMin=artwork.offsetMax=Vector2.zero;
+            view.artwork=Rect("Artwork",root,Vector2.zero,new Vector2(720,1600)).gameObject.AddComponent<Image>();
+            view.artwork.raycastTarget=false;
+            view.artworkData=AssetDatabase.LoadAssetAtPath<TextAsset>(ArtworkDataPath);
             var content=Rect("Content",root,Vector2.zero,new Vector2(720,1280));view.content=content;
             Picture("Age8",content,new Vector2(92,129),new Vector2(78,104),"Age8");
             Label("HealthTitle",content,new Vector2(360,200),new Vector2(440,30),"健康游戏忠告",23,FontStyle.Bold);
@@ -54,8 +62,9 @@ public static class Match3DStartupBuilder {
             var retryLabel=Label("RetryLabel",retry,new Vector2(360,640),new Vector2(180,42),"重试",24,FontStyle.Bold);retryLabel.color=Color.white;
             retry.gameObject.SetActive(false);
             PrefabUtility.SaveAsPrefabAsset(root.gameObject,AssetsRoot+"UI/StartupLoading.prefab");
-            Render(root.gameObject,CoverPath,720,1280,true);
-            AssetDatabase.SaveAssets();AssetDatabase.ImportAsset(CoverPath);
+            Render(root.gameObject,CoverPath,841,1870,true);
+            Render(root.gameObject,ShortCoverPath,841,1495,true);
+            AssetDatabase.SaveAssets();AssetDatabase.ImportAsset(CoverPath);AssetDatabase.ImportAsset(ShortCoverPath);
         }finally{UnityEngine.Object.DestroyImmediate(root.gameObject);}
     }
     static RectTransform Rect(string name,Transform parent,Vector2 pos,Vector2 size){

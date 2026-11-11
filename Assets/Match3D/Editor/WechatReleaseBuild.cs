@@ -61,6 +61,7 @@ public static class WechatReleaseBuild {
             if(result!=WXConvertCore.WXExportError.SUCCEED)throw new Exception("WeChat export failed: "+result);
             if(config.ProjectConf.assetLoadType!=1)throw new Exception("Resources exceed the package limit. Use Tools/wechat/build.py to omit unused reference sprites.");
             var output=Path.GetFullPath(release.output);
+            File.Copy(WechatReleaseAssets.StartupShortCoverPath,Path.Combine(output,"images","WechatCoverShort.jpg"),true);
             if(!File.Exists(Path.Combine(output,"game.js")))throw new Exception("Missing exported game.js");
             if(!Directory.Exists(Path.Combine(output,"data-package")) || Directory.GetFiles(Path.Combine(output,"data-package")).Length==0)
                 throw new Exception("Missing packaged game resources");

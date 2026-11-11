@@ -6,10 +6,27 @@ using UnityEngine.UI;
 public sealed class Match3DStartupView : MonoBehaviour {
     public const string HealthAdvice="抵制不良游戏，拒绝盗版游戏。\n注意自我保护，谨防受骗上当。\n适度游戏益脑，沉迷游戏伤身。\n合理安排时间，享受健康生活。";
     public RectTransform content;
+    public Image artwork;
+    public TextAsset artworkData;
+    Texture2D artworkTexture;
+    Sprite artworkSprite;
     public Text status;
     public Image progress;
     public Button retry;
     float shownProgress;
+    public void LoadArtwork(){
+        if(artworkTexture||!artwork||!artworkData)return;
+        artworkTexture=new Texture2D(2,2,TextureFormat.RGB24,false);
+        if(!ImageConversion.LoadImage(artworkTexture,artworkData.bytes,true))throw new InvalidOperationException("Cannot decode startup artwork");
+        artworkTexture.wrapMode=TextureWrapMode.Clamp;artworkTexture.filterMode=FilterMode.Bilinear;
+        artworkSprite=Sprite.Create(artworkTexture,new Rect(0,0,artworkTexture.width,artworkTexture.height),new Vector2(.5f,.5f),100);
+        artwork.sprite=artworkSprite;
+    }
+    void Awake(){LoadArtwork();}
+    void OnDestroy(){
+        if(artworkSprite){if(Application.isPlaying)Destroy(artworkSprite);else DestroyImmediate(artworkSprite);}
+        if(artworkTexture){if(Application.isPlaying)Destroy(artworkTexture);else DestroyImmediate(artworkTexture);}
+    }
     public void SetProgress(float value,string message){
         shownProgress=Mathf.Max(shownProgress,Mathf.Clamp01(value));
         progress.fillAmount=shownProgress;
@@ -24,16 +41,20 @@ public sealed class Match3DStartupView : MonoBehaviour {
         var root=(RectTransform)transform;
         var size=root.rect.size;
         if(size.x<=0||size.y<=0)return;
+        LoadArtwork();
+        if(artworkTexture){
+            float cover=Mathf.Max(size.x/artworkTexture.width,size.y/artworkTexture.height);
+            artwork.rectTransform.sizeDelta=new Vector2(artworkTexture.width,artworkTexture.height)*cover;
+        }
         // Only foreground UI uses the safe area. The sibling artwork fills the viewport.
         var safe=Screen.safeArea;
         bool valid=Application.isPlaying&&Screen.width>0&&Screen.height>0&&safe.width>0&&safe.height>0&&safe.xMax<=Screen.width&&safe.yMax<=Screen.height;
         Vector2 available=valid?new Vector2(size.x*safe.width/Screen.width,size.y*safe.height/Screen.height):size;
-        float scale=Mathf.Min(available.x/720f,available.y/1280f);
+        float scale=Mathf.Min(available.x/720f,available.y/1600f);
         content.localScale=Vector3.one*scale;
         // Keep the footer on the empty rug below the pan on tall screens.
         float safeBottom=valid?size.y*safe.yMin/Screen.height:0;
-        // The stretched illustration's lower wooden border also grows on long screens.
-        float bottom=Mathf.Max(safeBottom,Mathf.Max(0,size.y-1280f*scale)*.2f);
+        float bottom=Mathf.Max(safeBottom,Mathf.Max(0,size.y-1280f*size.x/720f)*.2f);
         float centerX=valid?(safe.center.x/Screen.width-.5f)*size.x:0;
         content.anchoredPosition=new Vector2(centerX,-size.y*.5f+bottom+640f*scale);
     }

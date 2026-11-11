@@ -1,5 +1,14 @@
 # 一锅消不完：启动加载页
 
+## 当前版本：确认后的长屏新图
+
+- 用户确认的新图已原样保存为 `Assets/Match3D/Art/Startup/ToyLoadingLong.png`，原始分辨率 841×1870（约 9:20）。此前 v3 的资源已替换。
+- `ToyLoadingLong.bytes` 是该图原尺寸 JPEG（质量 95），加载时解码成原分辨率纹理；不再通过 WebGL 1024px/DXT1 缩小和块压缩启动图。源 PNG 位于 Resources 外，避免重复打包。
+- Unity 背景采用等比 cover，随视口适量裁切，文字和图标单独适配安全区；不拉伸，不留黑边。
+- SDK 封面由同一 Unity UI 渲染为 841×1870 和 841×1495 两种构图，根据手机窗口比例选择，再以 NO_BORDER 等比填满。保留原版 8+ 标识和真实字体忠告。
+- 发布时只缩小主页中已被原图 JPEG 同步替换的备用精灵，以腾出新封面的包体空间；主页实际展示的原图 JPEG 不变。此优化只作用于隔离构建副本。
+- 验证报告与四种屏幕截图已更新。下方 0.1.48/0.1.49 段落为旧版历史记录。
+
 ## 素材来源
 
 - 玩具主题主图：本次确认的 `output/imagegen/yi-guo-xiao-bu-wan-loading-toys-v3.png`，已复制到版本管理目录 `Assets/Match3D/Resources/Match3D/Startup/ToyLoading.png`。
