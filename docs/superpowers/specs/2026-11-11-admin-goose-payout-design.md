@@ -22,3 +22,5 @@ CommonDialog.prefab 中 Title ribbon 当前排在 Title 后，盖住文字。调
 - 复用 transferCash 前增加可选 expected_mchid 字段，在实际内存配置选定后、签名/微信请求前校验；两条内部原单查询分支均透传。旧调用不传该字段时行为不变。发布基线为下载的现网完整源码，仅追加此校验，保留生产中的付款 guard，不混入旧本地目录的未发布改动。
 - 状态更新与解锁事务化，迟到结果不覆盖终态，只有玩家锁仍指向此单时才释放。所有成功/失败终态核对订单号、金额、商户；授权逐项核对身份及授权标识。
 - spec-document-reviewer 已审查上述补充，确认方案充分，要求测试商户变化、内部查询两分支及旧调用兼容。
+
+实施补充：后台通过现有 adminAuth refresh 验证管理员令牌；真实玩家授权查询使用 transferCash query_authorization，防止面向客户端的 merchantTransferAuth 以调用者 OPENID 覆盖目标玩家。

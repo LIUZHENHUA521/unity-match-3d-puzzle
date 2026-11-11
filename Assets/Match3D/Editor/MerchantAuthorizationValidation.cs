@@ -8,7 +8,7 @@ using UnityEngine;
 
 [InitializeOnLoad]
 public static class MerchantAuthorizationValidation {
-    const string Marker="Temp/run-merchant-authorization-check",Output="Temp/merchant-authorization-validation";
+    const string Marker="Temp/run-merchant-authorization-check",Output="Library/MerchantAuthorizationValidation";
     static readonly BindingFlags Flags=BindingFlags.Instance|BindingFlags.NonPublic;
     static MerchantAuthorizationValidation(){EditorApplication.update+=Poll;}
     public static void RunBatch(){
