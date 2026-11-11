@@ -144,6 +144,7 @@ public partial class Match3DFlow : MonoBehaviour {
         }
         StartupService<Match3DGameRecords>().Initialize(endpoint);
         StartupService<Match3DRewards>().Initialize(endpoint);
+        StartupService<Match3DMerchantAuthorization>().Initialize(endpoint);
         if(!Match3DInvitations.Instance)StartupService<Match3DInvitations>().Initialize(endpoint);
 #endif
             startupServicesReady=true;
@@ -206,6 +207,7 @@ public partial class Match3DFlow : MonoBehaviour {
 #else
         if(network)network.Disconnect();StopBoard();LocalPreview=false;IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
         Match3DHomeView.Create(this,page,Match3DHomeView.Tab.Home);
+        if(Match3DMerchantAuthorization.Instance)Match3DMerchantAuthorization.Instance.OnHome();
 #endif
     }
     public void ShowHomeTab(Match3DHomeView.Tab tab){

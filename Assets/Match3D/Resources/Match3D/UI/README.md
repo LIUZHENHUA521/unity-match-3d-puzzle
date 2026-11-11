@@ -52,3 +52,7 @@ Unity Play 模式下可运行菜单 Goose → UI → Validate prefab UI in Play 
 ## 邮件新增界面
 
 `Mailbox.prefab`、`CommonDialog.prefab` 使用720×1280内容设计区，短屏完整缩放。`HomeMenu.prefab` 跟随首页左上菜单定位；邮件为第三项。通用框标题、正文和两个按钮由 `Match3DCommonDialog.Configure` 配置。详细发放、领取及验证说明见 `Tools/mail-system.md`。
+
+公共弹窗顶部复用 `ToolTextSkinPS/title-ribbon.png` 蓝色标题飘带，按原比例显示，动态标题居中并自动缩小以适配长度。可用 `Goose Match3D/UI/Update Common Dialog Title Ribbon` 更新已有预制体；完整邮件 UI 构建同样保留该样式。
+
+公共弹窗双按钮文字使用 `Match3DTextStroke` 的 2.5 px 圆形描边：蓝色按钮对应深蓝色，粉色按钮对应深粉色。文字按实际字形居中，中心相对图片上移 10 px，以对齐彩色按钮面，排除底部阴影的影响。

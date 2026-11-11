@@ -1,0 +1,72 @@
+PASS unapproved player sees startup prompt
+PASS both choices are clear
+PASS prompt blocks underlying home taps
+PASS font contains 开
+PASS font contains 通
+PASS font contains 微
+PASS font contains 信
+PASS font contains 收
+PASS font contains 款
+PASS font contains 授
+PASS font contains 权
+PASS font contains 是
+PASS font contains 否
+PASS font contains 现
+PASS font contains 在
+PASS font contains 授
+PASS font contains 权
+PASS font contains 接
+PASS font contains 收
+PASS font contains 奖
+PASS font contains 励
+PASS font contains ？
+PASS font contains 后
+PASS font contains ，
+PASS font contains 符
+PASS font contains 合
+PASS font contains 规
+PASS font contains 则
+PASS font contains 并
+PASS font contains 审
+PASS font contains 核
+PASS font contains 通
+PASS font contains 过
+PASS font contains 的
+PASS font contains 可
+PASS font contains 发
+PASS font contains 放
+PASS font contains 到
+PASS font contains 微
+PASS font contains 信
+PASS font contains 零
+PASS font contains 钱
+PASS font contains 。
+PASS font contains 也
+PASS font contains 以
+PASS font contains 暂
+PASS font contains 不
+PASS font contains 继
+PASS font contains 续
+PASS font contains 游
+PASS font contains 戏
+PASS font contains 暂
+PASS font contains 不
+PASS font contains 授
+PASS font contains 权
+PASS font contains 立
+PASS font contains 即
+PASS font contains 授
+PASS font contains 权
+PASS skip closes prompt and restores interaction
+PASS skip is respected on subsequent home visits
+PASS already authorized player is not prompted
+PASS status errors are not mistaken for missing consent
+PASS late startup result does not interrupt another screen
+PASS in-flight request prevents repeats but can be dismissed
+PASS closing during preparation prevents late native launch
+PASS native cancellation restores play; repeated callback ignored
+PASS native page receives server package
+PASS server confirmed authorization closes prompt
+PASS native page success alone is not treated as consent
+PASS account switch discards prior authorization result
+COMPLETE

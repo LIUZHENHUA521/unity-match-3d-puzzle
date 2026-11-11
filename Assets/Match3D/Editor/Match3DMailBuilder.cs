@@ -1,10 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+[InitializeOnLoad]
 public static class Match3DMailBuilder {
  const string Root="Assets/Match3D/Resources/Match3D/";
+ static Match3DMailBuilder(){EditorApplication.update+=()=>{
+  const string marker="Temp/update-common-dialog-title";
+  if(!File.Exists(marker)||EditorApplication.isCompiling||EditorApplication.isUpdating||EditorApplication.isPlayingOrWillChangePlaymode)return;
+  File.Delete(marker);
+  try{UpdateCommonDialogTitle();File.WriteAllText("Temp/common-dialog-title-build.txt","PASS common dialog title ribbon updated");}
+  catch(Exception e){File.WriteAllText("Temp/common-dialog-title-build.txt","FAIL "+e);Debug.LogException(e);}
+ };}
  static Font Font=>AssetDatabase.LoadAssetAtPath<Font>(Root+"Fonts/DefaultChinese.otf");
  public static RectTransform Rect(string n,Transform p,float x,float y,float w,float h){var r=new GameObject(n,typeof(RectTransform)).GetComponent<RectTransform>();r.SetParent(p,false);r.sizeDelta=new Vector2(w,h);r.anchoredPosition=new Vector2(x,y);return r;}
  static Sprite Sprite(string n)=>AssetDatabase.LoadAssetAtPath<Sprite>(Root+"MailSkinPS/"+n+".png");
@@ -27,8 +36,41 @@ public static class Match3DMailBuilder {
   skin.unread=Sprite("image_BlueEmail_cube");skin.read=Sprite("image_yellowEmail_cube");skin.status=Text("Status",c,0,-248,470,45,"",19);skin.more=TextButton("More",c,115,-304,190,76,"加载更多");ui.bindings=new[]{Bind("Close",close)};Save(root,"Mailbox");
  }
  static void Dialog(){var root=RootView("CommonDialog",out var c,out var ui);var d=root.gameObject.AddComponent<Match3DCommonDialog>();Pic("Background","image_pop-up_sky03",c,0,0,596,681);d.title=Text("Title",c,0,263,490,70,"道具领取",46,Color.white);d.title.resizeTextForBestFit=true;d.title.resizeTextMinSize=22;d.title.resizeTextMaxSize=46;var outline=d.title.gameObject.AddComponent<Outline>();outline.effectColor=new Color32(0,114,210,255);outline.effectDistance=new Vector2(3,-3);
+  ApplyTitleRibbon(d);
   Scroll("Body scroll",c,0,27,470,340,out var body);var text=Text("Body",body,0,0,470,340,"领取内容",28);var rt=(RectTransform)text.transform;rt.anchorMin=Vector2.zero;rt.anchorMax=Vector2.one;rt.offsetMin=rt.offsetMax=Vector2.zero;text.alignment=TextAnchor.UpperLeft;var layout=body.gameObject.AddComponent<VerticalLayoutGroup>();layout.childControlWidth=true;layout.childControlHeight=true;layout.childForceExpandHeight=false;body.gameObject.AddComponent<ContentSizeFitter>().verticalFit=ContentSizeFitter.FitMode.PreferredSize;d.body=text;
-  d.status=Text("Status",c,0,-177,470,48,"",20);d.left=Button(Pic("Cancel","image_btn_blue02 拷贝 15",c,-132,-255,230,117));d.right=Button(Pic("Confirm","image_btn_red02",c,132,-255,230,118));d.leftLabel=Text("Label",d.left.transform,0,4,210,65,"返回邮件",29,Color.white);d.rightLabel=Text("Label",d.right.transform,0,4,210,65,"确认领取",29,Color.white);d.close=Button(Pic("Close","img_exit_x",c,281,320,81,81));ui.bindings=new[]{Bind("Close",d.close)};Save(root,"CommonDialog");
+  d.status=Text("Status",c,0,-177,470,48,"",20);d.left=Button(Pic("Cancel","image_btn_blue02 拷贝 15",c,-132,-255,230,117));d.right=Button(Pic("Confirm","image_btn_red02",c,132,-255,230,118));d.leftLabel=Text("Label",d.left.transform,0,4,210,65,"返回邮件",29,Color.white);d.rightLabel=Text("Label",d.right.transform,0,4,210,65,"确认领取",29,Color.white);d.close=Button(Pic("Close","img_exit_x",c,281,320,81,81));ApplyButtonLabels(d);ui.bindings=new[]{Bind("Close",d.close)};Save(root,"CommonDialog");
+ }
+ [MenuItem("Goose Match3D/UI/Update Common Dialog Title Ribbon")]
+ public static void UpdateCommonDialogTitle(){
+  string path=Root+"UI/CommonDialog.prefab";var root=PrefabUtility.LoadPrefabContents(path);
+  try{var dialog=root.GetComponent<Match3DCommonDialog>();ApplyTitleRibbon(dialog);ApplyButtonLabels(dialog);PrefabUtility.SaveAsPrefabAsset(root,path);}
+  finally{PrefabUtility.UnloadPrefabContents(root);}
+ }
+ static void ApplyButtonLabels(Match3DCommonDialog dialog){
+  StyleButtonLabel(dialog.leftLabel,new Color32(0,106,190,255));
+  StyleButtonLabel(dialog.rightLabel,new Color32(202,36,91,255));
+ }
+ static void StyleButtonLabel(Text label,Color color){
+  // Both sprites include a lower bevel/shadow: center on the colored face, not the texture bounds.
+  label.rectTransform.anchoredPosition=new Vector2(0,10);
+  label.alignment=TextAnchor.MiddleCenter;label.alignByGeometry=true;
+  var stroke=label.GetComponent<Match3DTextStroke>();
+  if(!stroke)stroke=label.gameObject.AddComponent<Match3DTextStroke>();
+  stroke.color=color;stroke.radius=2.5f;
+ }
+ static void ApplyTitleRibbon(Match3DCommonDialog dialog){
+  var sprite=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"ToolTextSkinPS/title-ribbon.png");
+  if(!sprite)throw new InvalidOperationException("Missing shared title ribbon");
+  var parent=dialog.title.transform.parent;
+  var existing=parent.Find("Title ribbon");
+  var ribbon=existing?existing.GetComponent<Image>():Rect("Title ribbon",parent,0,332,500,500*sprite.rect.height/sprite.rect.width).gameObject.AddComponent<Image>();
+  ribbon.sprite=sprite;ribbon.preserveAspect=true;ribbon.raycastTarget=false;
+  ribbon.rectTransform.anchoredPosition=new Vector2(0,332);ribbon.rectTransform.sizeDelta=new Vector2(500,500*sprite.rect.height/sprite.rect.width);
+  int titleIndex=dialog.title.transform.GetSiblingIndex();
+  if(ribbon.transform.GetSiblingIndex()<titleIndex)titleIndex--;
+  ribbon.transform.SetSiblingIndex(titleIndex);
+  dialog.title.rectTransform.anchoredPosition=new Vector2(0,344);dialog.title.rectTransform.sizeDelta=new Vector2(390,64);
+  dialog.title.fontSize=42;dialog.title.resizeTextForBestFit=true;dialog.title.resizeTextMinSize=22;dialog.title.resizeTextMaxSize=42;
  }
  static void Menu(){var root=Rect("HomeMenu",null,0,0,720,1280);root.anchorMin=Vector2.zero;root.anchorMax=Vector2.one;root.sizeDelta=Vector2.zero;var ui=root.gameObject.AddComponent<Match3DUIView>();var skin=root.gameObject.AddComponent<Match3DHomeMenu>();var shade=root.gameObject.AddComponent<Image>();shade.color=new Color(0,0,0,.25f);var dismiss=Button(shade);
   var panel=Pic("Menu panel","image_popupMenu_cube",root,-188,0,216,299);var pr=(RectTransform)panel.transform;pr.anchorMin=pr.anchorMax=new Vector2(.5f,1);pr.anchoredPosition=new Vector2(-188,-266);panel.raycastTarget=true;
