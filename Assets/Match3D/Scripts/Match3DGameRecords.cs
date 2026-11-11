@@ -59,7 +59,8 @@ public sealed class Match3DGameRecords : MonoBehaviour {
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         try{active.platform=WeChatWASM.WX.GetSystemInfoSync().platform;}catch{}
 #endif
-        if(Match3DFlow.Instance&&Match3DFlow.Instance.UnlimitedMagnet)active.levelVersion=Match3DTestPrivileges.LevelVersion;
+        // Qualified test accounts keep the server's level snapshot; test tool usage is recorded separately.
+        if(string.IsNullOrEmpty(rewardTier)&&Match3DFlow.Instance&&Match3DFlow.Instance.UnlimitedMagnet)active.levelVersion=Match3DTestPrivileges.LevelVersion;
         owner=null;started=false;activeSeconds=0;cleared=0;
     }
     public void StartRecord(){if(active==null||started)return;started=true;active.startedAt=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -99,6 +100,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
             case "daily_quota_claimed":return "通关已记录，今日已领取过该档位红包";
             case "rewards_closed":return "通关已记录，红包挑战已关闭，本局未获得红包";
             case "qualification_expired":return "通关已记录，本局红包资格已过期";
+            case "test_tools_not_allowed":return "通关已记录，本局未开通测试道具权限，请重新开始挑战";
             default:return "通关已记录，未获红包资格："+error;
         }
     }

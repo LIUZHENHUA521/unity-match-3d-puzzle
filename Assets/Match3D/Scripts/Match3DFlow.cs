@@ -254,8 +254,8 @@ public partial class Match3DFlow : MonoBehaviour {
         if(Match3DRewards.Instance)Match3DRewards.Instance.Begin(theme,tier,library.themes[theme].id);
 #endif
     }
-    public void BeginQualified(int theme,string runId,string tier,string version,Match3DDailyLevel level=null){
-        if(Match3DTestPrivileges.AccountEnabled){BeginDailyPractice(theme,level);return;}unlimitedMagnetRun=false;runModelTheme=null;dailyLevel=level;
+    public void BeginQualified(int theme,string runId,string tier,string version,Match3DDailyLevel level=null,bool testToolsEnabled=false){
+        unlimitedMagnetRun=testToolsEnabled;runModelTheme=null;dailyLevel=level;LocalPreview=false;
         if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=level!=null?level.date:Today;Match3DGameRecords.Instance.QualifiedRun(runId,tier,version,level);StartStage();
     }
     public void ShowRedPackets(){BlocksGameplay=true;var view=OpenModal("RedPackets");view.Bind("Close",()=>CloseModal());view.GetComponent<Match3DRewardsView>().Connect();}
