@@ -66,9 +66,9 @@ public static class Match3DMailBuilder {
   var ribbon=existing?existing.GetComponent<Image>():Rect("Title ribbon",parent,0,332,500,500*sprite.rect.height/sprite.rect.width).gameObject.AddComponent<Image>();
   ribbon.sprite=sprite;ribbon.preserveAspect=true;ribbon.raycastTarget=false;
   ribbon.rectTransform.anchoredPosition=new Vector2(0,332);ribbon.rectTransform.sizeDelta=new Vector2(500,500*sprite.rect.height/sprite.rect.width);
-  int titleIndex=dialog.title.transform.GetSiblingIndex();
-  if(ribbon.transform.GetSiblingIndex()<titleIndex)titleIndex--;
-  ribbon.transform.SetSiblingIndex(titleIndex);
+  // uGUI draws later siblings on top. Move only a ribbon that covers its title.
+  if(ribbon.transform.GetSiblingIndex()>dialog.title.transform.GetSiblingIndex())
+   ribbon.transform.SetSiblingIndex(dialog.title.transform.GetSiblingIndex());
   dialog.title.rectTransform.anchoredPosition=new Vector2(0,344);dialog.title.rectTransform.sizeDelta=new Vector2(390,64);
   dialog.title.fontSize=42;dialog.title.resizeTextForBestFit=true;dialog.title.resizeTextMinSize=22;dialog.title.resizeTextMaxSize=42;
  }

@@ -11,7 +11,19 @@ public static class MerchantAuthorizationValidation {
     const string Marker="Temp/run-merchant-authorization-check",Output="Temp/merchant-authorization-validation";
     static readonly BindingFlags Flags=BindingFlags.Instance|BindingFlags.NonPublic;
     static MerchantAuthorizationValidation(){EditorApplication.update+=Poll;}
+    public static void RunBatch(){
+        UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/Match3D.unity");
+        var prefab=UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Resources/Match3D/UI/CommonDialog.prefab");
+        var dialog=prefab.GetComponent<Match3DCommonDialog>();
+        if(dialog.title.transform.parent.Find("Title ribbon").GetSiblingIndex()>=dialog.title.transform.GetSiblingIndex())throw new Exception("Saved ribbon covers title");
+        Directory.CreateDirectory(Output);File.Delete(Output+"/result.txt");File.WriteAllText(Marker,"");
+        SessionState.SetBool("merchant-auth-batch",true);
+    }
     static void Poll(){
+        if(SessionState.GetBool("merchant-auth-batch",false)&&!EditorApplication.isPlayingOrWillChangePlaymode&&!File.Exists(Marker)&&File.Exists(Output+"/result.txt")){
+            var result=File.ReadAllText(Output+"/result.txt");
+            if(result.Contains("COMPLETE")||result.Contains("FAIL")){SessionState.SetBool("merchant-auth-batch",false);EditorApplication.Exit(result.Contains("COMPLETE")?0:1);return;}
+        }
         if(File.Exists("Temp/compile-merchant-authorization-webgl")&&!EditorApplication.isCompiling&&!EditorApplication.isUpdating&&!EditorApplication.isPlayingOrWillChangePlaymode){
             File.Delete("Temp/compile-merchant-authorization-webgl");Directory.CreateDirectory(Output);
             try{
@@ -57,6 +69,7 @@ public static class MerchantAuthorizationValidation {
         Check(Dialog.leftLabel.text=="暂不授权"&&Dialog.rightLabel.text=="立即授权","both choices are clear");
         Check(Match3DFlow.Instance.BlocksGameplay,"prompt blocks underlying home taps");
         foreach(var text in new[]{Dialog.title,Dialog.body,Dialog.leftLabel,Dialog.rightLabel})foreach(char ch in text.text.Where(c=>!char.IsWhiteSpace(c)).Distinct())Check(text.font.HasCharacter(ch),"font contains "+ch);
+        Check(Dialog.title.transform.GetSiblingIndex()>Dialog.title.transform.parent.Find("Title ribbon").GetSiblingIndex(),"title renders above its ribbon");
         Capture();Dialog.left.onClick.Invoke();yield return null;
         Check(!Dialog&&!Match3DFlow.Instance.BlocksGameplay,"skip closes prompt and restores interaction");
         Match3DFlow.Instance.Home();yield return new WaitForSecondsRealtime(.2f);Check(!Dialog,"skip is respected on subsequent home visits");
