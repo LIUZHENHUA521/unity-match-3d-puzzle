@@ -20,6 +20,7 @@ public static class AddTimeToolValidation {
     }
     static void Check(bool ok,string message){if(!ok)throw new Exception(message);File.AppendAllText(Result,"PASS "+message+"\n");}
     static IEnumerator Guard(){
+        Match3DRewardAcquisition.Configure(new Match3DRewardAcquisition.Configuration{sharesEnabled=false});
         File.WriteAllText(Result,"");var service=Match3DInvitations.Instance;
         bool created=!service;
         if(created){service=new GameObject("Local inventory fixture").AddComponent<Match3DInvitations>();service.Initialize("http://127.0.0.1:18765");}
@@ -28,7 +29,7 @@ public static class AddTimeToolValidation {
         var steps=Run();string error=null;
         while(true){bool more=false;try{more=steps.MoveNext();}catch(Exception e){error=e.ToString();}if(error!=null||!more)break;yield return steps.Current;}
         typeof(Match3DInvitations).GetField("token",Flags).SetValue(service,token);typeof(Match3DInvitations).GetField("endpoint",Flags).SetValue(service,endpoint);typeof(Match3DInvitations).GetProperty("State").SetValue(service,state);
-        Match3DRewardedVideo.EditorShowOverride=null;
+        Match3DRewardedVideo.EditorShowOverride=null;Match3DRewardAcquisition.Configure(null);
         File.AppendAllText(Result,error==null?"COMPLETE\n":"FAIL "+error);
         Match3DFlow.Instance.Home();
         if(created)UnityEngine.Object.Destroy(service.gameObject);

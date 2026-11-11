@@ -2,8 +2,8 @@
 
 ## 编辑资源
 
-- 弹窗：`Assets/GooseReplica/Resources/Replica/UI/InviteRewards.prefab`
-- 图片：`Assets/GooseReplica/Resources/Replica/InviteSkinPS/`
+- 弹窗：`Assets/Match3D/Resources/Match3D/UI/InviteRewards.prefab`
+- 图片：`Assets/Match3D/Resources/Match3D/InviteSkinPS/`
 - 原 PSD：`弹窗-邀请获得奖励.psd` 的可见 `03` 组。导出时使用临时副本，未修改原文件。
 - 6 张透明 PNG，最大 592×878，合计 300625 bytes；裁掉透明边缘并无损压缩。没有重新导出主界面背景。
 - Prefab 根节点沿用 720×1560，Content 是 720×1280 安全编辑范围；短屏整体缩放。按钮、背景、标题、奖励图示、说明和动态文本独立。
@@ -11,13 +11,13 @@
 
 ## 运行规则
 
-首页邀请按钮打开弹窗。微信分享携带 `inviter` 参数，服务器使用 `wx.login` 的 code 换取真实微信身份。新人首次注册时事务绑定邀请人、增加人数并发放三种道具各 1。已注册用户、自邀、重复打开、分享取消不会发奖。
+首页邀请按钮打开弹窗。微信分享携带 `inviter` 参数，服务器使用 `wx.login` 的 code 换取真实微信身份。新人首次注册时事务绑定邀请人、增加人数并发放四种道具（移出、吸附、洗牌、加时）各 1。已注册用户、自邀、重复打开、分享取消不会发奖。
 
 新人定义为该邀请系统启用后首次登记微信身份。旧版游戏只有匿名 PVP 身份，无法事后识别旧游客是否玩过，不能据此承诺排除所有旧版玩家。
 
 每局先使用原有免费次数，再扣永久库存。库存消费由服务端确认；待处理编号按用户保存，失败取消、重试、退款均幂等。网络异常最多两轮请求后解除冻结，未完成取消的编号在下次微信登录恢复，期间禁止新的库存消费。客户端不存可自行增加的奖励数。
 
-编辑器只预览，不能模拟真实邀请发奖。`ReplicaInviteValidation.Run()` 仅用于本地 fixture 测试，会临时使用 127.0.0.1:8098；退出 Play 恢复生产配置。
+编辑器只预览，不能模拟真实邀请发奖。`Match3DInviteValidation.Run()` 仅用于本地 fixture 测试，会临时使用 127.0.0.1:8098；退出 Play 恢复生产配置。
 
 ## 服务端配置
 
@@ -27,7 +27,7 @@
 
 数据库集合 `goose_invite_users`、`goose_invite_uses`，只允许服务端访问，客户端读写规则应关闭。邀请奖励和消费使用 CloudBase 事务；数据库不可用时拒绝发奖，不降级成内存库存。生产配置完成后，应验证真实数据库并发事务及两个微信账号的首次进入发奖流程。
 
-接口：POST `/invites/login`（code、inviter），`/invites/state`，`/invites/consume`，`/invites/refund`（requestId、type=0/1/2）。除 login 外均要求本服务签发的 Bearer token。原 `/session` 和 `/ws` 不受影响。
+接口：POST `/invites/login`（code、inviter），`/invites/state`，`/invites/consume`，`/invites/refund`（requestId、type=0/1/2/3）。除 login 外均要求本服务签发的 Bearer token。原 `/session` 和 `/ws` 不受影响。
 
 取消先到时写已退款终态，不增加库存；迟到的相同消费返回已取消。相同编号不同道具拒绝，消费凭证按认证用户隔离。已退款响应绝不能执行道具效果。
 
@@ -49,3 +49,11 @@
 - 16 项本地测试通过；公网双人对战建房、同步牌组、出牌、重复出牌拒绝、撤销额度及断线结果回归通过。
 - 未执行真实微信用户的新邀请发奖、数据库并发写入真机测试；需要新版客户端双账号验收。此次仅部署后端，未重新打包/上传微信体验版。
 - 部署使用的本机临时密钥文件已清理；凭据未写入源码。
+
+## 加时道具适配（2026-11-11）
+
+- 邀请弹窗改为独立图标与名称，显示顺序：移出、吸附、加时、洗牌；沿用现有 GameplaySkin 美术。
+- 新邀请成功时四种库存各增加 1，服务端事务保证同一新人只发奖一次。旧三项库存先补齐第四项再加奖；不按历史邀请人数补发。
+- 协议编号仍是移出 0、吸附 1、洗牌 2、加时 3。旧客户端仍返回三项库存，新客户端通过 `X-Goose-Tool-Count: 4` 获取四项；邀请奖励不受新人客户端版本影响。
+- Unity 批处理验证入口 `Match3DInviteValidation.BuildAndCheck`：重建 Prefab、检查四项图标/名称/按钮绑定，并输出正常屏与短屏预览至 `docs/validation/invite-add-time/`。
+- 本轮验证及发布状态见该目录 README；旧部署记录仅代表历史版本。

@@ -33,14 +33,12 @@ public sealed class Match3DReviveView : MonoBehaviour {
         var circle=animatedContent.Find("Tool icon background").GetComponent<Image>();
         circle.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
         var description=animatedContent.Find("Description");description.gameObject.SetActive(false);
-        if(type==BoardTools.AddTimeType)AddToolText("Tool description",animatedContent,new Vector2(0,-65),new Vector2(480,100),"增加 3 分钟游戏时间",32,new Color(0,.35f,.58f));
-        else AddToolArtwork("Tool description",animatedContent,new Vector2(0,-65),descriptions[type]);
+        AddToolArtwork("Tool description",animatedContent,new Vector2(0,-65),type==BoardTools.AddTimeType?"add-time-description":descriptions[type]);
         var buttonImage=revive.GetComponent<Image>();buttonImage.sprite=Resources.Load<Sprite>("Match3D/SettingsSkinPS/image_btn_blue02");buttonImage.preserveAspect=true;
         buttonImage.rectTransform.anchoredPosition=new Vector2(0,-205);
         buttonImage.rectTransform.sizeDelta=new Vector2(300,300*buttonImage.sprite.rect.height/buttonImage.sprite.rect.width);
         AddToolText("Tool ad label",revive.transform,new Vector2(0,10),((RectTransform)revive.transform).sizeDelta,"看广告并使用",30,Color.white);
-        var buttonLabel=revive.transform.Find("Tool ad label").GetComponent<Text>();buttonLabel.fontStyle=FontStyle.Bold;
-        var outline=buttonLabel.gameObject.AddComponent<Outline>();outline.effectColor=new Color(0,.32f,.55f,.8f);outline.effectDistance=new Vector2(1,-1);
+        StyleAcquisitionLabel(revive.transform.Find("Tool ad label").GetComponent<Text>());
         status.text="";status.gameObject.SetActive(false);
     }
     void AddToolArtwork(string name,Transform parent,Vector2 position,string asset){
@@ -57,7 +55,28 @@ public sealed class Match3DReviveView : MonoBehaviour {
         var rect=(RectTransform)obj.transform;rect.sizeDelta=size;rect.anchoredPosition=position;
         var text=obj.GetComponent<Text>();text.font=progress.font;text.fontSize=fontSize;text.alignment=TextAnchor.MiddleCenter;text.color=color;text.text=value;text.raycastTarget=false;
     }
+    static void StyleAcquisitionLabel(Text text){
+        text.fontStyle=FontStyle.Bold;text.fontSize=32;text.color=Color.white;
+        var outline=text.GetComponent<Outline>();if(!outline)outline=text.gameObject.AddComponent<Outline>();
+        outline.effectColor=new Color32(35,122,195,255);outline.effectDistance=new Vector2(2,-2);outline.useGraphicAlpha=true;
+    }
     public void ShowAdStatus(string message){if(toolMode){if(Match3DFlow.Instance)Match3DFlow.Instance.ShowTips(message);return;}if(status)status.text=message;}
+    public void SetAcquisitionRoute(Match3DRewardAcquisition.Route route){
+        string verb=route==Match3DRewardAcquisition.Route.Free?"免费":route==Match3DRewardAcquisition.Route.Share?"分享":route==Match3DRewardAcquisition.Route.Ad?"看广告":"暂不可用";
+        var label=revive.transform.Find("Tool ad label")??revive.transform.Find("Acquisition label");
+        if(!label){
+            // Replace the baked video artwork so a share/free offer never displays an ad icon.
+            var buttonImage=revive.GetComponent<Image>();buttonImage.sprite=Resources.Load<Sprite>("Match3D/SettingsSkinPS/image_btn_blue02");buttonImage.preserveAspect=true;
+            buttonImage.rectTransform.sizeDelta=new Vector2(300,300*buttonImage.sprite.rect.height/buttonImage.sprite.rect.width);
+            AddToolText("Acquisition label",revive.transform,new Vector2(0,10),buttonImage.rectTransform.sizeDelta,"",30,Color.white);
+            label=revive.transform.Find("Acquisition label");
+        }
+        StyleAcquisitionLabel(label.GetComponent<Text>());
+        label.GetComponent<Text>().text=route==Match3DRewardAcquisition.Route.Unavailable?verb:verb+(toolMode?(route==Match3DRewardAcquisition.Route.Free?"使用":"并使用"):"复活");
+        revive.interactable=route!=Match3DRewardAcquisition.Route.Unavailable;
+        if(!toolMode)status.text=route==Match3DRewardAcquisition.Route.Ad?"观看完整视频后复活":route==Match3DRewardAcquisition.Route.Share?"分享后返回游戏继续":route==Match3DRewardAcquisition.Route.Free?"本次可免费复活":"暂时无法获取，请稍后再试";
+    }
+    public void ShowAcquisitionStatus(Match3DRewardAcquisition.Route route){ShowAdStatus(route==Match3DRewardAcquisition.Route.Share?"正在打开分享…":route==Match3DRewardAcquisition.Route.Ad?"正在加载视频…":"正在使用…");}
     public void AllowRetry(string message){decided=false;group.interactable=true;ShowAdStatus(message);}
     void Decide(Action action){if(decided||!group.interactable)return;decided=true;group.interactable=false;if(Match3DFlow.Instance)Match3DFlow.Instance.HomeClick();action?.Invoke();}
 }

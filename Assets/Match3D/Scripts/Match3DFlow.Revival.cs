@@ -19,20 +19,22 @@ public partial class Match3DFlow {
         int version=++reviveVersion;
         float progress=Mathf.Clamp01(1f-LevelGenerator.Instance.objectsOnScene.Count/(float)Mathf.Max(1,InitialCount));
         var view=OpenModal(timeout?"ReviveTime":"ReviveClear").GetComponent<Match3DReviveView>();
-        view.Configure(progress,()=>WatchRevivalVideo(timeout,version,view),()=>DeclineRevival(version));
+        var offer=Match3DRewardAcquisition.Next(Match3DRewardAcquisition.Entry.Revive);
+        view.Configure(progress,()=>WatchRevivalVideo(timeout,version,view,offer),()=>DeclineRevival(version));
+        view.SetAcquisitionRoute(offer.route);
         return true;
     }
-    void WatchRevivalVideo(bool timeout,int version,Match3DReviveView view){
+    void WatchRevivalVideo(bool timeout,int version,Match3DReviveView view,Match3DRewardAcquisition.Offer offer){
         if(!revivePending||version!=reviveVersion||!view)return;
         if(!reviveAds){var host=new GameObject("Goose Revival Ads");host.transform.SetParent(transform,false);reviveAds=host.AddComponent<Match3DRewardedVideo>();}
-        view.ShowAdStatus("正在加载复活视频…");
-        reviveAds.Show(timeout,(completed,error)=>{
+        view.ShowAcquisitionStatus(offer.route);
+        reviveAds.Acquire(offer,timeout,(completed,error)=>{
             if(!revivePending||version!=reviveVersion||!view)return;
-            if(completed)AcceptRevival(timeout,version);
-            else view.AllowRetry(string.IsNullOrEmpty(error)?"完整观看视频后才能复活":error);
+            if(completed&&Match3DRewardAcquisition.IsCurrent(offer))AcceptRevival(timeout,version,offer);
+            else view.AllowRetry(string.IsNullOrEmpty(error)?"获取未完成，请重试":error);
         });
     }
-    void AcceptRevival(bool timeout,int version){
+    void AcceptRevival(bool timeout,int version,Match3DRewardAcquisition.Offer offer){
         if(!revivePending||version!=reviveVersion||ScreenName!="game")return;
         if(timeout){
             if(reviveTimeUsed)return;
@@ -41,6 +43,7 @@ public partial class Match3DFlow {
             if(reviveClearUsed||!InputController.Instance.ReviveSourceTray())return;
             reviveClearUsed=true;
         }
+        Match3DRewardAcquisition.Commit(offer);
         revivePending=false;reviveVersion++;
         CloseModal(true);GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
         BoosterManager.Instance.BoostersInteractibility(true);BoosterManager.Instance.CheckHintInteractibility();

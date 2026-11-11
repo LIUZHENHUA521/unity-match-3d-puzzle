@@ -1,0 +1,62 @@
+{
+  "commit": "ffaa2465d6ab1db5de236d703da14d909df87be5",
+  "version": "goose-3d-pvp-026",
+  "status": "normal",
+  "trafficPercent": 100,
+  "buildId": 2612147099,
+  "verifiedSourceFiles": 15,
+  "configurationPreserved": [
+    "Cpu",
+    "Mem",
+    "MinNum",
+    "MaxNum",
+    "Port",
+    "EnvParams",
+    "OpenAccessTypes",
+    "VpcConf"
+  ],
+  "health": [
+    {
+      "url": "https://9nanimal.cn/health",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "service": "goose-3d-pvp",
+        "rooms": 0
+      }
+    },
+    {
+      "url": "https://9nanimal.cn/invites/health",
+      "status": 200,
+      "body": {
+        "ready": true,
+        "database": true,
+        "loginConfigured": true
+      }
+    },
+    {
+      "url": "https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com/health",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "service": "goose-3d-pvp",
+        "rooms": 0
+      }
+    },
+    {
+      "url": "https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com/invites/health",
+      "status": 200,
+      "body": {
+        "ready": true,
+        "database": true,
+        "loginConfigured": true
+      }
+    },
+    {
+      "url": "https://9nanimal.cn/invites/state",
+      "status": 401,
+      "check": "unauthenticated access rejected"
+    }
+  ],
+  "clientPublished": false
+}

@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
- $GooseReviveAds: {active:null},
+ $GooseReviveAds: {active:null,ads:{}},
  GooseReviveAdShow__deps:['$GooseReviveAds'],
  GooseReviveAdShow:function(targetPtr,idPtr,requestPtr){
   var target=UTF8ToString(targetPtr),id=UTF8ToString(idPtr),request=UTF8ToString(requestPtr);
@@ -9,15 +9,26 @@ mergeInto(LibraryManager.library, {
   var state={request:request,ad:null,finished:false,timer:null};GooseReviveAds.active=state;
   function cleanup(){
    clearTimeout(state.timer);
-   if(state.ad){try{state.ad.offClose(onClose);state.ad.offError(onError);state.ad.destroy();}catch(e){}}
+   // WeChat reuses rewarded-video instances. Destroying one after a close can
+   // leave the next request holding the same, now unusable native instance.
+   if(state.ad){
+    try{state.ad.offClose(onClose);}catch(e){}
+    try{state.ad.offError(onError);}catch(e){}
+   }
    if(GooseReviveAds.active===state)GooseReviveAds.active=null;
   }
   function finish(ok,error){if(state.finished)return;state.finished=true;cleanup();emit(ok,error);}
-  function onClose(res){finish(!!(res&&res.isEnded===true),res&&res.isEnded===true?'':'完整观看视频后才能复活');}
-  function onError(){finish(false,'广告暂时不可用，请稍后重试');}
+  function onClose(res){finish(!!(res&&res.isEnded===true),res&&res.isEnded===true?'':'请完整观看视频后领取奖励');}
+  function onError(error){
+   if(state.finished)return;
+   if(typeof console!=='undefined')console.warn('[GooseReviveAds]',id,error);
+   finish(false,'广告暂时不可用，请稍后重试');
+  }
   state.cancel=function(){if(state.finished)return;state.finished=true;cleanup();};
   try{
-   state.ad=wx.createRewardedVideoAd({adUnitId:id});state.ad.onClose(onClose);state.ad.onError(onError);
+   state.ad=GooseReviveAds.ads[id];
+   if(!state.ad){state.ad=wx.createRewardedVideoAd({adUnitId:id});GooseReviveAds.ads[id]=state.ad;}
+   state.ad.onClose(onClose);state.ad.onError(onError);
    state.timer=setTimeout(function(){finish(false,'广告加载超时，请重试');},20000);
    // Explicit load makes loading errors recoverable without issuing duplicate show calls.
    Promise.resolve(state.ad.load()).then(function(){if(state.finished)return;return state.ad.show();}).then(function(){if(!state.finished)clearTimeout(state.timer);}).catch(onError);

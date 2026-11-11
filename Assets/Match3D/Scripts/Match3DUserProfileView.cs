@@ -77,14 +77,32 @@ public sealed class Match3DUserProfileView : MonoBehaviour {
  }
  static string Limit(string s,int count)=>s.Length>count?s.Substring(0,count):s;
  public static bool AllowedAvatar(string url){if(!Uri.TryCreate(url,UriKind.Absolute,out var uri))return false;return uri.Scheme=="https"&&string.IsNullOrEmpty(uri.UserInfo)&&uri.IsDefaultPort&&(uri.Host=="qlogo.cn"||uri.Host.EndsWith(".qlogo.cn",StringComparison.OrdinalIgnoreCase));}
- void LoadAvatar(string url){if(url==avatarUrl)return;StopAvatar();avatar.texture=defaultAvatar;avatarUrl=url;if(AllowedAvatar(url))StartCoroutine(DownloadAvatar(url,avatarVersion));}
+ void LoadAvatar(string url){
+  // A failed attempt is not a cached avatar. The next camera tap must retry it.
+  if(url==avatarUrl&&(ownedAvatar||avatarRequest!=null))return;
+  StopAvatar();avatar.texture=defaultAvatar;
+  if(string.IsNullOrEmpty(url)){AvatarFailed("微信未返回头像，可点击相机重试");return;}
+  if(!AllowedAvatar(url)){AvatarFailed("头像地址暂不支持，可点击相机重试");return;}
+  avatarUrl=url;StartCoroutine(DownloadAvatar(url,avatarVersion));
+ }
+ void AvatarFailed(string message){avatarUrl=null;status.gameObject.SetActive(true);status.text="昵称已同步，"+message;}
  IEnumerator DownloadAvatar(string url,int version){
   using(var request=UnityWebRequestTexture.GetTexture(url,true)){avatarRequest=request;request.timeout=10;request.redirectLimit=0;yield return request.SendWebRequest();
    if(version!=avatarVersion)yield break;avatarRequest=null;
-   if(request.result==UnityWebRequest.Result.Success){var texture=DownloadHandlerTexture.GetContent(request);if(texture&&texture.width<=512&&texture.height<=512){ownedAvatar=texture;avatar.texture=texture;}else if(texture)Destroy(texture);}
+   if(request.result!=UnityWebRequest.Result.Success){
+    // Keep the avatar's private URL out of logs; retain the host and failure details for device diagnosis.
+    var error=(request.error??"").Replace(url,"[avatar]");
+    Debug.LogWarning("[WechatAvatar] host="+new Uri(url).Host+" result="+request.result+" http="+request.responseCode+" error="+Limit(error,240));
+    AvatarFailed("头像加载失败，可点击相机重试");yield break;
+   }
+   Texture2D texture=null;
+   try{texture=DownloadHandlerTexture.GetContent(request);}catch(Exception){Debug.LogWarning("[WechatAvatar] image decoding failed");}
+   // WeChat also supports a 640x640 original avatar (URL size suffix 0).
+   if(texture&&texture.width<=640&&texture.height<=640){ownedAvatar=texture;avatar.texture=texture;}
+   else{if(texture)Destroy(texture);AvatarFailed("头像图片暂不可用，可点击相机重试");}
   }
  }
- void StopAvatar(){avatarVersion++;if(avatarRequest!=null){avatarRequest.Abort();avatarRequest.Dispose();avatarRequest=null;}StopAllCoroutines();if(ownedAvatar){Destroy(ownedAvatar);ownedAvatar=null;}}
+ void StopAvatar(){avatarVersion++;if(avatarRequest!=null){avatarRequest.Abort();avatarRequest.Dispose();avatarRequest=null;}StopAllCoroutines();avatarUrl=null;if(ownedAvatar){Destroy(ownedAvatar);ownedAvatar=null;}}
  void CloseBridge(){if(!bridgeOpen)return;bridgeOpen=false;deadline=0;
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
   GooseProfileClose();

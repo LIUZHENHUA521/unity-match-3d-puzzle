@@ -16,6 +16,7 @@ public static class Match3DReviveValidation {
     static object Field(object target,string name)=>target.GetType().GetField(name,Flags).GetValue(target);
     static IEnumerator Guard(){var steps=Check();while(true){object current;try{if(!steps.MoveNext())break;current=steps.Current;}catch(Exception e){File.AppendAllText(Output+"/validation.txt","FAIL "+e);Debug.LogException(e);(steps as IDisposable)?.Dispose();SessionState.SetBool("revive-validation",false);EditorApplication.Exit(1);yield break;}yield return current;}SessionState.SetBool("revive-validation",false);EditorApplication.Exit(0);}
     static IEnumerator Check(){
+        Match3DRewardAcquisition.Configure(new Match3DRewardAcquisition.Configuration{sharesEnabled=false});
         yield return null;var flow=Match3DFlow.Instance;var records=Match3DGameRecords.Instance;
         records.StopAllCoroutines();Match3DInvitations.Instance.StopAllCoroutines();
         string[] keys={"goose.result.date","goose.result.attempts","goose.records.queue.v1","goose.result.best."+flow.library.themes[0].id+".2"};
@@ -64,7 +65,7 @@ public static class Match3DReviveValidation {
             GameManager.Instance.currentLevelTime=0;flow.HandleResult(false);yield return new WaitForSecondsRealtime(.5f);
             popup=UnityEngine.Object.FindObjectOfType<Match3DReviveView>();popup.close.onClick.Invoke();
             Assert(!flow.RevivePending&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL&&Field(records,"active")==null,"closing revive settles failure without restart");
-        }finally{Match3DRewardedVideo.EditorShowOverride=null;flow.Home();PlayerPrefs.SetString(keys[0],date);PlayerPrefs.SetInt(keys[1],attempts);PlayerPrefs.SetString(keys[2],queue);PlayerPrefs.SetFloat(keys[3],best);PlayerPrefs.Save();}
+        }finally{Match3DRewardedVideo.EditorShowOverride=null;Match3DRewardAcquisition.Configure(null);flow.Home();PlayerPrefs.SetString(keys[0],date);PlayerPrefs.SetInt(keys[1],attempts);PlayerPrefs.SetString(keys[2],queue);PlayerPrefs.SetFloat(keys[3],best);PlayerPrefs.Save();}
     }
     static void Capture(string name){
         var c=Camera.main;var canvases=UnityEngine.Object.FindObjectsOfType<Canvas>().Where(x=>x.isRootCanvas&&x.gameObject.activeInHierarchy).ToArray();var modes=canvases.Select(x=>x.renderMode).ToArray();var cameras=canvases.Select(x=>x.worldCamera).ToArray();var distances=canvases.Select(x=>x.planeDistance).ToArray();var rt=new RenderTexture(720,1280,24);rt.Create();var old=c.targetTexture;var active=RenderTexture.active;c.targetTexture=rt;

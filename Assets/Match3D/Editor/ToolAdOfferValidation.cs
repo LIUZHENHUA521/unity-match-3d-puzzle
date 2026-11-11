@@ -17,12 +17,13 @@ public static class ToolAdOfferValidation {
  static object oldToken,oldEndpoint;static Match3DInvitations.Reply oldState;static bool mocked;
  static IEnumerator Guard(){var steps=Run();string failure=null;while(true){object current=null;bool next=false;try{next=steps.MoveNext();if(next)current=steps.Current;}catch(Exception e){failure=e.ToString();}if(!next||failure!=null)break;yield return current;}
   if(mocked){var service=Match3DInvitations.Instance;var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;typeof(Match3DInvitations).GetField("token",flags).SetValue(service,oldToken);typeof(Match3DInvitations).GetField("endpoint",flags).SetValue(service,oldEndpoint);typeof(Match3DInvitations).GetProperty("State").SetValue(service,oldState);mocked=false;}
-  Match3DRewardedVideo.EditorShowOverride=null;Match3DFlow.Instance.Home();File.WriteAllText("Temp/tool-ad-validation.txt",failure==null?"PASS all three descriptions; no per-round free uses; empty inventory prompts video; incomplete video no grant; retry; completed video exactly one effect; close resumes timer; stale callback ignored; inventory consumed through local mock HTTP without showing an ad.":"FAIL "+failure);EditorApplication.isPlaying=false;
+  Match3DRewardedVideo.EditorShowOverride=null;Match3DRewardAcquisition.Configure(null);Match3DFlow.Instance.Home();File.WriteAllText("Temp/tool-ad-validation.txt",failure==null?"PASS all three descriptions; no per-round free uses; empty inventory prompts video; incomplete video no grant; retry; completed video exactly one effect; close resumes timer; stale callback ignored; inventory consumed through local mock HTTP without showing an ad.":"FAIL "+failure);EditorApplication.isPlaying=false;
  }
  static void Assert(bool value,string message){if(!value)throw new Exception(message);}
  static void Setup(){var flow=Match3DFlow.Instance;flow.Begin(0);BoardCreationTestSupport.FinishPending(flow);GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;}
  static Button Tool(int type)=>UnityEngine.Object.FindObjectOfType<Match3DGameplayHUD>().GetComponent<Match3DUIView>().Get<Button>(new[]{"Undo","Hint","Shuffle"}[type]);
  static IEnumerator Run(){
+  Match3DRewardAcquisition.Configure(new Match3DRewardAcquisition.Configuration{sharesEnabled=false});
   Action<bool,string> reply=null;Match3DRewardedVideo.EditorShowOverride=done=>reply=done;
   for(int type=0;type<3;type++){
    Setup();yield return null;

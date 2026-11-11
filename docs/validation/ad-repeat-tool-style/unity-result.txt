@@ -1,0 +1,34 @@
+PASS configured sequence step 0
+PASS configured sequence step 1
+PASS configured sequence step 2
+PASS configured sequence step 3
+PASS configured sequence step 4
+PASS configured sequence step 5
+PASS configured sequence step 6
+PASS configured sequence step 7
+PASS free precedes sequence
+PASS free does not shift paid sequence
+PASS ad switch falls back to share
+PASS both disabled never grant free
+PASS share switch falls back to ad
+PASS scene startup complete
+PASS first tool offers share and pauses
+PASS pending share locks duplicate clicks and grants nothing: shares=1, ads=0, used=0, interactive=False, status=, account=True, tips=正在打开分享…
+PASS failed share preserves sequence and allows retry
+PASS share applies exactly once and advances once
+PASS different tool shares same acquisition counter
+PASS incomplete ad changes neither time nor sequence
+PASS ad grants exactly one add-time effect
+PASS sequence cycles back to share
+PASS closing offer preserves sequence and resumes
+PASS stale callback cannot affect a new board
+PASS revive starts independent share sequence
+PASS share revival once, tool counter untouched
+PASS clear and time revival share revival sequence
+PASS ad clears tray and advances revival once
+PASS free offer takes priority over owned inventory
+PASS free grants once without SDK, inventory or sequence debit
+PASS exhausted free quota returns to saved sequence
+PASS disabled ad route updates actual button to share
+PASS configuration reload preserves counter
+ALL PASSED

@@ -17,20 +17,28 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         public bool timeReviveUsed;
         public ToolUse[] toolUsage=new[]{new ToolUse(),new ToolUse(),new ToolUse(),new ToolUse()};
     }
-    [Serializable] public class Pending { public string owner,action,json;public bool reward; public bool rejected; }
+    [Serializable] public class Pending {
+        public string owner,action,json;public bool reward,rejected,rejectionNotified;
+        public long rejectedAt,rejectionHttpStatus;public string rejectionReason;
+    }
     [Serializable] public class Queue { public List<Pending> items=new List<Pending>(); }
-    [Serializable] class Receipt {public bool ok;public string recordId,voucherId,rewardError;}
+    [Serializable] class Receipt {public bool ok;public string recordId,voucherId,rewardError,error;}
     public static Match3DGameRecords Instance {get;private set;}
     const string QueueKey="goose.records.queue.v1";
     Match3DDailyLevel dailyLevel;
     Queue queue;Record active;string owner,endpoint,runId,rewardTier,ruleVersion;
     readonly List<string> toolReceipts=new List<string>();bool started,hidden,notified;double activeSeconds;int cleared;
     readonly List<Pending> unbound=new List<Pending>();
+    readonly HashSet<string> rejectionNotifiedOwners=new HashSet<string>();
     public string SyncError {get;private set;}
     public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');
         try{queue=JsonUtility.FromJson<Queue>(PlayerPrefs.GetString(QueueKey,""));}catch{}
         if(queue==null||queue.items==null)queue=new Queue();
-        if(queue.items.Exists(x=>x.rejected))SyncError="rejected";
+        // Old clients retained rejected payloads without a reason or acknowledgement.
+        // Keep those payloads for diagnosis, but do not replay their startup warning.
+        bool migrated=false;
+        foreach(var item in queue.items){if(item.rejected&&item.rejectedAt==0&&!item.rejectionNotified){item.rejectionNotified=true;migrated=true;}}
+        if(migrated)Save();
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         WeChatWASM.WX.OnHide(OnWechatHide);WeChatWASM.WX.OnShow(OnWechatShow);
 #endif
@@ -75,7 +83,17 @@ public sealed class Match3DGameRecords : MonoBehaviour {
             if(active!=null&&started&&string.IsNullOrEmpty(owner))owner=account.State.inviteCode;
             if(unbound.Count>0){foreach(var item in unbound){item.owner=account.State.inviteCode;queue.items.Add(item);}unbound.Clear();Save();}
         }
-        if(!string.IsNullOrEmpty(SyncError)&&!notified&&flow){notified=true;flow.Notice(SyncError=="queue_full"?"记录缓存已满，暂无法保存新记录":"闯关记录同步异常，记录已保留");}
+        if(SyncError=="queue_full"){
+            if(!notified&&flow){notified=true;flow.Notice("记录缓存已满，暂无法保存新记录");}
+            return;
+        }
+        string currentOwner=account&&account.Ready?account.State.inviteCode:null;
+        SyncError=!string.IsNullOrEmpty(currentOwner)&&queue.items.Exists(x=>x.rejected&&x.owner==currentOwner)?"rejected":null;
+        if(!flow||string.IsNullOrEmpty(currentOwner)||!queue.items.Exists(x=>x.rejected&&!x.rejectionNotified&&x.owner==currentOwner))return;
+        // Persist acknowledgement so a restart cannot turn one failure into repeated warnings.
+        foreach(var item in queue.items){if(item.rejected&&item.owner==currentOwner)item.rejectionNotified=true;}
+        Save();
+        if(rejectionNotifiedOwners.Add(currentOwner))flow.Notice("有闯关记录未能同步，已保留，请稍后联系客服");
     }
     public void Matched(){if(active!=null&&started)cleared=Mathf.Min(active.initialCount,cleared+3);}
     public void Finish(string status,string reason){
@@ -83,7 +101,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         if(!started){active=null;return;}
         active.status=status;active.endReason=reason;active.endedAt=Math.Max(active.startedAt,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());active.activeDurationMs=Math.Min((long)(activeSeconds*1000),active.endedAt-active.startedAt);
         active.clearedCount=cleared;active.remainingSeconds=Mathf.Max(0,GameManager.Instance.currentLevelTime);active.timeReviveUsed=Match3DFlow.Instance&&Match3DFlow.Instance.TimeReviveUsed;
-        for(int i=0;i<BoardTools.ToolCount;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=0;active.toolUsage[i].rewarded=BoardTools.AdUses(i);active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
+        for(int i=0;i<BoardTools.ToolCount;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=BoardTools.FreeUses(i);active.toolUsage[i].rewarded=BoardTools.AdUses(i)+BoardTools.ShareUses(i);active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].free-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
         active.toolReceipts=toolReceipts.ToArray();Add("finish",active,owner);active=null;started=false;
     }
     void Add(string action,Record record,string account){
@@ -115,11 +133,16 @@ public sealed class Match3DGameRecords : MonoBehaviour {
                 req.uploadHandler=new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(item.json));req.downloadHandler=new DownloadHandlerBuffer();req.timeout=10;
                 req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("Authorization","Bearer "+account.RecordToken);
                 yield return req.SendWebRequest();
-                Receipt receipt=null;if(req.result==UnityWebRequest.Result.Success){try{receipt=JsonUtility.FromJson<Receipt>(req.downloadHandler.text);}catch{}}
-                if(receipt!=null&&receipt.ok){if(item.reward&&item.action=="finish"&&Match3DFlow.Instance){if(!string.IsNullOrEmpty(receipt.voucherId)&&Match3DRewards.Instance)Match3DRewards.Instance.NotifyReceivedVoucher(receipt.voucherId,item.owner);else if(!string.IsNullOrEmpty(receipt.rewardError))Match3DFlow.Instance.Notice(RewardErrorMessage(receipt.rewardError));}
+                Receipt receipt=null;try{receipt=JsonUtility.FromJson<Receipt>(req.downloadHandler.text);}catch{}
+                if(req.result==UnityWebRequest.Result.Success&&receipt!=null&&receipt.ok){if(item.reward&&item.action=="finish"&&Match3DFlow.Instance&&account.Ready&&account.State.inviteCode==item.owner){if(!string.IsNullOrEmpty(receipt.voucherId)&&Match3DRewards.Instance)Match3DRewards.Instance.NotifyReceivedVoucher(receipt.voucherId,item.owner);else if(!string.IsNullOrEmpty(receipt.rewardError))Match3DFlow.Instance.Notice(RewardErrorMessage(receipt.rewardError));}
                     queue.items.Remove(item);Save();delay=1;continue;}
-                if(req.responseCode==401)account.RefreshRecordLogin();
-                else if(req.responseCode==400||req.responseCode==409){item.rejected=true;SyncError="rejected";Save();}
+                if(req.responseCode==401){if(account.Ready&&account.State.inviteCode==item.owner)account.RefreshRecordLogin();}
+                else if(req.responseCode==400||req.responseCode==409){
+                    item.rejected=true;item.rejectionNotified=false;item.rejectedAt=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();item.rejectionHttpStatus=req.responseCode;
+                    string reason=receipt!=null?receipt.error:null;
+                    item.rejectionReason=string.IsNullOrEmpty(reason)?"HTTP "+req.responseCode:reason.Substring(0,Math.Min(512,reason.Length));
+                    Save();
+                }
                 delay=Mathf.Min(60,delay*2);
             }
         }

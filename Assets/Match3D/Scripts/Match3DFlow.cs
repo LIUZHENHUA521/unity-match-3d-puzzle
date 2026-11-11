@@ -243,20 +243,21 @@ public partial class Match3DFlow : MonoBehaviour {
         }
     }
     Match3DDailyLevel dailyLevel;
+    string challengeTier="bachelor";
     string CurrentModelThemeTitle => Match3DModelThemes.Title(ActiveModelTheme,CurrentTheme.title);
     LevelLayoutConfig.Profile SourceProfile(bool tutorial=false) => Match3DModelThemes.Get(ActiveModelTheme,CurrentTheme.sourceEnvironment,tutorial);
     public string SourceEnvironmentForTheme(int theme){return library.themes[theme].sourceEnvironment;}
     public void BeginReward(int theme,string tier){
 #if UNITY_EDITOR
         // Editor play does not have a WeChat identity or reward qualification.
-        Begin(theme);LocalPreview=true;unlimitedMagnetRun=true;
+        Begin(theme);challengeTier=tier;LocalPreview=true;unlimitedMagnetRun=true;
         ShowTips("编辑器本地试玩 · 道具免费 · 不发放红包");
 #else
         if(Match3DRewards.Instance)Match3DRewards.Instance.Begin(theme,tier,library.themes[theme].id);
 #endif
     }
     public void BeginQualified(int theme,string runId,string tier,string version,Match3DDailyLevel level=null,bool testToolsEnabled=false){
-        unlimitedMagnetRun=testToolsEnabled;runModelTheme=null;dailyLevel=level;LocalPreview=false;
+        unlimitedMagnetRun=testToolsEnabled;runModelTheme=null;dailyLevel=level;challengeTier=tier;LocalPreview=false;
         if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=level!=null?level.date:Today;Match3DGameRecords.Instance.QualifiedRun(runId,tier,version,level);StartStage();
     }
     public void ShowRedPackets(){BlocksGameplay=true;var view=OpenModal("RedPackets");view.Bind("Close",()=>CloseModal());view.GetComponent<Match3DRewardsView>().Connect();}
@@ -267,7 +268,7 @@ public partial class Match3DFlow : MonoBehaviour {
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewDailyRun(level);StartStage();
     }
     public void Begin(int theme){
-        dailyLevel=null;runModelTheme=null;
+        dailyLevel=null;runModelTheme=null;challengeTier="bachelor";
 #if UNITY_EDITOR
         var selectedTheme=UnityEditor.EditorPrefs.GetString(EditorThemePreference,"");
         if(Match3DModelThemes.TryGet(selectedTheme,SourceEnvironmentForTheme(theme),out _))runModelTheme=selectedTheme;
@@ -283,7 +284,7 @@ public partial class Match3DFlow : MonoBehaviour {
         // could show its first batch.
         layeredPile.TakePresentation(out var reusedPresentation,out var reusedBoundary);
         StopBoard(true);Stage=2;StartStage(reusedPresentation,reusedBoundary,false);
-        ShowTips("进入最后一关");
+        ShowTips((dailyLevel?.tier??challengeTier)=="elite"?"基础题完成，进入清北压轴题！":"基础题完成，进入本科压轴题！");
     }
     void StartStage(Match3DThemePresentation reusedPresentation=null,GameObject reusedBoundary=null,bool countAttempt=true){
         if(!IsPvp){
@@ -580,7 +581,8 @@ public partial class Match3DFlow : MonoBehaviour {
         }
         var service=Match3DInvitations.Instance;
         if(service&&(service.Busy||service.HasPending)){ShowTips("道具库存处理中，请稍后重试");return;}
-        if(service&&service.Ready&&service.Inventory(type)>0)StartCoroutine(UseInventory(type,action,service));
+        if(Match3DRewardAcquisition.Next(Match3DRewardAcquisition.Entry.Tool).route==Match3DRewardAcquisition.Route.Free)ShowToolOffer(type,action);
+        else if(service&&service.Ready&&service.Inventory(type)>0)StartCoroutine(UseInventory(type,action,service));
         else ShowToolOffer(type,action);
     }
 

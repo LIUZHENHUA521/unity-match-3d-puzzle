@@ -25,6 +25,15 @@ public sealed class BoardTools : MonoBehaviour {
     readonly int[] used=new int[ToolCount];
     readonly int[] adUses=new int[ToolCount];
     readonly int[] testUses=new int[ToolCount];
+    readonly int[] shareUses=new int[ToolCount],freeUses=new int[ToolCount];
+    public static int ShareUses(int type)=>instance?instance.shareUses[type]:0;
+    public static int FreeUses(int type)=>instance?instance.freeUses[type]:0;
+    public static void RecordAcquisition(int type,Match3DRewardAcquisition.Route route){
+        var owner=Ensure();if(!owner||type<0||type>=ToolCount)return;
+        if(route==Match3DRewardAcquisition.Route.Ad)owner.adUses[type]++;
+        else if(route==Match3DRewardAcquisition.Route.Share)owner.shareUses[type]++;
+        else if(route==Match3DRewardAcquisition.Route.Free)owner.freeUses[type]++;
+    }
     public static void RecordTestUse(int type){var owner=Ensure();if(owner&&type>=0&&type<ToolCount)owner.testUses[type]++;}
     public static int TestUses(int type)=>instance&&type>=0&&type<ToolCount?instance.testUses[type]:0;
     public static void RecordAdUse(int type){var owner=Ensure();if(owner&&type>=0&&type<ToolCount)owner.adUses[type]++;}
@@ -49,7 +58,7 @@ public sealed class BoardTools : MonoBehaviour {
     }
     void Awake(){instance=this;}
     void OnDestroy(){ClearStore();if(instance==this)instance=null;}
-    public static void Reset(){BoardToolVisual.Reset();if(instance){instance.StopAllCoroutines();instance.EndShuffle();instance.ClearStore();Array.Clear(instance.used,0,instance.used.Length);Array.Clear(instance.adUses,0,instance.adUses.Length);Array.Clear(instance.testUses,0,instance.testUses.Length);}}
+    public static void Reset(){Match3DRewardAcquisition.ResetRound();BoardToolVisual.Reset();if(instance){instance.StopAllCoroutines();instance.EndShuffle();instance.ClearStore();Array.Clear(instance.used,0,instance.used.Length);Array.Clear(instance.adUses,0,instance.adUses.Length);Array.Clear(instance.testUses,0,instance.testUses.Length);Array.Clear(instance.shareUses,0,instance.shareUses.Length);Array.Clear(instance.freeUses,0,instance.freeUses.Length);}}
     void ClearStore(){foreach(var col in columns){foreach(var obj in col)if(obj){obj.transform.DOKill();BoardItemPool.Recycle(obj);}col.Clear();}nextColumn=0;}
 
     public static List<GameObject> ReturnCandidates(IList<GameObject> stack,int count=ReturnCount)=>stack.Where(x=>x).Take(Mathf.Max(0,count)).ToList();

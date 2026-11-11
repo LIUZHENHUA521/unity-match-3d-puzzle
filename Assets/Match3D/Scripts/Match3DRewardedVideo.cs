@@ -8,11 +8,38 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
     Action<bool,string> callback;string requestId;
 #if UNITY_EDITOR
     public static Action<Action<bool,string>> EditorShowOverride;
+    public static Action<Action<bool,string>> EditorShareOverride;
 #endif
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
     [DllImport("__Internal")] static extern void GooseReviveAdShow(string target,string id,string request);
     [DllImport("__Internal")] static extern void GooseReviveAdCancel(string request);
+    [DllImport("__Internal")] static extern void GooseRewardShare(string target,string request,float minAwaySeconds);
+    [DllImport("__Internal")] static extern void GooseRewardShareCancel(string request);
 #endif
+    public void Acquire(Match3DRewardAcquisition.Offer offer,bool timeout,Action<bool,string> done){
+        if(!Match3DRewardAcquisition.IsCurrent(offer)){done(false,"获取状态已变化，请关闭后重试");return;}
+        switch(offer.route){
+            case Match3DRewardAcquisition.Route.Free:done(true,null);return;
+            case Match3DRewardAcquisition.Route.Share:ShowShare(done);return;
+            case Match3DRewardAcquisition.Route.Ad:ShowVideo(timeout,offer.entry==Match3DRewardAcquisition.Entry.Tool,done);return;
+            default:done(false,"暂时无法获取，请稍后再试");return;
+        }
+    }
+    void ShowShare(Action<bool,string> done){
+        if(callback!=null){done(false,"正在获取中，请稍候");return;}
+        requestId=Guid.NewGuid().ToString("N");callback=done;
+#if UNITY_EDITOR
+        if(EditorShareOverride!=null){string request=requestId;EditorShareOverride((ok,error)=>Complete(request,ok,error));return;}
+#endif
+#if UNITY_EDITOR || DAILY_WEB_PREVIEW
+        if(Match3DFlow.Instance&&Match3DFlow.Instance.LocalPreview){Complete(requestId,true,null);return;}
+#endif
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
+        GooseRewardShare(gameObject.name,requestId,Mathf.Max(0,Match3DRewardAcquisition.Config.minShareAwaySeconds));
+#else
+        Complete(requestId,false,"请在微信小游戏中分享");
+#endif
+    }
     public void Show(bool timeout,Action<bool,string> done){ShowVideo(timeout,false,done);}
     public void ShowTool(Action<bool,string> done){ShowVideo(false,true,done);}
     void ShowVideo(bool timeout,bool tool,Action<bool,string> done){
@@ -34,7 +61,7 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
         Complete(requestId,false,"请在微信小游戏中观看视频");
 #endif
     }
-    public void OnReviveAdReply(string json){
+    [UnityEngine.Scripting.Preserve] public void OnReviveAdReply(string json){
         Reply reply;try{reply=JsonUtility.FromJson<Reply>(json);}catch{return;}
         if(reply!=null)Complete(reply.requestId,reply.completed,reply.error);
     }
@@ -44,7 +71,7 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
     }
     public void Cancel(){
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
-        if(requestId!=null)GooseReviveAdCancel(requestId);
+        if(requestId!=null){GooseReviveAdCancel(requestId);GooseRewardShareCancel(requestId);}
 #endif
         callback=null;requestId=null;
     }
