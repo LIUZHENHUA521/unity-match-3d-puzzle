@@ -29,6 +29,9 @@ public partial class Match3DFlow : MonoBehaviour {
     public int TodaySeed {get;private set;}
     public float AppliedModelSize {get;private set;}=1f;
     CanvasGroup startupInput;
+    Match3DStartupView startupView;
+    bool startupSdkReady,startupFontReady,startupServicesReady;
+    public bool StartupComplete {get;private set;}
     Canvas canvas;RectTransform page,modal;Text timer,remaining,peerText;Match3DTips tips;
     ItemPhysicsController pilePhysics;
     LayeredItemPile layeredPile;
@@ -49,7 +52,7 @@ public partial class Match3DFlow : MonoBehaviour {
         // Hide the inherited demo before SDK/font initialization can yield a frame.
         // Keep its objects and colliders available to the existing gameplay services.
         HideLegacyPresentation();
-        // Paint the real home before any SDK/font coroutine can suspend startup.
+        // Show the same branded cover as the WeChat loader before initialization yields.
         Match3DDefaultFont.InitializeFallback();
         var uiRoot=Match3DUIView.Load("UIRoot",null);
         canvas=uiRoot.GetComponent<Canvas>();canvas.name="Goose UI";
@@ -57,7 +60,9 @@ public partial class Match3DFlow : MonoBehaviour {
         startupInput=uiRoot.gameObject.AddComponent<CanvasGroup>();
         startupInput.interactable=false;
 #if !DAILY_WEB_PREVIEW
-        Match3DHomeView.Create(this,page,Match3DHomeView.Tab.Home);
+        ScreenName="loading";
+        startupView=Match3DUIView.Load("StartupLoading",page).GetComponent<Match3DStartupView>();
+        startupView.SetProgress(0,"正在准备游戏…");
 #endif
     }
     public static void HideLegacyPresentation(){
@@ -66,48 +71,105 @@ public partial class Match3DFlow : MonoBehaviour {
         foreach(var c in FindObjectsOfType<Canvas>())c.gameObject.SetActive(false);
     }
     System.Collections.IEnumerator Start(){
+        // Let the loading canvas paint before starting any synchronous service work.
+        yield return null;
+        while(true){
+            Exception failure=null;
+            yield return Match3DStartupRunner.Run(InitializeStartup(),error=>failure=error);
+            if(failure==null)break;
+            Debug.LogWarning("Startup incomplete: "+failure.Message);
+            if(!startupView){Debug.LogException(failure);yield break;}
+            bool retry=false;startupInput.interactable=true;
+            startupView.ShowError(failure.Message,()=>retry=true);
+            while(!retry)yield return null;
+            startupInput.interactable=false;
+        }
+        if(startupView)startupView.SetProgress(1,"准备完成");
+        yield return null;
+        StartupComplete=true;startupInput.interactable=true;
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
-        bool sdkReady=false;
-        WeChatWASM.WX.InitSDK(code=>{sdkReady=true;Debug.Log("WX SDK init: "+code);});
-        while(!sdkReady)yield return null;
+        WeChatWASM.WX.ReportGameStart();
+#endif
+#if !DAILY_WEB_PREVIEW
+        // Home cancels Flow coroutines, so all startup work must finish first.
+        Home();
+#else
+        LocalPreview=true;ScreenName="preview";
+        new GameObject("DailyWebPreview").AddComponent<DailyWebPreview>();
+#endif
+    }
+    T StartupService<T>() where T:Component {var existing=GetComponent<T>();return existing?existing:gameObject.AddComponent<T>();}
+    IEnumerator InitializeStartup(){
+        if(startupView)startupView.SetProgress(.05f,"正在连接微信…");
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
+        if(!startupSdkReady){
+            bool completed=false;
+            WeChatWASM.WX.InitSDK(code=>{completed=true;Debug.Log("WX SDK init: "+code);});
+            float deadline=Time.realtimeSinceStartup+20;
+            while(!completed&&Time.realtimeSinceStartup<deadline)yield return null;
+            if(!completed)throw new InvalidOperationException("微信初始化超时，请重试");
+            startupSdkReady=true;
+        }
 #endif
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         Application.targetFrameRate=60;
         QualitySettings.antiAliasing=0;
         if(Camera.main){Camera.main.allowHDR=false;Camera.main.allowMSAA=false;}
 #endif
-        yield return Match3DDefaultFont.Initialize();
+        if(startupView)startupView.SetProgress(.2f,"正在准备字体…");
+        if(!startupFontReady){yield return Match3DDefaultFont.Initialize();startupFontReady=true;}
         // One bounded shadow map covers the pot, including the camera's 12-unit height.
         QualitySettings.shadows=ShadowQuality.All;
         QualitySettings.shadowResolution=ShadowResolution.Medium;
         QualitySettings.shadowDistance=20f;
         QualitySettings.shadowCascades=0;
         Match3DDefaultFont.Apply(canvas.gameObject);
-        music=gameObject.AddComponent<AudioSource>();music.loop=true;music.volume=.25f;
-        effects=gameObject.AddComponent<AudioSource>();effects.volume=.65f;
-        pilePhysics=gameObject.AddComponent<ItemPhysicsController>();
-        gameObject.AddComponent<Match3DPhoneShake>();
-        layeredPile=gameObject.AddComponent<LayeredItemPile>();
-        gameObject.AddComponent<BoardItemPool>();
-        stagePreloader=gameObject.AddComponent<Match3DStagePreloader>();
-        gameObject.AddComponent<Match3DTray>();
-        diagnostics=gameObject.AddComponent<Match3DDiagnostics>();
+        if(startupView)startupView.SetProgress(.4f,"正在准备游戏资源…");
+        yield return null;
+        if(!startupServicesReady){
+            if(!music){music=gameObject.AddComponent<AudioSource>();music.loop=true;music.volume=.25f;}
+            if(!effects){effects=gameObject.AddComponent<AudioSource>();effects.volume=.65f;}
+            pilePhysics=StartupService<ItemPhysicsController>();
+            StartupService<Match3DPhoneShake>();
+            layeredPile=StartupService<LayeredItemPile>();
+            StartupService<BoardItemPool>();
+            stagePreloader=StartupService<Match3DStagePreloader>();
+            StartupService<Match3DTray>();
+            diagnostics=StartupService<Match3DDiagnostics>();
 #if !DAILY_WEB_PREVIEW
-        network=gameObject.AddComponent<Match3DNetwork>();network.Received=Receive;
+        network=StartupService<Match3DNetwork>();network.Received=Receive;
         endpoint=PlayerPrefs.GetString("goose.endpoint",library.pvpEndpoint);
         if(endpoint.TrimEnd('/')=="https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com"||endpoint.TrimEnd('/')=="https://lzh.tax") {
             PlayerPrefs.DeleteKey("goose.endpoint");PlayerPrefs.Save();endpoint=library.pvpEndpoint;
         }
-        gameObject.AddComponent<Match3DInvitations>().Initialize(endpoint);gameObject.AddComponent<Match3DGameRecords>().Initialize(endpoint);gameObject.AddComponent<Match3DRewards>().Initialize(endpoint);Home();
-#else
-        LocalPreview=true;ScreenName="preview";
-        new GameObject("DailyWebPreview").AddComponent<DailyWebPreview>();
+        StartupService<Match3DGameRecords>().Initialize(endpoint);
+        StartupService<Match3DRewards>().Initialize(endpoint);
+        if(!Match3DInvitations.Instance)StartupService<Match3DInvitations>().Initialize(endpoint);
 #endif
-        startupInput.interactable=true;
+            startupServicesReady=true;
+        }
+        if(startupView)startupView.SetProgress(.65f,"正在同步账号数据…");
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
-        WeChatWASM.WX.ReportGameStart();
+        var account=Match3DInvitations.Instance;bool ready=false;
+        if(account.HasPending&&!account.Busy)account.RefreshRecordLogin();
+        yield return account.EnsureReady(value=>ready=value);
+        if(!ready)throw new InvalidOperationException(string.IsNullOrEmpty(account.Status)?"登录失败，请重试":account.Status);
+        // Login includes unfinished-tool recovery and the initial mailbox request.
+        float accountDeadline=Time.realtimeSinceStartup+35;
+        while(account.Busy&&Time.realtimeSinceStartup<accountDeadline)yield return null;
+        if(account.Busy)throw new InvalidOperationException("账号同步超时，请重试");
+        if(!account.Ready)throw new InvalidOperationException("登录已失效，请重试");
+        if(account.HasPending)throw new InvalidOperationException("道具数据同步失败，请重试");
+        if(!account.MailLoaded){
+            account.RefreshMail();
+            float mailDeadline=Time.realtimeSinceStartup+20;
+            while(account.Busy&&Time.realtimeSinceStartup<mailDeadline)yield return null;
+            if(!account.MailLoaded||account.Busy)throw new InvalidOperationException("邮件同步失败，请重试");
+        }
 #endif
-        yield break;
+        if(startupView)startupView.SetProgress(.9f,"正在准备主页…");
+        var home=Resources.LoadAsync<GameObject>("Match3D/UI/Home");yield return home;
+        if(!home.asset)throw new InvalidOperationException("主页资源加载失败，请重试");
     }
     void OnDestroy(){CancelSourceCreation();if(stagePreloader)stagePreloader.Cancel();BoardPhysicsSettings.End();if(Instance==this)Instance=null;Time.timeScale=1;}
     void Update(){

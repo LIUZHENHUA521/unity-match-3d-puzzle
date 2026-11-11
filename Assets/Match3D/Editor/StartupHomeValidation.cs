@@ -13,7 +13,10 @@ public static class StartupHomeValidation {
     static void BeforeRender(){
         if(firstCanvas||!Application.isPlaying)return;
         firstCanvas=true;
-        try{Check(UnityEngine.Object.FindObjectOfType<Match3DHomeView>(),"First canvas render has no home");}
+        try{
+            Check(UnityEngine.Object.FindObjectOfType<Match3DStartupView>(),"First canvas render has no loading page");
+            Check(!UnityEngine.Object.FindObjectOfType<Match3DHomeView>(),"Home appears before initialization");
+        }
         catch(Exception e){Finish(e);}
     }
     static void Tick(){
@@ -31,6 +34,8 @@ public static class StartupHomeValidation {
             if(!flow||flow.ScreenName!="home")return;
             if(step++==0)return; // Allow the first rendered frame and deferred destruction.
             Check(firstCanvas,"No canvas rendered");
+            Check(flow.StartupComplete,"Home opened before startup completed");
+            Check(!UnityEngine.Object.FindObjectOfType<Match3DStartupView>(),"Loading page remains over home");
             Check(UnityEngine.Object.FindObjectsOfType<Match3DHomeView>().Length==1,"Duplicate home");
             var canvas=GameObject.Find("Goose UI");
             Check(canvas&&canvas.GetComponent<CanvasGroup>().interactable,"Home remains blocked");
@@ -43,7 +48,7 @@ public static class StartupHomeValidation {
     }
     static void Finish(Exception error){
         watching=false;SessionState.SetBool("startup-home-check",false);Canvas.willRenderCanvases-=BeforeRender;
-        File.WriteAllText("Temp/startup-home-validation.txt",error==null?"PASS first rendered canvas contains home; one active home; input unlocked; preview hidden; tutorial starts; returns home.":"FAIL "+error);
+        File.WriteAllText("Temp/startup-home-validation.txt",error==null?"PASS first rendered canvas contains loading only; initialization complete before home; loading removed; one active home; input unlocked; preview hidden; tutorial starts; returns home.":"FAIL "+error);
         EditorApplication.isPlaying=false;
     }
 }

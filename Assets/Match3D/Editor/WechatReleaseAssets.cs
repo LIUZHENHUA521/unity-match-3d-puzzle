@@ -9,10 +9,25 @@ using UnityEngine.U2D;
 
 // Release-only transformations: never change artwork in the working project.
 public static class WechatReleaseAssets {
+    public const string StartupCoverPath="Assets/Match3D/Art/Startup/WechatCover.jpg";
     public static void Prepare(string scenePath) {
         if (!File.Exists(".goose-build-stage"))
             throw new InvalidOperationException("Release asset optimization requires the disposable build stage.");
         const string root = "Assets/Match3D/Resources/Match3D/";
+        // Keep the editable source art intact; the WeChat main package only needs JPEG.
+        var cover=new Texture2D(2,2,TextureFormat.RGB24,false);
+        try{
+            if(!ImageConversion.LoadImage(cover,File.ReadAllBytes(Match3DStartupBuilder.CoverPath)))
+                throw new InvalidOperationException("Cannot decode startup cover");
+            File.WriteAllBytes(StartupCoverPath,cover.EncodeToJPG(90));
+        }finally{UnityEngine.Object.DestroyImmediate(cover);}
+        AssetDatabase.ImportAsset(StartupCoverPath);
+        var startupImporter=(TextureImporter)AssetImporter.GetAtPath(root+"Startup/ToyLoading.png");
+        var startupSettings=startupImporter.GetPlatformTextureSettings("WebGL");
+        startupSettings.overridden=true;startupSettings.maxTextureSize=1024;
+        startupSettings.format=TextureImporterFormat.DXT1;
+        startupSettings.textureCompression=TextureImporterCompression.CompressedHQ;
+        startupImporter.SetPlatformTextureSettings(startupSettings);startupImporter.SaveAndReimport();
         Atlas("WechatInvite", AssetDatabase.FindAssets("t:Texture2D", new[]{root+"InviteSkinPS"})
             .Select(AssetDatabase.GUIDToAssetPath).ToArray());
         Atlas("WechatBackgrounds", new[]{root+"HomeSkinPS/img_Homepage_bg2.jpg"});

@@ -32,7 +32,10 @@ public static class WechatReleaseBuild {
             EditorUtility.SetDirty(library);
             var config=WXConvertCore.config;
             config.SDKOptions.PreloadWXFont=true;
-            config.ProjectConf.bgImageSrc="Assets/Match3D/Resources/Match3D/HomeSkinPS/img_Homepage_bg2.jpg";
+            if(!File.Exists(Match3DStartupBuilder.CoverPath))throw new Exception("Build the startup loading prefab/cover before exporting WeChat.");
+            config.ProjectConf.bgImageSrc=WechatReleaseAssets.StartupCoverPath;
+            // Keep the SDK cover until its second-frame handoff to the matching Unity loader.
+            config.ProjectConf.HideAfterCallMain=false;
             config.ProjectConf.Appid=release.appid;
             config.ProjectConf.projectName=release.projectName;
             config.ProjectConf.relativeDST=Path.GetDirectoryName(release.output).Replace('\\','/');

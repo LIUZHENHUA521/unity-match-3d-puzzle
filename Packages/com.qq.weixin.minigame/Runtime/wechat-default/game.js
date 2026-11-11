@@ -77,35 +77,35 @@ checkVersion().then((enable) => {
                 /**
                  * !!注意：修改设计宽高和缩放模式后，需要修改文字和进度条样式。默认设计尺寸为667*375
                  */
-                designWidth: 0,
-                designHeight: 0,
-                scaleMode: scaleMode.default,
+                designWidth: 720,
+                designHeight: 1280,
+                scaleMode: scaleMode.showAll,
                 // 以下配置的样式，尺寸相对设计宽高
                 textConfig: {
-                    firstStartText: '初次见面，正在准备游戏',
-                    downloadingText: ['正在布置温馨小屋'],
-                    compilingText: '快乐即将开启',
-                    initText: '马上就好',
-                    completeText: '欢迎回来',
+                    firstStartText: '正在准备一锅消不完',
+                    downloadingText: ['正在加载玩具资源'],
+                    compilingText: '正在启动游戏',
+                    initText: '正在初始化游戏',
+                    completeText: '正在准备账号数据',
                     textDuration: 1500,
                     // 文字样式
                     style: {
-                        bottom: 64,
-                        height: 24,
-                        width: 240,
-                        lineHeight: 24,
-                        color: '#ffffff',
-                        fontSize: 12,
+                        bottom: 260,
+                        height: 28,
+                        width: 650,
+                        lineHeight: 28,
+                        color: '#274a5f',
+                        fontSize: 22,
                     },
                 },
                 // 进度条样式
                 barConfig: {
                     style: {
-                        width: 240,
-                        height: 24,
-                        padding: 2,
-                        bottom: 64,
-                        backgroundColor: '#668B76',
+                        width: 450,
+                        height: 12,
+                        padding: 1,
+                        bottom: 238,
+                        backgroundColor: '#6296b3',
                     },
                 },
                 // 一般不修改，控制icon样式
