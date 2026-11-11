@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const vm=require('node:vm');
 const fs=require('node:fs');
 const path=require('node:path');
-const url='https://work.weixin.qq.com/kf/test?enc_scene=signed&scene_param='+ 'a'.repeat(64);
+const url='https://work.weixin.qq.com/kfid/test?enc_scene=signed&scene_param='+ 'a'.repeat(64);
 function setup(wx,window){
  const library={};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/GooseProfile.jslib'),'utf8'),{LibraryManager:{library},mergeInto:Object.assign,UTF8ToString:value=>value,wx,window});
@@ -39,4 +39,8 @@ test('rejects missing, untrusted and unassociated links without opening chat',()
  for(const link of ['', 'https://evil.example/?enc_scene=x&scene_param=y', 'https://work.weixin.qq.com/kfid/old']){
   let notice;setup({openCustomerServiceChat(){assert.fail('must not open')},showToast(o){notice=o.title}})(link);assert.match(notice,/失效/);
  }
+});
+
+test('documented legacy signed kf link remains supported',()=>{
+ let opened;setup({openCustomerServiceChat(o){opened=o.extInfo.url}})(url.replace('/kfid/','/kf/'));assert.equal(opened,url.replace('/kfid/','/kf/'));
 });

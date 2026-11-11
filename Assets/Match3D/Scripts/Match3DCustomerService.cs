@@ -29,7 +29,7 @@ public sealed class Match3DCustomerService : MonoBehaviour {
             req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("Authorization","Bearer "+account.RecordToken);
             yield return req.SendWebRequest();Reply reply=null;
             if(req.result==UnityWebRequest.Result.Success){try{reply=JsonUtility.FromJson<Reply>(req.downloadHandler.text);}catch{}}
-            if(account&&account.Ready&&account.State.inviteCode==requestedOwner&&reply!=null&&reply.url!=null&&reply.url.StartsWith("https://work.weixin.qq.com/kf/",StringComparison.Ordinal)&&reply.expiresAt>DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()+60000){
+            if(account&&account.Ready&&account.State.inviteCode==requestedOwner&&reply!=null&&reply.url!=null&&(reply.url.StartsWith("https://work.weixin.qq.com/kf/",StringComparison.Ordinal)||reply.url.StartsWith("https://work.weixin.qq.com/kfid/",StringComparison.Ordinal))&&reply.expiresAt>DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()+60000){
                 url=reply.url;refreshAt=Time.realtimeSinceStartup+Mathf.Min(1800f,(reply.expiresAt-DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())/1000f-60f);
             }else{url=null;if(req.responseCode==401&&account)account.RefreshRecordLogin();}
         }

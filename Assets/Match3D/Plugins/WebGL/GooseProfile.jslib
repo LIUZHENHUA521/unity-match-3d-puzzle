@@ -43,7 +43,7 @@ mergeInto(LibraryManager.library, {
  },
  GooseCustomerServiceOpen:function(link){
   var url=link?UTF8ToString(link):'',corpId='ww18ea30e9ed7eee49';
-  if(!/^https:\/\/work\.weixin\.qq\.com\/kf\/[^?#]+\?/.test(url)||url.indexOf('enc_scene=')<0||url.indexOf('scene_param=')<0){
+  if(!/^https:\/\/work\.weixin\.qq\.com\/kf(?:id)?\/[^?#]+\?/.test(url)||url.indexOf('enc_scene=')<0||url.indexOf('scene_param=')<0){
    if(typeof wx!=='undefined'&&typeof wx.showToast==='function')wx.showToast({title:'客服连接已失效，请返回游戏重试',icon:'none'});
    return;
   }
