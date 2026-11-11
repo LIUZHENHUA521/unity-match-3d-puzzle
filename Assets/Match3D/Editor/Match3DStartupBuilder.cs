@@ -31,8 +31,12 @@ public static class Match3DStartupBuilder {
             root.gameObject.AddComponent<Image>().color=new Color32(168,218,246,255);
             var view=root.gameObject.AddComponent<Match3DStartupView>();
             var bindings=root.gameObject.AddComponent<Match3DUIView>();bindings.bindings=new Match3DUIView.Binding[0];
+            // Artwork fills the entire viewport, independently of the safe-area UI.
+            // It contains the title, so stretch rather than crop away either edge.
+            var artwork=Picture("Artwork",root,new Vector2(360,640),new Vector2(720,1280),"ToyLoading");
+            artwork.anchorMin=Vector2.zero;artwork.anchorMax=Vector2.one;
+            artwork.offsetMin=artwork.offsetMax=Vector2.zero;
             var content=Rect("Content",root,Vector2.zero,new Vector2(720,1280));view.content=content;
-            Picture("Artwork",content,new Vector2(360,640),new Vector2(720,1280),"ToyLoading");
             Picture("Age8",content,new Vector2(92,129),new Vector2(78,104),"Age8");
             Label("HealthTitle",content,new Vector2(360,200),new Vector2(440,30),"健康游戏忠告",23,FontStyle.Bold);
             Label("HealthAdvice",content,new Vector2(360,130),new Vector2(440,114),Match3DStartupView.HealthAdvice,21,FontStyle.Normal);
@@ -58,9 +62,10 @@ public static class Match3DStartupBuilder {
         var rect=new GameObject(name,typeof(RectTransform)).GetComponent<RectTransform>();rect.SetParent(parent,false);
         rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(.5f,.5f);rect.sizeDelta=size;rect.anchoredPosition=pos;return rect;
     }
-    static void Picture(string name,Transform parent,Vector2 center,Vector2 size,string asset){
+    static RectTransform Picture(string name,Transform parent,Vector2 center,Vector2 size,string asset){
         var image=Rect(name,parent,center-new Vector2(360,640),size).gameObject.AddComponent<Image>();
         image.sprite=AssetDatabase.LoadAssetAtPath<Sprite>(AssetsRoot+"Startup/"+asset+".png");image.raycastTarget=false;
+        return image.rectTransform;
     }
     static Text Label(string name,Transform parent,Vector2 center,Vector2 size,string value,int fontSize,FontStyle style){
         var text=Rect(name,parent,center-new Vector2(360,640),size).gameObject.AddComponent<Text>();

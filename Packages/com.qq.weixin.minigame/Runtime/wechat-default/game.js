@@ -79,7 +79,8 @@ checkVersion().then((enable) => {
                  */
                 designWidth: 720,
                 designHeight: 1280,
-                scaleMode: scaleMode.showAll,
+                // Fill long phone screens instead of letterboxing the 720x1280 cover.
+                scaleMode: scaleMode.exactFit,
                 // 以下配置的样式，尺寸相对设计宽高
                 textConfig: {
                     firstStartText: '正在准备一锅消不完',

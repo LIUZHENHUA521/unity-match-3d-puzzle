@@ -54,13 +54,24 @@ public static class StartupLoadingValidation {
             Check(!runner.MoveNext()&&failure!=null&&failure.Message=="模拟网络失败","nested initialization error surfaces to retry UI");
             failure=null;runner=Match3DStartupRunner.Run(Succeeding(),error=>failure=error);
             Check(runner.MoveNext()&&!runner.MoveNext()&&failure==null,"new attempt completes normally");
-            foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1560),new Vector2Int(750,1334)})
+            var artwork=instance.GetComponentsInChildren<Image>().Single(i=>i.name=="Artwork").rectTransform;
+            Check(artwork.parent==instance.transform,"artwork is independent of the safe-area content");
+            foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1560),new Vector2Int(750,1334),new Vector2Int(720,1600)}){
+                var viewport=(RectTransform)instance.transform;
+                viewport.sizeDelta=size;view.Fit();
+                var corners=new Vector3[4];artwork.GetWorldCorners(corners);
+                for(int i=0;i<corners.Length;i++)corners[i]=viewport.InverseTransformPoint(corners[i]);
+                Check(corners[0].x<=viewport.rect.xMin&&corners[0].y<=viewport.rect.yMin&&corners[2].x>=viewport.rect.xMax&&corners[2].y>=viewport.rect.yMax,
+                    "artwork covers all four viewport edges at "+size);
                 Match3DStartupBuilder.Render(prefab,Output+"/loading-"+size.x+"x"+size.y+".png",size.x,size.y,false);
+            }
+            var template=File.ReadAllText("Packages/com.qq.weixin.minigame/Runtime/wechat-default/game.js");
+            Check(template.Contains("scaleMode: scaleMode.exactFit"),"SDK cover fills the viewport without letterboxing");
             Check(File.Exists(Match3DStartupBuilder.CoverPath),"pre-engine WeChat cover exists");
             var exporter=File.ReadAllText("Assets/Match3D/Editor/WechatReleaseBuild.cs");
             Check(exporter.Contains("config.ProjectConf.bgImageSrc=WechatReleaseAssets.StartupCoverPath"),"release exporter uses the matching cover");
             Check(exporter.Contains("config.ProjectConf.HideAfterCallMain=false"),"cover remains through engine handoff");
-            File.WriteAllText(Output+"/assets.txt","PASS "+checks+" assertions: source badge/advice, font glyphs, retry/error handling, monotonic progress, release cover binding; rendered 720x1280, 720x1560 and 750x1334.\n");
+            File.WriteAllText(Output+"/assets.txt","PASS "+checks+" assertions: full-viewport artwork, source badge/advice, font glyphs, retry/error handling, monotonic progress, release cover binding; rendered 720x1280, 720x1560, 750x1334 and 720x1600.\n");
         }finally{UnityEngine.Object.DestroyImmediate(instance);}
     }
 }
