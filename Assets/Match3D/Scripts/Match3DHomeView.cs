@@ -41,8 +41,7 @@ public sealed class Match3DHomeView : MonoBehaviour {
             ui.Bind("Settings",()=>{var existing=home.GetComponentInChildren<Match3DHomeMenu>();if(existing){Destroy(existing.gameObject);return;}var menu=Match3DUIView.Load("HomeMenu",home.transform);var controller=menu.GetComponent<Match3DHomeMenu>();controller.FollowArtwork(home.artwork);controller.Connect(flow);});ui.Bind("Rewards",()=>{if(home.artwork)flow.ShowHomeFeatureNotice("月底抽 iPad 活动尚未接入");else flow.ShowRewardInfo();});
             ui.Bind("Bachelor",()=>flow.BeginReward(0,"bachelor"));ui.Bind("Elite",()=>flow.BeginReward(0,"elite"));
         }
-        // Keep the entry hidden until the seven-day sign-in feature is available.
-        if(home.signIn)home.signIn.gameObject.SetActive(false);
+        if(home.signIn){home.signIn.gameObject.SetActive(true);home.signIn.onClick.AddListener(()=>{flow.HomeClick();flow.ShowSignIn();});home.signIn.gameObject.AddComponent<Match3DSignInBadge>();}
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});
         if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();Match3DGameCommunity.Open();});
         if(!home.artwork)home.Layout();

@@ -76,8 +76,8 @@ public static class Match3DTipsValidation {
         yield return null;
         flow.Home();
         Assert(!tips.gameObject.activeSelf, "navigation clears old message");
-        flow.ShowHomeFeatureNotice("七日签到功能尚未接入");
-        Assert(tips.gameObject.activeSelf && label.text == "七日签到功能尚未接入", "existing home feature entry reuses tips after navigation");
+        flow.ShowHomeFeatureNotice("月底抽 iPad 活动尚未接入");
+        Assert(tips.gameObject.activeSelf && label.text == "月底抽 iPad 活动尚未接入", "existing home feature entry reuses tips after navigation");
         yield return new WaitForSecondsRealtime(1.65f);
         Assert(!tips.gameObject.activeSelf, "normal 1.5 second dismissal");
     }

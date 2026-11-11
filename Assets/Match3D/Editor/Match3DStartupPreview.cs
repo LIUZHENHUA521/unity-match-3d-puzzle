@@ -38,7 +38,7 @@ public static class Match3DStartupPreview {
         var ui=InstantiatePreview("UIRoot",null);ui.name=PreviewName;ui.tag="EditorOnly";
         var home=InstantiatePreview("Home",ui.Get<RectTransform>("Page"));
         var controller=home.GetComponent<Match3DHomeView>();
-        if(controller.signIn)controller.signIn.gameObject.SetActive(false);
+        if(controller.signIn)controller.signIn.gameObject.SetActive(true);
         ui.gameObject.AddComponent<CanvasGroup>().blocksRaycasts=false;
         PrefabUtility.RecordPrefabInstancePropertyModifications(ui.gameObject);
         if(controller.signIn)PrefabUtility.RecordPrefabInstancePropertyModifications(controller.signIn.gameObject);
