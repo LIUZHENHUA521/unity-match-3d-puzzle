@@ -8,6 +8,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 [InitializeOnLoad] public static class Match3DSignInValidation {
     const string Key="Match3DSignInValidation.Pending";
@@ -17,7 +18,7 @@ using UnityEngine.UI;
         }
     };}
     public static void Run(){
-        Match3DSignInBuilder.Build();EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
         SessionState.SetBool(Key,true);EditorApplication.EnterPlaymode();
     }
 }
@@ -56,6 +57,12 @@ public sealed class Match3DSignInProbe : MonoBehaviour {
         account=new GameObject("Sign in account fixture").AddComponent<Match3DInvitations>();account.Initialize(endpoint);
         var home=Match3DHomeView.Create(flow,page,Match3DHomeView.Tab.Home);yield return null;
         Assert(home.signIn&&home.signIn.gameObject.activeInHierarchy,"real home entry is visible");
+        yield return new WaitForSecondsRealtime(.7f);
+        Capture(720,1560,"home-long");Capture(720,1280,"home-standard");Capture(720,960,"home-short");
+        home.invite.onClick.Invoke();yield return null;
+        var invitation=FindObjectOfType<Match3DInviteView>();
+        Assert(invitation&&!View,"invitation entry opens invitation modal only");
+        invitation.GetComponent<Match3DUIView>().Get<Button>("Close").onClick.Invoke();yield return null;
         account.OnInvitationBridge("{\"code\":\"signin-fixture-"+Guid.NewGuid().ToString("N")+"\"}");
         yield return Wait(()=>account.Ready&&!account.Busy&&!account.SignInBusy&&account.SignInState!=null);
         Assert(account.SignInCurrent&&account.SignInState.day==1&&account.Inventory(0)==0,"login obtains server sign-in state without granting");
@@ -113,12 +120,33 @@ public sealed class Match3DSignInProbe : MonoBehaviour {
         var camera=new GameObject("Sign in capture camera").AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;
         camera.backgroundColor=new Color(.14f,.18f,.22f);var target=new RenderTexture(width,height,24);target.Create();camera.targetTexture=target;
         canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
-        camera.Render();Canvas.ForceUpdateCanvases();foreach(var fit in canvas.GetComponentsInChildren<Match3DUIFitContent>())fit.Fit();Canvas.ForceUpdateCanvases();
-        foreach(var button in View.GetComponentsInChildren<Button>()){
+        camera.Render();Canvas.ForceUpdateCanvases();
+        var home=FindObjectOfType<Match3DHomeView>();if(home)home.SendMessage("Layout");
+        foreach(var fit in canvas.GetComponentsInChildren<Match3DUIFitContent>())fit.Fit();Canvas.ForceUpdateCanvases();
+        var buttons=View?View.GetComponentsInChildren<Button>():home.GetComponentsInChildren<Button>();
+        foreach(var button in buttons){
             var corners=new Vector3[4];button.GetComponent<RectTransform>().GetWorldCorners(corners);
             foreach(var corner in corners){var p=camera.WorldToViewportPoint(corner);Assert(p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1,name+" button within screen");}
         }
-        foreach(var label in View.GetComponentsInChildren<Text>()){
+        if(!View){
+            var raycaster=canvas.GetComponent<GraphicRaycaster>();
+            var events=EventSystem.current;if(!events)events=new GameObject("Home hit test events").AddComponent<EventSystem>();
+            foreach(var entry in new[]{home.signIn,home.invite}){
+                var rect=(RectTransform)entry.transform;
+                foreach(var other in buttons){
+                    if(other==entry)continue;
+                    var bounds=RectTransformUtility.CalculateRelativeRectTransformBounds(home.artwork,rect);
+                    var otherBounds=RectTransformUtility.CalculateRelativeRectTransformBounds(home.artwork,other.transform);
+                    Assert(!bounds.Intersects(otherBounds),name+" entry does not overlap "+entry.name+" / "+other.name);
+                }
+                foreach(float y in new[]{-.35f,0,.35f}){
+                    var point=RectTransformUtility.WorldToScreenPoint(camera,rect.TransformPoint(new Vector3(0,rect.rect.height*y,0)));
+                    var hits=new List<RaycastResult>();raycaster.Raycast(new PointerEventData(events){position=point},hits);
+                    Assert(hits.Count>0&&hits[0].gameObject.GetComponentInParent<Button>()==entry,name+" pointer hits "+entry.name+" at "+y);
+                }
+            }
+        }
+        foreach(var label in View?View.GetComponentsInChildren<Text>():Array.Empty<Text>()){
             if(string.IsNullOrEmpty(label.text))continue;
             label.cachedTextGenerator.Populate(label.text,label.GetGenerationSettings(label.rectTransform.rect.size));
             Assert(label.cachedTextGenerator.characterCountVisible>=label.text.Replace(" ","").Length,name+" text fits: "+label.text);
