@@ -19,6 +19,7 @@ public static class ComboProbeAssetBuilder {
         if (!settings) { settings = ScriptableObject.CreateInstance<ComboProbeAssets>(); AssetDatabase.CreateAsset(settings, Root + "Assets.asset"); }
         settings.panel = Sprite("image_blindBox_blue"); settings.circle = Sprite("image_red_circle");
         settings.darkStar = Sprite("image_Star_black"); settings.lightStar = Sprite("image_Star");
+        settings.starFlash = Sprite("image_Star_lighe");
         settings.sunshine = Sprite("sunshine"); settings.track = Sprite("image_combo_load1");
         var material = AssetDatabase.LoadAssetAtPath<Material>(Root + "ProbeRing.mat");
         if (!material) { material = new Material(Shader.Find("Spine/SkeletonGraphic")); AssetDatabase.CreateAsset(material, Root + "ProbeRing.mat"); }

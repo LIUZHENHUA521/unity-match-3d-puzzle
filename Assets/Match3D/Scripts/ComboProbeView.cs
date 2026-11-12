@@ -7,7 +7,7 @@ public sealed class ComboProbeView : MonoBehaviour {
     Canvas canvas;
     RectTransform root;
     Text comboText;
-    readonly Image[] stars = new Image[3];
+    public ComboProbeChanceFeedback Chances { get; private set; }
     readonly RawImage[,] models = new RawImage[4, 3];
     readonly ComboProbeSlot[] slots = new ComboProbeSlot[4];
     readonly ComboProbeIcons icons = new ComboProbeIcons();
@@ -50,7 +50,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         Label("Counter label", "连消数", badge, new Vector2(4.137f, 32.124f), new Vector2(110, 50.4f), 30, Color.white);
         comboText = Label("Counter", "0", badge, new Vector2(1.233f, -22.303f), new Vector2(120, 88.2f), 60, new Color32(253, 251, 172, 255));
         Vector2[] starPositions = { new Vector2(-88.646f, -30.912f), new Vector2(-1.736f, 88.811f), new Vector2(87.397f, -31.31f) };
-        for (int i = 0; i < 3; i++) stars[i] = Picture("Chance " + i, assets.darkStar, badge, starPositions[i] + new Vector2(1.47f, 0), new Vector2(45.8f, 45));
+        Chances = badge.gameObject.AddComponent<ComboProbeChanceFeedback>(); Chances.Initialize(assets, starPositions);
         Label("Interaction hint", "短按取物 · 长按查看", panel, new Vector2(299, 63), new Vector2(340, 28), 19, Color.white);
         for (int i = 0; i < 4; i++) {
             var cell = new GameObject("Probe stack " + (i + 1), typeof(RectTransform), typeof(Image), typeof(ComboProbeSlot));
@@ -95,10 +95,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         root.gameObject.SetActive(visible); if (!visible) { if (Preview) Preview.Clear(); return; }
         if (revision == owner.State.Revision) return;
         revision = owner.State.Revision; comboText.text = owner.State.Combo.ToString();
-        for (int i = 0; i < 3; i++) {
-            bool lit = i < owner.State.Stars; stars[i].sprite = lit ? assets.lightStar : assets.darkStar;
-            // Use the original settled star, not its padded flash/transition sprite.
-        }
+        Chances.SetState(owner.State.Stars, owner.State.Combo);
         int color = owner.State.Combo == 0 ? -1 : Mathf.Min(owner.State.Combo - 1, 4);
         if (currentColor != color) {
             currentColor = color; ring.gameObject.SetActive(color >= 0);
@@ -118,6 +115,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         }
     }
     public void ResetView() {
+        if (Chances) Chances.ResetImmediate();
         if (Preview) Preview.Clear(); foreach (var slot in slots) if (slot) slot.Cancel();
         revision = -1; currentColor = -2;
     }
