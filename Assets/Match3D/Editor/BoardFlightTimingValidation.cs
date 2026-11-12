@@ -18,11 +18,14 @@ public static class BoardFlightTimingValidation {
   foreach(var p in probes)if(p){p.transform.DOKill();UnityEngine.Object.DestroyImmediate(p);}probes.Clear();
   if(collectionKey!=null){if(hadCollection)PlayerPrefs.SetInt(collectionKey,priorCollection);else PlayerPrefs.DeleteKey(collectionKey);if(hadCompleted)PlayerPrefs.SetString(completedKey,priorCompleted);else PlayerPrefs.DeleteKey(completedKey);PlayerPrefs.Save();}
   Time.timeScale=priorScale;Physics.autoSimulation=priorPhysics;Camera.main.aspect=priorAspect;
-  string report=failure==null?"PASS source flight: shipped old branch; independent XZ linear/Y OutQuad/rotation InQuad; scale peak; 50ms collider grace; release travel; continuous picks; seventh-slot triple frees slots immediately; .3/.2/.2/.05 combine stages; completion gate and actual last-triple and concurrent-match win checkpoints; unmatched seventh-slot failure lock; reflow; mixed pause clocks; Home cancellation; six original model scales and camera depth 1.58 rendered. Editor-frame timing, not original-device capture.\n":"FAIL source flight: "+failure+"\n";
+  string report=failure==null?"PASS source flight: shipped old branch; independent XZ linear/Y OutQuad/rotation InQuad; scale peak; immediate collision isolation; release travel; continuous picks; seventh-slot triple frees slots immediately; .3/.2/.2/.05 combine stages; completion gate and actual last-triple and concurrent-match win checkpoints; unmatched seventh-slot failure lock; reflow; mixed pause clocks; Home cancellation; six original model scales and camera depth 1.58 rendered. Editor-frame timing, not original-device capture.\n":"FAIL source flight: "+failure+"\n";
   Directory.CreateDirectory("Temp");File.WriteAllText("Temp/goose-source-flight-timing-validation.txt",report);Debug.Log(report);
  }
- static void Setup(){
-  var flow=Match3DFlow.Instance;flow.Begin(0);flow.NextStage();BoardCreationTestSupport.FinishPending(flow);
+ static IEnumerator Setup(){
+  var flow=Match3DFlow.Instance;flow.PreviewDailyOpening(OpeningSeparationValidation.LegacyLevel(),2);
+  float deadline=Time.realtimeSinceStartup+120;
+  while(flow.CreationInProgress){if(Time.realtimeSinceStartup>deadline)throw new Exception("flight fixture opening timeout");yield return null;}
+  Check(string.IsNullOrEmpty(flow.CreationFailure),"flight fixture opens");
   foreach(var item in LevelGenerator.Instance.objectsOnScene)item.SetActive(false);
   GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
  }
@@ -33,7 +36,7 @@ public static class BoardFlightTimingValidation {
   LevelGenerator.Instance.objectsOnScene.Add(p);probes.Add(p);return p;
  }
  static IEnumerator Core(){
-  Physics.autoSimulation=false;Time.timeScale=1;Camera.main.aspect=9f/16;Setup();yield return null;var input=InputController.Instance;
+  Physics.autoSimulation=false;Time.timeScale=1;Camera.main.aspect=9f/16;yield return Setup();yield return null;var input=InputController.Instance;
   collectionKey="goose.collection."+Match3DFlow.Instance.library.themes[Match3DFlow.Instance.ThemeIndex].id;completedKey="goose.completed."+Match3DFlow.Instance.library.themes[Match3DFlow.Instance.ThemeIndex].id;
   hadCollection=PlayerPrefs.HasKey(collectionKey);hadCompleted=PlayerPrefs.HasKey(completedKey);priorCollection=PlayerPrefs.GetInt(collectionKey);priorCompleted=PlayerPrefs.GetString(completedKey);
   Check(input.UsesSourceFlight,"stage 2 uses recovered package-default old path");
@@ -54,7 +57,7 @@ public static class BoardFlightTimingValidation {
   Check(input.objectsOnStack.Count==4&&!input.objectsOnStack.Contains(a)&&!input.objectsOnStack.Contains(c),"seventh-slot triple removes logical three immediately");
   Check(a&&b&&c&&input.HasPendingVisuals&&!input.CanEvaluateWin,"visual triple retained and win delayed");
   var next=Probe("source-next",8);input.AddObjectOnStack(next);Check(input.objectsOnStack.Count==5,"new pick accepted during match");
-  Check(c.GetComponent<Collider>().enabled&&c.GetComponent<Rigidbody>().detectCollisions,"source collision grace on release");
+  Check(!c.GetComponent<Collider>().enabled&&!c.GetComponent<Rigidbody>().detectCollisions,"no collision during release animation");
   while(Time.time-began<.08f)yield return null;
   Check(!c.GetComponent<Collider>().enabled&&!c.GetComponent<Rigidbody>().detectCollisions,"collision hidden after .05 scaled seconds");
   while(Time.time-began<.34f)yield return null;
@@ -70,11 +73,11 @@ public static class BoardFlightTimingValidation {
   input.UndoLast();Check(input.objectsOnStack.Count==beforeUndo&&input.objectsOnStack.Contains(latest),"project undo busy guard cannot kill an incoming tween and strand pending state");
   yield return new WaitForSeconds(.4f);Check(!input.HasPendingVisuals&&!input.IsBusy,"incoming tween completes after ignored undo");
   input.UndoLast();Check(input.objectsOnStack.Count==beforeUndo-1,"undo works after flight completes");DOTween.Complete(latest.transform,true);
-  // Source SetUpdate(true) flight continues during timeScale=0, but WaitForSeconds(.05) does not.
+  // Unscaled flight stays collision-free even while game time is paused.
   input.ResetStack();var pause=Probe("source-pause",9);input.AddObjectOnStack(pause);Time.timeScale=0;
   yield return new WaitForSecondsRealtime(.38f);
   Check(Vector3.Distance(pause.transform.position,Match3DTray.Instance.SlotPosition(0))<.002f,"flight independent of game time");
-  Check(pause.GetComponent<Collider>().enabled,"collider coroutine uses paused game time");
+  Check(!pause.GetComponent<Collider>().enabled,"paused flight cannot retain solid colliders");
   Time.timeScale=1;yield return new WaitForSeconds(.08f);
   Check(!pause.GetComponent<Collider>().enabled,"collider coroutine resumes with game time");
   input.ResetStack();a=Probe("source-cancel",10);b=Probe("source-cancel",11);c=Probe("source-cancel",12);
@@ -82,10 +85,10 @@ public static class BoardFlightTimingValidation {
   Check(input.HasPendingVisuals&&!input.CanEvaluateWin,"cancel fixture actually has in-flight triple");
   Match3DFlow.Instance.Home();Check(!input.HasPendingVisuals&&!GameManager.Instance.GameIsPlaying(),"Home clears pending visuals and leaves gameplay");
   yield return null;Check(!a&&!b&&!c,"Home destroys visual triple removed from board bookkeeping");
-  Setup();for(int i=0;i<7;i++)input.AddObjectOnStack(Probe("source-full-"+i,20+i));
+  yield return Setup();for(int i=0;i<7;i++)input.AddObjectOnStack(Probe("source-full-"+i,20+i));
   Check(input.objectsOnStack.Count==7&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL,"seventh unmatched item immediately enters project failure UI (source PrepareLose lock)");
   input.AddObjectOnStack(Probe("source-eighth",28));Check(input.objectsOnStack.Count==7,"failure blocks additional picks");
-  Match3DFlow.Instance.Home();Setup();
+  Match3DFlow.Instance.Home();yield return Setup();
   // Exercise the actual GameManager completion chain on the last triple, not just its boolean.
   foreach(var old in LevelGenerator.Instance.objectsOnScene)if(old){old.transform.DOKill();UnityEngine.Object.DestroyImmediate(old);}
   LevelGenerator.Instance.objectsOnScene.Clear();
@@ -98,7 +101,7 @@ public static class BoardFlightTimingValidation {
   float deadline=Time.realtimeSinceStartup+2;
   while(GameManager.Instance.GameIsPlaying()&&Time.realtimeSinceStartup<deadline)yield return null;
   Check(GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH&&Time.time-began>=.69f&&Time.time-began<1.1f,"actual win occurs after source .7 completion chain");
-  Match3DFlow.Instance.Home();Setup();
+  Match3DFlow.Instance.Home();yield return Setup();
   foreach(var old in LevelGenerator.Instance.objectsOnScene)if(old){old.transform.DOKill();UnityEngine.Object.DestroyImmediate(old);}
   LevelGenerator.Instance.objectsOnScene.Clear();
   var groupA=new[]{Probe("source-overlap-A",40),Probe("source-overlap-A",41),Probe("source-overlap-A",42)};
@@ -110,7 +113,7 @@ public static class BoardFlightTimingValidation {
   while(GameManager.Instance.GameIsPlaying()&&Time.realtimeSinceStartup<deadline)yield return null;
   Check(GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH&&Time.time-began>=.69f&&Time.time-secondBegan<.69f,"first EndCombine checks empty board without waiting for concurrent second match");
   Check(input.HasPendingVisuals,"win checkpoint permits remaining parallel visuals");
-  Match3DFlow.Instance.Home();Setup();
+  Match3DFlow.Instance.Home();yield return Setup();
   var realItems=LevelGenerator.Instance.objectsOnScene.GroupBy(x=>x.name).Select(g=>g.First()).Take(6).ToArray();
   Check(realItems.Length==6,"six distinct original model types available");
   // Geometry recovered from data.unity3d: seven Content points are .71 local

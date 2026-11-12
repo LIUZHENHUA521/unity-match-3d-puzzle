@@ -13,9 +13,10 @@ using UnityEngine;
     static readonly List<string> results=new List<string>();
     static OpeningSeparationValidation(){EditorApplication.playModeStateChanged+=s=>{if(s==PlayModeStateChange.EnteredPlayMode&&SessionState.GetBool(Pending,false)){SessionState.SetBool(Pending,false);EditorApplication.delayCall+=()=>new GameObject("Opening regression").AddComponent<BoardValidationDriver>().StartCoroutine(Run());}};}
     public static void RunBatch(){SessionState.SetBool(Pending,true);Physics.simulationMode=SimulationMode.FixedUpdate;EditorSceneManager.OpenScene(Match3DBuilder.Scene);EditorApplication.isPlaying=true;}
+    public static void RunInteractionBatch(){SessionState.SetBool("opening-interaction-only",true);RunBatch();}
     public static void RunFreshBatch(){SessionState.SetBool("opening-fresh-only",true);RunBatch();}
     static void Check(bool ok,string message){if(!ok)throw new Exception(message);results.Add("PASS "+message);File.WriteAllLines(Output+"/report.txt",results);}
-    static Match3DDailyLevel Level()=>new Match3DDailyLevel{date="2026-11-13",tier="bachelor",candidateId="candidate-0123456789abcdef01234567",version="regression",generatorVersion="shared-v2",modelThemeId="foodie-party",seed=47231,seconds=600,initialCount=300,limitHeight=21.5f,layers=new[]{new ChallengeLayer(150,23,14),new ChallengeLayer(60,10,18),new ChallengeLayer(45,8,20),new ChallengeLayer(45,7,22)},opening=JsonUtility.FromJson<Export>(File.ReadAllText("Tools/validation/OpeningSeparation/legacy-opening.json")).opening};
+    public static Match3DDailyLevel LegacyLevel()=>new Match3DDailyLevel{date="2026-11-13",tier="bachelor",candidateId="candidate-0123456789abcdef01234567",version="regression",generatorVersion="shared-v2",modelThemeId="foodie-party",seed=47231,seconds=600,initialCount=300,limitHeight=21.5f,layers=new[]{new ChallengeLayer(150,23,14),new ChallengeLayer(60,10,18),new ChallengeLayer(45,8,20),new ChallengeLayer(45,7,22)},opening=JsonUtility.FromJson<Export>(File.ReadAllText("Tools/validation/OpeningSeparation/legacy-opening.json")).opening};
     static IEnumerator Wait(){
         float deadline=Time.realtimeSinceStartup+120;
         while(Match3DFlow.Instance.CreationInProgress){if(Time.realtimeSinceStartup>deadline)throw new Exception("Opening timeout");yield return null;}
@@ -46,28 +47,36 @@ using UnityEngine;
     static IEnumerator Core(){
         yield return null;yield return null;Physics.simulationMode=SimulationMode.FixedUpdate;Time.timeScale=1;
         var flow=Match3DFlow.Instance;
+        if(SessionState.GetBool("opening-interaction-only",false)){
+            SessionState.SetBool("opening-interaction-only",false);
+            yield return BoardSelectionPhysicsFramesValidation.Run();
+            Check(File.ReadAllText("Temp/goose-source-selection-physics-frames-validation.txt").StartsWith("PASS"),"manual selection/contact frame regression");
+            yield return BoardFlightTimingValidation.Run();
+            Check(File.ReadAllText("Temp/goose-source-flight-timing-validation.txt").StartsWith("PASS"),"pickup/match/pause/undo frame regression");
+            yield break;
+        }
         if(!SessionState.GetBool("opening-fresh-only",false)){
-        var original=Level();flow.PreviewDailyOpening(original,2);yield return Wait();
+        var original=LegacyLevel();flow.PreviewDailyOpening(original,2);yield return Wait();
         Check(ItemPhysicsController.Instance.DailyOpeningHeld,"legacy opening stays held before first input");Inspect("legacy repaired");var repaired=flow.CaptureDailyOpening();CaptureImage();
-        var originalItems=Level().opening.stages[1].items;
+        var originalItems=LegacyLevel().opening.stages[1].items;
         Check(repaired.items.Zip(originalItems,(a,b)=>a.type==b.type&&a.id==b.id&&a.scale==b.scale&&a.visible==b.visible).All(v=>v),"legacy repair preserves 300 IDs, types, sizes and visibility");
         Check(repaired.items.Where(i=>i.visible).All(i=>i.dynamic),"legacy visible/static flags corrected for release");
         yield return new WaitForSeconds(1);Same(repaired,"idle");
         flow.RestartStage();yield return Wait();Same(repaired,"cached retry");Inspect("cached retry");
-        flow.PreviewDailyOpening(Level(),2);yield return Wait();Same(repaired,"independent repair repeat");
+        flow.PreviewDailyOpening(LegacyLevel(),2);yield return Wait();Same(repaired,"independent repair repeat");
         var target=LevelGenerator.Instance.objectsOnScene.First(o=>LayeredItemPile.Instance.CanPick(o.GetComponent<Rigidbody>()));
         InputController.Instance.AddObjectOnStack(target);Check(!ItemPhysicsController.Instance.DailyOpeningHeld,"first pick releases opening");
         Check(LevelGenerator.Instance.objectsOnScene.Where(o=>o!=target&&LayeredItemPile.Instance.DailyVisible(o.GetComponent<Rigidbody>())).All(o=>!o.GetComponent<Rigidbody>().isKinematic),"all remaining visible bodies dynamic after pick");
         yield return new WaitForSeconds(2);float falling=Inspect("after first pick",false);yield return new WaitForSeconds(8);float settled=Inspect("after first pick 10s",false);Check(settled<.1f,"first-pick settled contact penetration below .1");
-        flow.PreviewDailyOpening(Level(),1);yield return Wait();Inspect("first stage");Check(LevelGenerator.Instance.objectsOnScene.Count==15,"first stage retains 15 items");
+        flow.PreviewDailyOpening(LegacyLevel(),1);yield return Wait();Inspect("first stage");Check(LevelGenerator.Instance.objectsOnScene.Count==15,"first stage retains 15 items");
         }
         SessionState.SetBool("opening-fresh-only",false);
         foreach(int seed in new[]{47231,42}){
-            var level=Level();level.generatorVersion="daily-v1";level.opening=null;level.seed=seed;
+            var level=LegacyLevel();level.generatorVersion="daily-v1";level.opening=null;level.seed=seed;
             flow.PreviewDailyOpening(level,2);yield return Wait();Inspect("fresh seed "+seed);Check(LevelGenerator.Instance.objectsOnScene.Count==300,"fresh count remains 300");
             var state=flow.CaptureDailyOpening();yield return new WaitForSeconds(.5f);Same(state,"fresh idle");
         }
-        var pending=Level();pending.generatorVersion="daily-v1";pending.opening=null;flow.PreviewDailyOpening(pending,2);yield return null;flow.Home();yield return null;yield return null;
+        var pending=LegacyLevel();pending.generatorVersion="daily-v1";pending.opening=null;flow.PreviewDailyOpening(pending,2);yield return null;flow.Home();yield return null;yield return null;
         Check(!flow.CreationInProgress&&!ItemPhysicsController.Instance.DailyOpeningHeld&&LevelGenerator.Instance.objectsOnScene.Count==0,"Home cancels creation and clears held state");
         VerifyFailureAndRandom();
     }

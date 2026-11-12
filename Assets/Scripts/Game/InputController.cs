@@ -169,11 +169,9 @@ public class InputController : Singleton<InputController>
         var body = obj.GetComponent<Rigidbody>();
         if (ItemPhysicsController.Instance) ItemPhysicsController.Instance.RemoveForPick(body);
         if(UsesSourceFlight){
-            // BeClick only freezes the body. No temporary dynamic state, velocity clear,
-            // interpolation change or neighbour wake is part of this source path.
-            // A probe extracts a deeply occluded item: disable collision BEFORE its first
-            // scale/move update, rather than pushing the pile during the source .05 s delay.
-            body.isKinematic=true;body.detectCollisions=source!=ProbePickSource.Probe;
+            // Disable contact before any pickup movement/scale, for manual, probe
+            // and magnet paths alike. A 50 ms grace period can kick the pile.
+            body.isKinematic=true;body.detectCollisions=false;
             obj.GetComponent<SpecialItemAnimation>()?.EnterTray();
             if(playSound)GameAudioCatalog.Select(obj);
         }else{
@@ -182,7 +180,7 @@ public class InputController : Singleton<InputController>
             body.detectCollisions=false;body.interpolation=RigidbodyInterpolation.None;body.isKinematic=true;
         }
         var colliderStates=new Dictionary<Collider,bool>();
-        foreach (var collider in obj.GetComponentsInChildren<Collider>(true)){colliderStates[collider]=collider.enabled;if(!UsesSourceFlight||source==ProbePickSource.Probe)collider.enabled=false;}
+        foreach (var collider in obj.GetComponentsInChildren<Collider>(true)){colliderStates[collider]=collider.enabled;collider.enabled=false;}
         boardColliders[obj]=colliderStates;
         objectsOnStack.Add(obj);
         objectsOnStack = objectsOnStack.GroupBy(x => x.name).SelectMany(g => g).ToList();
@@ -225,7 +223,6 @@ public class InputController : Singleton<InputController>
                     });
             });
         }
-        StartCoroutine(SourceHideColliders(obj));
         RepositionSource();
         // DelayToCheckContent executes its match scan BEFORE its first yield.
         var match=objectsOnStack.GroupBy(x=>x.name).FirstOrDefault(g=>g.Count()>=3);
@@ -241,12 +238,6 @@ public class InputController : Singleton<InputController>
         // A seventh item which completes a triple has already freed its three logical slots.
         if(objectsOnStack.Count>=7)UIManager.Instance.ShowOutOfBoxesPopUp();
         BoosterManager.Instance.CheckHintInteractibility();
-    }
-    private IEnumerator SourceHideColliders(GameObject obj){
-        yield return new WaitForSeconds(ItemFlightMotion.HideCollidersSeconds);
-        if(!obj||(!objectsOnStack.Contains(obj)&&!sourceCombining.Contains(obj)))yield break;
-        var body=obj.GetComponent<Rigidbody>();if(body)body.detectCollisions=false;
-        foreach(var collider in obj.GetComponentsInChildren<Collider>(true))collider.enabled=false;
     }
     private void RepositionSource(){
         for(int i=0;i<objectsOnStack.Count;i++){

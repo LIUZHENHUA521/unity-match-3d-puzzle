@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-// Press feedback is separate from the collection tween: colliders remain enabled only here.
+// Press feedback is separate from collection; solo presses never move solid bodies.
 public sealed class Match3DSelectionFeedback : MonoBehaviour {
     public float liftDistance=.4f,liftDuration=.2f;
     ItemHighlight sourceHighlight;
@@ -22,11 +22,9 @@ public sealed class Match3DSelectionFeedback : MonoBehaviour {
         var physics=ItemPhysicsController.Instance;managed=physics&&physics.Contains(body);
         sourceMode=InputController.Instance&&InputController.Instance.UsesSourceFlight;
         if(sourceMode){
-            // BeSelect(true): keep solid colliders and saved Discrete/None settings.
-            // HideRigid skips _isSelect; contact response is left to the physics engine.
-            if(managed)physics.SetSelected(body,true);
-            body.isKinematic=true;body.transform.DOKill(false);
-            body.transform.DOMove(body.transform.position+camera.transform.forward*SourceLiftOffset,SourceLiftSeconds).SetEase(Ease.Linear);
+            // Selection is visual feedback only. Moving a solid kinematic body
+            // through a dense pile pushes neighbours before pickup is accepted.
+            // Keep the opening hold, body pose and physics state untouched.
             return;
         }
         wasKinematic=body.isKinematic;interpolation=body.interpolation;detection=body.collisionDetectionMode;
@@ -51,16 +49,13 @@ public sealed class Match3DSelectionFeedback : MonoBehaviour {
     public void Commit(){
         if(!sourceMode){Cancel();return;}
         ClearVisual();
-        if(body){body.transform.DOKill(false);if(managed&&ItemPhysicsController.Instance)ItemPhysicsController.Instance.SetSelected(body,false);}
         ResetHeld();
     }
     public void Cancel(){
         ClearVisual();
         if(body&&moves){
             if(sourceMode){
-                body.transform.DOKill(false);
-                if(managed&&ItemPhysicsController.Instance)ItemPhysicsController.Instance.SetSelected(body,false);
-                body.isKinematic=false;body.velocity=Vector3.zero;body.angularVelocity=Vector3.zero;
+                // The press changed only the highlight; cancellation changes no physics.
             }else{
                 body.interpolation=interpolation;
                 body.collisionDetectionMode=CollisionDetectionMode.Discrete;

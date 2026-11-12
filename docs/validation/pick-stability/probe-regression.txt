@@ -1,0 +1,176 @@
+PASS before first match no combo or stars
+PASS first triple lights three stars without reward
+PASS last-star triple continues combo and rewards once
+PASS duplicate operation cannot count or reward twice
+PASS automatic magnet does not change combo or stars
+PASS probe triple continues without self-reward
+PASS third non-match breaks combo
+PASS reward token 1
+PASS reward token 2
+PASS reward token 3
+PASS reward token 4
+PASS reward token 5
+PASS reward token 6
+PASS reward token 7
+PASS reward token 8
+PASS reward token 9
+PASS reward token 10
+PASS ten rewards rotate through four LIFO stacks
+PASS duplicate binding cannot advance next column
+PASS middle removal preserves stack and round-robin pointer
+PASS restart combo retains earned rewards
+PASS new stage resets all logical state
+PASS existing remove/magnet/shuffle selection regressions
+PASS real scene finishes startup
+PASS actual arc pixels follow chance count on depth 0 step 0 pixels=0 vertices=0
+PASS actual arc pixels follow chance count on depth 0 step 1 pixels=642 vertices=4
+PASS actual arc pixels follow chance count on depth 0 step 2 pixels=3077 vertices=5
+PASS actual arc pixels follow chance count on depth 0 step 3 pixels=6092 vertices=7
+PASS actual arc pixels follow chance count on depth 0 step 4 pixels=0 vertices=0
+PASS actual arc pixels follow chance count on depth 24 step 0 pixels=0 vertices=0
+PASS arc pixels identical with and without stencil at step 0
+PASS actual arc pixels follow chance count on depth 24 step 1 pixels=642 vertices=4
+PASS arc pixels identical with and without stencil at step 1
+PASS actual arc pixels follow chance count on depth 24 step 2 pixels=3077 vertices=5
+PASS arc pixels identical with and without stencil at step 2
+PASS actual arc pixels follow chance count on depth 24 step 3 pixels=6092 vertices=7
+PASS arc pixels identical with and without stencil at step 3
+PASS actual arc pixels follow chance count on depth 24 step 4 pixels=0 vertices=0
+PASS arc pixels identical with and without stencil at step 4
+PASS original panel loaded, ring inactive before first triple
+PASS new player sees first elimination instruction
+PASS temporary region is absent: first-stage-empty
+PASS original camera scale preserved: first-stage-empty
+PASS probe region remains above the main tray: first-stage-empty top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: first-stage-empty width=0.9733576
+PASS probe thumbnail is independent of random board rotation and scale
+PASS actual 3D mesh occlusion identifies hidden target
+PASS production first triple lights stars
+PASS first match teaches remaining picks and reward
+PASS temporary region is absent: hint-earn-probe
+PASS original camera scale preserved: hint-earn-probe
+PASS probe region remains above the main tray: hint-earn-probe top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: hint-earn-probe width=0.9733576
+PASS reward instruction follows actual remaining chances
+PASS last chance overrides reward instruction
+PASS production three-click continuation grants one bound model
+PASS actual authored purple Spine animation runs at two combo
+PASS first reward explains hidden target retrieval
+PASS reward is bound immediately but cannot be consumed before its star lands
+PASS temporary region is absent: reward-star-flying
+PASS original camera scale preserved: reward-star-flying
+PASS probe region remains above the main tray: reward-star-flying top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: reward-star-flying width=0.9733576
+PASS pause freezes reward flight and cannot reveal a model
+PASS landing reveals the reserved model with a bounded pop
+PASS temporary region is absent: reward-model-appearing
+PASS original camera scale preserved: reward-model-appearing
+PASS probe region remains above the main tray: reward-model-appearing top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: reward-model-appearing width=0.9733576
+PASS cached model thumbnail contains visible geometry: reward-model-appearing
+PASS physical occlusion reward 2
+PASS physical occlusion reward 3
+PASS physical occlusion reward 4
+PASS physical occlusion reward 5
+PASS physical occlusion reward 6
+PASS physical occlusion reward 7
+PASS physical occlusion reward 8
+PASS physical occlusion reward 9
+PASS physical occlusion reward 10
+PASS production reward distribution is 3/3/2/2
+PASS same-type targets have separate instance bindings
+PASS ordinary/automatic source pickup removes only its lower-layer mapping
+PASS automatic pickup preserved combo state
+PASS rapid stacked rewards finish without restoring a consumed binding
+PASS real long-press draws particle connection to bound target
+PASS temporary region is absent: long-press-particles
+PASS original camera scale preserved: long-press-particles
+PASS probe region remains above the main tray: long-press-particles top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: long-press-particles width=0.9733576
+PASS cached model thumbnail contains visible geometry: long-press-particles
+PASS long-press release never consumes model or stars
+PASS drag cancels long-press without pickup
+PASS long press and cancelled drag do not complete first-use teaching
+PASS short press accepts exactly one physical target; accepted=8 before=7 interact=True
+PASS probe disables body and all child collisions in the accepting frame before flight or scale
+PASS deep probe extraction creates no impulse or displacement in a dynamic overlapping neighbour
+PASS successful use switches to regular interaction hint immediately
+PASS stale click cannot consume next model
+PASS pause immediately clears preview
+PASS third same-type probe pickup is accepted
+PASS probe match refills stars without granting a new model
+PASS pool checkout token cannot revive a consumed binding
+PASS move tool accepts all six tray items while pickup flights are still running
+PASS move clears the whole logical tray and spends once
+PASS return animation rejects duplicate move, revival and shuffle
+PASS return animation blocks picking moving items
+PASS pause freezes return flight without releasing gameplay lock
+PASS ordinary move finishes in the pot without storage or shuffle
+PASS returned item restores full board scale and rotation 0
+PASS returned item restores board physics and colliders 0
+PASS returned item restores full board scale and rotation 1
+PASS returned item restores board physics and colliders 1
+PASS returned item restores full board scale and rotation 2
+PASS returned item restores board physics and colliders 2
+PASS returned item restores full board scale and rotation 3
+PASS returned item restores board physics and colliders 3
+PASS returned item restores full board scale and rotation 4
+PASS returned item restores board physics and colliders 4
+PASS returned item restores full board scale and rotation 5
+PASS returned item restores board physics and colliders 5
+PASS move preserves earned probes and never refills stars
+PASS returned item is collectible again
+PASS undo after return does not restore consumed probe bindings
+PASS seven different items open the actual revival offer
+PASS temporary region is absent: revival-offer
+PASS original camera scale preserved: revival-offer
+PASS probe region remains above the main tray: revival-offer top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: revival-offer width=0.9733576
+PASS cached model thumbnail contains visible geometry: revival-offer
+PASS real revival returns all seven before starting shuffle
+PASS revival starts shuffle only after return completes
+PASS revival finishes without spending move/shuffle inventory or losing probes
+PASS temporary region is absent: restored-scale-720x1280
+PASS original camera scale preserved: restored-scale-720x1280
+PASS probe region remains above the main tray: restored-scale-720x1280 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: restored-scale-720x1280 width=0.9733576
+PASS cached model thumbnail contains visible geometry: restored-scale-720x1280
+PASS temporary region is absent: restored-scale-720x1565
+PASS original camera scale preserved: restored-scale-720x1565
+PASS probe region remains above the main tray: restored-scale-720x1565 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: restored-scale-720x1565 width=0.9733576
+PASS cached model thumbnail contains visible geometry: restored-scale-720x1565
+PASS temporary region is absent: restored-scale-720x1600
+PASS original camera scale preserved: restored-scale-720x1600
+PASS probe region remains above the main tray: restored-scale-720x1600 top=291.9999
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: restored-scale-720x1600 width=0.9733576
+PASS cached model thumbnail contains visible geometry: restored-scale-720x1600
+PASS temporary region is absent: restored-scale-768x1024
+PASS original camera scale preserved: restored-scale-768x1024
+PASS probe region remains above the main tray: restored-scale-768x1024 top=292.0001
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: restored-scale-768x1024 width=0.9733577
+PASS cached model thumbnail contains visible geometry: restored-scale-768x1024
+PASS stage transition clears probe stacks without a temporary region
+PASS temporary region is absent: second-stage-empty
+PASS original camera scale preserved: second-stage-empty
+PASS probe region remains above the main tray: second-stage-empty top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: second-stage-empty width=0.9733576
+PASS camera layout never changes board world coordinates
+PASS timeout opens actual revival offer even with empty tray
+PASS temporary region is absent: time-revival-offer
+PASS original camera scale preserved: time-revival-offer
+PASS probe region remains above the main tray: time-revival-offer top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: time-revival-offer width=0.9733576
+PASS time revival keeps five-minute benefit and begins return/shuffle sequence
+PASS empty-tray time revival completes shuffle
+PASS restart invalidates old stage identities
+PASS empty candidate set does not advance rotation
+PASS home cleans up display, input and preview
+FAIL System.InvalidOperationException: 未能在预算内完成开局修复：174 (76/116, y=16.47619)
+  at BoardOpeningSeparation.Step () [0x00293] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/WechatMenuProject/Assets/Match3D/Scripts/BoardOpeningSeparation.cs:123 
+  at Match3DFlow+<PrepareOpening>d__8.MoveNext () [0x0007e] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/WechatMenuProject/Assets/Match3D/Scripts/Match3DDailySnapshot.cs:95 
+  at Match3DFlow+<SourceCreationSteps>d__189.MoveNext () [0x00463] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/WechatMenuProject/Assets/Match3D/Scripts/Match3DFlow.cs:448 
+  at BoardCreationTestSupport.FinishPending (Match3DFlow flow) [0x00047] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/WechatMenuProject/Assets/Match3D/Editor/BoardCreationTestSupport.cs:22 
+  at ComboProbeValidation.Start (System.Int32 stage) [0x0004a] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/WechatMenuProject/Assets/Match3D/Editor/ComboProbeValidation.cs:120 
+  at ComboProbeValidation+<Core>d__15.MoveNext () [0x019cb] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/WechatMenuProject/Assets/Match3D/Editor/ComboProbeValidation.cs:278 
+  at ComboProbeValidation+<Guard>d__9.MoveNext () [0x00128] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/WechatMenuProject/Assets/Match3D/Editor/ComboProbeValidation.cs:104 

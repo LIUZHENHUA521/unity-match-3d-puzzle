@@ -22,7 +22,12 @@ public class ItemPhysicsController : MonoBehaviour {
     public bool OpeningBodyWillMove(Rigidbody body)=>DailyOpeningHeld?dailyDynamic.Contains(body):body&&!body.isKinematic;
     public void ReleaseDailyOpening(){
         if(!DailyOpeningHeld)return;DailyOpeningHeld=false;
-        foreach(var body in dailyDynamic)if(body&&entries.TryGetValue(body,out var entry))Activate(entry);
+        foreach(var body in dailyDynamic)if(body&&entries.TryGetValue(body,out var entry)){
+            Activate(entry);
+            // The opening may have been repositioned while kinematic. Never
+            // replay velocities retained from spawning at its repaired pose.
+            body.velocity=Vector3.zero;body.angularVelocity=Vector3.zero;
+        }
         dailyDynamic.Clear();
     }
     public double LastStepMilliseconds {get;private set;}
