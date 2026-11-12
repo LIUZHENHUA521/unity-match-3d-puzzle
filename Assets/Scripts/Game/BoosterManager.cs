@@ -17,7 +17,7 @@ public class BoosterManager : Singleton<BoosterManager>
     {
         if (!GameManager.Instance.GameIsPlaying() || InputController.Instance.IsResolving || !hintButton.interactable) return;
         if (BoardTools.Enabled) {
-            if (BoardTools.Shuffling || !BoardTools.CanUse(1)) return;
+            if (BoardTools.Busy || !BoardTools.CanUse(1)) return;
             var items=BoardTools.AutoFindCandidates(InputController.Instance.objectsOnStack,LevelGenerator.Instance.objectsOnScene);
             if(items.Count==0){Match3DFlow.Instance.ShowTips("场上没有足够的同类物品可吸附");return;}
             if(!BoardTools.TrySpend(1))return;
@@ -97,7 +97,7 @@ public class BoosterManager : Singleton<BoosterManager>
     #region Undo Booster
     public void Undo() // Remove the most recently collected object from the stack.
     {
-        if(BoardTools.Enabled)InputController.Instance.MoveSourceItemsToStore();
+        if(BoardTools.Enabled)InputController.Instance.ReturnSourceTrayToBowl();
         else InputController.Instance.UndoLast();
     }
     private void CheckUndoInteractibility() // Check for undo button interactibility.

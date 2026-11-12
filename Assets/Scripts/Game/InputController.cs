@@ -11,7 +11,8 @@ public class InputController : Singleton<InputController>
     public List<GameObject> arrivedObject = new List<GameObject>();
     public bool IsResolving { get; private set; }
     private Coroutine resolution;
-    public bool IsBusy => IsResolving || resolution != null || HasPendingVisuals;
+    public bool ReturningToBowl { get; private set; }
+    public bool IsBusy => ReturningToBowl || IsResolving || resolution != null || HasPendingVisuals;
     public bool UsesSourceFlight => Match3DFlow.Instance && !Match3DFlow.Instance.IsPvp && (Match3DFlow.Instance.Stage==1||Match3DFlow.Instance.Stage==2);
     public bool HasPendingVisuals => sourceFlying.Count>0 || sourceCombining.Count>0;
     public bool CanEvaluateWin => !UsesSourceFlight || sourceCompletionCheckReady;
@@ -23,6 +24,7 @@ public class InputController : Singleton<InputController>
 
     private readonly List<GameObject> pickHistory = new List<GameObject>();
     private readonly Dictionary<GameObject, Vector3> scales = new Dictionary<GameObject, Vector3>();
+    readonly Dictionary<GameObject, Quaternion> boardRotations = new Dictionary<GameObject, Quaternion>();
     private readonly Dictionary<GameObject, Dictionary<Collider,bool>> boardColliders = new Dictionary<GameObject, Dictionary<Collider,bool>>();
     private Match3DSelectionFeedback selection;
     private void Awake() { Input.multiTouchEnabled = false; selection=gameObject.AddComponent<Match3DSelectionFeedback>(); }
@@ -87,7 +89,7 @@ public class InputController : Singleton<InputController>
     private void BeginPointer(Vector2 position)
     {
         CancelPointer();
-        if(BoardTools.Shuffling||(IsBusy&&!UsesSourceFlight)||objectsOnStack.Count>=7)return;
+        if(BoardTools.Busy||(IsBusy&&!UsesSourceFlight)||objectsOnStack.Count>=7)return;
         PointerStarts++;pointerHeld=true;pointerStartedOnUI=PointerOnButton(position);
         UpdatePointer(position);
     }
@@ -149,7 +151,7 @@ public class InputController : Singleton<InputController>
     const float MagnetSeconds=ItemFlightMotion.MagnetSeconds;
     public void AddObjectOnStack(GameObject obj,bool playSound=true,bool magnetic=false,float magnetDelay=0,ProbePickSource source=ProbePickSource.Manual)
     {
-        if (BoardTools.Shuffling || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
+        if (BoardTools.Busy || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
             objectsOnStack.Count >= 7 || objectsOnStack.Contains(obj)) return;
         if (Match3DFlow.Instance && Match3DFlow.Instance.InterceptPick(obj)) return;
         if(UsesSourceFlight&&playSound&&LayeredItemPile.Instance)LayeredItemPile.Instance.RecordSelectionHeight(obj.transform.position.y);
@@ -163,6 +165,7 @@ public class InputController : Singleton<InputController>
         var trayDisplay=UsesSourceFlight?Match3DTrayDisplayBinding.For(obj):null;
         if(trayDisplay&&!BoardTools.IsStored(obj))trayDisplay.CaptureBoardPose();
         scales[obj] = trayDisplay?trayDisplay.boardScale:obj.transform.localScale;
+        boardRotations[obj] = trayDisplay?trayDisplay.boardRotation:obj.transform.rotation;
         var body = obj.GetComponent<Rigidbody>();
         if (ItemPhysicsController.Instance) ItemPhysicsController.Instance.RemoveForPick(body);
         if(UsesSourceFlight){
@@ -307,7 +310,7 @@ public class InputController : Singleton<InputController>
     private void RemoveSourceVisual(GameObject obj){
         if(!obj)return;
         obj.transform.DOKill();magnetFlights.Remove(obj);sourceFlying.Remove(obj);sourceCombining.Remove(obj);sourceMoves.Remove(obj);
-        scales.Remove(obj);boardColliders.Remove(obj);ItemFlightMotion.Forget(obj);GameAudioCatalog.Forget(obj);
+        scales.Remove(obj);boardRotations.Remove(obj);boardColliders.Remove(obj);ItemFlightMotion.Forget(obj);GameAudioCatalog.Forget(obj);
         // LevelObjectPool.Recycle keeps the ObjectUnit for a later Get(objName);
         // only the logical board list is removed at combine time.
         BoardItemPool.Recycle(obj);
@@ -355,7 +358,7 @@ public class InputController : Singleton<InputController>
             foreach (var item in items) item.transform.DOScale(Vector3.zero, .18f);
             yield return new WaitForSeconds(.2f);
             foreach (var item in items) {
-                objectsOnStack.Remove(item); arrivedObject.Remove(item); scales.Remove(item); boardColliders.Remove(item); pickHistory.Remove(item);
+                objectsOnStack.Remove(item); arrivedObject.Remove(item); scales.Remove(item); boardRotations.Remove(item); boardColliders.Remove(item); pickHistory.Remove(item);
                 LevelGenerator.Instance.objectsOnScene.Remove(item); item.transform.DOKill(); Destroy(item);
             }
             if (Match3DFlow.Instance) Match3DFlow.Instance.MatchSound();
@@ -367,28 +370,79 @@ public class InputController : Singleton<InputController>
         BoosterManager.Instance.CheckHintInteractibility();
         if (objectsOnStack.Count >= 7) UIManager.Instance.ShowOutOfBoxesPopUp();
     }
-    public bool MoveSourceItemsToStore(int count=3)
-    {
-        if(!UsesSourceFlight||BoardTools.Shuffling||!BoardTools.CanUse(0)||!GameManager.Instance.GameIsPlaying())return false;
-        var items=BoardTools.ReturnCandidates(objectsOnStack,count);if(items.Count==0||!BoardTools.TrySpend(0))return false;
-        return MoveItemsIntoStore(items);
+    public bool ReturnSourceTrayToBowl() {
+        if(!UsesSourceFlight||BoardTools.Busy||!BoardTools.CanUse(0)||!GameManager.Instance.GameIsPlaying())return false;
+        var items=objectsOnStack.Where(x=>x).ToList();
+        if(items.Count==0||!BoardTools.TrySpend(0))return false;
+        BeginReturnToBowl(items,false);return true;
     }
-    // Revive moves every tray item without spending or resetting the ordinary move tool.
+    // Compatibility for editor fixtures. The move tool now always returns the entire tray.
+    public bool MoveSourceItemsToStore(int count=3)=>ReturnSourceTrayToBowl();
+    // Both revival routes return the tray and then shuffle without spending ordinary tools.
+    // An empty tray is valid for a time revival: it still shuffles the board.
     public bool ReviveSourceTray(){
-        if(!UsesSourceFlight||BoardTools.Shuffling||objectsOnStack.Count==0)return false;
-        return MoveItemsIntoStore(objectsOnStack.Where(x=>x).ToList());
+        if(!UsesSourceFlight||BoardTools.Busy)return false;
+        BeginReturnToBowl(objectsOnStack.Where(x=>x).ToList(),true);return true;
     }
-    bool MoveItemsIntoStore(List<GameObject> items){
-        CancelPointer();
-        foreach(var obj in items){
-            obj.transform.DOKill();magnetFlights.Remove(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
+    sealed class BowlReturn {
+        public GameObject obj; public Rigidbody body;
+        public Vector3 start,target,scale,boardScale;
+        public Quaternion rotation,boardRotation;
+        public Dictionary<Collider,bool> colliders;
+    }
+    void BeginReturnToBowl(List<GameObject> items,bool shuffleAfter){
+        CancelSelection();ReturningToBowl=true;
+        if(ItemPhysicsController.Instance)ItemPhysicsController.Instance.ReleaseDailyOpening();
+        var flights=new List<BowlReturn>();
+        var center=LayeredItemPile.Instance&&LayeredItemPile.Instance.Running?LayeredItemPile.Instance.ReturnPosition():new Vector3(0,2,.15f);
+        for(int i=0;i<items.Count;i++){
+            var obj=items[i];obj.transform.DOKill();
+            magnetFlights.Remove(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
             objectsOnStack.Remove(obj);arrivedObject.Remove(obj);pickHistory.Remove(obj);
-            var body=obj.GetComponent<Rigidbody>();body.isKinematic=true;body.detectCollisions=true;
-            if(boardColliders.TryGetValue(obj,out var flags))foreach(var flag in flags)if(flag.Key)flag.Key.enabled=flag.Value;
-            obj.GetComponent<SpecialItemAnimation>()?.EnterStore();
+            var item=new BowlReturn{obj=obj,body=obj.GetComponent<Rigidbody>(),start=obj.transform.position,
+                scale=obj.transform.localScale,rotation=obj.transform.rotation,
+                boardScale=scales.TryGetValue(obj,out var savedScale)?savedScale:obj.transform.localScale,
+                boardRotation=boardRotations.TryGetValue(obj,out var savedRotation)?savedRotation:Quaternion.identity,
+                colliders=boardColliders.TryGetValue(obj,out var flags)?flags:obj.GetComponentsInChildren<Collider>(true).ToDictionary(c=>c,c=>c.enabled)};
+            float angle=i*Mathf.PI*2/Mathf.Max(1,items.Count);
+            item.target=center+new Vector3(Mathf.Cos(angle),i*.08f,Mathf.Sin(angle))*(items.Count>1?.9f:0);
+            // Fit using full board geometry, then restore the tray pose for the flight.
+            obj.transform.localScale=item.boardScale;obj.transform.rotation=item.boardRotation;
+            if(BoardEnvironment.UsesSoftContainer)item.target=SoftTransitionContainer.FittedPosition(obj,item.target);
+            obj.transform.localScale=item.scale;obj.transform.rotation=item.rotation;
+            foreach(var collider in item.colliders.Keys)if(collider)collider.enabled=false;
+            item.body.isKinematic=true;item.body.detectCollisions=false;
+            scales.Remove(obj);boardRotations.Remove(obj);boardColliders.Remove(obj);
+            obj.GetComponent<SpecialItemAnimation>()?.ReturnToPile();flights.Add(item);
         }
-        BoardTools.Store(items);
-        RepositionSource();BoosterManager.Instance.CheckHintInteractibility();return true;
+        RepositionSource();BoosterManager.Instance.CheckHintInteractibility();
+        StartCoroutine(ReturnToBowl(flights,shuffleAfter));
+    }
+    IEnumerator ReturnToBowl(List<BowlReturn> flights,bool shuffleAfter){
+        const float duration=.48f;
+        float elapsed=0;
+        // Defer at least one frame so the revive modal can restore gameplay/time first.
+        do {
+            yield return null;elapsed+=Time.deltaTime;
+            float t=Mathf.Clamp01(elapsed/duration),ease=t*t*(3-2*t);
+            foreach(var item in flights)if(item.obj){
+                item.obj.transform.position=Vector3.Lerp(item.start,item.target,ease)+Vector3.up*(Mathf.Sin(t*Mathf.PI)*1.1f);
+                item.obj.transform.localScale=Vector3.Lerp(item.scale,item.boardScale,ease);
+                item.obj.transform.rotation=Quaternion.Slerp(item.rotation,item.boardRotation,ease);
+            }
+        }while(elapsed<duration);
+        foreach(var item in flights)if(item.obj){
+            var obj=item.obj;obj.transform.SetPositionAndRotation(item.target,item.boardRotation);obj.transform.localScale=item.boardScale;
+            item.body.position=item.target;item.body.rotation=item.boardRotation;
+            item.body.detectCollisions=true;item.body.interpolation=RigidbodyInterpolation.None;
+            item.body.isKinematic=false;item.body.velocity=Vector3.zero;item.body.angularVelocity=Vector3.zero;
+            foreach(var collider in item.colliders)if(collider.Key)collider.Key.enabled=collider.Value;
+            if(LayeredItemPile.Instance)LayeredItemPile.Instance.Register(item.body,initialHeight:item.target.y);
+            if(ItemPhysicsController.Instance)ItemPhysicsController.Instance.Register(item.body);
+        }
+        ReturningToBowl=false;
+        if(shuffleAfter&&GameManager.Instance.GameIsPlaying())BoardTools.ShuffleAfterRevival();
+        BoosterManager.Instance.CheckHintInteractibility();
     }
     public void UndoLast()
     {
@@ -397,7 +451,7 @@ public class InputController : Singleton<InputController>
         pickHistory.RemoveAt(pickHistory.Count-1);
         objectsOnStack.Remove(obj); arrivedObject.Remove(obj);
         obj.transform.DOKill();
-        obj.transform.localScale = scales[obj]; scales.Remove(obj);
+        obj.transform.localScale = scales[obj]; scales.Remove(obj); boardRotations.Remove(obj);
         var display=UsesSourceFlight?Match3DTrayDisplayBinding.For(obj):null;
         bool layered=LayeredItemPile.Instance&&LayeredItemPile.Instance.Running;
         var target=layered?LayeredItemPile.Instance.ReturnPosition():LevelGenerator.Instance.CreateRandomPosition();
@@ -434,11 +488,11 @@ public class InputController : Singleton<InputController>
     public void ResetStack()
     {
         CancelPointer(); activeFinger = null;BoardTools.Reset();
-        StopAllCoroutines(); resolution = null; IsResolving = false;
+        StopAllCoroutines(); ReturningToBowl=false; resolution = null; IsResolving = false;
         foreach (var item in objectsOnStack) if (item) item.transform.DOKill();
         foreach(var item in sourceCombining)if(item){item.transform.DOKill();ItemFlightMotion.Forget(item);GameAudioCatalog.Forget(item);BoardItemPool.Recycle(item);}
         foreach(var item in LevelGenerator.Instance.objectsOnScene)ItemFlightMotion.Forget(item);
         magnetFlights.Clear();sourceCombining.Clear();sourceFlying.Clear();sourceMoves.Clear();sourceCompletionCheckReady=true;
-        objectsOnStack.Clear(); arrivedObject.Clear(); scales.Clear(); boardColliders.Clear(); pickHistory.Clear();
+        objectsOnStack.Clear(); arrivedObject.Clear(); scales.Clear(); boardRotations.Clear(); boardColliders.Clear(); pickHistory.Clear();
     }
 }

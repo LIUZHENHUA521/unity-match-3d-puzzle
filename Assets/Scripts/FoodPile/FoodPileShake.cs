@@ -6,7 +6,7 @@ public class FoodPileShake : MonoBehaviour
     public Button button;
     public Text remainingText;
     private float nextShake;
-    public bool CanShakeGameplay=>GameManager.Instance&&GameManager.Instance.GameIsPlaying()&&Time.timeScale>0&&!BoardTools.Shuffling&&
+    public bool CanShakeGameplay=>GameManager.Instance&&GameManager.Instance.GameIsPlaying()&&Time.timeScale>0&&!BoardTools.Busy&&
         (!Match3DFlow.Instance||(Match3DFlow.Instance.ScreenName=="game"&&!Match3DFlow.Instance.BlocksGameplay&&!Match3DFlow.Instance.CreationInProgress));
     public void Shake(){TryShake();}
     public bool TryShake()

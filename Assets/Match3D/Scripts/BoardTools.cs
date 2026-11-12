@@ -15,15 +15,13 @@ public sealed class BoardTools : MonoBehaviour {
         if(!TrySpend(AddTimeType))return false;
         game.currentLevelTime+=AddTimeSeconds;flow.ShowTips("时间 +3 分钟");return true;
     }
-    public const int ReturnCount=3;
+    public const int ReturnCount=7;
     public const float StoreSeconds=.36f,StoreScaleSeconds=.2f;
     // WX metadata field defaults: 3=OutSine, 26=InBack, 27=OutBack.
     public const Ease StoreXEase=Ease.OutSine,StoreYEase=Ease.InBack,StoreZEase=Ease.OutBack,StoreScaleEase=Ease.InBack;
     static BoardTools instance;
     readonly List<GameObject>[] columns={new List<GameObject>(),new List<GameObject>(),new List<GameObject>()};
     int nextColumn;
-    Vector3 storeLayoutAnchor;
-    float storeLayoutUnit;
     readonly int[] used=new int[ToolCount];
     readonly int[] adUses=new int[ToolCount];
     readonly int[] testUses=new int[ToolCount];
@@ -50,6 +48,7 @@ public sealed class BoardTools : MonoBehaviour {
     bool shuffling;
     readonly List<ShuffleItem> moving=new List<ShuffleItem>();
     public static bool Shuffling=>instance&&instance.shuffling;
+    public static bool Busy=>Shuffling||(InputController.Instance&&InputController.Instance.ReturningToBowl);
     sealed class ShuffleItem { public GameObject obj;public Rigidbody body;public Vector3 start,target;public Quaternion rotation,tilt;public float delay,lift;public bool wasKinematic;public Dictionary<Collider,bool> colliders; }
     public static bool Enabled=>InputController.Instance&&InputController.Instance.UsesSourceFlight;
     public static int StoredCount=>instance?instance.columns.Sum(x=>x.Count(o=>o)):0;
@@ -91,7 +90,6 @@ public sealed class BoardTools : MonoBehaviour {
     }
     public static void Store(IEnumerable<GameObject> objects){
         var owner=Ensure();if(!owner)return;
-        owner.RecordStoreLayout();
         foreach(var obj in objects){
             if(!obj||IsStored(obj))continue;
             // UseTool removes each item from content and appends it to _boxObjList.
@@ -101,7 +99,7 @@ public sealed class BoardTools : MonoBehaviour {
             owner.columns[owner.nextColumn].Add(obj);
             owner.LayoutColumn(owner.nextColumn,obj);
             owner.nextColumn=(owner.nextColumn+1)%owner.columns.Length;
-            obj.transform.DOScale(FitStoreScale(obj,ItemFlightMotion.StoreScale(obj,obj.transform.localScale)),StoreScaleSeconds).SetEase(StoreScaleEase);
+            obj.transform.DOScale(ItemFlightMotion.StoreScale(obj,obj.transform.localScale),StoreScaleSeconds).SetEase(StoreScaleEase);
         }
     }
     public static void ReleaseStored(GameObject obj){
@@ -110,10 +108,6 @@ public sealed class BoardTools : MonoBehaviour {
     }
     public static Vector3 StorePosition(int column,int index,int count){
         var camera=Camera.main;if(!camera)return Vector3.zero;
-        if(GameplayBoardLayout.Enabled){
-            float probeStagger=index==0?0:(index%2==1?-4f:4f);
-            return GameplayBoardLayout.Point(camera,((column-1)*118f+probeStagger)*GameplayBoardLayout.RegionScale(camera),GameplayBoardLayout.StoreY(camera),2.6f+Mathf.Min(4,count-1-index)*.12f);
-        }
         // WX data.unity3d Content scale is 1.4. StorePointList is at local
         // (0,-.46,1.55), with three points at local X (-.83,.01,.83).
         // SetStoreContentPos then walks the point's local up vector by .75 per
@@ -135,39 +129,6 @@ public sealed class BoardTools : MonoBehaviour {
         return result;
     }
 
-    static Vector3 FitStoreScale(GameObject obj,Vector3 proposed){
-        if(!GameplayBoardLayout.Enabled||!Camera.main||!obj)return proposed;
-        var camera=Camera.main;float right=0,up=0;
-        foreach(var renderer in obj.GetComponentsInChildren<Renderer>(true)){
-            if(!(renderer is MeshRenderer)&&!(renderer is SkinnedMeshRenderer))continue;
-            var b=renderer.bounds;
-            for(int i=0;i<8;i++){
-                var p=b.center+Vector3.Scale(b.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1))-obj.transform.position;
-                right=Mathf.Max(right,Mathf.Abs(Vector3.Dot(p,camera.transform.right)));
-                up=Mathf.Max(up,Mathf.Abs(Vector3.Dot(p,camera.transform.up)));
-            }
-        }
-        float ratio=proposed.x/Mathf.Max(.00001f,obj.transform.localScale.x),unit=GameplayBoardLayout.WorldPerPoint(camera)*GameplayBoardLayout.RegionScale(camera);
-        float fit=Mathf.Min(48*unit/Mathf.Max(.00001f,right*ratio),42*unit/Mathf.Max(.00001f,up*ratio));
-        return proposed*fit;
-    }
-    void RecordStoreLayout(){if(Camera.main){storeLayoutAnchor=StorePosition(0,0,1);storeLayoutUnit=GameplayBoardLayout.WorldPerPoint(Camera.main);}}
-    public static void ReflowStored(){
-        if(!instance||!GameplayBoardLayout.Enabled||!Camera.main)return;
-        for(int column=0;column<instance.columns.Length;column++){
-            var items=instance.columns[column];
-            for(int i=0;i<items.Count;i++)if(items[i]){
-                var item=items[i];item.transform.DOKill();item.transform.position=StorePosition(column,i,items.Count);
-                item.transform.localScale=FitStoreScale(item,ItemFlightMotion.StoreScale(item,item.transform.localScale));
-            }
-        }
-        instance.RecordStoreLayout();
-    }
-    void LateUpdate(){
-        if(!GameplayBoardLayout.Enabled||StoredCount==0||!Camera.main)return;
-        if((StorePosition(0,0,1)-storeLayoutAnchor).sqrMagnitude>.00001f||Mathf.Abs(GameplayBoardLayout.WorldPerPoint(Camera.main)-storeLayoutUnit)>.00001f)ReflowStored();
-    }
-
     public static Vector3 ShuffleAxis(string theme)=>Quaternion.Euler(theme=="GroceryStore"?-6.5f:-7f,0,0)*Vector3.up;
     public static List<GameObject> ShuffleCandidates(IEnumerable<GameObject> board,IList<GameObject> stack,float? recordedMaxHeight=null){
         var eligible=board.Where(x=>x&&!stack.Contains(x)&&!IsStored(x)).ToList();
@@ -180,13 +141,22 @@ public sealed class BoardTools : MonoBehaviour {
     }
     public static bool MessUp(){
         if(ItemPhysicsController.Instance)ItemPhysicsController.Instance.ReleaseDailyOpening();
-        if(!Enabled||!CanUse(2)||Shuffling||!GameManager.Instance.GameIsPlaying())return false;
+        if(!Enabled||!CanUse(2)||Busy||!GameManager.Instance.GameIsPlaying())return false;
         var owner=Ensure();if(!owner)return false;
         // j65101 uses the monotone maxHeight after CheckObjMaxHeight, not a fresh upward peak.
         float? peak=LayeredItemPile.Instance&&LayeredItemPile.Instance.Running?(float?)LayeredItemPile.Instance.RefreshSourceMaxHeight():null;
         var candidates=ShuffleCandidates(LevelGenerator.Instance.objectsOnScene,InputController.Instance.objectsOnStack,peak);
         if(candidates.Count==0)return false;
         if(!TrySpend(2))return false;owner.StartCoroutine(owner.Shuffle(candidates));return true;
+    }
+    public static bool ShuffleAfterRevival(){
+        if(!Enabled||Busy||!GameManager.Instance.GameIsPlaying())return false;
+        var owner=Ensure();if(!owner)return false;
+        if(ItemPhysicsController.Instance)ItemPhysicsController.Instance.ReleaseDailyOpening();
+        float? peak=LayeredItemPile.Instance&&LayeredItemPile.Instance.Running?(float?)LayeredItemPile.Instance.RefreshSourceMaxHeight():null;
+        var candidates=ShuffleCandidates(LevelGenerator.Instance.objectsOnScene.Where(x=>x&&x.activeInHierarchy).ToList(),InputController.Instance.objectsOnStack,peak);
+        if(candidates.Count==0)return false;
+        owner.StartCoroutine(owner.Shuffle(candidates));return true;
     }
     IEnumerator Shuffle(List<GameObject> candidates){
         shuffling=true;InputController.Instance.CancelSelection();

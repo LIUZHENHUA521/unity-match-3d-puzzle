@@ -1,6 +1,6 @@
 # 连消探物素材来源
 
-六张 UI PNG 来自用户提供的 `Desktop/GPT图/新home/`。圆形 Spine 的 JSON、atlas、PNG 来自 `crazyCombo/client/assets/resources/spine/comboFeedback/colorfulCircles_spine.*`。运行时资源在 `Assets/Match3D/Resources/Match3D/ComboProbe/`，原始 JSON 单独保存在 `Original/`，不进入游戏资源包。
+原六张 UI PNG 来自用户提供的 `Desktop/GPT图/新home/`。布局修订另复用该目录的 `image_Star.png` 作为稳定亮星；原 Cocos `pre_star.prefab` 用它表示常亮，`image_Star_lighe.png` 仅用于点亮过渡。圆形 Spine 的 JSON、atlas、PNG 来自 `crazyCombo/client/assets/resources/spine/comboFeedback/colorfulCircles_spine.*`。运行时资源在 `Assets/Match3D/Resources/Match3D/ComboProbe/`，原始 JSON 单独保存在 `Original/`，不进入游戏资源包。
 
 ## Spine 运行时
 
@@ -24,6 +24,16 @@
 /Applications/Unity/Unity.app/Contents/MacOS/Unity -batchmode -projectPath "$PWD" -executeMethod ComboProbeValidation.Run -logFile "$PWD/work/combo-probe/validation.log"
 ```
 
-检查结果和真实场景截图在 `work/combo-probe/results/`；结束标志为 `checks.txt` 最后一行 `COMPLETE`。测试遮挡夹具故意使用放大的挡板；`showcase-*` 是正常第二关实际物品和容器画面。截图中的连消数和奖励库存由验证器设置，用于验收不同状态。
+检查结果和真实场景截图在 `work/combo-probe/return-to-bowl-results/`；结束标志为 `checks.txt` 最后一行 `COMPLETE`。测试遮挡夹具故意使用放大的挡板；`showcase-*` 是正常第二关实际物品和容器画面。截图中的连消数和奖励库存由验证器设置，用于验收不同状态。
 
 隔离 WebGL 构建：`python3 Tools/daily-preview/build.py --stage Builds/DailyWebProject`。该命令只生成本地预览产物，不部署。
+
+## 原版布局对照（2026-11-13）
+
+参考 `crazyCombo/client/assets/scenes/game/main.scene` 的 `slot/newCombeNode`、`resources/prefabs/pre_star.prefab`，以及 `ComboSpineFxController.onLoad` 的层级修正。Unity 使用共同的 badge 父节点，统一按 `121/151` 缩放，保留当前圆盘直径。
+
+- 圆盘：151×151，局部原点；Spine 同心，局部缩放 1.24。
+- 灰色圆弧：原图 160×134，局部缩放 1.27，中心 `(0.073, 15.811)`。这是下方裁切的圆弧，图片中心与圆盘中心不同。
+- 三星坐标：`(-88.646,-30.912)`、`(-1.736,88.811)`、`(87.397,-31.31)`；星星图保留 prefab 的 x=1.47 偏移，尺寸 45.8×45。
+- 显示顺序：圆盘 → Spine → 灰色圆弧 → 文案/星星，光圈不会盖住星星。
+- 特殊区触摸范围下缘从 310 降到 296，主槽图片范围上缘 292；高度 224→180，减少透明留白。保留锅原先的上移位置及原镜头大小，光圈装饰不参与射线点击。

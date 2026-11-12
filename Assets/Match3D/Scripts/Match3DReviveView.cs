@@ -15,6 +15,11 @@ public sealed class Match3DReviveView : MonoBehaviour {
         revive.onClick.AddListener(()=>Decide(accept));close.onClick.AddListener(()=>Decide(decline));
         Match3DModalMotion.Play(gameObject);
     }
+    public void DescribeReturnRevival(bool timeout){
+        animatedContent.Find("Description").gameObject.SetActive(false);
+        AddToolText("Return description",animatedContent,new Vector2(0,-85),new Vector2(540,112),
+            timeout?"增加5分钟\n槽内物品回锅并洗牌":"槽内物品全部回锅\n并重新洗牌",29,new Color32(30,112,173,255));
+    }
     public void ConfigureTool(int type,Action accept,Action decline){
         string[] names={"移出","吸附","洗牌","加时"};
         string[] icons={"image_btn_remove","image_btn_adsorpt","image_btn_shuffle","img_btn_clock"};
@@ -33,7 +38,8 @@ public sealed class Match3DReviveView : MonoBehaviour {
         var circle=animatedContent.Find("Tool icon background").GetComponent<Image>();
         circle.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
         var description=animatedContent.Find("Description");description.gameObject.SetActive(false);
-        AddToolArtwork("Tool description",animatedContent,new Vector2(0,-65),type==BoardTools.AddTimeType?"add-time-description":descriptions[type]);
+        if(type==0)AddToolText("Tool description",animatedContent,new Vector2(0,-65),new Vector2(530,100),"槽内物品全部放回锅中",30,new Color32(30,112,173,255));
+        else AddToolArtwork("Tool description",animatedContent,new Vector2(0,-65),type==BoardTools.AddTimeType?"add-time-description":descriptions[type]);
         var buttonImage=revive.GetComponent<Image>();buttonImage.sprite=Resources.Load<Sprite>("Match3D/SettingsSkinPS/image_btn_blue02");buttonImage.preserveAspect=true;
         buttonImage.rectTransform.anchoredPosition=new Vector2(0,-205);
         buttonImage.rectTransform.sizeDelta=new Vector2(300,300*buttonImage.sprite.rect.height/buttonImage.sprite.rect.width);

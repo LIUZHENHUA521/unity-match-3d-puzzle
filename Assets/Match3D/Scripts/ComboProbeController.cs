@@ -16,7 +16,7 @@ public sealed class ComboProbeController : MonoBehaviour {
     public ComboProbeView View => view;
     public bool CanInteract => Running && Match3DFlow.Instance && Match3DFlow.Instance.ScreenName == "game" &&
         !Match3DFlow.Instance.BlocksGameplay && !Match3DFlow.Instance.CreationInProgress && GameManager.Instance &&
-        GameManager.Instance.GameIsPlaying() && !BoardTools.Shuffling && Time.timeScale > 0 &&
+        GameManager.Instance.GameIsPlaying() && !BoardTools.Busy && Time.timeScale > 0 &&
         InputController.Instance && InputController.Instance.objectsOnStack.Count < 7;
 
     void Awake() { Instance = this; }

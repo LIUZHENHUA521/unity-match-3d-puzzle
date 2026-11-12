@@ -22,6 +22,7 @@ public partial class Match3DFlow {
         var view=OpenModal(timeout?"ReviveTime":"ReviveClear").GetComponent<Match3DReviveView>();
         var offer=Match3DRewardAcquisition.Next(Match3DRewardAcquisition.Entry.Revive);
         view.Configure(progress,()=>WatchRevivalVideo(timeout,version,view,offer),()=>DeclineRevival(version));
+        view.DescribeReturnRevival(timeout);
         view.SetAcquisitionRoute(offer.route);
         return true;
     }
@@ -37,11 +38,11 @@ public partial class Match3DFlow {
     }
     void AcceptRevival(bool timeout,int version,Match3DRewardAcquisition.Offer offer){
         if(!revivePending||version!=reviveVersion||ScreenName!="game")return;
+        if(timeout?reviveTimeUsed:reviveClearUsed)return;
+        if(!InputController.Instance.ReviveSourceTray())return;
         if(timeout){
-            if(reviveTimeUsed)return;
             reviveTimeUsed=true;GameManager.Instance.currentLevelTime=Mathf.Max(0,GameManager.Instance.currentLevelTime)+ReviveAddedSeconds;
         }else{
-            if(reviveClearUsed||!InputController.Instance.ReviveSourceTray())return;
             reviveClearUsed=true;
         }
         Match3DRewardAcquisition.Commit(offer);

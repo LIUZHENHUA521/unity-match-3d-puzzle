@@ -597,6 +597,7 @@ public partial class Match3DFlow : MonoBehaviour {
         if(!GameManager.Instance.GameIsPlaying())return "当前无法使用道具，请在游戏中使用";
         if(type==BoardTools.AddTimeType&&(IsPvp||Stage==1))return "当前关卡不限时，无需使用加时";
         if(type==BoardTools.AddTimeType&&GameManager.Instance.currentLevelTime<=0)return "时间已用完，请先完成复活";
+        if(InputController.Instance.ReturningToBowl)return "物品正在回锅，请稍候";
         if(BoardTools.Shuffling)return "正在洗牌，请稍候";
         var input=InputController.Instance;
         if(type==0&&input.objectsOnStack.Count==0)return "槽位中没有可移出的物品";

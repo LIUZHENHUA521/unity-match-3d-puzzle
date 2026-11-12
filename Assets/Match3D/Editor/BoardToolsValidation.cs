@@ -13,7 +13,7 @@ public static class BoardToolsValidation {
             Check((int)BoardTools.StoreXEase==3&&(int)BoardTools.StoreYEase==26&&(int)BoardTools.StoreZEase==27&&(int)BoardTools.StoreScaleEase==26,"store ease numeric values match WX enum metadata, including InBack not OutElastic");
             var a=make("A");var a2=make("A");var b=make("B");var c=make("C");
             var stack=new List<GameObject>{a,a2,b,c};
-            Check(BoardTools.ReturnCandidates(stack).SequenceEqual(new[]{a,a2,b}),"return must take first three slot entries, not last pickup");
+            Check(BoardTools.ReturnCandidates(stack).SequenceEqual(new[]{a,a2,b,c}),"return takes the entire tray");
             Check(BoardTools.ReturnCandidates(new[]{a}).SequenceEqual(new[]{a}),"return fewer than three");
             var b1=make("B");var b2=make("B");var aa=make("AA");var a3=make("A");
             var board=new List<GameObject>{a,a2,b,c,b1,b2,aa,a3};int draws=0;
@@ -34,7 +34,7 @@ public static class BoardToolsValidation {
             Check(BoardTools.ShuffleCandidates(new[]{a,b,c},new GameObject[0],19f).SequenceEqual(new[]{a,b,c}),"source historical maxHeight retains a wider band after pile bounces upward");
             Check(Vector3.Distance(BoardTools.ShuffleAxis("CountrysideStove"),new Vector3(0,.99254615f,-.12186936f))<.00001f,"breakfast shuffle axis source transform");
             Check(Vector3.Distance(BoardTools.ShuffleAxis("GroceryStore"),new Vector3(0,.99357186f,-.11320321f))<.00001f,"shop shuffle axis source transform");
-            report="PASS source tools: first-three removal selection; distinct tray-type random completion; six-slot pair/no-RNG path; empty and malformed gates; reverse board search; exact type matching; N remove-append shuffle draws; strict top-seven-unit band and source per-theme axis. Store/animation runtime lifecycle verified separately.\n";
+            report="PASS source tools: whole-tray return selection; distinct tray-type random completion; six-slot pair/no-RNG path; empty and malformed gates; reverse board search; exact type matching; N remove-append shuffle draws; strict top-seven-unit band and source per-theme axis. Store/animation runtime lifecycle verified separately.\n";
         }catch(Exception e){report="FAIL "+e+"\n";}
         finally{foreach(var obj in objects)if(obj)UnityEngine.Object.DestroyImmediate(obj);File.WriteAllText("Temp/goose-source-tools-validation.txt",report);Debug.Log(report);}
     }

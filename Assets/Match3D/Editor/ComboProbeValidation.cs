@@ -15,7 +15,7 @@ using Object = UnityEngine.Object;
 [InitializeOnLoad]
 public static class ComboProbeValidation {
     const string Key = "combo-probe-validation";
-    public const string Output = "work/combo-probe/results";
+    public const string Output = "work/combo-probe/return-to-bowl-results";
     static readonly BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
     static int serial;
     static ComboProbeValidation() {
@@ -62,12 +62,15 @@ public static class ComboProbeValidation {
         var baseline = new RenderTexture(720,1565,24); baseline.Create();
         var camera = Camera.main; var oldTarget = camera.targetTexture; var oldAspect = camera.aspect;
         camera.targetTexture = baseline; camera.aspect = 720f/1565;
+        var rewardConfig=Match3DRewardAcquisition.Config;
+        Match3DRewardAcquisition.Configure(new Match3DRewardAcquisition.Configuration{revive=new Match3DRewardAcquisition.Rules{freeUsesPerRound=4}});
         var steps = Core();
         while (true) {
             bool more = false; try { more = steps.MoveNext(); } catch (Exception e) { failure = e.ToString(); }
             if (!more || failure != null) break; yield return steps.Current;
         }
         (steps as IDisposable)?.Dispose();
+        Match3DRewardAcquisition.Configure(rewardConfig);
         if (Match3DFlow.Instance) Match3DFlow.Instance.Home(); Physics.autoSimulation = automatic;
         camera.targetTexture = oldTarget; camera.aspect = oldAspect; baseline.Release(); Object.Destroy(baseline);
         File.AppendAllText(Output + "/checks.txt", failure == null ? "COMPLETE\n" : "FAIL " + failure + "\n");
@@ -156,31 +159,53 @@ public static class ComboProbeValidation {
         var oldToken = original.Token;
         var recycled = Spawn(900, new Vector3(1, 1, 0));
         Check(recycled.GetComponent<ComboProbeTarget>().Token != oldToken && !owner.Target(oldToken), "pool checkout token cannot revive a consumed binding");
-        // Fill and revive the actual main tray; special rewards must survive independently.
-        for (int i = 0; i < 6; i++) Pick(Spawn(820 + i, new Vector3(i * .1f, 4, 0)));
-        yield return new WaitForSecondsRealtime(1);
-        int earned = owner.State.Count;
-        Check(InputController.Instance.ReviveSourceTray(), "production revive moves the actual tray into temporary storage");
-        yield return new WaitForSecondsRealtime(1);
-        Check(BoardTools.StoredCount == 6 && owner.State.Count == earned, "temporary storage and special rewards are independent");
-        Check(!GameplayBoardLayout.ProbeRect.Overlaps(GameplayBoardLayout.StoreRect), "reserved special and temporary-store regions do not overlap");
-        foreach (var size in new[] { new Vector2Int(720,1280), new Vector2Int(720,1565), new Vector2Int(720,1600), new Vector2Int(768,1024) })
-            Capture("filled-" + size.x + "x" + size.y, size.x, size.y);
-        for(int i=0;i<6;i++)Pick(Spawn(830+i,new Vector3(i*.1f,4,0)));
-        yield return new WaitForSecondsRealtime(1);
-        Check(InputController.Instance.ReviveSourceTray() && BoardTools.StoredCount==12,"second revival stacks twelve stored items independently");
-        yield return new WaitForSecondsRealtime(1); Capture("double-revival",720,1565);
-        Triple(840); yield return new WaitForSecondsRealtime(1);
-        var stored=LevelGenerator.Instance.objectsOnScene.First(BoardTools.IsStored);
-        Pick(stored); yield return new WaitForSecondsRealtime(1);
-        Check(BoardTools.StoredCount==11 && owner.State.Stars==2,"manual temporary-store pickup consumes one star");
-        InputController.Instance.UndoLast(); yield return new WaitForSecondsRealtime(.5f);
-        Check(!InputController.Instance.objectsOnStack.Contains(stored)&&owner.State.Stars==2&&owner.State.Count==earned,"undo returns item without restoring stars or consumed bindings");
+        // The move tool returns every tray item, including flights, without a shuffle or storage.
+        var input=InputController.Instance; var flow=Match3DFlow.Instance;
+        var returning=new List<GameObject>();var boardScales=new List<Vector3>();var rotations=new List<Quaternion>();
+        for(int i=0;i<6;i++){
+            var item=Spawn(820+i,new Vector3(i*.1f,4,0));returning.Add(item);boardScales.Add(item.transform.localScale);rotations.Add(item.transform.rotation);Pick(item);
+        }
+        int earned=owner.State.Count;int remainingStars=owner.State.Stars;int toolUses=BoardTools.UsedCount(0);
+        Check(BoardTools.RunPaid(0,()=>input.ReturnSourceTrayToBowl()),"move tool accepts all six tray items while pickup flights are still running");
+        Check(input.objectsOnStack.Count==0&&input.ReturningToBowl&&BoardTools.UsedCount(0)==toolUses+1,"move clears the whole logical tray and spends once");
+        Check(!input.ReturnSourceTrayToBowl()&&!input.ReviveSourceTray()&&!BoardTools.MessUp(),"return animation rejects duplicate move, revival and shuffle");
+        accepts=input.AcceptedPicks;Pick(returning[0]);Check(input.AcceptedPicks==accepts,"return animation blocks picking moving items");
+        yield return new WaitForSecondsRealtime(.1f);
+        Time.timeScale=0;var pausedPosition=returning[0].transform.position;
+        yield return new WaitForSecondsRealtime(.15f);
+        Check(Vector3.Distance(pausedPosition,returning[0].transform.position)<.0001f&&input.ReturningToBowl,"pause freezes return flight without releasing gameplay lock");Time.timeScale=1;
+        yield return new WaitForSecondsRealtime(.6f);
+        Check(!input.ReturningToBowl&&!BoardTools.Shuffling&&BoardTools.StoredCount==0&&!BoardToolVisual.HasBackground,"ordinary move finishes in the pot without storage or shuffle");
+        for(int i=0;i<returning.Count;i++){
+            var item=returning[i];Check(Vector3.Distance(item.transform.localScale,boardScales[i])<.001f&&Quaternion.Angle(item.transform.rotation,rotations[i])<.1f,"returned item restores full board scale and rotation "+i);
+            Check(ItemPhysicsController.Instance.Contains(item.GetComponent<Rigidbody>())&&item.GetComponent<Rigidbody>().detectCollisions&&item.GetComponentsInChildren<Collider>().Any(c=>c.enabled),"returned item restores board physics and colliders "+i);
+        }
+        Check(owner.State.Count==earned&&owner.State.Stars==remainingStars,"move preserves earned probes and never refills stars");
+        Pick(returning[0]);yield return new WaitForSecondsRealtime(.5f);Check(input.objectsOnStack.Contains(returning[0]),"returned item is collectible again");
+        input.UndoLast();yield return new WaitForSecondsRealtime(.5f);
+        Check(input.objectsOnStack.Count==0&&owner.State.Count==earned,"undo after return does not restore consumed probe bindings");
+        for(int i=0;i<7;i++)Pick(Spawn(830+i,new Vector3(i*.1f,4,0)));
+        Check(flow.RevivePending&&Time.timeScale==0,"seven different items open the actual revival offer");
+        yield return new WaitForSecondsRealtime(.6f);Capture("revival-offer",720,1565);
+        var popup=Object.FindObjectOfType<Match3DReviveView>();int shuffleUses=BoardTools.UsedCount(2);popup.revive.onClick.Invoke();
+        Check(flow.ClearReviveUsed&&input.ReturningToBowl&&!BoardTools.Shuffling&&input.objectsOnStack.Count==0,"real revival returns all seven before starting shuffle");
+        yield return new WaitForSecondsRealtime(.6f);
+        Check(!input.ReturningToBowl&&BoardTools.Shuffling,"revival starts shuffle only after return completes");
+        yield return new WaitForSecondsRealtime(1.3f);
+        Check(!BoardTools.Busy&&BoardTools.UsedCount(0)==toolUses+1&&BoardTools.UsedCount(2)==shuffleUses&&owner.State.Count==earned,"revival finishes without spending move/shuffle inventory or losing probes");
+        foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1565),new Vector2Int(720,1600),new Vector2Int(768,1024)})
+            Capture("restored-scale-"+size.x+"x"+size.y,size.x,size.y);
         int generation = owner.Generation; Start(2); yield return null;
-        Check(owner.Generation != generation && owner.State.Count == 0 && owner.State.Combo == 0 && BoardTools.StoredCount == 0, "stage transition clears stacks and temporary storage");
+        Check(owner.Generation != generation && owner.State.Count == 0 && owner.State.Combo == 0 && BoardTools.StoredCount == 0, "stage transition clears probe stacks without a temporary region");
         var boardTransforms = LevelGenerator.Instance.objectsOnScene.Select(o => o.transform.position).ToArray();
         Capture("second-stage-empty", 720, 1565);
         Check(boardTransforms.SequenceEqual(LevelGenerator.Instance.objectsOnScene.Select(o => o.transform.position)), "camera layout never changes board world coordinates");
+        GameManager.Instance.currentLevelTime=0;flow.HandleResult(false);
+        Check(flow.RevivePending,"timeout opens actual revival offer even with empty tray");
+        yield return new WaitForSecondsRealtime(.6f);Capture("time-revival-offer",720,1565);
+        Object.FindObjectOfType<Match3DReviveView>().revive.onClick.Invoke();
+        Check(flow.TimeReviveUsed&&GameManager.Instance.currentLevelTime==300&&input.ReturningToBowl,"time revival keeps five-minute benefit and begins return/shuffle sequence");
+        yield return new WaitForSecondsRealtime(1.9f);Check(!BoardTools.Busy,"empty-tray time revival completes shuffle");
         var targetOnBoard = LevelGenerator.Instance.objectsOnScene[0]; var tokenOnBoard = targetOnBoard.GetComponent<ComboProbeTarget>().Token;
         owner.State.Add(tokenOnBoard); view.Refresh();
         Start(); yield return null;
@@ -197,7 +222,7 @@ public static class ComboProbeValidation {
         var storeItems = LevelGenerator.Instance.objectsOnScene.Where(o=>o&&o.activeInHierarchy).GroupBy(o=>o.name).Select(g=>g.First()).Take(6).ToArray();
         foreach(var item in storeItems) Pick(item,ProbePickSource.Automatic);
         yield return new WaitForSeconds(1);
-        Check(InputController.Instance.ReviveSourceTray(), "showcase temporary storage uses actual production items");
+        Check(BoardTools.RunPaid(0,()=>input.ReturnSourceTrayToBowl()), "showcase uses real whole-tray return");
         yield return new WaitForSeconds(1);
         string[] names = { "Blue circle", "Purple circle", "Orange circle", "red circle", "colored circle" };
         for(int i=0;i<5;i++) {
@@ -209,6 +234,10 @@ public static class ComboProbeValidation {
         int previewColumn = Enumerable.Range(0,4).First(c=>owner.State.Top(c)!=0);
         view.Preview.Show(owner,owner.State.Top(previewColumn),view.Slot(previewColumn).transform);
         yield return new WaitForSeconds(.2f); Capture("showcase-preview",720,1565); view.Preview.Clear();
+        var live=LevelGenerator.Instance.objectsOnScene.First(x=>x&&x.activeInHierarchy);
+        Pick(live);Check(input.ReviveSourceTray(),"start return sequence before transition cancellation");
+        flow.Home();Start();yield return new WaitForSecondsRealtime(1.8f);
+        Check(!input.ReturningToBowl&&!BoardTools.Shuffling&&owner.State.Count==0&&input.objectsOnStack.Count==0,"restart cancels return and prevents delayed revival shuffle in the new stage");
     }
     static void Capture(string name, int width, int height) {
         var camera = Camera.main; var previous = camera.targetTexture; var previousAspect = camera.aspect;
@@ -221,7 +250,6 @@ public static class ComboProbeValidation {
             foreach (var c in overlays) { c.renderMode = RenderMode.ScreenSpaceCamera; c.worldCamera = camera; c.planeDistance = .5f; }
             foreach (var presentation in Object.FindObjectsOfType<Match3DThemePresentation>()) if (presentation.Active) presentation.Fit();
             Match3DTray.Instance.SendMessage("LateUpdate");
-            BoardTools.ReflowStored();
             foreach (var tools in Object.FindObjectsOfType<BoardToolVisual>()) tools.SendMessage("LateUpdate");
             ComboProbeController.Instance.View.SendMessage("LateUpdate");
             Canvas.ForceUpdateCanvases(); foreach (var fit in Object.FindObjectsOfType<Match3DUIFitContent>()) fit.Fit(); Canvas.ForceUpdateCanvases();
@@ -233,21 +261,14 @@ public static class ComboProbeValidation {
             var mesh = ring.canvasRenderer.GetMesh();
             report.Add("ring active="+ring.gameObject.activeInHierarchy+" cull="+ring.canvasRenderer.cull+" vertices="+(mesh ? mesh.vertexCount : 0)+" bounds="+(mesh ? mesh.bounds.ToString() : "none")+" scale="+ring.transform.lossyScale+" texture="+ring.mainTexture+" rect="+ring.rectTransform.rect);
             if((mesh ? mesh.vertexCount : 0)>0)report.Add("ring vertex="+camera.WorldToScreenPoint(ring.transform.TransformPoint(mesh.vertices[0]))+" colors="+string.Join(",",mesh.colors32.Take(4)));
-            foreach (var obj in LevelGenerator.Instance.objectsOnScene.Where(BoardTools.IsStored)) {
-                var screen = camera.WorldToViewportPoint(obj.transform.position);
-                report.Add(obj.name + " store viewport=" + screen.ToString("F4"));
-                foreach(var renderer in obj.GetComponentsInChildren<Renderer>()) {
-                    if(!(renderer is MeshRenderer)&&!(renderer is SkinnedMeshRenderer))continue;
-                    var b=renderer.bounds;
-                    for(int i=0;i<8;i++) {
-                        var p=b.center+Vector3.Scale(b.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1));
-                        var vp=camera.WorldToViewportPoint(p);
-                        var logical=new Vector2((vp.x-.5f)*720,vp.y*GameplayBoardLayout.Height(camera)-GameplayBoardLayout.SafeBottom);
-                        if(!GameplayBoardLayout.StoreRect.Contains(logical))throw new Exception("Stored model leaves reserved region: "+name+" "+logical);
-                    }
-                }
+            Check(BoardTools.StoredCount==0&&!BoardToolVisual.HasBackground,"temporary region is absent: "+name);
+            Check(Mathf.Abs(camera.orthographicSize-Match3DThemePresentation.Size(camera.aspect))<.0001f,"original camera scale preserved: "+name);
+            float trayTop=0;
+            foreach(var art in Match3DTray.Instance.GetComponentsInChildren<Image>()){
+                if(!art.sprite||art.color.a==0)continue;var corners=new Vector3[4];art.rectTransform.GetWorldCorners(corners);
+                foreach(var corner in corners)trayTop=Mathf.Max(trayTop,camera.WorldToViewportPoint(corner).y*GameplayBoardLayout.Height(camera)-GameplayBoardLayout.SafeBottom);
             }
-            Check(!GameplayBoardLayout.ProbeRect.Overlaps(GameplayBoardLayout.StoreRect),"regions and actual stored model bounds stay separate: "+name);
+            Check(GameplayBoardLayout.ProbeRect.yMin>trayTop+3,"probe region remains above the main tray: "+name+" top="+trayTop);
             File.WriteAllLines(Output + "/" + name + "-layout.txt", report);
             var icon = ComboProbeController.Instance.View.GetComponentsInChildren<RawImage>().FirstOrDefault(i => i.texture);
             if (icon && icon.texture) {
@@ -262,7 +283,7 @@ public static class ComboProbeValidation {
             camera.targetTexture = previous; camera.aspect = previousAspect; RenderTexture.active = active;
             for (int i = 0; i < overlays.Length; i++) { overlays[i].renderMode = RenderMode.ScreenSpaceOverlay; overlays[i].worldCamera = cameras[i]; overlays[i].planeDistance = distances[i]; }
             foreach (var presentation in Object.FindObjectsOfType<Match3DThemePresentation>()) if (presentation.Active) presentation.Fit();
-            Match3DTray.Instance.SendMessage("LateUpdate"); BoardTools.ReflowStored();
+            Match3DTray.Instance.SendMessage("LateUpdate");
             ComboProbeController.Instance.View.SendMessage("LateUpdate");
             Object.Destroy(texture); rt.Release(); Object.Destroy(rt);
         }

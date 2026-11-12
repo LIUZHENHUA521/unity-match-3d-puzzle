@@ -31,15 +31,21 @@ public sealed class ComboProbeView : MonoBehaviour {
         var block = go.AddComponent<Image>(); block.color = Color.clear; block.raycastTarget = true;
         var blocker = go.AddComponent<Button>(); blocker.transition = Selectable.Transition.None; blocker.targetGraphic = block;
         Picture("Blue four-slot panel", assets.panel, root, new Vector2(50, -2), new Vector2(558, 167));
-        Picture("Inactive track", assets.track, root, new Vector2(-248, -1), new Vector2(160, 134));
-        ring = SkeletonGraphic.NewSkeletonGraphicGameObject(assets.ring, root, assets.ringMaterial);
+        // crazyCombo main.scene/newCombeNode: keep its authored local coordinates together.
+        // The 134-high track is a cropped arc: its image center is ABOVE the circle center.
+        var badge = new GameObject("Authored combo badge", typeof(RectTransform)).GetComponent<RectTransform>();
+        badge.gameObject.layer = 5; badge.SetParent(root, false);
+        badge.anchoredPosition = new Vector2(-248, -3); badge.sizeDelta = new Vector2(151, 151);
+        badge.localScale = Vector3.one * (121f / 151);
+        Picture("Counter circle", assets.circle, badge, Vector2.zero, new Vector2(151, 151));
+        ring = SkeletonGraphic.NewSkeletonGraphicGameObject(assets.ring, badge, assets.ringMaterial);
         ring.name = "Authored breathing Spine ring"; ring.raycastTarget = false;
-        ring.rectTransform.anchoredPosition = new Vector2(-248, -1); ring.transform.localScale = Vector3.one * .78f;
-        Picture("Counter circle", assets.circle, root, new Vector2(-248, -3), new Vector2(121, 121));
-        Label("Counter label", "连消数", root, new Vector2(-248, 24), new Vector2(102, 30), 23, Color.white);
-        comboText = Label("Counter", "0", root, new Vector2(-248, -19), new Vector2(100, 55), 46, new Color32(255, 244, 143, 255));
-        Vector2[] starPositions = { new Vector2(-310, -28), new Vector2(-248, 66), new Vector2(-185, -28) };
-        for (int i = 0; i < 3; i++) stars[i] = Picture("Chance " + i, assets.darkStar, root, starPositions[i], new Vector2(30, 30));
+        ring.rectTransform.anchoredPosition = Vector2.zero; ring.transform.localScale = Vector3.one * 1.24f;
+        Picture("Inactive track", assets.track, badge, new Vector2(.073f, 15.811f), new Vector2(160, 134) * 1.27f);
+        Label("Counter label", "连消数", badge, new Vector2(4.137f, 32.124f), new Vector2(110, 50.4f), 30, Color.white);
+        comboText = Label("Counter", "0", badge, new Vector2(1.233f, -22.303f), new Vector2(120, 88.2f), 60, new Color32(253, 251, 172, 255));
+        Vector2[] starPositions = { new Vector2(-88.646f, -30.912f), new Vector2(-1.736f, 88.811f), new Vector2(87.397f, -31.31f) };
+        for (int i = 0; i < 3; i++) stars[i] = Picture("Chance " + i, assets.darkStar, badge, starPositions[i] + new Vector2(1.47f, 0), new Vector2(45.8f, 45));
         Label("Interaction hint", "短按取物 · 长按查看", root, new Vector2(70, 61), new Vector2(340, 28), 19, Color.white);
         float[] xs = { -96, 26, 143, 264 };
         for (int i = 0; i < 4; i++) {
@@ -87,8 +93,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         revision = owner.State.Revision; comboText.text = owner.State.Combo.ToString();
         for (int i = 0; i < 3; i++) {
             bool lit = i < owner.State.Stars; stars[i].sprite = lit ? assets.lightStar : assets.darkStar;
-            // Authored bright-star art has glow padding; retain the same visible star size.
-            stars[i].rectTransform.sizeDelta = Vector2.one * (lit ? 49.6f : 30);
+            // Use the original settled star, not its padded flash/transition sprite.
         }
         int color = owner.State.Combo == 0 ? -1 : Mathf.Min(owner.State.Combo - 1, 4);
         if (currentColor != color) {
