@@ -1,6 +1,6 @@
 mergeInto(LibraryManager.library, {
  $GooseRewardSharing: {active:null},
- GooseRewardShare__deps:['$GooseRewardSharing'],
+ GooseRewardShare__deps:['$GooseRewardSharing','$GooseShareCard'],
  GooseRewardShare:function(targetPtr,requestPtr,minAwaySeconds){
   var target=UTF8ToString(targetPtr),request=UTF8ToString(requestPtr);
   function emit(ok,error){Module.SendMessage(target,'OnReviveAdReply',JSON.stringify({requestId:request,completed:ok,error:error||''}));}
@@ -24,7 +24,7 @@ mergeInto(LibraryManager.library, {
   try{
    wx.onHide(onHide);wx.onShow(onShow);
    state.timer=setTimeout(function(){finish(false,'分享等待超时，请重试');},120000);
-   wx.shareAppMessage({title:'一起来抓大鹅，看看谁能通关！',query:'source=reward',fail:function(){finish(false,'未能打开分享，请重试');}});
+   wx.shareAppMessage(GooseShareCard.create('source=reward',function(){finish(false,'未能打开分享，请重试');}));
   }catch(e){finish(false,'未能打开分享，请重试');}
  },
  GooseRewardShareCancel__deps:['$GooseRewardSharing'],

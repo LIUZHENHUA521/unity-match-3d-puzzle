@@ -529,9 +529,12 @@ public partial class Match3DFlow : MonoBehaviour {
         if(!win&&SettingsVibration&&!Application.isEditor)Handheld.Vibrate();
 #endif
     }
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
+    [System.Runtime.InteropServices.DllImport("__Internal")] static extern void GooseShareResult(string query);
+#endif
     void ShareResult(){
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
-        WeChatWASM.WX.ShareAppMessage(new WeChatWASM.ShareAppMessageOption{title=DailyShareTitle(GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH),query=dailyLevel==null?"":"dailyDate="+dailyLevel.date+"&dailyTier="+dailyLevel.tier});
+        GooseShareResult(DailyShareQuery());
 #else
         Notice("请在微信小游戏中分享给好友");
 #endif

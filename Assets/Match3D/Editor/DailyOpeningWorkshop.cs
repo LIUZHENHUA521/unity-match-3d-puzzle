@@ -105,7 +105,7 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
         if(validate){
             WriteExport("Builds/DailyOpening/opening.json");
             if(!flow.LocalPreview)throw new Exception("试玩产生了正式记录");
-            if(!flow.DailyShareTitle(true).Contains("2026-11-12 本科局"))throw new Exception("分享缺少日期档位");
+            if(flow.DailyShareQuery()!="dailyDate=2026-11-12&dailyTier=bachelor")throw new Exception("分享参数缺少日期档位");
             var picked=LevelGenerator.Instance.objectsOnScene.First(o=>LayeredItemPile.Instance.CanPick(o.GetComponent<Rigidbody>()));
             InputController.Instance.AddObjectOnStack(picked);
             if(ItemPhysicsController.Instance.DailyOpeningHeld)throw new Exception("首次消除未恢复物理");

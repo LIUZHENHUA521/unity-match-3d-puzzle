@@ -75,8 +75,7 @@ public partial class Match3DFlow {
         if(stage==2){StopBoard();Stage=2;StartStage();}
     }
 #endif
-    public string DailyShareTitle(bool won){
-        string label=dailyLevel==null?"":dailyLevel.date+" "+(dailyLevel.tier=="elite"?"清北局":"本科局")+"，";
-        return label+(won?"我通关了！一起来研究通关路线":"差一点就通关，一起来挑战！");
+    public string DailyShareQuery(){
+        return dailyLevel==null?"":"dailyDate="+Uri.EscapeDataString(dailyLevel.date)+"&dailyTier="+Uri.EscapeDataString(dailyLevel.tier);
     }
 }

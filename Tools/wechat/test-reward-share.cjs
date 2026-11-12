@@ -4,7 +4,7 @@ function fixture(mode){
  const messages=[];let now=1000,hide,show,timer,options,removed=0;
  const wx={onHide:f=>hide=f,onShow:f=>show=f,offHide:f=>{assert.equal(f,hide);removed++;},offShow:f=>{assert.equal(f,show);removed++;},shareAppMessage:o=>{options=o;if(mode==='throw')throw Error('fail');}};
  const context={LibraryManager:{library:{}},mergeInto:Object.assign,UTF8ToString:x=>x,Module:{SendMessage:(t,m,v)=>messages.push(JSON.parse(v))},setTimeout:f=>(timer=f,1),clearTimeout(){},Date:{now:()=>now},Math,wx:mode==='unsupported'?undefined:wx};
- vm.createContext(context);vm.runInContext(source,context);context.GooseRewardSharing=context.LibraryManager.library.$GooseRewardSharing;
+ vm.createContext(context);vm.runInContext(fs.readFileSync('Assets/Match3D/Plugins/WebGL/GooseShareCard.jslib','utf8'),context);context.GooseShareCard=context.LibraryManager.library.$GooseShareCard;vm.runInContext(source,context);context.GooseRewardSharing=context.LibraryManager.library.$GooseRewardSharing;
  const lib=context.LibraryManager.library;lib.GooseRewardShare('target','one',3);
  return {messages,lib,hide:()=>hide(),show:()=>show(),advance:ms=>now+=ms,timeout:()=>timer(),fail:()=>options.fail(),removed:()=>removed};
 }
