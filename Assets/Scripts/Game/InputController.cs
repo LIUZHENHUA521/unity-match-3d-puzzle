@@ -147,7 +147,7 @@ public class InputController : Singleton<InputController>
     sealed class MagnetFlight { public Vector3 start; public Quaternion rotation; public float started,delay; }
     readonly Dictionary<GameObject,MagnetFlight> magnetFlights=new Dictionary<GameObject,MagnetFlight>();
     const float MagnetSeconds=ItemFlightMotion.MagnetSeconds;
-    public void AddObjectOnStack(GameObject obj,bool playSound=true,bool magnetic=false,float magnetDelay=0)
+    public void AddObjectOnStack(GameObject obj,bool playSound=true,bool magnetic=false,float magnetDelay=0,ProbePickSource source=ProbePickSource.Manual)
     {
         if (BoardTools.Shuffling || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
             objectsOnStack.Count >= 7 || objectsOnStack.Contains(obj)) return;
@@ -181,12 +181,12 @@ public class InputController : Singleton<InputController>
         boardColliders[obj]=colliderStates;
         objectsOnStack.Add(obj);
         objectsOnStack = objectsOnStack.GroupBy(x => x.name).SelectMany(g => g).ToList();
-        if(UsesSourceFlight){if(magnetic)magnetFlights[obj]=new MagnetFlight{start=obj.transform.position,rotation=obj.transform.rotation,started=Time.unscaledTime,delay=magnetDelay};SourcePick(obj);BoardTools.ReleaseStored(obj);return;}
+        if(UsesSourceFlight){if(magnetic)magnetFlights[obj]=new MagnetFlight{start=obj.transform.position,rotation=obj.transform.rotation,started=Time.unscaledTime,delay=magnetDelay};SourcePick(obj,magnetic?ProbePickSource.Automatic:source);BoardTools.ReleaseStored(obj);return;}
         Reposition();
         if (resolution != null) StopCoroutine(resolution);
         resolution = StartCoroutine(Resolve());
     }
-    private void SourcePick(GameObject obj)
+    private void SourcePick(GameObject obj,ProbePickSource source)
     {
         // CheckLevelState runs at each EndCombine, not after every concurrent match has finished.
         // A later pickup invalidates an earlier completion checkpoint until a new callback runs.
@@ -232,6 +232,7 @@ public class InputController : Singleton<InputController>
             }
             StartCoroutine(SourceCombine(items));
         }
+        if(ComboProbeController.Instance)ComboProbeController.Instance.PickAccepted(obj,source,match!=null);
         // A seventh item which completes a triple has already freed its three logical slots.
         if(objectsOnStack.Count>=7)UIManager.Instance.ShowOutOfBoxesPopUp();
         BoosterManager.Instance.CheckHintInteractibility();

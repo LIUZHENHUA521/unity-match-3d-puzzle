@@ -82,7 +82,16 @@ public sealed class BoardToolVisual : MonoBehaviour {
     }
     void LateUpdate(){if(background)LayoutBackground();}
     void LayoutBackground(){
-        var camera=Camera.main;if(!camera||!background)return;var center=Match3DTray.Instance?Match3DTray.Instance.SlotPosition(3):camera.transform.TransformPoint(0,-5.04f,1.58f);
+        var camera=Camera.main;if(!camera||!background)return;
+        if(GameplayBoardLayout.Enabled){
+            float slide=(backgroundZ-StoreShowZ)*25f;
+            background.transform.position=GameplayBoardLayout.Point(camera,0,GameplayBoardLayout.StoreY(camera)+slide,StoreDepth);
+            background.transform.rotation=camera.transform.rotation;
+            float unit=GameplayBoardLayout.WorldPerPoint(camera)*GameplayBoardLayout.RegionScale(camera);
+            background.transform.localScale=new Vector3(380*unit,120*unit,1);
+            return;
+        }
+        var center=Match3DTray.Instance?Match3DTray.Instance.SlotPosition(3):camera.transform.TransformPoint(0,-5.04f,1.58f);
         float ratio=Match3DTray.Instance?Vector3.Distance(Match3DTray.Instance.SlotPosition(0),Match3DTray.Instance.SlotPosition(1))/.71f:1.4f;
         var p=center+camera.transform.up*(backgroundZ*ratio);var screen=camera.WorldToScreenPoint(p);screen.z=StoreDepth;background.transform.position=camera.ScreenToWorldPoint(screen);
         // Preserve the blue three-cell artwork's 349 x 156 aspect at the existing board width.

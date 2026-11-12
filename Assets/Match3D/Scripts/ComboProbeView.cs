@@ -1,0 +1,118 @@
+using Spine.Unity;
+using UnityEngine;
+using UnityEngine.UI;
+
+public sealed class ComboProbeView : MonoBehaviour {
+    ComboProbeController owner;
+    Canvas canvas;
+    RectTransform root;
+    Text comboText;
+    readonly Image[] stars = new Image[3];
+    readonly RawImage[,] models = new RawImage[4, 3];
+    readonly Text[] counts = new Text[4];
+    readonly ComboProbeSlot[] slots = new ComboProbeSlot[4];
+    readonly ComboProbeIcons icons = new ComboProbeIcons();
+    ComboProbeAssets assets;
+    SkeletonGraphic ring;
+    int revision = -1, currentColor = -2;
+    public ComboProbePreview Preview { get; private set; }
+    public RectTransform Root => root;
+    public SkeletonGraphic Ring => ring;
+    public ComboProbeSlot Slot(int index) => slots[index];
+    public float PanelWorldDepth => 1.4f;
+
+    public void Initialize(ComboProbeController controller) {
+        owner = controller; assets = ComboProbeAssets.Load();
+        if (!assets || !assets.ring) throw new System.InvalidOperationException("Combo probe assets must be built before playing");
+        var go = new GameObject("Four probe stacks", typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster));
+        go.layer = 5; go.transform.SetParent(transform, false); root = (RectTransform)go.transform;
+        root.sizeDelta = new Vector2(GameplayBoardLayout.ProbeWidth, GameplayBoardLayout.ProbeHeight);
+        canvas = go.GetComponent<Canvas>(); canvas.renderMode = RenderMode.WorldSpace; canvas.sortingOrder = 25; canvas.worldCamera = Camera.main;
+        var block = go.AddComponent<Image>(); block.color = Color.clear; block.raycastTarget = true;
+        var blocker = go.AddComponent<Button>(); blocker.transition = Selectable.Transition.None; blocker.targetGraphic = block;
+        Picture("Blue four-slot panel", assets.panel, root, new Vector2(50, -2), new Vector2(558, 167));
+        Picture("Inactive track", assets.track, root, new Vector2(-248, -1), new Vector2(160, 134));
+        ring = SkeletonGraphic.NewSkeletonGraphicGameObject(assets.ring, root, assets.ringMaterial);
+        ring.name = "Authored breathing Spine ring"; ring.raycastTarget = false;
+        ring.rectTransform.anchoredPosition = new Vector2(-248, -1); ring.transform.localScale = Vector3.one * .78f;
+        Picture("Counter circle", assets.circle, root, new Vector2(-248, -3), new Vector2(121, 121));
+        Label("Counter label", "连消数", root, new Vector2(-248, 24), new Vector2(102, 30), 23, Color.white);
+        comboText = Label("Counter", "0", root, new Vector2(-248, -19), new Vector2(100, 55), 46, new Color32(255, 244, 143, 255));
+        Vector2[] starPositions = { new Vector2(-310, -28), new Vector2(-248, 66), new Vector2(-185, -28) };
+        for (int i = 0; i < 3; i++) stars[i] = Picture("Chance " + i, assets.darkStar, root, starPositions[i], new Vector2(30, 30));
+        Label("Interaction hint", "短按取物 · 长按查看", root, new Vector2(70, 61), new Vector2(340, 28), 19, Color.white);
+        float[] xs = { -96, 26, 143, 264 };
+        for (int i = 0; i < 4; i++) {
+            var cell = new GameObject("Probe stack " + (i + 1), typeof(RectTransform), typeof(Image), typeof(ComboProbeSlot));
+            cell.layer = 5; cell.transform.SetParent(root, false);
+            var rect = (RectTransform)cell.transform; rect.sizeDelta = new Vector2(100, 116); rect.anchoredPosition = new Vector2(xs[i], -14);
+            var hit = cell.GetComponent<Image>(); hit.color = Color.clear;
+            // Add bottom visuals first: only the top model owns input.
+            for (int layer = 0; layer < 3; layer++) {
+                var visual = new GameObject("Model layer " + layer, typeof(RectTransform), typeof(RawImage));
+                visual.layer = 5; visual.transform.SetParent(cell.transform, false);
+                var r = (RectTransform)visual.transform; r.sizeDelta = new Vector2(86, 86);
+                models[i, layer] = visual.GetComponent<RawImage>(); models[i, layer].raycastTarget = false;
+            }
+            counts[i] = Label("Stack count", "", cell.transform, new Vector2(33, -39), new Vector2(45, 25), 19, Color.white);
+            var shadow = counts[i].gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .75f); shadow.effectDistance = new Vector2(1, -1);
+            slots[i] = cell.GetComponent<ComboProbeSlot>(); slots[i].Initialize(owner, this, i); slots[i].targetGraphic = hit;
+        }
+        Preview = gameObject.AddComponent<ComboProbePreview>();
+        Layout(); Refresh();
+    }
+    static Image Picture(string name, Sprite sprite, Transform parent, Vector2 position, Vector2 size) {
+        var go = new GameObject(name, typeof(RectTransform), typeof(Image)); go.layer = 5; go.transform.SetParent(parent, false);
+        var rect = (RectTransform)go.transform; rect.anchoredPosition = position; rect.sizeDelta = size;
+        var image = go.GetComponent<Image>(); image.sprite = sprite; image.raycastTarget = false; return image;
+    }
+    static Text Label(string name, string value, Transform parent, Vector2 position, Vector2 size, int fontSize, Color color) {
+        var go = new GameObject(name, typeof(RectTransform), typeof(Text)); go.layer = 5; go.transform.SetParent(parent, false);
+        var rect = (RectTransform)go.transform; rect.anchoredPosition = position; rect.sizeDelta = size;
+        var text = go.GetComponent<Text>(); text.font = Match3DDefaultFont.Current; text.text = value; text.fontSize = fontSize;
+        text.color = color; text.alignment = TextAnchor.MiddleCenter; text.raycastTarget = false;
+        text.horizontalOverflow = HorizontalWrapMode.Overflow; text.verticalOverflow = VerticalWrapMode.Overflow; return text;
+    }
+    void Layout() {
+        var camera = Camera.main; if (!root || !camera) return;
+        canvas.worldCamera = camera;
+        root.SetPositionAndRotation(GameplayBoardLayout.Point(camera, 0, GameplayBoardLayout.ProbeY(camera), PanelWorldDepth), camera.transform.rotation);
+        root.localScale = Vector3.one * (GameplayBoardLayout.WorldPerPoint(camera) * GameplayBoardLayout.RegionScale(camera));
+    }
+    public void Refresh() {
+        if (!owner || !root) return;
+        bool visible = owner.Running && Match3DFlow.Instance && Match3DFlow.Instance.ScreenName == "game";
+        root.gameObject.SetActive(visible); if (!visible) { if (Preview) Preview.Clear(); return; }
+        if (revision == owner.State.Revision) return;
+        revision = owner.State.Revision; comboText.text = owner.State.Combo.ToString();
+        for (int i = 0; i < 3; i++) {
+            bool lit = i < owner.State.Stars; stars[i].sprite = lit ? assets.lightStar : assets.darkStar;
+            // Authored bright-star art has glow padding; retain the same visible star size.
+            stars[i].rectTransform.sizeDelta = Vector2.one * (lit ? 49.6f : 30);
+        }
+        int color = owner.State.Combo == 0 ? -1 : Mathf.Min(owner.State.Combo - 1, 4);
+        if (currentColor != color) {
+            currentColor = color; ring.gameObject.SetActive(color >= 0);
+            if (color >= 0) { string[] names = { "Blue circle", "Purple circle", "Orange circle", "red circle", "colored circle" }; ring.AnimationState.SetAnimation(0, names[color], true); }
+        }
+        for (int column = 0; column < 4; column++) {
+            var stack = owner.State.Column(column); counts[column].text = stack.Count > 1 ? "×" + stack.Count : "";
+            int shown = Mathf.Min(stack.Count, 3);
+            for (int layer = 0; layer < 3; layer++) {
+                var model = models[column, layer]; bool show = layer < shown; model.gameObject.SetActive(show);
+                if (!show) continue;
+                model.texture = icons.For(owner.Target(stack[stack.Count - shown + layer]));
+                int depth = shown - layer - 1;
+                model.rectTransform.anchoredPosition = new Vector2(-depth * 4, depth * 8);
+                model.color = new Color(1, 1, 1, depth == 0 ? 1 : .72f);
+            }
+        }
+    }
+    public void ResetView() {
+        if (Preview) Preview.Clear(); foreach (var slot in slots) if (slot) slot.Cancel();
+        revision = -1; currentColor = -2;
+    }
+    void LateUpdate() { Layout(); Refresh(); }
+    void OnDisable() { ResetView(); }
+    void OnDestroy() { icons.Dispose(); }
+}

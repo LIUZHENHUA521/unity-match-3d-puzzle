@@ -22,6 +22,8 @@ public sealed class BoardTools : MonoBehaviour {
     static BoardTools instance;
     readonly List<GameObject>[] columns={new List<GameObject>(),new List<GameObject>(),new List<GameObject>()};
     int nextColumn;
+    Vector3 storeLayoutAnchor;
+    float storeLayoutUnit;
     readonly int[] used=new int[ToolCount];
     readonly int[] adUses=new int[ToolCount];
     readonly int[] testUses=new int[ToolCount];
@@ -89,6 +91,7 @@ public sealed class BoardTools : MonoBehaviour {
     }
     public static void Store(IEnumerable<GameObject> objects){
         var owner=Ensure();if(!owner)return;
+        owner.RecordStoreLayout();
         foreach(var obj in objects){
             if(!obj||IsStored(obj))continue;
             // UseTool removes each item from content and appends it to _boxObjList.
@@ -98,7 +101,7 @@ public sealed class BoardTools : MonoBehaviour {
             owner.columns[owner.nextColumn].Add(obj);
             owner.LayoutColumn(owner.nextColumn,obj);
             owner.nextColumn=(owner.nextColumn+1)%owner.columns.Length;
-            obj.transform.DOScale(ItemFlightMotion.StoreScale(obj,obj.transform.localScale),StoreScaleSeconds).SetEase(StoreScaleEase);
+            obj.transform.DOScale(FitStoreScale(obj,ItemFlightMotion.StoreScale(obj,obj.transform.localScale)),StoreScaleSeconds).SetEase(StoreScaleEase);
         }
     }
     public static void ReleaseStored(GameObject obj){
@@ -107,6 +110,10 @@ public sealed class BoardTools : MonoBehaviour {
     }
     public static Vector3 StorePosition(int column,int index,int count){
         var camera=Camera.main;if(!camera)return Vector3.zero;
+        if(GameplayBoardLayout.Enabled){
+            float probeStagger=index==0?0:(index%2==1?-4f:4f);
+            return GameplayBoardLayout.Point(camera,((column-1)*118f+probeStagger)*GameplayBoardLayout.RegionScale(camera),GameplayBoardLayout.StoreY(camera),2.6f+Mathf.Min(4,count-1-index)*.12f);
+        }
         // WX data.unity3d Content scale is 1.4. StorePointList is at local
         // (0,-.46,1.55), with three points at local X (-.83,.01,.83).
         // SetStoreContentPos then walks the point's local up vector by .75 per
@@ -126,6 +133,39 @@ public sealed class BoardTools : MonoBehaviour {
         result-=camera.transform.forward*(localStack*contentScale);
         result+=camera.transform.up*(storePointY*contentScale)+BoardToolVisual.StoreLayoutOffset(camera);
         return result;
+    }
+
+    static Vector3 FitStoreScale(GameObject obj,Vector3 proposed){
+        if(!GameplayBoardLayout.Enabled||!Camera.main||!obj)return proposed;
+        var camera=Camera.main;float right=0,up=0;
+        foreach(var renderer in obj.GetComponentsInChildren<Renderer>(true)){
+            if(!(renderer is MeshRenderer)&&!(renderer is SkinnedMeshRenderer))continue;
+            var b=renderer.bounds;
+            for(int i=0;i<8;i++){
+                var p=b.center+Vector3.Scale(b.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1))-obj.transform.position;
+                right=Mathf.Max(right,Mathf.Abs(Vector3.Dot(p,camera.transform.right)));
+                up=Mathf.Max(up,Mathf.Abs(Vector3.Dot(p,camera.transform.up)));
+            }
+        }
+        float ratio=proposed.x/Mathf.Max(.00001f,obj.transform.localScale.x),unit=GameplayBoardLayout.WorldPerPoint(camera)*GameplayBoardLayout.RegionScale(camera);
+        float fit=Mathf.Min(48*unit/Mathf.Max(.00001f,right*ratio),42*unit/Mathf.Max(.00001f,up*ratio));
+        return proposed*fit;
+    }
+    void RecordStoreLayout(){if(Camera.main){storeLayoutAnchor=StorePosition(0,0,1);storeLayoutUnit=GameplayBoardLayout.WorldPerPoint(Camera.main);}}
+    public static void ReflowStored(){
+        if(!instance||!GameplayBoardLayout.Enabled||!Camera.main)return;
+        for(int column=0;column<instance.columns.Length;column++){
+            var items=instance.columns[column];
+            for(int i=0;i<items.Count;i++)if(items[i]){
+                var item=items[i];item.transform.DOKill();item.transform.position=StorePosition(column,i,items.Count);
+                item.transform.localScale=FitStoreScale(item,ItemFlightMotion.StoreScale(item,item.transform.localScale));
+            }
+        }
+        instance.RecordStoreLayout();
+    }
+    void LateUpdate(){
+        if(!GameplayBoardLayout.Enabled||StoredCount==0||!Camera.main)return;
+        if((StorePosition(0,0,1)-storeLayoutAnchor).sqrMagnitude>.00001f||Mathf.Abs(GameplayBoardLayout.WorldPerPoint(Camera.main)-storeLayoutUnit)>.00001f)ReflowStored();
     }
 
     public static Vector3 ShuffleAxis(string theme)=>Quaternion.Euler(theme=="GroceryStore"?-6.5f:-7f,0,0)*Vector3.up;

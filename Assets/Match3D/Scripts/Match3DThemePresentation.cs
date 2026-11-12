@@ -52,7 +52,7 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  public const float ItemScreenScale=.9f;
  public static float OriginalSize(float aspect)=>6.5f*Mathf.Max(1,(9f/16)/Mathf.Max(.01f,aspect));
  public static float Size(float aspect)=>OriginalSize(aspect)/ItemScreenScale;
- public void Fit(){if(camera&&visual){camera.orthographicSize=Size(camera.aspect);camera.fieldOfView=60*Mathf.Max(1,(9f/16)/camera.aspect);}}
+ public void Fit(){if(camera&&visual){camera.orthographicSize=Size(camera.aspect);camera.fieldOfView=60*Mathf.Max(1,(9f/16)/camera.aspect);if(GameplayBoardLayout.Enabled)GameplayBoardLayout.FitBoard(camera,PanBowlCenter,4.1f);}}
  void LateUpdate(){Fit();}
  public void End(){
   if(lighting)lighting.End();

@@ -200,7 +200,7 @@ public partial class Match3DFlow : MonoBehaviour {
     void Click(){if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
     public void SelectSound(){if(SettingsEffects&&library.selectSound)effects.PlayOneShot(library.selectSound);}
     public void MatchSound(){if(SettingsEffects&&library.matchSound)effects.PlayOneShot(library.matchSound);}
-    void StopBoard(bool preservePool=false){ResetToolOffer();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");ResetRevival();if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;pendingPick=false;}
+    void StopBoard(bool preservePool=false){ComboProbeController.End();ResetToolOffer();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");ResetRevival();if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;pendingPick=false;}
     public void Home(){
 #if DAILY_WEB_PREVIEW
         if(DailyWebPreview.Instance)DailyWebPreview.Instance.Replay();
@@ -330,6 +330,7 @@ public partial class Match3DFlow : MonoBehaviour {
         LastResult="";InitialCount=tiles.Count;
         if(!IsPvp&&Match3DGameRecords.Instance)Match3DGameRecords.Instance.Prepare(CurrentTheme.id,Stage,runDate,tiles.Count,seconds);
         bool layered=!IsPvp&&(Stage==1||Stage==2);
+        ComboProbeController.BeginStage(layered,seed);
         ItemColliderGeometry.ConfigureLayers();
         if(!IsPvp)BoardPhysicsSettings.Begin();
         GameManager.Instance.currentLevelTime=seconds;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
@@ -379,6 +380,7 @@ public partial class Match3DFlow : MonoBehaviour {
         // loop activates eligible bodies only after the initial growth reaches full size.
         pilePhysics.Register(body,layered);
         LevelGenerator.Instance.objectsOnScene.Add(obj);
+        ComboProbeController.Register(obj,prefab);
         if(layered){var goose=obj.GetComponent<SpecialItemAnimation>();goose?.InitializeSource();goose?.ReturnToPile();layeredPile.Register(body,initialHeight:position.y);}
         return obj;
     }
