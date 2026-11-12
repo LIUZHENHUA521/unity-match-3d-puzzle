@@ -34,17 +34,20 @@ public sealed class ComboProbeView : MonoBehaviour {
         canvas = go.GetComponent<Canvas>(); canvas.renderMode = RenderMode.WorldSpace; canvas.sortingOrder = 25; canvas.worldCamera = Camera.main;
         var block = go.AddComponent<Image>(); block.color = Color.clear; block.raycastTarget = true;
         var blocker = go.AddComponent<Button>(); blocker.transition = Selectable.Transition.None; blocker.targetGraphic = block;
+        var artwork = new GameObject("Full width probe artwork", typeof(RectTransform)).GetComponent<RectTransform>();
+        artwork.gameObject.layer = 5; artwork.SetParent(root, false);
+        artwork.anchoredPosition = new Vector2(4, 0); artwork.localScale = Vector3.one * GameplayBoardLayout.ProbeArtScale;
         // Scale the entire blue section together, keeping its left edge tucked under the badge.
         // The raised title is outside the slot body: align the BODY center with the red disc.
         var panel = new GameObject("Compact blue section", typeof(RectTransform)).GetComponent<RectTransform>();
-        panel.gameObject.layer = 5; panel.SetParent(root, false);
+        panel.gameObject.layer = 5; panel.SetParent(artwork, false);
         panel.anchoredPosition = new Vector2(-201, 17); panel.localScale = Vector3.one * .9f;
         panel.sizeDelta = new Vector2(558, 167);
         Picture("Blue four-slot panel", assets.panel, panel, new Vector2(279, 0), new Vector2(558, 167));
         // crazyCombo main.scene/newCombeNode: keep its authored local coordinates together.
         // The 134-high track is a cropped arc: its image center is ABOVE the circle center.
         var badge = new GameObject("Authored combo badge", typeof(RectTransform)).GetComponent<RectTransform>();
-        badge.gameObject.layer = 5; badge.SetParent(root, false);
+        badge.gameObject.layer = 5; badge.SetParent(artwork, false);
         badge.anchoredPosition = new Vector2(-220, -3); badge.sizeDelta = new Vector2(151, 151);
         badge.localScale = Vector3.one * (121f / 151);
         Picture("Counter circle", assets.circle, badge, Vector2.zero, new Vector2(151, 151));
@@ -96,7 +99,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         var camera = Camera.main; if (!root || !camera) return;
         canvas.worldCamera = camera;
         root.SetPositionAndRotation(GameplayBoardLayout.Point(camera, 0, GameplayBoardLayout.ProbeY(camera), PanelWorldDepth), camera.transform.rotation);
-        root.localScale = Vector3.one * (GameplayBoardLayout.WorldPerPoint(camera) * GameplayBoardLayout.RegionScale(camera));
+        root.localScale = Vector3.one * GameplayBoardLayout.WorldPerPoint(camera);
     }
     public void Refresh() {
         if (!owner || !root) return;
@@ -147,6 +150,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         highlight.color = new Color(1, .88f, .35f, .22f * pulse * pulse);
     }
     public void ResetView() {
+        icons.Dispose(); // A new stage/theme must capture its current scene lighting again.
         if (Chances) Chances.ResetImmediate();
         if (Preview) Preview.Clear(); foreach (var slot in slots) if (slot) slot.Cancel();
         revision = -1; currentColor = -2;

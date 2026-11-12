@@ -12,7 +12,9 @@ public sealed class ComboProbeIcons {
         var root = new GameObject("Probe model thumbnail") { layer = 30 };
         var meshes = new List<Mesh>();
         var previous = RenderTexture.active;
-        Camera camera = null; GameObject lightObject = null;
+        Camera camera = null;
+        var sceneLight = RenderSettings.sun;
+        int lightMask = sceneLight ? sceneLight.cullingMask : 0;
         var texture = new RenderTexture(144, 144, 24, RenderTextureFormat.ARGB32) { name = "Probe " + key.name, antiAliasing = 1 };
         try {
             // Copy the prefab's visual hierarchy only. A board instance can be upside down,
@@ -61,9 +63,9 @@ public sealed class ComboProbeIcons {
             float radius = Mathf.Max(.0001f, Mathf.Max(viewBounds.extents.x, viewBounds.extents.y));
             camera.orthographicSize = radius * 1.12f; camera.nearClipPlane = .01f; camera.farClipPlane = viewBounds.size.magnitude * 4 + 10;
             camera.transform.position = destination + cameraRotation * viewBounds.center - camera.transform.forward * (viewBounds.size.magnitude + 2);
-            lightObject = new GameObject("Probe thumbnail light"); var light = lightObject.AddComponent<Light>();
-            light.type = LightType.Directional; light.intensity = .8f; light.cullingMask = 1 << 30;
-            light.transform.rotation = Quaternion.Euler(60, -25, 0);
+            // Render with the same directional light, ambient and material as the real tray.
+            // Temporarily include the capture-only layer; never add a competing preview light.
+            if (sceneLight) sceneLight.cullingMask = lightMask | (1 << 30);
             texture.Create(); camera.targetTexture = texture;
             camera.Render();
             // Copy the completed capture into an owned texture before disposing its camera.
@@ -75,7 +77,7 @@ public sealed class ComboProbeIcons {
             RenderTexture.active = previous;
             // Destroy immediately: a second capture in this frame must not see the previous thumbnail.
             if (camera) Object.DestroyImmediate(camera.gameObject);
-            if (lightObject) Object.DestroyImmediate(lightObject);
+            if (sceneLight) sceneLight.cullingMask = lightMask;
             Object.DestroyImmediate(root); foreach (var mesh in meshes) Object.DestroyImmediate(mesh);
             texture.Release(); Object.Destroy(texture);
         }

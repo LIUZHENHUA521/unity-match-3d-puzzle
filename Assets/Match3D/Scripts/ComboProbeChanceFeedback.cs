@@ -6,8 +6,7 @@ public sealed class ComboProbeChanceFeedback : MonoBehaviour {
     readonly Image[] lit = new Image[3], flashes = new Image[3];
     readonly float[] elapsed = new float[3], fromAlpha = new float[3], fromScale = new float[3];
     readonly bool[] targets = new bool[3];
-    Image fill;
-    Sprite maskSprite;
+    ComboProbeArcGraphic fill;
     int stars = -1, combo = -1;
     float progressFrom, progressTo, progressElapsed, progressDuration;
     public float Progress => fill ? fill.fillAmount : 0;
@@ -16,21 +15,11 @@ public sealed class ComboProbeChanceFeedback : MonoBehaviour {
     public float FlashAlpha(int i) => flashes[i].color.a;
 
     public void Initialize(ComboProbeAssets assets, Vector2[] positions) {
-        // Cocos uses fillCenter=(.5,.4), fillStart=.62 and a clockwise .75-circle.
-        // The art is cropped at the bottom. A separate full-square radial mask preserves
-        // its true center; Unity's filled Image alone would cut about the cropped center.
-        var texture = Texture2D.whiteTexture;
-        maskSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * .5f);
-        maskSprite.name = "Probe progress radial mask";
-        var center = new Vector2(.073f, 15.811f - 128 * 1.27f * .1f);
-        fill = Picture("Chance progress mask", maskSprite, transform, center, Vector2.one * 220);
-        fill.type = Image.Type.Filled; fill.fillMethod = Image.FillMethod.Radial360;
-        fill.fillOrigin = (int)Image.Origin360.Bottom; fill.fillClockwise = true; fill.fillAmount = 0;
-        fill.rectTransform.localRotation = Quaternion.Euler(0, 0, -46.8f);
-        fill.gameObject.AddComponent<Mask>().showMaskGraphic = false;
-        var arc = Picture("Golden chance progress", assets.sunshine, fill.transform, Vector2.zero, new Vector2(154, 128) * 1.27f);
-        arc.rectTransform.localRotation = Quaternion.Euler(0, 0, 46.8f);
-        arc.rectTransform.anchoredPosition = Quaternion.Euler(0, 0, 46.8f) * new Vector3(0, 128 * 1.27f * .1f, 0);
+        var arc = new GameObject("Golden chance progress", typeof(RectTransform), typeof(ComboProbeArcGraphic));
+        arc.layer = 5; arc.transform.SetParent(transform, false);
+        fill = arc.GetComponent<ComboProbeArcGraphic>(); fill.Initialize(assets.sunshine);
+        fill.rectTransform.anchoredPosition = new Vector2(.073f, 15.811f);
+        fill.rectTransform.sizeDelta = new Vector2(154, 128) * 1.27f;
         for (int i = 0; i < 3; i++) {
             var p = positions[i] + new Vector2(1.47f, 0);
             Picture("Chance dark " + i, assets.darkStar, transform, p, new Vector2(45.8f, 45));
@@ -89,5 +78,4 @@ public sealed class ComboProbeChanceFeedback : MonoBehaviour {
             if (flashes[i]) flashes[i].color = new Color(1, 1, 1, 0);
         }
     }
-    void OnDestroy() { if (maskSprite) Destroy(maskSprite); }
 }

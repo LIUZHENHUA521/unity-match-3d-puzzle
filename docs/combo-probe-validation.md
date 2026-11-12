@@ -23,10 +23,11 @@
 
 ## 验证结果
 
-`ComboProbeValidation.Run`：最新光圈透明修正版 205 项断言通过，结果以 `COMPLETE` 结束。使用隔离项目 `Builds/DailyWebProject` 验证，未关闭用户正在打开的 Unity 编辑器。最新结果保存在 `work/combo-probe/ring-alpha-results/`，日志为 `work/combo-probe/ring-alpha-validation.log`。
+`ComboProbeValidation.Run`：最新进度/布局/光照修正版 244 项断言通过，结果以 `COMPLETE` 结束。使用隔离项目 `Builds/DailyWebProject` 验证，未关闭用户正在打开的 Unity 编辑器。最新结果保存在 `work/combo-probe/region-fixes-results/`，日志为 `work/combo-probe/region-fixes-validation.log`。
 
 - 动态提示：真实取物验证 3→2→1 次剩余机会、首次发奖、长按/拖出不误触发、成功取物后立即切换、跨关保留使用记录、断连后已有探物仍提示操作。`hint-earn-probe.png` 验证最长文案，`chance-refilled.png` 展示加粗居中，`chance-one-star.png` 展示最后机会提醒。该轮仅 Play Mode 验证，未重新打 WebGL 包。
 - 光圈透明修正：原 PMA 图集被误开启 Straight Alpha Input，造成二次透明度相乘和黑边；修正材质及图集导入设置，保留原 PNG 和 Spine 动画。五色均已实际截图检查，蓝色额外在同一帧用临时旧材质对照（`ring-double-alpha-before.png` 与 `showcase-combo-1.png`），像素差异仅落在光圈区域。该轮未重新构建 WebGL 或发布。
+- 最新修正：进度以几何裁切代替模板遮罩，depth=0 与 depth=24 下逐像素比较 0/1/2/3/0 星，零星透明、其余覆盖递增、两种缓冲输出一致。四画幅下特殊区内容矩形均占宽约 97.3%，不横向裁切且主槽分隔检查通过。模型捕获改用场景主灯，`showcase-tray-comparison.png` 对照真实主槽同款模型；缓存随关卡重建。该轮为隔离 Play Mode 验证，未重新构建 WebGL 或发布。
 - 纯状态：最后一星续连、断连、自动/探物来源区分、操作幂等、十次发奖轮转、下层删除与重置。
 - 真实关卡：实际射线遮挡、同款不同实例、真实磁吸入口、顶部短按、长按和拖出、暂停、对象池复用、换关/重开/回首页。
 - 移出：接管六件正在入槽的物品，一次清空主槽、只消耗一次工具；原大小和旋转、碰撞、牌堆登记恢复，回锅后能再次拾取。无暂存底板，也不会自动洗牌。

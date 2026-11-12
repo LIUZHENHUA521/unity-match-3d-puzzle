@@ -34,6 +34,40 @@ public static class ComboProbeValidation {
         if (!success) throw new Exception(message);
         File.AppendAllText(Output + "/checks.txt", "PASS " + message + "\n");
     }
+    static void ValidateArcPixels() {
+        var root = new GameObject("Arc framebuffer validation", typeof(RectTransform), typeof(Canvas)); root.layer = 30;
+        var camera = new GameObject("Arc validation camera").AddComponent<Camera>();
+        var pixels = new Texture2D(256,256,TextureFormat.RGBA32,false);
+        var prior = RenderTexture.active;
+        try {
+            root.transform.position = new Vector3(5000,5000,5000);
+            camera.transform.position = root.transform.position - Vector3.forward * 10;
+            camera.enabled = false; camera.orthographic = true; camera.orthographicSize = 128; camera.aspect = 1;
+            camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = Color.clear; camera.cullingMask = 1 << 30; camera.allowHDR = false;
+            var canvas = root.GetComponent<Canvas>(); canvas.renderMode = RenderMode.WorldSpace; canvas.worldCamera = camera;
+            var arc = new GameObject("Arc",typeof(RectTransform),typeof(ComboProbeArcGraphic)).GetComponent<ComboProbeArcGraphic>();
+            arc.gameObject.layer = 30; arc.transform.SetParent(root.transform,false);
+            arc.rectTransform.sizeDelta = new Vector2(154,128)*1.27f; arc.Initialize(ComboProbeAssets.Load().sunshine);
+            Color32[][] withoutStencil = new Color32[5][];
+            float[] fills = {0,.08f,.38f,.75f,0};
+            foreach (int depth in new[] {0,24}) {
+                var rt = new RenderTexture(256,256,depth,RenderTextureFormat.ARGB32); rt.Create();
+                try {
+                    camera.targetTexture = rt; int previousCount = 0;
+                    for (int i=0;i<fills.Length;i++) {
+                        arc.fillAmount = fills[i]; Canvas.ForceUpdateCanvases(); camera.Render(); RenderTexture.active = rt;
+                        pixels.ReadPixels(new Rect(0,0,256,256),0,0); pixels.Apply(); var sample = pixels.GetPixels32();
+                        File.WriteAllBytes(Output+"/arc-depth-"+depth+"-step-"+i+".png",pixels.EncodeToPNG());
+                        int visible = sample.Count(p=>p.a>20);
+                        Check(fills[i]==0 ? visible==0 : visible>previousCount,"actual arc pixels follow chance count on depth "+depth+" step "+i+" pixels="+visible+" vertices="+arc.canvasRenderer.GetMesh()?.vertexCount);
+                        if(depth==0) withoutStencil[i]=sample;
+                        else Check(sample.SequenceEqual(withoutStencil[i]),"arc pixels identical with and without stencil at step "+i);
+                        previousCount=visible;
+                    }
+                } finally { camera.targetTexture=null; RenderTexture.active=prior; rt.Release(); Object.DestroyImmediate(rt); }
+            }
+        } finally { RenderTexture.active=prior; Object.DestroyImmediate(pixels); Object.DestroyImmediate(camera.gameObject); Object.DestroyImmediate(root); }
+    }
     static void PureState() {
         var state = new ComboProbeState();
         Check(!state.Pick(1, ProbePickSource.Manual, false) && state.Stars == 0, "before first match no combo or stars");
@@ -105,6 +139,7 @@ public static class ComboProbeValidation {
     }
     static IEnumerator Core() {
         Check(Match3DFlow.Instance && Match3DFlow.Instance.StartupComplete, "real scene finishes startup");
+        ValidateArcPixels();
         Physics.autoSimulation = false; Start(); yield return null;
         var owner = ComboProbeController.Instance; var view = owner.View;
         Check(view && !view.Ring.gameObject.activeSelf, "original panel loaded, ring inactive before first triple");
@@ -349,6 +384,13 @@ public static class ComboProbeValidation {
                 foreach(var corner in corners)trayTop=Mathf.Max(trayTop,camera.WorldToViewportPoint(corner).y*GameplayBoardLayout.Height(camera)-GameplayBoardLayout.SafeBottom);
             }
             Check(GameplayBoardLayout.ProbeRect.yMin>trayTop+3,"probe region remains above the main tray: "+name+" top="+trayTop);
+            var artBounds = new Bounds(); bool firstArt = true;
+            foreach (var art in ComboProbeController.Instance.View.GetComponentsInChildren<Image>()) {
+                if (art.name != "Blue four-slot panel" && art.name != "Chance dark 0") continue;
+                var corners = new Vector3[4]; art.rectTransform.GetWorldCorners(corners);
+                foreach(var corner in corners) { var point=camera.WorldToViewportPoint(corner); if(firstArt){artBounds=new Bounds(point,Vector3.zero);firstArt=false;}else artBounds.Encapsulate(point); }
+            }
+            Check(artBounds.size.x>=.95f && artBounds.min.x>=0 && artBounds.max.x<=1,"visible probe artwork covers at least 95 percent without horizontal clipping: "+name+" width="+artBounds.size.x);
             File.WriteAllLines(Output + "/" + name + "-layout.txt", report);
             var icon = ComboProbeController.Instance.View.GetComponentsInChildren<RawImage>().FirstOrDefault(i => i.texture);
             if (icon && icon.texture) {
