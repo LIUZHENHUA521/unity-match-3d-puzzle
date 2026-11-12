@@ -19,10 +19,13 @@
 - 取消暂存区和占位。移出将槽内全部物品回锅；复活先回锅，再免费洗牌。时间复活仍增加五分钟。
 - 回锅恢复物品原大小、朝向与物理登记，约 0.48 秒；期间阻止取物/重复道具，暂停冻结，换关取消后续操作。已赚取探物奖励保留，已消耗绑定不恢复。
 
+- 顶部提示按首次消除、剩余取物机会、首次探物使用、常规使用、最后一星切换；首次奖励所在槽轻亮两次。成功使用记录在本次运行内跨关保留，长按/拖动取消不会误完成教学。“连消数”和提示均加粗并相对红圈与顶部页签居中，长提示保持单行。
+
 ## 验证结果
 
-`ComboProbeValidation.Run`：最新星数反馈版 189 项断言通过，结果以 `COMPLETE` 结束。使用隔离项目 `Builds/DailyWebProject` 验证，未关闭用户正在打开的 Unity 编辑器。最新结果保存在 `work/combo-probe/chance-feedback-results/`，日志为 `work/combo-probe/chance-feedback-validation.log`。
+`ComboProbeValidation.Run`：最新动态提示版 201 项断言通过，结果以 `COMPLETE` 结束。使用隔离项目 `Builds/DailyWebProject` 验证，未关闭用户正在打开的 Unity 编辑器。最新结果保存在 `work/combo-probe/tutorial-hint-results/`，日志为 `work/combo-probe/tutorial-hint-validation.log`。
 
+- 动态提示：真实取物验证 3→2→1 次剩余机会、首次发奖、长按/拖出不误触发、成功取物后立即切换、跨关保留使用记录、断连后已有探物仍提示操作。`hint-earn-probe.png` 验证最长文案，`chance-refilled.png` 展示加粗居中，`chance-one-star.png` 展示最后机会提醒。该轮仅 Play Mode 验证，未重新打 WebGL 包。
 - 纯状态：最后一星续连、断连、自动/探物来源区分、操作幂等、十次发奖轮转、下层删除与重置。
 - 真实关卡：实际射线遮挡、同款不同实例、真实磁吸入口、顶部短按、长按和拖出、暂停、对象池复用、换关/重开/回首页。
 - 移出：接管六件正在入槽的物品，一次清空主槽、只消耗一次工具；原大小和旋转、碰撞、牌堆登记恢复，回锅后能再次拾取。无暂存底板，也不会自动洗牌。

@@ -12,6 +12,8 @@ public sealed class ComboProbeController : MonoBehaviour {
     int generation;
     ComboProbeView view;
     public bool Running { get; private set; }
+    // Remember successful use for this session, including across stage restarts.
+    public bool HasUsedProbe { get; private set; }
     public int Generation => generation;
     public ComboProbeView View => view;
     public bool CanInteract => Running && Match3DFlow.Instance && Match3DFlow.Instance.ScreenName == "game" &&
@@ -108,7 +110,9 @@ public sealed class ComboProbeController : MonoBehaviour {
         var target = Target(expected); if (!target) { RemoveInvalid(); return false; }
         int before = InputController.Instance.AcceptedPicks;
         InputController.Instance.AddObjectOnStack(target.gameObject, source: ProbePickSource.Probe);
-        return InputController.Instance.AcceptedPicks > before;
+        bool accepted = InputController.Instance.AcceptedPicks > before;
+        if (accepted) { HasUsedProbe = true; if (view) view.Refresh(); }
+        return accepted;
     }
     void RemoveInvalid() {
         stale.Clear();

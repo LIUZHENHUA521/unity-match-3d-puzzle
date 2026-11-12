@@ -108,6 +108,7 @@ public static class ComboProbeValidation {
         Physics.autoSimulation = false; Start(); yield return null;
         var owner = ComboProbeController.Instance; var view = owner.View;
         Check(view && !view.Ring.gameObject.activeSelf, "original panel loaded, ring inactive before first triple");
+        Check(view.HintText == "先消一组，点亮三星", "new player sees first elimination instruction");
         Capture("first-stage-empty", 720, 1565);
         ClearFixture();
         // Deep objects share a type but have unique spawn tokens. A broad upper object physically occludes them.
@@ -118,8 +119,15 @@ public static class ComboProbeValidation {
         Physics.SyncTransforms();
         Check(owner.IsOccluded(hidden[0]), "actual 3D mesh occlusion identifies hidden target");
         Triple(800); Check(owner.State.Combo == 1 && owner.State.Stars == 3 && owner.State.Count == 0, "production first triple lights stars");
-        Triple(801); Check(owner.State.Combo == 2 && owner.State.Stars == 3 && owner.State.Count == 1, "production three-click continuation grants one bound model");
+        Check(view.HintText == "3次取物内再消除，获得探物", "first match teaches remaining picks and reward");
+        Capture("hint-earn-probe", 720, 1565);
+        Pick(Spawn(801, new Vector3(-2, 4, 1)));
+        Check(view.HintText == "2次取物内再消除，获得探物", "reward instruction follows actual remaining chances");
+        Pick(Spawn(801, new Vector3(-1, 4, 1)));
+        Check(view.HintText == "最后1次取物，消除可续连", "last chance overrides reward instruction");
+        Pick(Spawn(801, new Vector3(0, 4, 1))); Check(owner.State.Combo == 2 && owner.State.Stars == 3 && owner.State.Count == 1, "production three-click continuation grants one bound model");
         Check(view.Ring.gameObject.activeSelf && view.Ring.AnimationState.GetCurrent(0).Animation.Name == "Purple circle", "actual authored purple Spine animation runs at two combo");
+        Check(view.HintText == "点击模型，取出被挡物品", "first reward explains hidden target retrieval");
         for (int i = 1; i < 10; i++) Check(owner.GrantReward(), "physical occlusion reward " + (i + 1));
         view.Refresh();
         Check(owner.State.Column(0).Count == 3 && owner.State.Column(1).Count == 3 && owner.State.Column(2).Count == 2 && owner.State.Column(3).Count == 2, "production reward distribution is 3/3/2/2");
@@ -144,8 +152,10 @@ public static class ComboProbeValidation {
         var drag=new PointerEventData(EventSystem.current){position=screen+Vector3.right*100, pointerId=7};
         slot.OnDrag(drag); slot.OnPointerUp(press);
         Check(!view.Preview.Active && InputController.Instance.AcceptedPicks==accepts,"drag cancels long-press without pickup");
+        Check(!owner.HasUsedProbe && view.HintText == "点击模型，取出被挡物品", "long press and cancelled drag do not complete first-use teaching");
         slot.OnPointerDown(press); slot.OnPointerUp(press);
         Check(InputController.Instance.AcceptedPicks == accepts + 1 && !owner.State.Contains(top), "short press accepts exactly one physical target; accepted=" + InputController.Instance.AcceptedPicks + " before=" + accepts + " interact=" + owner.CanInteract);
+        Check(owner.HasUsedProbe && view.HintText == "点击取物 · 长按定位", "successful use switches to regular interaction hint immediately");
         Check(!owner.UseTop(1, top), "stale click cannot consume next model");
         slot.OnPointerDown(press); yield return new WaitForSecondsRealtime(.3f);
         Time.timeScale = 0; yield return null;
@@ -255,9 +265,11 @@ public static class ComboProbeValidation {
         Capture("chance-two-stars",720,1565);
         owner.State.Pick(11001, ProbePickSource.Manual, false); view.Refresh(); yield return new WaitForSeconds(.24f);
         Check(Mathf.Abs(view.Chances.Progress - .08f) < .001f && view.Chances.StarAlpha(1) == 0 && view.Chances.StarAlpha(0) == 1, "one remaining chance keeps only the left star and arc segment");
+        Check(view.HintText == "最后1次取物，消除可续连", "last chance warning takes priority over retained reward instructions");
         Capture("chance-one-star",720,1565);
         owner.State.Pick(11002, ProbePickSource.Manual, false); view.Refresh(); yield return new WaitForSeconds(.24f);
         Check(view.Chances.Progress == 0 && view.Chances.StarAlpha(0) == 0 && !view.Ring.gameObject.activeSelf, "broken combo clears the arc and all lit stars");
+        Check(owner.HasUsedProbe && view.HintText == "点击取物 · 长按定位", "learning survives stage changes and retained probes remain usable after combo breaks");
         Capture("chance-empty",720,1565);
         owner.State.Pick(11003, ProbePickSource.Manual, true); view.Refresh(); yield return new WaitForSeconds(.1f);
         Check(view.Chances.Progress > 0 && view.Chances.Progress < .75f && view.Chances.StarScale(0) > 1 && view.Chances.FlashAlpha(0) > 0, "lighting stars bounces and flashes while the arc refills");
