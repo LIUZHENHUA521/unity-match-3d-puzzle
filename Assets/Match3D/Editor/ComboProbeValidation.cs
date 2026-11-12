@@ -332,7 +332,11 @@ public static class ComboProbeValidation {
         Check(Mathf.Abs(view.Chances.Progress - .08f) < .001f && view.Chances.StarAlpha(1) == 0 && view.Chances.StarAlpha(0) == 1, "one remaining chance keeps only the left star and arc segment");
         Check(view.HintText == "最后1次取物，消除可续连", "last chance warning takes priority over retained reward instructions");
         Capture("chance-one-star",720,1565);
-        owner.State.Pick(11002, ProbePickSource.Manual, false); view.Refresh(); yield return new WaitForSeconds(.24f);
+        owner.State.Pick(11002, ProbePickSource.Manual, false); view.Refresh();
+        Check(view.Ring.gameObject.activeSelf && view.Ring.color.a == 1, "broken combo starts with the breathing ring still visible");
+        yield return new WaitForSeconds(.12f);
+        Check(view.Ring.gameObject.activeSelf && view.Ring.color.a > 0 && view.Ring.color.a < 1, "broken combo fades the Spine ring instead of hiding it abruptly");
+        yield return new WaitForSeconds(.24f);
         Check(view.Chances.Progress == 0 && view.Chances.StarAlpha(0) == 0 && !view.Ring.gameObject.activeSelf, "broken combo clears the arc and all lit stars");
         Check(!view.Chances.UsesColorStars,"broken combo restores normal star skin while grey stars remain visible");
         Check(owner.HasUsedProbe && view.HintText == "点击取物 · 长按定位", "learning survives stage changes and retained probes remain usable after combo breaks");

@@ -22,6 +22,8 @@ public sealed class ComboProbeView : MonoBehaviour {
     readonly ComboProbeIcons icons = new ComboProbeIcons();
     ComboProbeAssets assets;
     SkeletonGraphic ring;
+    const float RingFadeDuration = .3f;
+    float ringFadeRemaining;
     int revision = -1, currentColor = -2;
     public ComboProbePreview Preview { get; private set; }
     public RectTransform Root => root;
@@ -118,8 +120,15 @@ public sealed class ComboProbeView : MonoBehaviour {
         Chances.SetState(owner.State.Stars, owner.State.Combo);
         int color = owner.State.Combo == 0 ? -1 : Mathf.Min(owner.State.Combo - 1, 4);
         if (currentColor != color) {
-            currentColor = color; ring.gameObject.SetActive(color >= 0);
-            if (color >= 0) { string[] names = { "Blue circle", "Purple circle", "Orange circle", "red circle", "colored circle" }; ring.AnimationState.SetAnimation(0, names[color], true); }
+            bool wasActive = currentColor >= 0;
+            currentColor = color;
+            if (color >= 0) {
+                // A new combo cancels the outgoing fade before restoring its animation.
+                ringFadeRemaining = 0; SetRingAlpha(1); ring.gameObject.SetActive(true);
+                string[] names = { "Blue circle", "Purple circle", "Orange circle", "red circle", "colored circle" };
+                ring.AnimationState.SetAnimation(0, names[color], true);
+            } else if (wasActive) ringFadeRemaining = RingFadeDuration;
+            else { ringFadeRemaining = 0; SetRingAlpha(0); ring.gameObject.SetActive(false); }
         }
         for (int column = 0; column < 4; column++) {
             var stack = owner.State.Column(column).Where(token => !Rewards.IsPending(token)).ToList();
@@ -134,6 +143,16 @@ public sealed class ComboProbeView : MonoBehaviour {
                 model.color = new Color(1, 1, 1, depth == 0 ? 1 : .72f);
             }
         }
+    }
+    void SetRingAlpha(float alpha) {
+        var color = ring.color; color.a = alpha; ring.color = color;
+    }
+    void Update() {
+        if (ringFadeRemaining <= 0 || !root || !root.gameObject.activeInHierarchy || Time.deltaTime <= 0) return;
+        ringFadeRemaining = Mathf.Max(0, ringFadeRemaining - Time.deltaTime);
+        float t = ringFadeRemaining / RingFadeDuration;
+        SetRingAlpha(t * t * (3 - 2 * t));
+        if (ringFadeRemaining == 0) ring.gameObject.SetActive(false);
     }
     void RefreshHint() {
         var state = owner.State;
@@ -158,6 +177,8 @@ public sealed class ComboProbeView : MonoBehaviour {
         highlight.color = new Color(1, .88f, .35f, .22f * pulse * pulse);
     }
     public void ResetView() {
+        ringFadeRemaining = 0;
+        if (ring) { SetRingAlpha(0); ring.gameObject.SetActive(false); }
         if (Rewards) Rewards.ResetImmediate(); rewardRevision = -1;
         icons.Dispose(); // A new stage/theme must capture its current scene lighting again.
         if (Chances) Chances.ResetImmediate();
