@@ -14,7 +14,7 @@
 
 校验：`python3 Tools/ComboProbe/normalize_ring.py --check`。需要重建相同导入副本时去掉 `--check`。原文件的哈希不符则脚本拒绝修改。
 
-`ComboProbeAssetBuilder.Build` 导入透明 PNG，创建 `Assets.asset` 及专用 SkeletonGraphic 材质/atlas/skeleton。SkeletonData 缩放为 0.01，SkeletonGraphic 再按 Canvas 的 100 pixels/unit 恢复像素尺寸；使用直通 alpha 输入。不要把它改为静态光圈。
+`ComboProbeAssetBuilder.Build` 导入透明 PNG，创建 `Assets.asset` 及专用 SkeletonGraphic 材质/atlas/skeleton。SkeletonData 缩放为 0.01，SkeletonGraphic 再按 Canvas 的 100 pixels/unit 恢复像素尺寸；光圈图集使用预乘 alpha（PMA）输入：关闭材质 `Straight Alpha Texture`，关闭该图集导入的 `Alpha Is Transparency` 和 `sRGB`；普通 UI PNG 仍使用原来的直通 alpha 导入。不要把它改为静态光圈。
 
 ## 验证入口
 
@@ -53,3 +53,9 @@
 - 最后一星：`最后1次取物，消除可续连`。
 
 成功使用记录仅在本次运行内保留，换关/重开不会重复首次操作教学；不写入永久存档。槽位提示动画随暂停冻结，重开清理。
+
+## 光圈黑边修正（2026-11-13）
+
+原先误将光圈图集按直通 alpha 输入，shader 再次乘以 alpha，导致半透明柔光边缘变暗。原 PNG 的 256,306 个半透明像素全部满足 RGB 各通道不超过 alpha，白色光环的 RGB 随 alpha 衰减，符合 PMA 数据。修复只改材质与导入设置，不修改 PNG、骨骼动画或全局色彩空间（当前项目为 Gamma）。配置由 `ComboProbeAssetBuilder.Build` 保持，避免重建资源时回退。官方设置说明：[Spine Unity Assets](https://esotericsoftware.com/spine-unity-assets)。
+
+验证器在同一动画帧用临时材质重现旧的二次 alpha，输出 `ring-double-alpha-before.png`；`showcase-combo-1.png` 为相同姿态的修正版，其余四种颜色也分别截图。临时材质在 finally 中恢复，不写回资源。

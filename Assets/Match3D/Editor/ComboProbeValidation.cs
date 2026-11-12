@@ -241,6 +241,18 @@ public static class ComboProbeValidation {
             yield return new WaitForSeconds(.55f);
             Check(view.Ring.AnimationState.GetCurrent(0).Animation.Name==names[i],"Spine animation color "+(i+1));
             Capture("showcase-combo-"+(i+1),720,1565);
+            if (i == 0) {
+                // Same pose/frame: reproduce the former double-alpha dark halo without editing the asset.
+                var correctMaterial = view.Ring.material;
+                var doubleAlpha = new Material(correctMaterial);
+                doubleAlpha.EnableKeyword("_STRAIGHT_ALPHA_INPUT"); doubleAlpha.SetFloat("_StraightAlphaInput", 1);
+                try {
+                    view.Ring.material = doubleAlpha;
+                    Capture("ring-double-alpha-before",720,1565);
+                } finally {
+                    view.Ring.material = correctMaterial; Object.Destroy(doubleAlpha);
+                }
+            }
         }
         int previewColumn = Enumerable.Range(0,4).First(c=>owner.State.Top(c)!=0);
         view.Preview.Show(owner,owner.State.Top(previewColumn),view.Slot(previewColumn).transform);

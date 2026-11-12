@@ -9,9 +9,12 @@ public static class ComboProbeAssetBuilder {
     public static void Build() {
         foreach (string path in Directory.GetFiles(Root, "*.png")) {
             var importer = (TextureImporter)AssetImporter.GetAtPath(path);
-            importer.textureType = path.Contains("colorfulCircles") ? TextureImporterType.Default : TextureImporterType.Sprite;
+            bool premultiplied = path.Contains("colorfulCircles");
+            importer.textureType = premultiplied ? TextureImporterType.Default : TextureImporterType.Sprite;
             importer.spriteImportMode = SpriteImportMode.Single; importer.spritePixelsPerUnit = 100;
-            importer.alphaIsTransparency = true; importer.mipmapEnabled = false;
+            // The authored Spine atlas is already premultiplied; ordinary UI sprites are straight alpha.
+            // PMA RGB must not receive transparent-pixel bleed or sRGB decoding.
+            importer.alphaIsTransparency = !premultiplied; importer.sRGBTexture = !premultiplied; importer.mipmapEnabled = false;
             importer.textureCompression = TextureImporterCompression.Uncompressed; importer.maxTextureSize = 2048;
             importer.npotScale = TextureImporterNPOTScale.None; importer.SaveAndReimport();
         }
@@ -24,8 +27,9 @@ public static class ComboProbeAssetBuilder {
         var material = AssetDatabase.LoadAssetAtPath<Material>(Root + "ProbeRing.mat");
         if (!material) { material = new Material(Shader.Find("Spine/SkeletonGraphic")); AssetDatabase.CreateAsset(material, Root + "ProbeRing.mat"); }
         material.mainTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(Root + "colorfulCircles_spine.png");
-        // This Cocos-exported atlas uses straight alpha, unlike Spine's default PMA workflow.
-        material.EnableKeyword("_STRAIGHT_ALPHA_INPUT"); material.SetFloat("_StraightAlphaInput", 1);
+        // Every semi-transparent atlas pixel has RGB <= alpha: preserve its authored PMA values.
+        // Enabling Straight Alpha Input here multiplies alpha twice and creates a dark halo.
+        material.DisableKeyword("_STRAIGHT_ALPHA_INPUT"); material.SetFloat("_StraightAlphaInput", 0);
         var atlas = AssetDatabase.LoadAssetAtPath<SpineAtlasAsset>(Root + "ProbeRingAtlas.asset");
         if (!atlas) { atlas = ScriptableObject.CreateInstance<SpineAtlasAsset>(); AssetDatabase.CreateAsset(atlas, Root + "ProbeRingAtlas.asset"); }
         atlas.atlasFile = AssetDatabase.LoadAssetAtPath<TextAsset>(Root + "colorfulCircles_spine.atlas.txt");
