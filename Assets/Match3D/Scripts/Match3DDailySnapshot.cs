@@ -33,18 +33,18 @@ using UnityEngine;
 
 public partial class Match3DFlow {
     public Match3DDailyStage CaptureDailyOpening(){
-        if(CreationInProgress||!layeredPile.Running)throw new InvalidOperationException("请等待关卡生成完毕");
+        if(CreationInProgress||!layeredPile.Running||!pilePhysics.DailyOpeningHeld)throw new InvalidOperationException("请在开局生成完毕、操作物品之前保存布局");
         var state=layeredPile.CaptureDailyState(Stage);
         state.items=LevelGenerator.Instance.objectsOnScene.Where(o=>o).Select(o=>{
             var body=o.GetComponent<Rigidbody>();
-            return new Match3DDailyItem{id=o.GetComponent<Match3DTile>().id,type=int.Parse(o.name.Substring(5)),position=o.transform.position,rotation=o.transform.rotation,scale=o.transform.localScale,visible=layeredPile.DailyVisible(body),dynamic=!body.isKinematic};
+            return new Match3DDailyItem{id=o.GetComponent<Match3DTile>().id,type=int.Parse(o.name.Substring(5)),position=o.transform.position,rotation=o.transform.rotation,scale=o.transform.localScale,visible=layeredPile.DailyVisible(body),dynamic=pilePhysics.OpeningBodyWillMove(body)};
         }).OrderBy(o=>o.id).ToArray();
         return state;
     }
     void SpawnDailyOpening(GameObject[] prefabs,bool firstStage,Match3DThemePresentation reusedPresentation,GameObject reusedBoundary){
         var state=dailyLevel.opening.stages[Stage-1];
         var seconds=Stage==2?dailyLevel.seconds:SourceProfile(true).seconds;
-        InitialCount=state.items.Length;LastResult="";CreationInProgress=true;
+        InitialCount=state.items.Length;LastResult="";CreationFailure=null;CreationInProgress=true;
         GameManager.Instance.currentLevelTime=seconds;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Prepare(CurrentTheme.id,Stage,runDate,InitialCount,seconds);
         ItemColliderGeometry.ConfigureLayers();BoardPhysicsSettings.Begin();
@@ -64,7 +64,17 @@ public partial class Match3DFlow {
             pilePhysics.RememberDailyBody(obj.GetComponent<Rigidbody>(),item.dynamic);
             if(++batch%12==0)yield return null;
         }
-        Physics.SyncTransforms();CreationInProgress=false;
+        Physics.SyncTransforms();
+        var repair=PrepareOpening(version);
+        while(version==creationVersion){
+            bool next;
+            try{next=repair.MoveNext();}catch(Exception e){FailOpening(e);yield break;}
+            if(!next)break;yield return null;
+        }
+        if(version!=creationVersion)yield break;
+        CreationInProgress=false;
+        // Cache the repaired opening for retry; never write server data from the client.
+        dailyLevel.opening.stages[Stage-1]=CaptureDailyOpening();
         GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.StartRecord();
         BoosterManager.Instance.BoostersInteractibility(true);
@@ -75,6 +85,24 @@ public partial class Match3DFlow {
         if(stage==2){StopBoard();Stage=2;StartStage();}
     }
 #endif
+    public string CreationFailure {get;private set;}
+    IEnumerator PrepareOpening(int version){
+        pilePhysics.HoldOpeningForRepair();
+        var repair=new BoardOpeningSeparation(LevelGenerator.Instance.objectsOnScene,layeredPile.DailyVisible,Stage==1,layeredPile.Threshold);
+        while(!repair.Complete){
+            if(version!=creationVersion)yield break;
+            var slice=System.Diagnostics.Stopwatch.StartNew();
+            do{repair.Step();}while(!repair.Complete&&slice.Elapsed.TotalMilliseconds<CreationSliceBudgetMilliseconds);
+            if(!repair.Complete)yield return 0f;
+        }
+        if(version!=creationVersion)yield break;
+        repair.Apply();pilePhysics.PrepareOpeningRelease();
+    }
+    void FailOpening(Exception error){
+        Debug.LogException(error);
+        string message="开局布局无法完成，请重新选择关卡";
+        Home();CreationFailure=message;Notice(message);
+    }
     public string DailyShareQuery(){
         return dailyLevel==null?"":"dailyDate="+Uri.EscapeDataString(dailyLevel.date)+"&dailyTier="+Uri.EscapeDataString(dailyLevel.tier);
     }

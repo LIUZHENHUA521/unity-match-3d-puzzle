@@ -18,10 +18,13 @@ public static class BoardCreationValidation {
                 Check(objects.Count==1,"source zero-based remainder yields after first one item");
                 Check(objects[0].GetComponent<Rigidbody>().isKinematic,"Init sets kinematic before creation height checks");
                 Check(GameManager.Instance.gameStatus==GameManager.GameStatus.PREPARING,"no input/countdown while creating");
-                var steps=flow.TakeOverSourceCreationForValidation();int batches=0,tail=0,previous=0,lastTimedCount=0;float waits=0,highest=float.NegativeInfinity;
+                var steps=flow.TakeOverSourceCreationForValidation();int batches=0,tail=0,previous=0,lastTimedCount=0;float waits=0,openingWaits=0,highest=float.NegativeInfinity;
                 bool sawInitialGrow=false,sawPark=false;
                 do {
-                    float wait=(float)steps.Current;waits+=wait;
+                    float wait=(float)steps.Current;
+                    if(!pile.Creating&&objects.Count==300){
+                        Check(wait==0||Mathf.Abs(wait-.2f)<.00001f,"bounded opening settle/repair wait");openingWaits+=wait;
+                    }else {waits+=wait;
                     if(wait==0){
                         Check((objects.Count>previous&&objects.Count-previous<=2)||(pile.CreationGrowingCount>=LayeredItemPile.CreationGrowingLimit)||(objects.Count==300&&pile.CreationGrowingCount>0),"budget split or pending final growth");
                     }else if(Mathf.Abs(wait-.02f)<.00001f){
@@ -29,6 +32,7 @@ public static class BoardCreationValidation {
                         Check(delta==(batches==0?1:3),"source batch size/index mismatch");batches++;
                     } else {
                         float[] tails={.5f,.2f,.3f};Check(tail<tails.Length&&Mathf.Abs(wait-tails[tail++])<.00001f,"tail wait sequence");
+                    }
                     }
                     foreach(var obj in objects.Skip(previous)){
                         Check(obj.transform.position.y>=highest,"source descriptions sort by ascending Y");highest=obj.transform.position.y;
@@ -53,6 +57,7 @@ public static class BoardCreationValidation {
                 }while(steps.MoveNext());
                 Check(batches==100&&tail==3&&Mathf.Abs(waits-3)<.00001f,"300-item source schedule totals 100*.02+.5+.2+.3");
                 Check(objects.Count==300&&!flow.CreationInProgress&&!pile.Creating,"FinishCreate completes all items");
+                Check(openingWaits<=2.001f&&ItemPhysicsController.Instance.DailyOpeningHeld,"bounded settle followed by repaired held opening");
                 Check(sawInitialGrow&&sawPark,"creation growth and height-based rigid freezing exercised");
                 Check(GameManager.Instance.gameStatus==GameManager.GameStatus.PLAY,"input/countdown enable after finish");
                 flow.Home();

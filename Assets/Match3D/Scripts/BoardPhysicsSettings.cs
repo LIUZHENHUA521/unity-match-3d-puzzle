@@ -1,8 +1,8 @@
 using UnityEngine;
 
-// WX2.1.12 PhysicsManager + item prefabs. Ordinary mode; real-physics creation's -50 branch is not enabled.
+// Adapted compound bodies need enough contact resolution to settle before sleep.
 public static class BoardPhysicsSettings {
-    public const float GravityY=-19.81f,Mass=.05f,Drag=0,AngularDrag=.05f,Sleep=.2f,Contact=.02f,Depenetration=1,Bounce=100;
+    public const float GravityY=-19.81f,Mass=.05f,Drag=0,AngularDrag=.05f,Sleep=.005f,Contact=.02f,Depenetration=10,Bounce=100;
     public static bool Active {get;private set;}
     static Vector3 gravity;
     static float sleep,contact,depenetration,bounce;
@@ -16,14 +16,14 @@ public static class BoardPhysicsSettings {
         Active=true;
         Physics.gravity=new Vector3(0,GravityY,0);Physics.sleepThreshold=Sleep;Physics.defaultContactOffset=Contact;
         Physics.defaultMaxDepenetrationVelocity=Depenetration;Physics.bounceThreshold=Bounce;
-        Physics.defaultSolverIterations=6;Physics.defaultSolverVelocityIterations=1;
+        Physics.defaultSolverIterations=12;Physics.defaultSolverVelocityIterations=4;
     }
     public static void Apply(Rigidbody body){
         if(!Active||!body)return;
         body.mass=Mass;body.drag=Drag;body.angularDrag=AngularDrag;body.useGravity=true;
         body.interpolation=RigidbodyInterpolation.None;body.collisionDetectionMode=body.GetComponent<BoardItemIdentity>()?CollisionDetectionMode.ContinuousDynamic:CollisionDetectionMode.Discrete;
         body.sleepThreshold=Sleep;body.maxDepenetrationVelocity=Depenetration;
-        body.solverIterations=6;body.solverVelocityIterations=1;
+        body.solverIterations=12;body.solverVelocityIterations=4;
         var token=body.GetComponent<BoardItemPoolToken>();token?.CacheComponents();
         foreach(var c in token?token.Colliders:body.GetComponentsInChildren<Collider>(true)){
             c.contactOffset=Contact;

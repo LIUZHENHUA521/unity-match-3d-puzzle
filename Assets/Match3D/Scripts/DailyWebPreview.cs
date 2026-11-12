@@ -51,6 +51,7 @@ public sealed class DailyWebPreview : MonoBehaviour {
         var flow=Match3DFlow.Instance;flow.SetDailyPreviewBusy(true);
         float deadline=Time.realtimeSinceStartup+120;
         while(flow.CreationInProgress){if(Time.realtimeSinceStartup>deadline)throw new Exception("开局生成超时，请重新打开试玩");yield return null;}
+        if(!string.IsNullOrEmpty(flow.CreationFailure))throw new Exception(flow.CreationFailure);
         yield return null;
     }
     IEnumerator Generate(){

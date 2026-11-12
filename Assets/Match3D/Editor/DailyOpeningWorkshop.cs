@@ -88,6 +88,7 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
             float deadline=Time.realtimeSinceStartup+90;
             while(flow.CreationInProgress&&Time.realtimeSinceStartup<deadline)yield return null;
             if(flow.CreationInProgress)throw new Exception("关卡生成超时");
+            if(!string.IsNullOrEmpty(flow.CreationFailure))throw new Exception(flow.CreationFailure);
             yield return new WaitForSeconds(5);
             opening.stages[stage-1]=flow.CaptureDailyOpening();
         }

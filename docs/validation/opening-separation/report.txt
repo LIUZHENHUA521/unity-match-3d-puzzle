@@ -1,0 +1,54 @@
+PASS opening completed without failure
+PASS legacy opening stays held before first input
+PASS legacy repaired every primitive center inside shell
+PASS legacy repaired full bodies below lid and camera near plane
+INFO legacy repaired: objects=300, visible=114, penetratingPairs=0, maxDepth=0.009932, wallDepth=0.009708, visiblePairMax=0.009932, worstWall=type_0/224 at (2.14, 25.31, 3.45) vs Container wall, kinematic=True, sleeping=False
+PASS legacy repaired visible-to-any bodies have no penetration > .011
+PASS legacy repaired visible bodies clear actual container and pan
+PASS legacy repair preserves 300 IDs, types, sizes and visibility
+PASS legacy visible/static flags corrected for release
+PASS idle count
+PASS idle exact poses, types, visibility and sizes
+PASS opening completed without failure
+PASS cached retry count
+PASS cached retry exact poses, types, visibility and sizes
+PASS cached retry every primitive center inside shell
+PASS cached retry full bodies below lid and camera near plane
+INFO cached retry: objects=300, visible=114, penetratingPairs=0, maxDepth=0.009932, wallDepth=0.009708, visiblePairMax=0.009932, worstWall=type_0/224 at (2.14, 25.31, 3.45) vs Container wall, kinematic=True, sleeping=True
+PASS cached retry visible-to-any bodies have no penetration > .011
+PASS cached retry visible bodies clear actual container and pan
+PASS opening completed without failure
+PASS independent repair repeat count
+PASS independent repair repeat exact poses, types, visibility and sizes
+PASS first pick releases opening
+PASS all remaining visible bodies dynamic after pick
+INFO after first pick: objects=300, visible=111, penetratingPairs=55, maxDepth=0.549323, wallDepth=0.291228, visiblePairMax=0.549323, worstWall=type_15/275 at (-2.19, 19.39, -2.43) vs Container wall, kinematic=False, sleeping=False
+INFO after first pick 10s: objects=300, visible=110, penetratingPairs=47, maxDepth=0.047131, wallDepth=0.019869, visiblePairMax=0.047131, worstWall=type_15/276 at (2.79, 17.81, -0.61) vs Container wall, kinematic=False, sleeping=True
+PASS first-pick settled contact penetration below .1
+PASS opening completed without failure
+INFO first stage: objects=15, visible=15, penetratingPairs=0, maxDepth=0.009898, wallDepth=0.000371, visiblePairMax=0.009898, worstWall=type_0/4 at (-1.10, 1.03, -1.45) vs frying-pan_body, kinematic=True, sleeping=True
+PASS first stage visible-to-any bodies have no penetration > .011
+PASS first stage visible bodies clear actual container and pan
+PASS first stage retains 15 items
+PASS opening completed without failure
+PASS fresh seed 47231 every primitive center inside shell
+PASS fresh seed 47231 full bodies below lid and camera near plane
+INFO fresh seed 47231: objects=300, visible=120, penetratingPairs=0, maxDepth=0.009989, wallDepth=0.009146, visiblePairMax=0.009989, worstWall=type_11/261 at (4.23, 26.71, -1.45) vs Container wall, kinematic=True, sleeping=False
+PASS fresh seed 47231 visible-to-any bodies have no penetration > .011
+PASS fresh seed 47231 visible bodies clear actual container and pan
+PASS fresh count remains 300
+PASS fresh idle count
+PASS fresh idle exact poses, types, visibility and sizes
+PASS opening completed without failure
+PASS fresh seed 42 every primitive center inside shell
+PASS fresh seed 42 full bodies below lid and camera near plane
+INFO fresh seed 42: objects=300, visible=126, penetratingPairs=0, maxDepth=0.009907, wallDepth=0.007745, visiblePairMax=0.009907, worstWall=type_10/174 at (-2.47, 20.09, 1.36) vs Container wall, kinematic=True, sleeping=False
+PASS fresh seed 42 visible-to-any bodies have no penetration > .011
+PASS fresh seed 42 visible bodies clear actual container and pan
+PASS fresh count remains 300
+PASS fresh idle count
+PASS fresh idle exact poses, types, visibility and sizes
+PASS Home cancels creation and clears held state
+PASS oversized fixture fails bounded search
+PASS failed repair leaves original transform untouched
+PASS repair preserves Unity gameplay random state
