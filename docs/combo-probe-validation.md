@@ -44,3 +44,9 @@
 可复现命令及输出位置见 `Tools/ComboProbe/README.md`。主要画面：`work/combo-probe/return-to-bowl-results/showcase-combo-3.png`、`showcase-preview.png`。`showcase-*` 使用正常关卡物品；连消状态和奖励库存由验证器设置用于覆盖各种显示状态。
 
 回锅逻辑及首轮星环对齐版本的隔离 WebGL 构建成功（退出码 0，日志含 `DAILY_WEB_PREVIEW_BUILD_OK`），输出在 `Builds/DailyWebProject/Builds/DailyWebPreview/`，日志在 `work/combo-probe/return-to-bowl-webgl.log`。后续蓝色区缩小与居中微调已通过 Play Mode 验证，未重新打 WebGL 包。未声称手机真机、微信开发者工具或线上发布已经验证。
+
+## 微信开发版本 0.1.61（2026-11-13）
+
+上述改动已从源码提交 `d7f1cf4e44439cd8e5d67f09f7d14fff9cd94db3` 完成隔离微信构建及上传。Unity 日志包含 `GOOSE_WECHAT_EXPORT_OK`，AppID、方向和分包校验通过，微信开发者工具返回 `upload` 成功，上传进程退出码 0。总包 31,412,184 字节；119 个运行时脚本在上传后再次核对，与构建副本及构建前哈希一致。发布脚本的 5 项测试通过。
+
+发布记录和产物哈希见 `docs/validation/combo-probe/release-0.1.61.json`。已上传开发版本，尚未确认设为体验版：既有浏览器管理员策略阻止公众平台访问，需在公众平台「版本管理」将 0.1.61 设为体验版。未提交审核，未进行手机真机验收。

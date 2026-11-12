@@ -1,0 +1,117 @@
+{
+  "version": "0.1.61",
+  "sourceCommit": "d7f1cf4e44439cd8e5d67f09f7d14fff9cd94db3",
+  "includedChanges": [
+    "probe extraction disables collisions before movement",
+    "meteor reward flight and model reveal",
+    "rainbow stars at combo five",
+    "chance arc geometry and wider panel with scene lighting"
+  ],
+  "status": "uploaded-development-version",
+  "experienceVersionConfirmed": false,
+  "experienceVersionBlocker": "Existing browser administrator policy blocks mp.weixin.qq.com; user must set this development version as the experience version.",
+  "runtimeSourceFilesVerified": 119,
+  "releaseDirectory": "/Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/Wechat/release-0.1.61-20261113-022307-167893",
+  "receiptPath": "/Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/Wechat/release-0.1.61-20261113-022307-167893-upload.json",
+  "receipt": {
+    "size": {
+      "total": 31412184,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 31412184
+        },
+        {
+          "name": "main",
+          "size": 2527755
+        },
+        {
+          "name": "/data-package/",
+          "size": 22517832
+        },
+        {
+          "name": "/wasmcode/",
+          "size": 6366597
+        }
+      ]
+    }
+  },
+  "validation": {
+    "playModeAssertions": 281,
+    "publishScriptTests": 5,
+    "wechatExport": "GOOSE_WECHAT_EXPORT_OK",
+    "uploadExitCode": 0,
+    "deviceVerified": false
+  },
+  "files": {
+    "check-version.js": "770187f9ced78f09287f502490bf43041f81fa536aa60184a3d0970b6b1075b4",
+    "data-package/ee9158badf77bc2d.webgl.data.unityweb.bin.br": "c5748c5c3b2c7aa6dd86b5fc06b8df616c6e33b7958de4847a5c5e98f15abad3",
+    "data-package/game.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "events.js": "0e8d53bd4cd51e8833018558abf50a27e28c6294faf16da100142e7b27a41681",
+    "game.js": "bf221075070386051c6f90ab369263cfe41f96143aae4c34b00f925ed452fa58",
+    "game.json": "8d55c5a26c9d6302d20bbe792e2614871c95be66426dd70f08b13390c1b1d531",
+    "images/WechatCover.jpg": "5503b3e288de98c27dbe598b4ebafdb869fcb1be2912a356d41598672d25a941",
+    "images/WechatCoverShort.jpg": "73027d96e29f47afe84de1cbae97f986b71ccc8d6bc209ac9ae6302b7c40c8da",
+    "images/unity_logo.png": "34799ce1b7a341e39c6c6ea7fa439f170989f3ecc5d0cd3681573569b4b6d239",
+    "plugin-config.js": "00fc1c1d6765f328b5cea31de6aa093e493a78bb6c70fc1ff4f20f2f5b47d658",
+    "project.config.json": "892b1b4d9d95f3341bb0c6ddd2213b26d916500338ffd78a8b188abf735c1720",
+    "texture-config.js": "7f7726142203ab208fd7a062af4bb04951ab8296d634b28dff7a63a65688e515",
+    "unity-namespace.js": "073657ebc5572581021fa1c06f796350bc6b7820c377f6212e3f612d08d1c5be",
+    "unity-sdk/TCPSocket/index.js": "03616ad9e25e19aede3e7256e894e5b12c6847aec2fc2002b93bf44c8e439852",
+    "unity-sdk/UDPSocket/index.js": "681a1bfdabbdc65ef8c4e8ef389b2844fd3f9a457ea1876c9c19a0b18620fae3",
+    "unity-sdk/ad.js": "1dafdbe346ef838cd421f3ff887612bcb6c9a7d2f44c1cce26cf3e6e2f005ecd",
+    "unity-sdk/audio/common.js": "daebe0c943184912dbbdfb9abd32fe58cfdfc2fc502a9df869e44b5cf617dc10",
+    "unity-sdk/audio/const.js": "31a941dae51b6e28bd78520284ce896dae4307f91e1c70ea2311826e4fcf79b9",
+    "unity-sdk/audio/index.js": "596885e8def00ca4cbc47421b94d4a9e1d9d8f666c0444733ada04a33f0b27b1",
+    "unity-sdk/audio/inner-audio.js": "41657bb73852f50f7e996d663ce1184fea4b4c5819fec459680db52152588425",
+    "unity-sdk/audio/store.js": "d52bb7e2ed9de12b8182d48341e15fddd9c36e2f42484c878401206e90624dc7",
+    "unity-sdk/audio/unity-audio.js": "a3a17656bcf86a851287e60f3cbe52119b9c413c94ece1ee11ad052540fcf648",
+    "unity-sdk/audio/utils.js": "45d4cc6d39e17301bacf4b00cc8f79491cf5eb6e3a5997493324870e5a66ad98",
+    "unity-sdk/authorize.js": "36f6acce3576ef206fbd7ab7e41adc3613522c987bab8bd16344cef99ad25656",
+    "unity-sdk/bluetooth/index.js": "1f664af1d27a75db3a306a1297508584cf4080fc9000d5fb5db67d4195dea09f",
+    "unity-sdk/camera.js": "d745f848ef62da3a0a0052c518647301375437493b4e6e56422f570dd76ef09f",
+    "unity-sdk/canvas-context.js": "dfdc1d383529c529afd74d61eb3555ebce0303eae5dddf585c611b27fb783334",
+    "unity-sdk/canvas.js": "8e4a0fd95e0ab4c4935f58a6201e23468a8ec74c9e3efaeef36329397aef8af5",
+    "unity-sdk/chat.js": "8cc33a6475217e9fe9fca8ca8a7078b235258defd0e1dd03bb05dbb25365f496",
+    "unity-sdk/cloud.js": "7fa5ff8c105a7b45efbc97a288eb7c82470d8c8f255bff46ae956dfc313d7d52",
+    "unity-sdk/conf.js": "b1dd63338c3f2689ae3077902a39f3720d45e40db163e4f1979cde4f10f03d36",
+    "unity-sdk/file-info.js": "f0db1cc7c28a00bf1647325d2ade29f9175c3889d97e58a9f4cf5762b2162c4d",
+    "unity-sdk/fix.js": "221fbd407c603fed4592ca6df54a4b696ce05eaff97c515caf78bb38fa60aadb",
+    "unity-sdk/font/fix-cmap.js": "c56997b41d07c3c09dd1fb222314533c42a3b1fe3878346adb0b1b378bf280bd",
+    "unity-sdk/font/index.js": "4178754426ceca61fe8de39f4097ec88fe6737094214ae10222fbb72cb9631f0",
+    "unity-sdk/font/read-metrics.js": "1d6e8c0adcda57d1dbca8c2cec56914dc166141ef669d96a8d182b0501d079b7",
+    "unity-sdk/font/split-sc.js": "33f2ae12164e594d13558b28be20a37d148bc591ba05fa6a9e7943bb935be8a1",
+    "unity-sdk/font/util.js": "e49657878099a688efaea330fb913a1d174c4523a8a25ab67d4206ee7aba0baa",
+    "unity-sdk/fs.js": "d28ff7791372fcdf6ab40c1390131d57b256625e7b7288ca5aa7e3bbc6e95d08",
+    "unity-sdk/game-club.js": "67c3a4032fe27b02e515455858c9cab59d1c2a8142bd7c060d45f135cda16c90",
+    "unity-sdk/game-recorder.js": "7ae459dd5ac89586b8c595b50b1d525312cba0381297132eff0ed821cc9cb8ba",
+    "unity-sdk/gyroscope/index.js": "a335e1885729ecd6ee5a4aee1fac32822dc23f8c03c40aab5bb89fcbd7f92d12",
+    "unity-sdk/index.js": "2f27aa77441d71d1c54ecad906cdfa2aa160e9c897bb79f043aad2800dcaef5a",
+    "unity-sdk/logger.js": "7d765a2c857a05424d08fc4cca83ba32393558f79fbc46c653a98bf440b03013",
+    "unity-sdk/mobileKeyboard/index.js": "fff32a092621032170bd2ef8f92bf95d0a2607a239634e659e6b9bee6f01be0b",
+    "unity-sdk/module-helper.js": "5be6623e72561c69479b279dbb423b09e70041c914a465d9ff2837d03cb8e913",
+    "unity-sdk/open-data.js": "40848eeddcfaa064c65c269640a438e86ffa244411806a55d7d6311d8cf2b8a9",
+    "unity-sdk/recorder.js": "eaba87090f60fb22bb59bf1e82dd16a5aae134b2e9dc08c403f79c61652b51cf",
+    "unity-sdk/resType.js": "e2135586c03404792b961ea032e53d7000f552a4b61cb066896d149b13b6d2cf",
+    "unity-sdk/resTypeOther.js": "af5e7538fad8f6640239322cdfc7a6c5181995551cd7a6772b8311b2df55b247",
+    "unity-sdk/response.js": "9bf4b44ef758ec8917aac3a1827de70f27bacc881849bf985cafaab313216304",
+    "unity-sdk/sdk.js": "8377aca08a51213a937cd6fe0b49837dccaa607e1d73dd1c955d7181324811f1",
+    "unity-sdk/share.js": "d97cc99e4cb4d86a2b55c0a0bcc0f4a331cd64a582c24b11c61161843dbf16c4",
+    "unity-sdk/storage.js": "a4f1f2948c06d1adbd6911af4a372b1280a7e3cf5a3e039fbcd47325e1e5d6a0",
+    "unity-sdk/texture.js": "ddd6e3b1643139ddcce819e6a8d4e6dcfd1a64bfb714d368e3bddbf917c176f7",
+    "unity-sdk/touch/index.js": "a5917a61534de7bc2f5224a9c9402863a264cf6bd2106d5536eb6018299de53f",
+    "unity-sdk/upload-file.js": "3dbfd0ea7257b5c9e7191fd27f9783d86ecfec4e7d9220ebc4c9cf8d6ec4c3d4",
+    "unity-sdk/userinfo.js": "8c9373e5f77ee9b64b08e643e81bc45344d2b57e3aa78c582d2c0c53e099f06c",
+    "unity-sdk/util.js": "a54a33bb6894e642d3cd36f79c506c8a827c51bbdd56f61f0e230aaf1523f24f",
+    "unity-sdk/utils.js": "96bfd23dbd18b840fad664c3e1c5263cb11674c4e0cadc7511637ae166a61c32",
+    "unity-sdk/video/index.js": "de109cc788e8b94020aaa9bc48a8fe38565570962a70791f622e2cc9b2381ff8",
+    "unity-sdk/video.js": "b2d156cb1b437508d55bf8a32a9096f6d370ddf196f63bf5113d9c4597e2e128",
+    "wasmcode/9225291a360d0dfe.webgl.wasm.code.unityweb.wasm.br": "10aa8af04b6b3e984515de56ff8cccfa6963936bc7a40b6147a709a9828a2a24",
+    "wasmcode/game.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "weapp-adapter.js": "2823cce28ea12bcdc8739eb174bfc85ca85007d540c275630913b2c3a8931a45",
+    "webgl.wasm.framework.unityweb.js": "f72537bb075e9b57170d6782ab20f7c9dd3a2d15edaab6402e4c4a4287f239ca",
+    "webgl.wasm.symbols.unityweb": "0ddc3e7b069fdc9d69294ab7861662a92fb0b75867aa33615d539d84604d38b4",
+    "webgl.wasm.symbols.unityweb.br": "0cabf1bfcf93bbc4b0994244dfae4e732f48a5b439b631e2025b97d3564cf57f",
+    "workers/response/index.js": "095fe2b7d7252ccd9bd5da0de81143f730a50aea25b1ceb32d796eca1ef1f028"
+  }
+}
