@@ -48,9 +48,7 @@ public static class BoundedPileValidation {
                 Check(manager.IsSettling,"removal did not wake neighbours");Settle(manager,ref peak);
                 selected.position=new Vector3(0,4,.15f);selected.detectCollisions=true;manager.Register(selected);Physics.SyncTransforms();Settle(manager,ref peak);
                 Check(manager.BoardCount==144&&(selected.isKinematic||selected.IsSleeping()),"undo failed to rejoin pile");
-                manager.ShakeAll();Check(manager.IsSettling,"shake did not wake pile");Settle(manager,ref peak);
-                Check(bodies.All(b=>b.position.y>-.5f),"body escaped after shake");
-                report+=$"{theme.id}: count=144 peakActive={peak} settleSeconds={ticks*.02f:F2} CPUms={watch.ElapsedMilliseconds}; pick/wake/undo/shake PASS\n";
+                report+=$"{theme.id}: count=144 peakActive={peak} settleSeconds={ticks*.02f:F2} CPUms={watch.ElapsedMilliseconds}; pick/wake/undo PASS\n";
                 manager.Clear();foreach(var body in bodies)UnityEngine.Object.DestroyImmediate(body.gameObject);
             }
             Directory.CreateDirectory("Builds");File.WriteAllText("Builds/bounded-pile-validation.txt",report);Debug.Log(report);EditorApplication.Exit(0);

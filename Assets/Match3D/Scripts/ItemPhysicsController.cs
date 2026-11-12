@@ -40,14 +40,6 @@ public class ItemPhysicsController : MonoBehaviour {
         // Source SetRigid only changes isKinematic; no mode setters or explicit wake.
         if(!SourceSelectionMode){body.useGravity=true;body.collisionDetectionMode=entry.detection;body.WakeUp();}
     }
-    static void ApplyShake(Rigidbody body){
-        var center=LayeredItemPile.Instance&&LayeredItemPile.Instance.Running&&BoardEnvironment.UsesSoftContainer
-            ?SoftTransitionContainer.Origin:new Vector3(0,0,.15f);
-        var inward=new Vector3(center.x-body.position.x,0,center.z-body.position.z);
-        body.velocity=Vector3.ClampMagnitude(body.velocity,1);
-        body.AddForce(inward*.3f+Vector3.up*1.9f,ForceMode.VelocityChange);
-        body.AddTorque(Random.insideUnitSphere*2,ForceMode.VelocityChange);
-    }
     public void RemoveForPick(Rigidbody body){ReleaseDailyOpening();if(!body||!entries.Remove(body))return;WakeNear(body.position);}
     public void WakeSelectionNeighbours(Vector3 position){WakeNear(position);}
     static bool SourceSelectionMode=>InputController.Instance&&InputController.Instance.UsesSourceFlight;
@@ -61,28 +53,6 @@ public class ItemPhysicsController : MonoBehaviour {
                 if(body.isKinematic)Activate(entry);else body.WakeUp();
             }
         }
-    }
-    public void ShakeAll(){
-        ReleaseDailyOpening();
-        foreach(var entry in entries.Values){
-            var body=entry.body;
-            if(!body||entry.selected||!body.gameObject.activeInHierarchy||!Eligible(body)||BoardTools.IsStored(body.gameObject)||
-                (InputController.Instance&&InputController.Instance.objectsOnStack.Contains(body.gameObject)))continue;
-            if(body.isKinematic)Activate(entry);ApplyShake(body);
-        }
-    }
-    // Source ObjectUnit.CanShake/AddForce: dynamic bodies only, with no velocity reset or torque.
-    public int ApplyPhoneShake(Vector3 force){
-        if(force.sqrMagnitude==0)return 0;
-        ReleaseDailyOpening();
-        int affected=0;
-        foreach(var entry in entries.Values){
-            var body=entry.body;
-            if(!body||body.isKinematic||entry.selected||!body.gameObject.activeInHierarchy||BoardTools.IsStored(body.gameObject)||
-                (InputController.Instance&&InputController.Instance.objectsOnStack.Contains(body.gameObject)))continue;
-            body.AddForce(force,ForceMode.Force);affected++;
-        }
-        return affected;
     }
     void FixedUpdate(){if(Physics.autoSimulation)Step(Time.fixedDeltaTime);}
     public void Step(float delta){

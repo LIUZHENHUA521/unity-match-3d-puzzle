@@ -130,7 +130,6 @@ public partial class Match3DFlow : MonoBehaviour {
             if(!music){music=gameObject.AddComponent<AudioSource>();music.loop=true;music.volume=.25f;}
             if(!effects){effects=gameObject.AddComponent<AudioSource>();effects.volume=.65f;}
             pilePhysics=StartupService<ItemPhysicsController>();
-            StartupService<Match3DPhoneShake>();
             layeredPile=StartupService<LayeredItemPile>();
             StartupService<BoardItemPool>();
             stagePreloader=StartupService<Match3DStagePreloader>();
@@ -488,12 +487,13 @@ public partial class Match3DFlow : MonoBehaviour {
         view.Bind("Pause",()=>ShowSettings(true));timer=view.Get<Text>("Timer");remaining=view.Get<Text>("Remaining");
         view.Show("Peer",IsPvp);peerText=IsPvp?view.Get<Text>("Peer"):null;
         view.Text("UndoText",!IsPvp?"移出":"撤回");moveToolButton=view.Bind("Undo",()=>UseTool(0,Undo));
-        view.Text("ShuffleText",!IsPvp?"打乱":"颠锅");
-        shuffleToolButton=view.Bind("Shuffle",()=>UseTool(2,()=>{if(BoardTools.Enabled)BoardTools.MessUp();else FindObjectOfType<FoodPileShake>().Shake();}));
+        view.Text("ShuffleText","打乱");
+        shuffleToolButton=view.Bind("Shuffle",()=>UseTool(2,()=>BoardTools.MessUp()));
         view.Text("HintText",IsPvp?"认输":"凑齐");
         findToolButton=view.Bind("Hint",()=>UseTool(1,()=>{if(IsPvp)network.Send(new Match3DMessage{type="surrender"});else BoosterManager.Instance.HintButton();}));
         if(!IsPvp){view.Bind("AddTime",()=>UseTool(BoardTools.AddTimeType,()=>BoardTools.AddTime()));view.Show("AddTime",BoardTools.Enabled);}
-        foreach(var key in new[]{"Undo","Shuffle","Hint"})view.Show(key,IsPvp||BoardTools.Enabled);
+        foreach(var key in new[]{"Undo","Hint"})view.Show(key,IsPvp||BoardTools.Enabled);
+        view.Show("Shuffle",!IsPvp&&BoardTools.Enabled);
         view.Show("Freeze",false);view.Bind("Freeze",()=>BoosterManager.Instance.Freeze());
     }
     public bool HandleResult(bool win){

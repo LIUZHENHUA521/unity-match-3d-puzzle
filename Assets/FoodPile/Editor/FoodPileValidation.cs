@@ -11,7 +11,6 @@ public static class FoodPileValidation
     const string Key="FoodPileValidation.Active";
     static double deadline;
     static int stage, matched;
-    static bool shaking;
     static int isolation;
     static GameObject picked;
     static System.Collections.Generic.Dictionary<GameObject,Vector3> neighbours;
@@ -66,8 +65,6 @@ public static class FoodPileValidation
                     input.UndoLast();Later(.7);break;
                 case 4:
                     Require(input.objectsOnStack.Count==1,"Undo failed");
-                    if (!shaking) { shaking = true; UnityEngine.Object.FindObjectOfType<FoodPileShake>().Shake(); deadline = EditorApplication.timeSinceStartup + .06; return; }
-                    Require(generator.objectsOnScene.Where(x=>!x.GetComponent<Rigidbody>().isKinematic).Any(x=>x.GetComponent<Rigidbody>().velocity.y>.3f),"Shake impulse failed");
                     generator.RestartLevel();Later(5);break;
                 case 5:
                     Require(generator.objectsOnScene.Count==96 && input.objectsOnStack.Count==0,"Restart failed");
@@ -89,7 +86,7 @@ public static class FoodPileValidation
                     Require(matched==32,"Expected 32 triple matches");
                     Require(GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH && UIManager.Instance.NextLevelPopUp.activeSelf,"Win popup missing");
                     SessionState.SetBool(Key,false);
-                    File.WriteAllText(Path.GetFullPath("../foodpile-test-results.txt"),"PASS: 96 items; 8 x 12; containment; pointer picking; duplicate click rejection; no neighbour transport; triple matching; undo; shake; restart; overflow guard; seven-slot failure; all 32 triples; victory.\n");
+                    File.WriteAllText(Path.GetFullPath("../foodpile-test-results.txt"),"PASS: 96 items; 8 x 12; containment; pointer picking; duplicate click rejection; no neighbour transport; triple matching; undo; restart; overflow guard; seven-slot failure; all 32 triples; victory.\n");
                     Debug.Log("FOOD_PILE_TESTS_PASS");EditorApplication.Exit(0);break;
             }
         } catch(Exception e) {

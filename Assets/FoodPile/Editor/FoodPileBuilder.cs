@@ -85,15 +85,6 @@ public static class FoodPileBuilder
         var shake=new GameObject("Shake Controller").AddComponent<FoodPileShake>();
         var canvas=UnityEngine.Object.FindObjectOfType<Canvas>();
         // Use the existing canvas camera and layout; new controls sit below the tray.
-        var buttonObj=new GameObject("Shake Button",typeof(RectTransform),typeof(Image),typeof(Button));
-        buttonObj.transform.SetParent(canvas.transform,false);
-        var rect=(RectTransform)buttonObj.transform; rect.anchorMin=rect.anchorMax=new Vector2(.5f,1);
-        rect.anchoredPosition=new Vector2(285,-230); rect.sizeDelta=new Vector2(330,70);
-        buttonObj.GetComponent<Image>().color=new Color(.18f,.54f,.42f);
-        shake.button=buttonObj.GetComponent<Button>();
-        UnityEditor.Events.UnityEventTools.AddPersistentListener(shake.button.onClick,shake.Shake);
-        var label=Label(buttonObj.transform,"Shake label", "SHAKE  [SPACE]", 30);
-        Stretch(label.rectTransform);
         var count=Label(canvas.transform,"Remaining", "96 ITEMS / 8 TYPES",30);
         count.rectTransform.anchorMin=count.rectTransform.anchorMax=new Vector2(.5f,1);
         count.rectTransform.anchoredPosition=new Vector2(-200,-230); count.rectTransform.sizeDelta=new Vector2(540,70);

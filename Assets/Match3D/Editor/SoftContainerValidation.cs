@@ -137,13 +137,6 @@ public static class SoftContainerValidation {
         // Every moved candidate is refitted before physical handoff. Unmoved resting
         // objects can touch walls, so inspect penetration rather than spawn margin.
         Simulate(300);Check(LevelGenerator.Instance.objectsOnScene.All(o=>SoftTransitionContainer.Contains(o.transform.position,-.1f)),"shuffle retains items inside");
-        var phone=flow.GetComponent<Match3DPhoneShake>();Check(phone,"phone shake listener");
-        int affected=0;
-        for(int step=0;step<100;step++){
-            affected+=phone.ProcessAcceleration(Vector3.right*(step%20<10?3:-3));Physics.Simulate(.02f);LayeredItemPile.Instance.StepVisibility(.02f);
-        }
-        Check(affected>0,"shake applies physical force to exposed items");Simulate(300);
-        Check(LevelGenerator.Instance.objectsOnScene.All(o=>SoftTransitionContainer.Contains(o.transform.position,-.1f)),"shake retains items inside");
         flow.RestartStage();BoardCreationTestSupport.FinishPending(flow);Check(LevelGenerator.Instance.objectsOnScene.Count==300,"restart count");
         flow.Home();yield return null;Check(!UnityEngine.Object.FindObjectOfType<SoftTransitionContainer>(),"final cleanup");
     }

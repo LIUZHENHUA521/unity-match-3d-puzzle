@@ -31,9 +31,9 @@ public static class LayeredPileValidation {
                 }
                 for(int i=0;i<120;i++)pile.StepVisibility(.02f);Check(pile.HiddenCount<beforeHidden,"lower band revealed without creation");
                 Check(board.Select(o=>o.GetInstanceID()).SequenceEqual(ids),"reveal preserves every object ID and count");
-                flow.RestartStage();physics.ShakeAll();Settle(physics);
-                Check(LevelGenerator.Instance.objectsOnScene.All(o=>o.transform.position.y>-.5f),"shake containment");
-                report+=$"PASS {flow.library.themes[theme].id}: 300 objects; initial hidden={beforeHidden}; settle ticks={ticks}; pick/reveal/identity/shake\n";
+                flow.RestartStage();BoardCreationTestSupport.FinishPending(flow);Settle(physics);
+                Check(LevelGenerator.Instance.objectsOnScene.All(o=>o.transform.position.y>-.5f),"restart containment");
+                report+=$"PASS {flow.library.themes[theme].id}: 300 objects; initial hidden={beforeHidden}; settle ticks={ticks}; pick/reveal/identity/restart\n";
             }
             flow.Home();Check(!LayeredItemPile.Instance.Running&&LevelGenerator.Instance.objectsOnScene.Count==0,"home cleans layered state");
             report+="ALL LAYER CHECKS PASSED\n";
