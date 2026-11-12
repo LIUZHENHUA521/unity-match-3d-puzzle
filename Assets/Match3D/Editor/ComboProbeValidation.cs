@@ -114,6 +114,7 @@ public static class ComboProbeValidation {
         var hidden = new List<GameObject>();
         for (int i = 0; i < 16; i++) hidden.Add(Spawn(900, new Vector3((i % 4 - 1.5f) * .12f, 1 + i * .015f, (i / 4 - 1.5f) * .12f)));
         var blocker = Spawn(901, new Vector3(0, 5, 0)); blocker.transform.localScale *= 4;
+        ValidateThumbnailPose(hidden[0].GetComponent<ComboProbeTarget>());
         Physics.SyncTransforms();
         Check(owner.IsOccluded(hidden[0]), "actual 3D mesh occlusion identifies hidden target");
         Triple(800); Check(owner.State.Combo == 1 && owner.State.Stars == 3 && owner.State.Count == 0, "production first triple lights stars");
@@ -234,10 +235,35 @@ public static class ComboProbeValidation {
         int previewColumn = Enumerable.Range(0,4).First(c=>owner.State.Top(c)!=0);
         view.Preview.Show(owner,owner.State.Top(previewColumn),view.Slot(previewColumn).transform);
         yield return new WaitForSeconds(.2f); Capture("showcase-preview",720,1565); view.Preview.Clear();
+        // Put fresh instances of each displayed top model into the REAL main tray,
+        // preserving the original probe bindings for a side-by-side pose comparison.
+        for (int column = 0; column < 4; column++) {
+            var shown = owner.Target(owner.State.Top(column));
+            if (shown) Pick(Spawn(1500 + column, new Vector3(0, 4, 0), shown.Prefab), ProbePickSource.Automatic);
+        }
+        yield return new WaitForSeconds(.7f); Capture("showcase-tray-comparison",720,1565);
         var live=LevelGenerator.Instance.objectsOnScene.First(x=>x&&x.activeInHierarchy);
         Pick(live);Check(input.ReviveSourceTray(),"start return sequence before transition cancellation");
         flow.Home();Start();yield return new WaitForSecondsRealtime(1.8f);
         Check(!input.ReturningToBowl&&!BoardTools.Shuffling&&owner.State.Count==0&&input.objectsOnStack.Count==0,"restart cancels return and prevents delayed revival shuffle in the new stage");
+    }
+    static void ValidateThumbnailPose(ComboProbeTarget target) {
+        var rotation = target.transform.rotation; var scale = target.transform.localScale;
+        var first = new ComboProbeIcons(); var second = new ComboProbeIcons();
+        try {
+            var upright = ReadIcon(first.For(target));
+            target.transform.rotation = Quaternion.Euler(43, 127, 81); target.transform.localScale *= 1.7f;
+            var tilted = ReadIcon(second.For(target));
+            Check(upright.Count(p => p.a > 100) > 100 && upright.SequenceEqual(tilted), "probe thumbnail is independent of random board rotation and scale");
+        } finally { target.transform.rotation = rotation; target.transform.localScale = scale; first.Dispose(); second.Dispose(); }
+    }
+    static Color32[] ReadIcon(Texture texture) {
+        var previous = RenderTexture.active; var rt = RenderTexture.GetTemporary(144, 144, 0, RenderTextureFormat.ARGB32);
+        var copy = new Texture2D(144, 144, TextureFormat.RGBA32, false);
+        try {
+            Graphics.Blit(texture, rt); RenderTexture.active = rt;
+            copy.ReadPixels(new Rect(0, 0, 144, 144), 0, 0); copy.Apply(); return copy.GetPixels32();
+        } finally { RenderTexture.active = previous; RenderTexture.ReleaseTemporary(rt); Object.Destroy(copy); }
     }
     static void Capture(string name, int width, int height) {
         var camera = Camera.main; var previous = camera.targetTexture; var previousAspect = camera.aspect;

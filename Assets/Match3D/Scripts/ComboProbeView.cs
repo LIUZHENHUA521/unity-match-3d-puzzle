@@ -9,7 +9,6 @@ public sealed class ComboProbeView : MonoBehaviour {
     Text comboText;
     readonly Image[] stars = new Image[3];
     readonly RawImage[,] models = new RawImage[4, 3];
-    readonly Text[] counts = new Text[4];
     readonly ComboProbeSlot[] slots = new ComboProbeSlot[4];
     readonly ComboProbeIcons icons = new ComboProbeIcons();
     ComboProbeAssets assets;
@@ -53,11 +52,12 @@ public sealed class ComboProbeView : MonoBehaviour {
         Vector2[] starPositions = { new Vector2(-88.646f, -30.912f), new Vector2(-1.736f, 88.811f), new Vector2(87.397f, -31.31f) };
         for (int i = 0; i < 3; i++) stars[i] = Picture("Chance " + i, assets.darkStar, badge, starPositions[i] + new Vector2(1.47f, 0), new Vector2(45.8f, 45));
         Label("Interaction hint", "短按取物 · 长按查看", panel, new Vector2(299, 63), new Vector2(340, 28), 19, Color.white);
-        float[] xs = { 133, 255, 372, 493 };
         for (int i = 0; i < 4; i++) {
             var cell = new GameObject("Probe stack " + (i + 1), typeof(RectTransform), typeof(Image), typeof(ComboProbeSlot));
             cell.layer = 5; cell.transform.SetParent(panel, false);
-            var rect = (RectTransform)cell.transform; rect.sizeDelta = new Vector2(100, 116); rect.anchoredPosition = new Vector2(xs[i], -12);
+            // Centers measured from the supplied 507 x 152 panel texture, not guessed spacing.
+            var rect = (RectTransform)cell.transform; rect.sizeDelta = new Vector2(90, 94);
+            rect.anchoredPosition = new Vector2((121 + 103 * i) * 558f / 507, (76 - 95) * 167f / 152);
             var hit = cell.GetComponent<Image>(); hit.color = Color.clear;
             // Add bottom visuals first: only the top model owns input.
             for (int layer = 0; layer < 3; layer++) {
@@ -66,8 +66,6 @@ public sealed class ComboProbeView : MonoBehaviour {
                 var r = (RectTransform)visual.transform; r.sizeDelta = new Vector2(86, 86);
                 models[i, layer] = visual.GetComponent<RawImage>(); models[i, layer].raycastTarget = false;
             }
-            counts[i] = Label("Stack count", "", cell.transform, new Vector2(33, -39), new Vector2(45, 25), 19, Color.white);
-            var shadow = counts[i].gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .75f); shadow.effectDistance = new Vector2(1, -1);
             slots[i] = cell.GetComponent<ComboProbeSlot>(); slots[i].Initialize(owner, this, i); slots[i].targetGraphic = hit;
         }
         Preview = gameObject.AddComponent<ComboProbePreview>();
@@ -107,14 +105,14 @@ public sealed class ComboProbeView : MonoBehaviour {
             if (color >= 0) { string[] names = { "Blue circle", "Purple circle", "Orange circle", "red circle", "colored circle" }; ring.AnimationState.SetAnimation(0, names[color], true); }
         }
         for (int column = 0; column < 4; column++) {
-            var stack = owner.State.Column(column); counts[column].text = stack.Count > 1 ? "×" + stack.Count : "";
+            var stack = owner.State.Column(column);
             int shown = Mathf.Min(stack.Count, 3);
             for (int layer = 0; layer < 3; layer++) {
                 var model = models[column, layer]; bool show = layer < shown; model.gameObject.SetActive(show);
                 if (!show) continue;
                 model.texture = icons.For(owner.Target(stack[stack.Count - shown + layer]));
                 int depth = shown - layer - 1;
-                model.rectTransform.anchoredPosition = new Vector2(-depth * 4, depth * 8);
+                model.rectTransform.anchoredPosition = new Vector2(0, depth * 4);
                 model.color = new Color(1, 1, 1, depth == 0 ? 1 : .72f);
             }
         }
