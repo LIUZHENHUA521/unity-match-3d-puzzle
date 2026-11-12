@@ -12,6 +12,7 @@
 - 保留原六张 PNG 与圆形 Spine 动画；连消 1/2/3/4/5+ 使用蓝/紫/橙/红/彩色动画。JSON 的兼容导入说明和重现脚本在 `Tools/ComboProbe/README.md`。
 - 对照疯狂动物消真实场景和星星 prefab，统一圆盘/光圈中心，恢复圆弧向上偏移、原版星位及绘制层级。另复用 `image_Star.png` 常亮星星，避免把点亮过渡光晕当作常态。
 - 特殊区减少透明占位并下移，收紧与主槽间距，触摸区域不相交；调整间距不改变锅的上移位置或大小。
+- 后续按截图微调：蓝色底板、提示、模型和点击区域统一缩小 10%，槽位主体与红色圆盘垂直居中；整组重新水平居中，红圈、星环和锅不缩放。该版隔离 Play Mode 的 150 项验证通过，截图在 `work/combo-probe/compact-panel-results/`，日志在 `work/combo-probe/compact-panel-validation.log`。
 - 恢复功能接入前的镜头比例；锅只通过相机平移上移，模型尺寸、碰撞体和原始场内坐标不变。
 - 取消暂存区和占位。移出将槽内全部物品回锅；复活先回锅，再免费洗牌。时间复活仍增加五分钟。
 - 回锅恢复物品原大小、朝向与物理登记，约 0.48 秒；期间阻止取物/重复道具，暂停冻结，换关取消后续操作。已赚取探物奖励保留，已消耗绑定不恢复。
@@ -30,4 +31,4 @@
 
 可复现命令及输出位置见 `Tools/ComboProbe/README.md`。主要画面：`work/combo-probe/return-to-bowl-results/showcase-combo-3.png`、`showcase-preview.png`。`showcase-*` 使用正常关卡物品；连消状态和奖励库存由验证器设置用于覆盖各种显示状态。
 
-包含最终布局修订的隔离 WebGL 构建成功（退出码 0，日志含 `DAILY_WEB_PREVIEW_BUILD_OK`），输出在 `Builds/DailyWebProject/Builds/DailyWebPreview/`，日志在 `work/combo-probe/return-to-bowl-webgl.log`。未声称手机真机、微信开发者工具或线上发布已经验证。
+回锅逻辑及首轮星环对齐版本的隔离 WebGL 构建成功（退出码 0，日志含 `DAILY_WEB_PREVIEW_BUILD_OK`），输出在 `Builds/DailyWebProject/Builds/DailyWebPreview/`，日志在 `work/combo-probe/return-to-bowl-webgl.log`。后续蓝色区缩小与居中微调已通过 Play Mode 验证，未重新打 WebGL 包。未声称手机真机、微信开发者工具或线上发布已经验证。

@@ -30,12 +30,18 @@ public sealed class ComboProbeView : MonoBehaviour {
         canvas = go.GetComponent<Canvas>(); canvas.renderMode = RenderMode.WorldSpace; canvas.sortingOrder = 25; canvas.worldCamera = Camera.main;
         var block = go.AddComponent<Image>(); block.color = Color.clear; block.raycastTarget = true;
         var blocker = go.AddComponent<Button>(); blocker.transition = Selectable.Transition.None; blocker.targetGraphic = block;
-        Picture("Blue four-slot panel", assets.panel, root, new Vector2(50, -2), new Vector2(558, 167));
+        // Scale the entire blue section together, keeping its left edge tucked under the badge.
+        // The raised title is outside the slot body: align the BODY center with the red disc.
+        var panel = new GameObject("Compact blue section", typeof(RectTransform)).GetComponent<RectTransform>();
+        panel.gameObject.layer = 5; panel.SetParent(root, false);
+        panel.anchoredPosition = new Vector2(-201, 17); panel.localScale = Vector3.one * .9f;
+        panel.sizeDelta = new Vector2(558, 167);
+        Picture("Blue four-slot panel", assets.panel, panel, new Vector2(279, 0), new Vector2(558, 167));
         // crazyCombo main.scene/newCombeNode: keep its authored local coordinates together.
         // The 134-high track is a cropped arc: its image center is ABOVE the circle center.
         var badge = new GameObject("Authored combo badge", typeof(RectTransform)).GetComponent<RectTransform>();
         badge.gameObject.layer = 5; badge.SetParent(root, false);
-        badge.anchoredPosition = new Vector2(-248, -3); badge.sizeDelta = new Vector2(151, 151);
+        badge.anchoredPosition = new Vector2(-220, -3); badge.sizeDelta = new Vector2(151, 151);
         badge.localScale = Vector3.one * (121f / 151);
         Picture("Counter circle", assets.circle, badge, Vector2.zero, new Vector2(151, 151));
         ring = SkeletonGraphic.NewSkeletonGraphicGameObject(assets.ring, badge, assets.ringMaterial);
@@ -46,12 +52,12 @@ public sealed class ComboProbeView : MonoBehaviour {
         comboText = Label("Counter", "0", badge, new Vector2(1.233f, -22.303f), new Vector2(120, 88.2f), 60, new Color32(253, 251, 172, 255));
         Vector2[] starPositions = { new Vector2(-88.646f, -30.912f), new Vector2(-1.736f, 88.811f), new Vector2(87.397f, -31.31f) };
         for (int i = 0; i < 3; i++) stars[i] = Picture("Chance " + i, assets.darkStar, badge, starPositions[i] + new Vector2(1.47f, 0), new Vector2(45.8f, 45));
-        Label("Interaction hint", "短按取物 · 长按查看", root, new Vector2(70, 61), new Vector2(340, 28), 19, Color.white);
-        float[] xs = { -96, 26, 143, 264 };
+        Label("Interaction hint", "短按取物 · 长按查看", panel, new Vector2(299, 63), new Vector2(340, 28), 19, Color.white);
+        float[] xs = { 133, 255, 372, 493 };
         for (int i = 0; i < 4; i++) {
             var cell = new GameObject("Probe stack " + (i + 1), typeof(RectTransform), typeof(Image), typeof(ComboProbeSlot));
-            cell.layer = 5; cell.transform.SetParent(root, false);
-            var rect = (RectTransform)cell.transform; rect.sizeDelta = new Vector2(100, 116); rect.anchoredPosition = new Vector2(xs[i], -14);
+            cell.layer = 5; cell.transform.SetParent(panel, false);
+            var rect = (RectTransform)cell.transform; rect.sizeDelta = new Vector2(100, 116); rect.anchoredPosition = new Vector2(xs[i], -12);
             var hit = cell.GetComponent<Image>(); hit.color = Color.clear;
             // Add bottom visuals first: only the top model owns input.
             for (int layer = 0; layer < 3; layer++) {
