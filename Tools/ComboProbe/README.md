@@ -67,3 +67,11 @@
 - 模型缩略图移除独立的 0.8 强度、不同方向的灯光，捕获期间临时将预览层加入实际 `RenderSettings.sun` 的照射范围，finally 恢复原 mask；沿用场景环境光和原材质。换关/重开清空缩略图缓存，避免沿用旧主题光照。
 
 结果见 `work/combo-probe/region-fixes-results/`：`chance-empty.png`（零星无黄条）、`chance-one-star.png`、`chance-two-stars.png`、`chance-refilled.png` 和 `showcase-tray-comparison.png`（特殊区与主槽同款模型）。
+
+## 探物取物与发奖反馈（2026-11-13）
+
+- 探物取物在接收这一帧就将目标设为 kinematic，并关闭刚体检测与全部子 Collider，随后才执行入槽动画。普通取物保持原时序。原碰撞开关保存在回锅快照中，移出/复活时正常恢复；不冻结整锅或修改邻近物品。
+- 奖励即时确定真实目标与轮转槽位；`ComboProbeRewardFeedback` 使用用户的 `image_MeteorLight.png` 从圆盘顶部星位沿弧线飞行 0.44 秒。抵达时显示模型、短暂闪光，并在 0.28 秒内从 0.25 倍放大至 1.15 倍后回到 1 倍。下层模型保留原姿态。
+- 同槽奖励排队飞入，其他槽可并行。飞行中不展示/消费新模型，落地只改变显示，不再次发奖；目标被普通取物/磁吸拿走时取消对应动画。暂停冻结，重开/换关清理。
+- 5 连消起，亮星和飞行星头随彩色光圈使用 `image_Star_color.png`。熄灭显示灰星，断连/重开恢复普通星皮肤。
+- 参考疯狂动物消 `LayoutRoot._runNextStarAnim` 的命中后生卡顺序与 `StarLight` 的定向飞行，结合本项目实例绑定和四列叠放；参考项目未改动。

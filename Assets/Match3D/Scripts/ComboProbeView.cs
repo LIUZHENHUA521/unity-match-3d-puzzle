@@ -1,4 +1,5 @@
 using Spine.Unity;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,9 @@ public sealed class ComboProbeView : MonoBehaviour {
     float highlightElapsed;
     public string HintText => hintText ? hintText.text : "";
     public ComboProbeChanceFeedback Chances { get; private set; }
+    public ComboProbeRewardFeedback Rewards { get; private set; }
+    readonly long[,] displayedTokens = new long[4,3];
+    int rewardRevision = -1;
     readonly RawImage[,] models = new RawImage[4, 3];
     readonly ComboProbeSlot[] slots = new ComboProbeSlot[4];
     readonly ComboProbeIcons icons = new ComboProbeIcons();
@@ -81,6 +85,7 @@ public sealed class ComboProbeView : MonoBehaviour {
             slots[i] = cell.GetComponent<ComboProbeSlot>(); slots[i].Initialize(owner, this, i); slots[i].targetGraphic = hit;
         }
         Preview = gameObject.AddComponent<ComboProbePreview>();
+        Rewards = gameObject.AddComponent<ComboProbeRewardFeedback>(); Rewards.Initialize(owner, this, assets);
         Layout(); Refresh();
     }
     static Image Picture(string name, Sprite sprite, Transform parent, Vector2 position, Vector2 size) {
@@ -107,7 +112,8 @@ public sealed class ComboProbeView : MonoBehaviour {
         root.gameObject.SetActive(visible); if (!visible) { if (Preview) Preview.Clear(); return; }
         // Successful probe use is learning state, independent of the board revision.
         RefreshHint();
-        if (revision == owner.State.Revision) return;
+        if (revision == owner.State.Revision && rewardRevision == Rewards.Revision) return;
+        rewardRevision = Rewards.Revision;
         revision = owner.State.Revision; comboText.text = owner.State.Combo.ToString();
         Chances.SetState(owner.State.Stars, owner.State.Combo);
         int color = owner.State.Combo == 0 ? -1 : Mathf.Min(owner.State.Combo - 1, 4);
@@ -116,12 +122,13 @@ public sealed class ComboProbeView : MonoBehaviour {
             if (color >= 0) { string[] names = { "Blue circle", "Purple circle", "Orange circle", "red circle", "colored circle" }; ring.AnimationState.SetAnimation(0, names[color], true); }
         }
         for (int column = 0; column < 4; column++) {
-            var stack = owner.State.Column(column);
+            var stack = owner.State.Column(column).Where(token => !Rewards.IsPending(token)).ToList();
             int shown = Mathf.Min(stack.Count, 3);
             for (int layer = 0; layer < 3; layer++) {
                 var model = models[column, layer]; bool show = layer < shown; model.gameObject.SetActive(show);
                 if (!show) continue;
-                model.texture = icons.For(owner.Target(stack[stack.Count - shown + layer]));
+                displayedTokens[column,layer] = stack[stack.Count - shown + layer];
+                model.texture = icons.For(owner.Target(displayedTokens[column,layer]));
                 int depth = shown - layer - 1;
                 model.rectTransform.anchoredPosition = new Vector2(0, depth * 4);
                 model.color = new Color(1, 1, 1, depth == 0 ? 1 : .72f);
@@ -135,8 +142,9 @@ public sealed class ComboProbeView : MonoBehaviour {
             state.Combo == 0 ? "先消一组，点亮三星" : state.Stars + "次取物内再消除，获得探物";
         if (hintText.text != message) hintText.text = message;
         if (!highlightedFirstReward && !owner.HasUsedProbe && state.Count > 0) {
-            highlightedFirstReward = true; highlightElapsed = 0;
-            for (int i = 0; i < 4; i++) if (state.Top(i) != 0) { highlightedColumn = i; break; }
+            for (int i = 0; i < 4; i++) if (state.Top(i) != 0 && !Rewards.IsPending(state.Top(i))) {
+                highlightedFirstReward = true; highlightElapsed = 0; highlightedColumn = i; break;
+            }
         }
     }
     void AnimateHint() {
@@ -150,6 +158,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         highlight.color = new Color(1, .88f, .35f, .22f * pulse * pulse);
     }
     public void ResetView() {
+        if (Rewards) Rewards.ResetImmediate(); rewardRevision = -1;
         icons.Dispose(); // A new stage/theme must capture its current scene lighting again.
         if (Chances) Chances.ResetImmediate();
         if (Preview) Preview.Clear(); foreach (var slot in slots) if (slot) slot.Cancel();
@@ -157,7 +166,12 @@ public sealed class ComboProbeView : MonoBehaviour {
         highlightedFirstReward = false; highlightedColumn = -1; highlightElapsed = 0;
         foreach (var highlight in slotHighlights) if (highlight) highlight.color = Color.clear;
     }
-    void LateUpdate() { Layout(); Refresh(); AnimateHint(); }
+    void LateUpdate() {
+        Layout(); Refresh(); AnimateHint();
+        if (Rewards) for (int column=0;column<4;column++) for (int layer=0;layer<3;layer++)
+            if (models[column,layer] && models[column,layer].gameObject.activeSelf)
+                models[column,layer].rectTransform.localScale = Vector3.one * Rewards.RevealScale(displayedTokens[column,layer]);
+    }
     void OnDisable() { ResetView(); }
     void OnDestroy() { icons.Dispose(); }
 }

@@ -9,6 +9,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 // Production play-mode integration, with frozen physics only where a precise occlusion fixture is required.
@@ -163,6 +164,15 @@ public static class ComboProbeValidation {
         Pick(Spawn(801, new Vector3(0, 4, 1))); Check(owner.State.Combo == 2 && owner.State.Stars == 3 && owner.State.Count == 1, "production three-click continuation grants one bound model");
         Check(view.Ring.gameObject.activeSelf && view.Ring.AnimationState.GetCurrent(0).Animation.Name == "Purple circle", "actual authored purple Spine animation runs at two combo");
         Check(view.HintText == "点击模型，取出被挡物品", "first reward explains hidden target retrieval");
+        long firstReward = owner.State.Top(0);
+        Check(view.Rewards.IsPending(firstReward) && !owner.UseTop(0,firstReward), "reward is bound immediately but cannot be consumed before its star lands");
+        yield return new WaitForSeconds(.2f); Capture("reward-star-flying",720,1565);
+        Time.timeScale=0; float frozenReveal=view.Rewards.RevealScale(firstReward);
+        yield return new WaitForSecondsRealtime(.18f);
+        Check(view.Rewards.IsPending(firstReward) && view.Rewards.RevealScale(firstReward)==frozenReveal,"pause freezes reward flight and cannot reveal a model");
+        Time.timeScale=1; yield return new WaitForSeconds(.29f);
+        Check(!view.Rewards.IsPending(firstReward) && view.Rewards.RevealScale(firstReward)<1.16f,"landing reveals the reserved model with a bounded pop");
+        Capture("reward-model-appearing",720,1565);
         for (int i = 1; i < 10; i++) Check(owner.GrantReward(), "physical occlusion reward " + (i + 1));
         view.Refresh();
         Check(owner.State.Column(0).Count == 3 && owner.State.Column(1).Count == 3 && owner.State.Column(2).Count == 2 && owner.State.Column(3).Count == 2, "production reward distribution is 3/3/2/2");
@@ -173,6 +183,8 @@ public static class ComboProbeValidation {
         Check(!owner.State.Contains(bottom) && owner.State.Contains(sibling) && owner.State.Count == before - 1, "ordinary/automatic source pickup removes only its lower-layer mapping");
         int combo = owner.State.Combo, stars = owner.State.Stars;
         Check(combo == 2 && stars == 3, "automatic pickup preserved combo state");
+        yield return new WaitForSeconds(1.8f);
+        Check(view.Rewards.ActiveCount==0 && !owner.State.Contains(bottom),"rapid stacked rewards finish without restoring a consumed binding");
         long top = owner.State.Top(1); var target = owner.Target(top);
         int accepts = InputController.Instance.AcceptedPicks;
         var slot = view.Slot(1); var screen = Camera.main.WorldToScreenPoint(slot.transform.position);
@@ -190,6 +202,7 @@ public static class ComboProbeValidation {
         Check(!owner.HasUsedProbe && view.HintText == "点击模型，取出被挡物品", "long press and cancelled drag do not complete first-use teaching");
         slot.OnPointerDown(press); slot.OnPointerUp(press);
         Check(InputController.Instance.AcceptedPicks == accepts + 1 && !owner.State.Contains(top), "short press accepts exactly one physical target; accepted=" + InputController.Instance.AcceptedPicks + " before=" + accepts + " interact=" + owner.CanInteract);
+        ValidateProbeCollisionIsolation(target.gameObject);
         Check(owner.HasUsedProbe && view.HintText == "点击取物 · 长按定位", "successful use switches to regular interaction hint immediately");
         Check(!owner.UseTop(1, top), "stale click cannot consume next model");
         slot.OnPointerDown(press); yield return new WaitForSecondsRealtime(.3f);
@@ -275,6 +288,7 @@ public static class ComboProbeValidation {
             owner.State.Pick(10000+i,ProbePickSource.Manual,true); view.Refresh();
             yield return new WaitForSeconds(.55f);
             Check(view.Ring.AnimationState.GetCurrent(0).Animation.Name==names[i],"Spine animation color "+(i+1));
+            Check(view.Chances.UsesColorStars==(i>=4),"lit stars match the ring rainbow tier "+(i+1));
             Capture("showcase-combo-"+(i+1),720,1565);
             if (i == 0) {
                 // Same pose/frame: reproduce the former double-alpha dark halo without editing the asset.
@@ -289,6 +303,10 @@ public static class ComboProbeValidation {
                 }
             }
         }
+        Check(owner.GrantReward(),"production pile supplies another rainbow-tier reward");
+        yield return new WaitForSeconds(.22f); Capture("showcase-reward-flying",720,1565);
+        yield return new WaitForSeconds(.27f); Capture("showcase-reward-reveal",720,1565);
+        yield return new WaitForSeconds(.3f);
         int previewColumn = Enumerable.Range(0,4).First(c=>owner.State.Top(c)!=0);
         view.Preview.Show(owner,owner.State.Top(previewColumn),view.Slot(previewColumn).transform);
         yield return new WaitForSeconds(.2f); Capture("showcase-preview",720,1565); view.Preview.Clear();
@@ -316,6 +334,7 @@ public static class ComboProbeValidation {
         Capture("chance-one-star",720,1565);
         owner.State.Pick(11002, ProbePickSource.Manual, false); view.Refresh(); yield return new WaitForSeconds(.24f);
         Check(view.Chances.Progress == 0 && view.Chances.StarAlpha(0) == 0 && !view.Ring.gameObject.activeSelf, "broken combo clears the arc and all lit stars");
+        Check(!view.Chances.UsesColorStars,"broken combo restores normal star skin while grey stars remain visible");
         Check(owner.HasUsedProbe && view.HintText == "点击取物 · 长按定位", "learning survives stage changes and retained probes remain usable after combo breaks");
         Capture("chance-empty",720,1565);
         owner.State.Pick(11003, ProbePickSource.Manual, true); view.Refresh(); yield return new WaitForSeconds(.1f);
@@ -335,6 +354,42 @@ public static class ComboProbeValidation {
         Pick(live);Check(input.ReviveSourceTray(),"start return sequence before transition cancellation");
         flow.Home();Start();yield return new WaitForSecondsRealtime(1.8f);
         Check(!input.ReturningToBowl&&!BoardTools.Shuffling&&owner.State.Count==0&&input.objectsOnStack.Count==0,"restart cancels return and prevents delayed revival shuffle in the new stage");
+        Physics.autoSimulation=false; ClearFixture();
+        for(int i=0;i<4;i++)Spawn(1900,new Vector3(i*.1f,1,0));
+        var rewardBlocker=Spawn(1901,new Vector3(0,5,0));rewardBlocker.transform.localScale*=4;Physics.SyncTransforms();
+        int pendingColumn=owner.State.NextColumn; Check(owner.GrantReward(),"create reward for in-flight invalidation regression");
+        long pendingToken=owner.State.Top(pendingColumn);
+        Check(view.Rewards.IsPending(pendingToken),"invalidation fixture begins with a genuinely flying reward");
+        Pick(owner.Target(pendingToken).gameObject,ProbePickSource.Automatic);yield return null;
+        Check(!owner.State.Contains(pendingToken)&&!view.Rewards.IsPending(pendingToken)&&view.Rewards.ActiveCount==0,"collecting target during flight cancels the star without creating a stale model");
+        Check(owner.GrantReward()&&view.Rewards.ActiveCount>0,"another star is in flight before restart");
+        flow.Home();Start(2);yield return new WaitForSeconds(.8f);
+        Check(view.Rewards.ActiveCount==0&&owner.State.Count==0,"restart removes in-flight stars and prevents delayed rewards in the new stage");
+    }
+    static void ValidateProbeCollisionIsolation(GameObject picked) {
+        var body = picked.GetComponent<Rigidbody>();
+        Check(body.isKinematic && !body.detectCollisions && picked.GetComponentsInChildren<Collider>(true).All(c=>!c.enabled),"probe disables body and all child collisions in the accepting frame before flight or scale");
+        var originalScene=picked.scene;
+        var isolated=SceneManager.CreateScene("Probe collision regression",new CreateSceneParameters(LocalPhysicsMode.Physics3D));
+        GameObject neighbour=null;
+        try {
+            SceneManager.MoveGameObjectToScene(picked,isolated);
+            neighbour=GameObject.CreatePrimitive(PrimitiveType.Cube); neighbour.layer=picked.layer;
+            SceneManager.MoveGameObjectToScene(neighbour,isolated);
+            // Force a large overlap in the extraction corridor. The unregistered neighbour
+            // is genuinely dynamic: passing cannot be explained by globally freezing physics.
+            neighbour.transform.position=picked.transform.position;
+            neighbour.transform.localScale=Vector3.one*2;
+            var other=neighbour.AddComponent<Rigidbody>(); other.useGravity=false;
+            var before=other.position;
+            var physics=isolated.GetPhysicsScene();
+            for(int i=0;i<8;i++) physics.Simulate(1f/60);
+            Check(!other.isKinematic && Vector3.Distance(other.position,before)<.00001f && other.velocity.sqrMagnitude<.000001f,"deep probe extraction creates no impulse or displacement in a dynamic overlapping neighbour");
+        } finally {
+            SceneManager.MoveGameObjectToScene(picked,originalScene);
+            if(neighbour)Object.DestroyImmediate(neighbour);
+            SceneManager.UnloadSceneAsync(isolated);
+        }
     }
     static void ValidateThumbnailPose(ComboProbeTarget target) {
         var rotation = target.transform.rotation; var scale = target.transform.localScale;

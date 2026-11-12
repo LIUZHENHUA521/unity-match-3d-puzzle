@@ -171,7 +171,9 @@ public class InputController : Singleton<InputController>
         if(UsesSourceFlight){
             // BeClick only freezes the body. No temporary dynamic state, velocity clear,
             // interpolation change or neighbour wake is part of this source path.
-            body.isKinematic=true;body.detectCollisions=true;
+            // A probe extracts a deeply occluded item: disable collision BEFORE its first
+            // scale/move update, rather than pushing the pile during the source .05 s delay.
+            body.isKinematic=true;body.detectCollisions=source!=ProbePickSource.Probe;
             obj.GetComponent<SpecialItemAnimation>()?.EnterTray();
             if(playSound)GameAudioCatalog.Select(obj);
         }else{
@@ -180,7 +182,7 @@ public class InputController : Singleton<InputController>
             body.detectCollisions=false;body.interpolation=RigidbodyInterpolation.None;body.isKinematic=true;
         }
         var colliderStates=new Dictionary<Collider,bool>();
-        foreach (var collider in obj.GetComponentsInChildren<Collider>(true)){colliderStates[collider]=collider.enabled;if(!UsesSourceFlight)collider.enabled=false;}
+        foreach (var collider in obj.GetComponentsInChildren<Collider>(true)){colliderStates[collider]=collider.enabled;if(!UsesSourceFlight||source==ProbePickSource.Probe)collider.enabled=false;}
         boardColliders[obj]=colliderStates;
         objectsOnStack.Add(obj);
         objectsOnStack = objectsOnStack.GroupBy(x => x.name).SelectMany(g => g).ToList();

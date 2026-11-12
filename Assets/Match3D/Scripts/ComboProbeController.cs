@@ -74,7 +74,12 @@ public sealed class ComboProbeController : MonoBehaviour {
         while (candidates.Count > 0) {
             int index = rewardRandom.Next(candidates.Count); var chosen = candidates[index];
             candidates[index] = candidates[candidates.Count - 1]; candidates.RemoveAt(candidates.Count - 1);
-            if (IsOccluded(chosen.gameObject)) return State.Add(chosen.Token);
+            if (IsOccluded(chosen.gameObject)) {
+                int column = State.NextColumn;
+                bool added = State.Add(chosen.Token);
+                if (added && view) view.Rewards.Play(column, chosen.Token);
+                return added;
+            }
         }
         return false;
     }
@@ -106,7 +111,7 @@ public sealed class ComboProbeController : MonoBehaviour {
         return false;
     }
     public bool UseTop(int column, long expected) {
-        if (!CanInteract || State.Top(column) != expected) return false;
+        if (!CanInteract || State.Top(column) != expected || (view && view.Rewards.IsPending(expected))) return false;
         var target = Target(expected); if (!target) { RemoveInvalid(); return false; }
         int before = InputController.Instance.AcceptedPicks;
         InputController.Instance.AddObjectOnStack(target.gameObject, source: ProbePickSource.Probe);

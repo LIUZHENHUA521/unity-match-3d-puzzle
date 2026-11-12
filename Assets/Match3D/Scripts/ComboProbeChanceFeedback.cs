@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 // Visual feedback only: the accepted-pick state remains authoritative during every animation.
 public sealed class ComboProbeChanceFeedback : MonoBehaviour {
+    public const int ColorCombo = 5;
+    ComboProbeAssets assets;
     readonly Image[] lit = new Image[3], flashes = new Image[3];
     readonly float[] elapsed = new float[3], fromAlpha = new float[3], fromScale = new float[3];
     readonly bool[] targets = new bool[3];
@@ -13,8 +15,10 @@ public sealed class ComboProbeChanceFeedback : MonoBehaviour {
     public float StarAlpha(int i) => lit[i].color.a;
     public float StarScale(int i) => lit[i].rectTransform.localScale.x;
     public float FlashAlpha(int i) => flashes[i].color.a;
+    public bool UsesColorStars => lit[0] && lit[0].sprite == assets.colorStar;
 
     public void Initialize(ComboProbeAssets assets, Vector2[] positions) {
+        this.assets = assets;
         var arc = new GameObject("Golden chance progress", typeof(RectTransform), typeof(ComboProbeArcGraphic));
         arc.layer = 5; arc.transform.SetParent(transform, false);
         fill = arc.GetComponent<ComboProbeArcGraphic>(); fill.Initialize(assets.sunshine);
@@ -37,6 +41,7 @@ public sealed class ComboProbeChanceFeedback : MonoBehaviour {
     public void SetState(int count, int nextCombo) {
         count = Mathf.Clamp(count, 0, 3);
         if (count == stars && nextCombo == combo) return;
+        foreach (var star in lit) star.sprite = nextCombo >= ColorCombo ? assets.colorStar : assets.lightStar;
         bool immediate = stars < 0;
         bool refill = nextCombo > combo && count == 3 && !immediate;
         progressFrom = Progress; progressTo = FillFor(count); progressElapsed = 0;
@@ -74,7 +79,7 @@ public sealed class ComboProbeChanceFeedback : MonoBehaviour {
         if (fill) fill.fillAmount = 0;
         for (int i = 0; i < 3; i++) {
             targets[i] = false; elapsed[i] = 1; fromAlpha[i] = 0; fromScale[i] = 1;
-            if (lit[i]) { lit[i].color = new Color(1, 1, 1, 0); lit[i].rectTransform.localScale = Vector3.one; }
+            if (lit[i]) { lit[i].sprite = assets.lightStar; lit[i].color = new Color(1, 1, 1, 0); lit[i].rectTransform.localScale = Vector3.one; }
             if (flashes[i]) flashes[i].color = new Color(1, 1, 1, 0);
         }
     }

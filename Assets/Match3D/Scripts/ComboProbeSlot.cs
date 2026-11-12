@@ -18,7 +18,7 @@ public sealed class ComboProbeSlot : Selectable, IPointerClickHandler, IDragHand
     public override void OnPointerDown(PointerEventData e) {
         base.OnPointerDown(e); Cancel();
         if (!owner.CanInteract || e.button != PointerEventData.InputButton.Left) return;
-        token = owner.State.Top(column); if (token == 0) return;
+        token = owner.State.Top(column); if (token == 0 || view.Rewards.IsPending(token)) return;
         held = true; pointer = e.pointerId; began = Time.unscaledTime; origin = e.position;
     }
     public override void OnPointerUp(PointerEventData e) {
@@ -34,7 +34,7 @@ public sealed class ComboProbeSlot : Selectable, IPointerClickHandler, IDragHand
         if (logicalDistance > 18) { cancelled = true; if (view.Preview) view.Preview.Clear(); }
     }
     public override void OnPointerExit(PointerEventData e) { base.OnPointerExit(e); if (held) { cancelled = true; view.Preview.Clear(); } }
-    bool Valid() => owner && owner.CanInteract && owner.State.Top(column) == token && owner.Target(token);
+    bool Valid() => owner && owner.CanInteract && owner.State.Top(column) == token && !view.Rewards.IsPending(token) && owner.Target(token);
     void Update() {
         if (!held) return;
         if (!Valid()) { Cancel(); return; }

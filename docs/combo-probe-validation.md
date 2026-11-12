@@ -23,12 +23,15 @@
 
 ## 验证结果
 
-`ComboProbeValidation.Run`：最新进度/布局/光照修正版 244 项断言通过，结果以 `COMPLETE` 结束。使用隔离项目 `Builds/DailyWebProject` 验证，未关闭用户正在打开的 Unity 编辑器。最新结果保存在 `work/combo-probe/region-fixes-results/`，日志为 `work/combo-probe/region-fixes-validation.log`。
+`ComboProbeValidation.Run`：最新探物取物与发奖反馈版 281 项断言通过，结果以 `COMPLETE` 结束。使用隔离项目 `Builds/DailyWebProject` 验证，未关闭用户正在打开的 Unity 编辑器。最新结果保存在 `work/combo-probe/reward-feedback-results/`，日志为 `work/combo-probe/reward-feedback-validation.log`。
 
 - 动态提示：真实取物验证 3→2→1 次剩余机会、首次发奖、长按/拖出不误触发、成功取物后立即切换、跨关保留使用记录、断连后已有探物仍提示操作。`hint-earn-probe.png` 验证最长文案，`chance-refilled.png` 展示加粗居中，`chance-one-star.png` 展示最后机会提醒。该轮仅 Play Mode 验证，未重新打 WebGL 包。
 - 光圈透明修正：原 PMA 图集被误开启 Straight Alpha Input，造成二次透明度相乘和黑边；修正材质及图集导入设置，保留原 PNG 和 Spine 动画。五色均已实际截图检查，蓝色额外在同一帧用临时旧材质对照（`ring-double-alpha-before.png` 与 `showcase-combo-1.png`），像素差异仅落在光圈区域。该轮未重新构建 WebGL 或发布。
 - 最新修正：进度以几何裁切代替模板遮罩，depth=0 与 depth=24 下逐像素比较 0/1/2/3/0 星，零星透明、其余覆盖递增、两种缓冲输出一致。四画幅下特殊区内容矩形均占宽约 97.3%，不横向裁切且主槽分隔检查通过。模型捕获改用场景主灯，`showcase-tray-comparison.png` 对照真实主槽同款模型；缓存随关卡重建。该轮为隔离 Play Mode 验证，未重新构建 WebGL 或发布。
 - 纯状态：最后一星续连、断连、自动/探物来源区分、操作幂等、十次发奖轮转、下层删除与重置。
+- 探物碰撞：接受取物的同一帧验证刚体冻结、碰撞检测和全部子 Collider 已关闭；在独立 PhysicsScene 中放置真正动态且重叠的邻居，模拟八步后位置和速度不变，未依靠冻结邻居通过测试。
+- 发奖动画：即时绑定、落地前拒绝消费，暂停不会提前显示，连发叠放正常收尾；实际磁吸在星星飞行中取走目标后取消反馈，重开取消飞行且不在新局补发。截图 `reward-star-flying.png`、`reward-model-appearing.png` 使用遮挡夹具；`showcase-reward-flying.png`、`showcase-reward-reveal.png` 为实际牌堆。
+- 彩色星星：五种光圈分别核对亮星皮肤，只有 5 连消及以上使用彩色；断连恢复普通皮肤，灰星与进度语义不变。该轮为 Play Mode 和独立物理场景验证，未重新打 WebGL 包或发布。
 - 真实关卡：实际射线遮挡、同款不同实例、真实磁吸入口、顶部短按、长按和拖出、暂停、对象池复用、换关/重开/回首页。
 - 移出：接管六件正在入槽的物品，一次清空主槽、只消耗一次工具；原大小和旋转、碰撞、牌堆登记恢复，回锅后能再次拾取。无暂存底板，也不会自动洗牌。
 - 复活：真实槽满弹窗与免费获取入口，七件物品先回锅、随后洗牌；时间复活保留五分钟，空槽也能完成洗牌。普通移出与洗牌使用次数不被复活消耗。
