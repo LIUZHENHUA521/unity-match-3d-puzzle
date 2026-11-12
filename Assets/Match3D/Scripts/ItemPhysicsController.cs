@@ -11,15 +11,6 @@ public class ItemPhysicsController : MonoBehaviour {
     readonly HashSet<Rigidbody> dailyDynamic=new HashSet<Rigidbody>();
     public void HoldDailyOpening(){DailyOpeningHeld=true;dailyDynamic.Clear();}
     public void RememberDailyBody(Rigidbody body,bool dynamic){if(dynamic)dailyDynamic.Add(body);}
-    public void HoldOpeningForRepair(){
-        DailyOpeningHeld=true;dailyDynamic.Clear();
-        foreach(var entry in entries.Values)if(entry.body&&!entry.selected)Park(entry.body);
-    }
-    public void PrepareOpeningRelease(){
-        dailyDynamic.Clear();
-        foreach(var entry in entries.Values)if(entry.body&&!entry.selected&&Eligible(entry.body))dailyDynamic.Add(entry.body);
-    }
-    public bool OpeningBodyWillMove(Rigidbody body)=>DailyOpeningHeld?dailyDynamic.Contains(body):body&&!body.isKinematic;
     public void ReleaseDailyOpening(){
         if(!DailyOpeningHeld)return;DailyOpeningHeld=false;
         foreach(var body in dailyDynamic)if(body&&entries.TryGetValue(body,out var entry)){
@@ -46,13 +37,13 @@ public class ItemPhysicsController : MonoBehaviour {
         if(sourceCreation)Park(body);else if(Eligible(body))Activate(entry);else Park(body);
     }
     static void Park(Rigidbody body){
-        if(body.collisionDetectionMode!=CollisionDetectionMode.ContinuousSpeculative)body.collisionDetectionMode=CollisionDetectionMode.Discrete;
+        if(!SourceSelectionMode)body.collisionDetectionMode=CollisionDetectionMode.Discrete;
         body.isKinematic=true;
     }
     static void Activate(Entry entry){
         var body=entry.body;body.isKinematic=false;
-        // Restore the cached mode after an opening hold, including adapted CCD bodies.
-        body.useGravity=true;body.collisionDetectionMode=entry.detection;body.WakeUp();
+        // Source SetRigid only changes isKinematic; no mode setters or explicit wake.
+        if(!SourceSelectionMode){body.useGravity=true;body.collisionDetectionMode=entry.detection;body.WakeUp();}
     }
     public void RemoveForPick(Rigidbody body){ReleaseDailyOpening();if(!body||!entries.Remove(body))return;WakeNear(body.position);}
     public void WakeSelectionNeighbours(Vector3 position){WakeNear(position);}

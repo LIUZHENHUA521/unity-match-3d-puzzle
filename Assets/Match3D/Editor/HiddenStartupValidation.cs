@@ -34,7 +34,7 @@ public static class HiddenStartupValidation {
                 result.states.Add(JsonUtility.ToJson(new State{type=obj.name,id=obj.GetComponent<Match3DTile>().id,position=obj.transform.position,rotation=obj.transform.rotation,visible=visible,kinematic=body.isKinematic,pickable=pile.CanPick(body),colliders=string.Join("|",obj.GetComponentsInChildren<Collider>(true).Select(c=>c.GetType().Name+":"+c.enabled+":"+c.isTrigger+":"+c.gameObject.activeInHierarchy))}));
             }
             float wait=(float)iterator.Current;if(!seenVisible)result.hiddenWait+=wait;
-            if(wait>=.2f&&pile.Creating){float[] waits={.5f,.2f,.3f};Check(tail<3&&Mathf.Approximately(wait,waits[tail++]),"completion waits preserved");}
+            if(wait>=.2f){float[] waits={.5f,.2f,.3f};Check(tail<3&&Mathf.Approximately(wait,waits[tail++]),"completion waits preserved");}
             previous=board.Count;
             BoardCreationTestSupport.AdvanceGrowth(wait);
         }while(iterator.MoveNext());

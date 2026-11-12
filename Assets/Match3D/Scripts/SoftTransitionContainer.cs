@@ -6,14 +6,14 @@ using UnityEngine;
 // This owns the hollow static wall, floor and ceiling; no imported geometry is read.
 public sealed class SoftTransitionContainer : MonoBehaviour {
     public const int Sides=16;
-    public const float Height=28,BottomApothem=1.15f,TopApothem=4.8f,TiltDegrees=0;
+    public const float Height=26,BottomApothem=1.15f,TopApothem=4.8f,TiltDegrees=0;
     public const float WallThickness=.3f,CeilingThickness=2f,Clearance=.04f,SpawnCeiling=24;
     public static readonly Quaternion Orientation=Quaternion.Euler(TiltDegrees,0,0);
     static readonly Quaternion InverseOrientation=Quaternion.Inverse(Orientation);
     // Align the upright shell axis with the authored pan bowl center in XZ.
     // A 90-degree camera needs no height-dependent projection compensation.
     public static readonly Vector3 Origin=new Vector3(.05f,0,-.04f);
-    static readonly float[] RingHeights={0,6,10,11,12,13,14,20,26,28};
+    static readonly float[] RingHeights={0,6,10,11,12,13,14,20,26};
     static readonly Vector2[] Normals=MakeNormals();
     Mesh wallMesh;
     PhysicMaterial wallMaterial;
@@ -25,8 +25,7 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
     static Vector2[] MakeNormals(){var normals=new Vector2[Sides];for(int i=0;i<Sides;i++){float a=i*Mathf.PI*2/Sides;normals[i]=new Vector2(Mathf.Cos(a),Mathf.Sin(a));}return normals;}
 
     public static float DesignApothem(float h){
-        // Keep the authored profile through 26; the last 2 units are straight headroom.
-        h=Mathf.Clamp(h,0,26);
+        h=Mathf.Clamp(h,0,Height);
         if(h<=10)return BottomApothem+.05f*h;
         if(h>=14)return 2.1f+.225f*(h-14);
         float t=(h-10)/4,t2=t*t,t3=t2*t;

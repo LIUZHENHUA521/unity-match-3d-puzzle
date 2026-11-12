@@ -326,7 +326,7 @@ public partial class Match3DFlow : MonoBehaviour {
     public static float SourceCreateInterval(int count)=>Mathf.Min(SourceCreateSeconds/Mathf.Max(1,count)*SourceFrameCreateCount,SourceMaximumCreateInterval);
     void Spawn(List<ChallengeTile> tiles,int seed,int seconds,GameObject[] sourcePrefabs=null,IBoardRandom sourceRandom=null,bool sourceTutorial=false,Match3DThemePresentation reusedPresentation=null,GameObject reusedBoundary=null){
         var prefabs=sourcePrefabs??CurrentTheme.prefabs;
-        LastResult="";CreationFailure=null;InitialCount=tiles.Count;
+        LastResult="";InitialCount=tiles.Count;
         if(!IsPvp&&Match3DGameRecords.Instance)Match3DGameRecords.Instance.Prepare(CurrentTheme.id,Stage,runDate,tiles.Count,seconds);
         bool layered=!IsPvp&&(Stage==1||Stage==2);
         ComboProbeController.BeginStage(layered,seed);
@@ -439,14 +439,7 @@ public partial class Match3DFlow : MonoBehaviour {
         // The special real-physics branch restores gravity here; its saved switch is false.
         yield return .3f;
         if(version!=creationVersion)yield break;
-        layeredPile.FinishCreation();
-        // Resolve the newly activated visible/support band before holding it.
-        for(int i=0;i<10&&pilePhysics.IsSettling;i++){
-            yield return .2f;if(version!=creationVersion)yield break;
-        }
-        var repair=PrepareOpening(version);
-        while(repair.MoveNext())yield return repair.Current;
-        if(version!=creationVersion)yield break;
+        layeredPile.FinishCreation(); // FinishCreate(true), height check, then optimization starts.
         CreationInProgress=false;PendingCreationWait=0;
         GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
         if(!IsPvp&&Match3DGameRecords.Instance)Match3DGameRecords.Instance.StartRecord();
@@ -454,10 +447,7 @@ public partial class Match3DFlow : MonoBehaviour {
     }
     IEnumerator RunSourceCreation(int version){
         var steps=sourceCreationSteps;
-        while(version==creationVersion){
-            bool next;
-            try{next=steps.MoveNext();}catch(Exception e){FailOpening(e);yield break;}
-            if(!next)break;
+        while(version==creationVersion&&steps.MoveNext()){
             PendingCreationWait=(float)steps.Current;
             // Source yields once per batch. WaitForSeconds already resumes on
             // a later frame; an extra null yield adds ~100 frames to 300 items.

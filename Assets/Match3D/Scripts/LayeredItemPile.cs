@@ -23,13 +23,13 @@ public sealed class LayeredItemPile : MonoBehaviour {
     // Record the selection height before click handling; defer the visibility scan.
     // Behavior provenance: docs/refactoring/2026-11-04-naming.md.
     public void RecordSelectionHeight(float height){if(height<touchHeight)touchHeight=Mathf.Max(height,touchHeight-BoardLayoutSettings.MaxHeightStep);}
-    // Every visible body must participate once the deliberate opening hold is released.
+    // Physics activity follows a separate dynamic height threshold with depth=.5.
     public float PhysicsThreshold {get;private set;}=float.PositiveInfinity;
     public bool NeedsPhysics(Rigidbody body,float? thresholdOverride=null){
         if(!Running)return true;if(!body)return false;
         entriesByBody.TryGetValue(body,out var e);
         // Keep growing items active even when they fall below the physics threshold.
-        return body.position.y>=(thresholdOverride??PhysicsThreshold)||(e!=null&&(e.visible||e.growth<1||(Creating&&e.creationScale<1)));
+        return body.position.y>=(thresholdOverride??PhysicsThreshold)||(e!=null&&(e.growth<1||(Creating&&e.creationScale<1)));
     }
     public int HiddenCount => entries.Count(e=>e.body&&!e.visible);
     class Entry { public Rigidbody body;public Renderer[] renderers;public Vector3 scale;public ItemColliderGeometry sourceColliders;public bool visible,visibilityInitialized;public bool changeObjScale;public float creationStarted;public float growth=1;public float creationScale=1;public bool finishCreate=true; }
@@ -126,14 +126,14 @@ public sealed class LayeredItemPile : MonoBehaviour {
         float u=Mathf.Clamp01((BoardLayoutSettings.MinVisibleY-touchHeight)/BoardLayoutSettings.MinVisibleY);
         float depth=Mathf.Lerp(BoardLayoutSettings.VisibleMin,BoardLayoutSettings.VisibleMax,u);
         Threshold=touchHeight-depth;
-        PhysicsThreshold=Threshold;
+        PhysicsThreshold=touchHeight-depth*.5f;
         // Source loop checks height, then rigid state, then visibility before its one-second yield.
         if(ItemPhysicsController.Instance)ItemPhysicsController.Instance.RefreshHeightStates();
         foreach(var e in entries)SetVisible(e,e.body.position.y>=Threshold);
     }
     void UpdatePhysicsThreshold(){
         float u=Mathf.Clamp01((BoardLayoutSettings.MinVisibleY-touchHeight)/BoardLayoutSettings.MinVisibleY);
-        PhysicsThreshold=touchHeight-Mathf.Lerp(BoardLayoutSettings.VisibleMin,BoardLayoutSettings.VisibleMax,u);
+        PhysicsThreshold=touchHeight-Mathf.Lerp(BoardLayoutSettings.VisibleMin,BoardLayoutSettings.VisibleMax,u)*(Creating?1f:.5f);
     }
     void SetVisible(Entry e,bool visible,bool animate=true){
         // Always initialize hidden entries too; their renderers start enabled.
@@ -226,7 +226,7 @@ public sealed class LayeredItemPile : MonoBehaviour {
     }
     public Match3DDailyStage CaptureDailyState(int stage)=>new Match3DDailyStage{stage=stage,touchHeight=touchHeight,maxHeight=maxHeight,threshold=Threshold,physicsThreshold=PhysicsThreshold};
     public bool DailyVisible(Rigidbody body)=>entriesByBody.TryGetValue(body,out var e)&&e.visible;
-    public void RestoreDailyState(Match3DDailyStage state){touchHeight=state.touchHeight;maxHeight=state.maxHeight;Threshold=state.threshold;PhysicsThreshold=state.threshold;optimizationElapsed=0;}
+    public void RestoreDailyState(Match3DDailyStage state){touchHeight=state.touchHeight;maxHeight=state.maxHeight;Threshold=state.threshold;PhysicsThreshold=state.physicsThreshold;optimizationElapsed=0;}
     public void RestoreDailyVisibility(Rigidbody body,bool visible){if(entriesByBody.TryGetValue(body,out var e))SetVisible(e,visible,false);}
     public void FinishSourceShuffle(Rigidbody body){
         if(!body)return;

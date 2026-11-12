@@ -22,10 +22,9 @@ public static class BoardFlightTimingValidation {
   Directory.CreateDirectory("Temp");File.WriteAllText("Temp/goose-source-flight-timing-validation.txt",report);Debug.Log(report);
  }
  static IEnumerator Setup(){
-  var flow=Match3DFlow.Instance;flow.PreviewDailyOpening(OpeningSeparationValidation.LegacyLevel(),2);
+  var flow=Match3DFlow.Instance;flow.PreviewDailyOpening(BoardCreationTestSupport.LegacyLevel(),2);
   float deadline=Time.realtimeSinceStartup+120;
   while(flow.CreationInProgress){if(Time.realtimeSinceStartup>deadline)throw new Exception("flight fixture opening timeout");yield return null;}
-  Check(string.IsNullOrEmpty(flow.CreationFailure),"flight fixture opens");
   foreach(var item in LevelGenerator.Instance.objectsOnScene)item.SetActive(false);
   GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
  }

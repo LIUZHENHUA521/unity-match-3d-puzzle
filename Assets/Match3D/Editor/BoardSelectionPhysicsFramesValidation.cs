@@ -15,7 +15,7 @@ public static class BoardSelectionPhysicsFramesValidation {
         (core as IDisposable)?.Dispose();Match3DFlow.Instance.Home();
         foreach(var p in probes)if(p)UnityEngine.Object.DestroyImmediate(p);probes.Clear();
         Time.timeScale=scale;Physics.autoSimulation=simulation;
-        string report=failure==null?"PASS selection physics: stationary highlight-only press/cancel; opening remains held until confirmed pickup; dynamic neighbour unchanged during press and flight; immediate collision isolation; visible contact solving and shuffle/reveal/height regressions.\n":"FAIL source selection physics: "+failure+"\n";
+        string report=failure==null?"PASS selection physics: stationary highlight-only press/cancel; opening remains held until confirmed pickup; dynamic neighbour unchanged during press and flight; immediate collision isolation; original half-depth physics and shuffle/reveal/height regressions.\n":"FAIL source selection physics: "+failure+"\n";
         Directory.CreateDirectory("Temp");File.WriteAllText("Temp/goose-source-selection-physics-frames-validation.txt",report);Debug.Log(report);
     }
     static Rigidbody Probe(string name,Vector3 position){
@@ -25,10 +25,9 @@ public static class BoardSelectionPhysicsFramesValidation {
     }
     static Match3DSelectionFeedback inputFeedback()=>InputController.Instance.GetComponent<Match3DSelectionFeedback>();
     static IEnumerator Setup(){
-        var flow=Match3DFlow.Instance;flow.PreviewDailyOpening(OpeningSeparationValidation.LegacyLevel(),2);
+        var flow=Match3DFlow.Instance;flow.PreviewDailyOpening(BoardCreationTestSupport.LegacyLevel(),2);
         float deadline=Time.realtimeSinceStartup+120;
         while(flow.CreationInProgress){if(Time.realtimeSinceStartup>deadline)throw new Exception("selection fixture opening timeout");yield return null;}
-        Check(string.IsNullOrEmpty(flow.CreationFailure),"selection fixture opens");
     }
     static IEnumerator Core(){
         Time.timeScale=1;Physics.autoSimulation=false;
@@ -75,19 +74,24 @@ public static class BoardSelectionPhysicsFramesValidation {
         Check(!target.detectCollisions&&!target.GetComponent<Collider>().enabled,"pickup remains isolated throughout flight");
         yield return new WaitForSeconds(.3f);
         Check(input.arrivedObject.Contains(target.gameObject)&&!input.IsBusy,"source flight completes after selected press");
-        // Visible items must remain dynamic to resolve contact; hidden support stays parked.
+        // Restore the original half-depth physics checks with opening separation reverted.
         flow.Home();yield return Setup();
         var pile=LayeredItemPile.Instance;var board=LevelGenerator.Instance.objectsOnScene;
         Physics.SyncTransforms();manager.ReleaseDailyOpening();
         Check(board.Select(o=>o.GetComponent<Rigidbody>()).Where(b=>!b.isKinematic).All(b=>b.velocity==Vector3.zero&&b.angularVelocity==Vector3.zero),"opening release clears stale velocity");
         pile.RefreshVisibility();
         var candidate=board.First(o=>o.GetComponentInChildren<Renderer>().enabled).GetComponent<Rigidbody>();
-        manager.RefreshHeightState(candidate);Check(!candidate.isKinematic,"visible item remains eligible for contact solving");
+        candidate.isKinematic=false;candidate.velocity=Vector3.zero;candidate.angularVelocity=Vector3.zero;
+        candidate.position=new Vector3(0,(pile.Threshold+pile.PhysicsThreshold)*.5f,0);pile.RestoreToolScale(candidate);
+        manager.RefreshHeightState(candidate);Check(candidate.isKinematic,"normal .5 depth freezes the mid-band fixture");
         var hidden=board.First(o=>!o.GetComponentInChildren<Renderer>().enabled);var hiddenBody=hidden.GetComponent<Rigidbody>();
+        var hiddenPosition=hiddenBody.position;hiddenBody.position=new Vector3(0,50,0);
         float normalThreshold=pile.PhysicsThreshold;
         pile.FinishSourceShuffle(candidate);
-        Check(!candidate.isKinematic&&Mathf.Approximately(normalThreshold,pile.PhysicsThreshold),"shuffle completion preserves normal threshold");
+        Check(!candidate.isKinematic&&Mathf.Approximately(normalThreshold,pile.PhysicsThreshold),"per-item shuffle completion uses depth1 without replacing normal threshold");
         Check(!hidden.GetComponentInChildren<Renderer>().enabled,"per-item completion does not reveal another item");
+        hiddenBody.position=hiddenPosition;manager.RefreshHeightState(candidate);
+        Check(candidate.isKinematic,"later normal optimization returns to depth .5");
         hiddenBody.position=new Vector3(0,pile.Threshold+.1f,0);pile.RefreshVisibility();
         Check(pile.CanPick(hiddenBody)&&hidden.transform.localScale.sqrMagnitude>.000001f,"ordinary reveal has no dormant growth or extra pick lock");
         var revealScale=hidden.transform.localScale;
