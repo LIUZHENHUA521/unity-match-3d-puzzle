@@ -24,8 +24,11 @@ PASS closing offer preserves sequence and resumes
 PASS stale callback cannot affect a new board
 PASS revive starts independent share sequence
 PASS share revival once, tool counter untouched
+PASS time revival records share exactly once
 PASS clear and time revival share revival sequence
 PASS ad clears tray and advances revival once
+PASS clear revival records ad exactly once independently of time revival
+PASS new board resets all acquisition telemetry
 PASS free offer takes priority over owned inventory
 PASS free grants once without SDK, inventory or sequence debit
 PASS exhausted free quota returns to saved sequence

@@ -6,7 +6,9 @@ using UnityEngine.Networking;
 
 // Persists telemetry and qualified reward settlement separately; only the server issues vouchers.
 public sealed class Match3DGameRecords : MonoBehaviour {
-    [Serializable] public class ToolUse { public int free,inventory,rewarded,test; }
+    [Serializable] public class ToolUse { public int free,inventory,rewarded,test,share,ad; }
+    [Serializable] public class AcquisitionUse { public int free,share,ad; }
+    [Serializable] public class ReviveUse { public AcquisitionUse clear=new AcquisitionUse(),time=new AcquisitionUse(); }
     [Serializable] public class Record {
         public int schemaVersion=1,stage,initialCount,timeLimitSeconds,clearedCount;
         public string rewardTier,ruleVersion,challengeTier,levelGeneratorVersion;public int levelSeed;
@@ -15,6 +17,8 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         public long startedAt,endedAt,activeDurationMs;
         public float remainingSeconds;
         public bool timeReviveUsed;
+        public int acquisitionVersion;
+        public ReviveUse reviveUsage;
         public ToolUse[] toolUsage=new[]{new ToolUse(),new ToolUse(),new ToolUse(),new ToolUse()};
     }
     [Serializable] public class Pending {
@@ -101,7 +105,8 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         if(!started){active=null;return;}
         active.status=status;active.endReason=reason;active.endedAt=Math.Max(active.startedAt,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());active.activeDurationMs=Math.Min((long)(activeSeconds*1000),active.endedAt-active.startedAt);
         active.clearedCount=cleared;active.remainingSeconds=Mathf.Max(0,GameManager.Instance.currentLevelTime);active.timeReviveUsed=Match3DFlow.Instance&&Match3DFlow.Instance.TimeReviveUsed;
-        for(int i=0;i<BoardTools.ToolCount;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=BoardTools.FreeUses(i);active.toolUsage[i].rewarded=BoardTools.AdUses(i)+BoardTools.ShareUses(i);active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].free-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
+        active.acquisitionVersion=1;active.reviveUsage=Match3DFlow.Instance?Match3DFlow.Instance.ReviveUsage:new ReviveUse();
+        for(int i=0;i<BoardTools.ToolCount;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=BoardTools.FreeUses(i);active.toolUsage[i].share=BoardTools.ShareUses(i);active.toolUsage[i].ad=BoardTools.AdUses(i);active.toolUsage[i].rewarded=active.toolUsage[i].ad+active.toolUsage[i].share;active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].free-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
         active.toolReceipts=toolReceipts.ToArray();Add("finish",active,owner);active=null;started=false;
     }
     void Add(string action,Record record,string account){

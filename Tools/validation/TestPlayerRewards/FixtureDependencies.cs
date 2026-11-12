@@ -11,6 +11,7 @@ public sealed class Match3DInvitations:MonoBehaviour {
 public partial class Match3DFlow:MonoBehaviour {
  public static Match3DFlow Instance; public Canvas canvas; public string ScreenName="home",NoticeText;
  public bool resultShown,IsPvp,LocalPreview,TimeReviveUsed,BlocksGameplay,UnlimitedMagnet;
+ public Match3DGameRecords.ReviveUse ReviveUsage=new Match3DGameRecords.ReviveUse();
  public bool UnlimitedTools=>UnlimitedMagnet;public int ScreenVersion,QualifiedCalls,ServiceCalls;
  public string QualifiedId; public void Notice(string text){NoticeText=text;}
  public void ShowHomeFeatureNotice(string text){ServiceCalls++;NoticeText=text;}
@@ -28,7 +29,7 @@ public static class Match3DModelThemes {
  public static bool TryGet(string id,string environment,out Profile profile){profile=new Profile();return true;}
 }
 public static class BoardTools {
- public const int ToolCount=4;public static int UsedCount(int i)=>2;public static int TestUses(int i)=>2;public static int AdUses(int i)=>0;
+ public const int ToolCount=4;public static int UsedCount(int i)=>2;public static int TestUses(int i)=>2;public static int AdUses(int i)=>0;public static int ShareUses(int i)=>0;public static int FreeUses(int i)=>0;
 }
 public sealed class GameManager:MonoBehaviour {public static GameManager Instance;public float currentLevelTime;public bool GameIsPlaying()=>false;}
 public static class Match3DModalMotion {public static void Play(GameObject root){}}

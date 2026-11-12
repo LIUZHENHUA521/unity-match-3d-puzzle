@@ -8,7 +8,8 @@ public partial class Match3DFlow {
     public bool RevivePending=>revivePending;
     public bool TimeReviveUsed=>reviveTimeUsed;
     public bool ClearReviveUsed=>reviveClearUsed;
-    void ResetRevival(){if(reviveAds)reviveAds.Cancel();reviveVersion++;revivePending=false;reviveTimeUsed=false;reviveClearUsed=false;}
+    public Match3DGameRecords.ReviveUse ReviveUsage {get;private set;}=new Match3DGameRecords.ReviveUse();
+    void ResetRevival(){if(reviveAds)reviveAds.Cancel();reviveVersion++;revivePending=false;reviveTimeUsed=false;reviveClearUsed=false;ReviveUsage=new Match3DGameRecords.ReviveUse();}
     bool TryOfferRevival(){
         if(IsPvp||!InputController.Instance||!InputController.Instance.UsesSourceFlight)return false;
         bool timeout=Stage!=1&&GameManager.Instance.currentLevelTime<=0;
@@ -44,6 +45,10 @@ public partial class Match3DFlow {
             reviveClearUsed=true;
         }
         Match3DRewardAcquisition.Commit(offer);
+        var usage=timeout?ReviveUsage.time:ReviveUsage.clear;
+        if(offer.route==Match3DRewardAcquisition.Route.Share)usage.share++;
+        else if(offer.route==Match3DRewardAcquisition.Route.Ad)usage.ad++;
+        else if(offer.route==Match3DRewardAcquisition.Route.Free)usage.free++;
         revivePending=false;reviveVersion++;
         CloseModal(true);GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
         BoosterManager.Instance.BoostersInteractibility(true);BoosterManager.Instance.CheckHintInteractibility();

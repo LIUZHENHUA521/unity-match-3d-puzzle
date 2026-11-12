@@ -78,12 +78,15 @@ public static class RewardAcquisitionValidation {
             Check(Label=="分享复活"&&PlayerPrefs.GetInt(reviveKey)==0,"revive starts independent share sequence");Capture("revive-share");
             View.revive.onClick.Invoke();share(true,null);share(true,null);
             Check(flow.TimeReviveUsed&&GameManager.Instance.currentLevelTime==300&&PlayerPrefs.GetInt(reviveKey)==1&&PlayerPrefs.GetInt(toolKey)==2,"share revival once, tool counter untouched");
+            Check(flow.ReviveUsage.time.share==1&&flow.ReviveUsage.time.ad==0&&flow.ReviveUsage.clear.share==0,"time revival records share exactly once");
             var input=InputController.Instance;
             foreach(var obj in LevelGenerator.Instance.objectsOnScene.GroupBy(x=>x.name).SelectMany(g=>g.Take(2)).Take(7).ToArray())input.AddObjectOnStack(obj,false);
             yield return new WaitUntil(()=>View&&View.group.interactable);Check(Label=="看广告复活","clear and time revival share revival sequence");
             View.revive.onClick.Invoke();ad(true,null);ad(true,null);
             Check(flow.ClearReviveUsed&&input.objectsOnStack.Count==0&&PlayerPrefs.GetInt(reviveKey)==2,"ad clears tray and advances revival once");
+            Check(flow.ReviveUsage.clear.ad==1&&flow.ReviveUsage.clear.share==0&&flow.ReviveUsage.time.share==1,"clear revival records ad exactly once independently of time revival");
             config.tool.freeUsesPerRound=1;account.State.inventory[3]=2;Setup();yield return null;
+            Check(flow.ReviveUsage.clear.ad==0&&flow.ReviveUsage.time.share==0&&BoardTools.ShareUses(2)==0&&BoardTools.AdUses(3)==0,"new board resets all acquisition telemetry");
             Tool("AddTime").onClick.Invoke();yield return new WaitUntil(()=>View&&View.group.interactable);Check(Label=="免费使用","free offer takes priority over owned inventory");
             before=GameManager.Instance.currentLevelTime;int calls=shares+ads;View.revive.onClick.Invoke();
             Check(BoardTools.FreeUses(3)==1&&GameManager.Instance.currentLevelTime==before+180&&account.Inventory(3)==2&&shares+ads==calls&&PlayerPrefs.GetInt(toolKey)==2,"free grants once without SDK, inventory or sequence debit");

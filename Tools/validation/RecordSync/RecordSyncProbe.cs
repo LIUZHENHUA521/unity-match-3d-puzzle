@@ -65,6 +65,16 @@ public sealed class RecordSyncRunner:MonoBehaviour {
   var malformed=Add("malformed");yield return Wait(()=>malformed.rejectionNotified);
   Assert(malformed.rejected&&malformed.rejectionReason=="HTTP 400","malformed error response retains HTTP fallback");
   records.StopAllCoroutines();
+  GameManager.Instance=new GameObject("Game manager").AddComponent<GameManager>();
+  GameManager.Instance.currentLevelTime=100;flow.TimeReviveUsed=true;
+  flow.ReviveUsage.clear.share=1;flow.ReviveUsage.time.ad=1;
+  records.Prepare("daily",2,"2026-11-12",3,600);records.StartRecord();records.Finish("quit","home");
+  var payload=Queue.items[Queue.items.Count-1].json;
+  var snapshot=JsonUtility.FromJson<Match3DGameRecords.Record>(payload);
+  Assert(snapshot.acquisitionVersion==1&&snapshot.toolUsage.Length==4&&Array.TrueForAll(snapshot.toolUsage,x=>x.share==1&&x.ad==2&&x.rewarded==3&&x.free==1&&x.inventory==1&&x.test==1),"finish serializes separate channels while retaining legacy tool totals");
+  Assert(snapshot.reviveUsage.clear.share==1&&snapshot.reviveUsage.time.ad==1&&snapshot.timeReviveUsed,"finish serializes both revival routes");
+  flow.ReviveUsage=new Match3DGameRecords.ReviveUse();
+  Assert(Queue.items[Queue.items.Count-1].json==payload&&Saved().items.Exists(x=>x.json==payload),"queued and persisted telemetry stays immutable after round reset");
   while(Queue.items.Count<498)Queue.items.Add(new Match3DGameRecords.Pending{owner="owner-z",rejected=true,rejectionNotified=true});
   records.Prepare("daily",1,"2026-11-11",3,0);records.StartRecord();yield return null;
   Assert(records.SyncError=="queue_full"&&flow.LastNotice.Contains("缓存已满"),"queue capacity still warns and protects existing payloads");
