@@ -1,0 +1,5 @@
+PASS manual selection/contact frame regression
+FAIL System.Exception: pickup/match/pause/undo frame regression
+  at OpeningSeparationValidation.Check (System.Boolean ok, System.String message) [0x0002e] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/DailyWebProject/Assets/Match3D/Editor/OpeningSeparationValidation.cs:18 
+  at OpeningSeparationValidation+<Core>d__14.MoveNext () [0x0010f] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/DailyWebProject/Assets/Match3D/Editor/OpeningSeparationValidation.cs:55 
+  at OpeningSeparationValidation+<Run>d__17.MoveNext () [0x00050] in /Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/DailyWebProject/Assets/Match3D/Editor/OpeningSeparationValidation.cs:105 

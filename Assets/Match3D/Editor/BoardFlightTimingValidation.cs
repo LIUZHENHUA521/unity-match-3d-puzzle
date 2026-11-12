@@ -30,7 +30,7 @@ public static class BoardFlightTimingValidation {
   GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
  }
  static GameObject Probe(string name,int index){
-  var p=GameObject.CreatePrimitive(PrimitiveType.Cube);p.name=name;p.tag="Collectable";
+  var p=GameObject.CreatePrimitive(PrimitiveType.Cube);p.name=name;p.tag="Collectable";p.layer=ItemColliderGeometry.BodyLayer;
   p.transform.position=new Vector3((index%3-1)*1.2f,5+index*.15f,1);p.transform.rotation=Quaternion.Euler(20,30,40);
   p.transform.localScale=Vector3.one*.25f;p.AddComponent<Rigidbody>().useGravity=false;
   LevelGenerator.Instance.objectsOnScene.Add(p);probes.Add(p);return p;
