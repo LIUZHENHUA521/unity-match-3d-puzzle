@@ -27,7 +27,7 @@ public sealed class PotReplayRecorder : MonoBehaviour {
         if(record==null||record.stage!=2||data!=null||level==null||Match3DFlow.Instance.LocalPreview||PotReplayPlayer.Active)return;
         var account=Match3DInvitations.Instance;if(!account||!account.Ready)return;
         try{
-            if(PotReplayFiles.List().Sum(x=>PotReplayFiles.Size(x))>128*1024*1024)throw new Exception("local replay storage full");
+            if(PotReplayFiles.List().Sum(x=>PotReplayFiles.Size(x))>128*1024*1024)throw new Exception("录像本地缓存已满，请联网同步");
             owner=account.State.inviteCode;pendingFrames.Clear();
             data=new PotReplayData{opening=Match3DFlow.Instance.CaptureDailyOpening(),recordId=record.recordId,runId=record.runId,stage=record.stage,level=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level))};
             objects.Clear();renderers.Clear();previous.Clear();
@@ -43,7 +43,7 @@ public sealed class PotReplayRecorder : MonoBehaviour {
         var flow=Match3DFlow.Instance;
         if(!flow||flow.CreationInProgress||flow.BlocksGameplay||Time.timeScale<=0)return;
         elapsed+=Time.unscaledDeltaTime;
-        if(elapsed>7200||data.frames.Count>=72000){Abort(new Exception("recording duration limit"));return;}
+        if(elapsed>7200||data.frames.Count>=72000){Abort(new Exception("录像超过时长或帧数上限"));return;}
         if(elapsed<nextSample)return;nextSample=elapsed+.1f;
         try{Capture(elapsed-lastCheckpoint>=5);}catch(Exception e){Abort(e);}
     }
@@ -59,7 +59,7 @@ public sealed class PotReplayRecorder : MonoBehaviour {
         data.frames.Add(frame);
         pendingFrames.AppendLine(JsonUtility.ToJson(frame));
         if(full){Flush();lastCheckpoint=elapsed;}
-        if(writtenBytes+pendingFrames.Length>PotReplayService.MaxJsonBytes)throw new Exception("recording size limit");
+        if(writtenBytes+pendingFrames.Length>PotReplayService.MaxJsonBytes)throw new Exception("录像超过64MiB保存上限");
     }
     public void Finish(string status){
         if(data==null)return;
