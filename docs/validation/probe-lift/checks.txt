@@ -1,0 +1,341 @@
+PASS before first match no combo or stars
+PASS first triple lights three stars without reward
+PASS last-star triple continues combo and rewards once
+PASS duplicate operation cannot count or reward twice
+PASS automatic magnet does not change combo or stars
+PASS probe triple continues without self-reward
+PASS third non-match breaks combo
+PASS reward token 1
+PASS reward token 2
+PASS reward token 3
+PASS reward token 4
+PASS reward token 5
+PASS reward token 6
+PASS reward token 7
+PASS reward token 8
+PASS reward token 9
+PASS reward token 10
+PASS ten rewards rotate through four LIFO stacks
+PASS duplicate binding cannot advance next column
+PASS middle removal preserves stack and round-robin pointer
+PASS restart combo retains earned rewards
+PASS new stage resets all logical state
+PASS existing remove/magnet/shuffle selection regressions
+PASS real scene finishes startup
+PASS actual arc pixels follow chance count on depth 0 step 0 pixels=0 vertices=0
+PASS actual arc pixels follow chance count on depth 0 step 1 pixels=642 vertices=4
+PASS actual arc pixels follow chance count on depth 0 step 2 pixels=3077 vertices=5
+PASS actual arc pixels follow chance count on depth 0 step 3 pixels=6092 vertices=7
+PASS actual arc pixels follow chance count on depth 0 step 4 pixels=0 vertices=0
+PASS actual arc pixels follow chance count on depth 24 step 0 pixels=0 vertices=0
+PASS arc pixels identical with and without stencil at step 0
+PASS actual arc pixels follow chance count on depth 24 step 1 pixels=642 vertices=4
+PASS arc pixels identical with and without stencil at step 1
+PASS actual arc pixels follow chance count on depth 24 step 2 pixels=3077 vertices=5
+PASS arc pixels identical with and without stencil at step 2
+PASS actual arc pixels follow chance count on depth 24 step 3 pixels=6092 vertices=7
+PASS arc pixels identical with and without stencil at step 3
+PASS actual arc pixels follow chance count on depth 24 step 4 pixels=0 vertices=0
+PASS arc pixels identical with and without stencil at step 4
+PASS probe creates temporary physical contact volume
+PASS probe contact speed stays bounded 0
+PASS probe contact speed stays bounded 1
+PASS probe contact speed stays bounded 2
+PASS probe contact speed stays bounded 3
+PASS probe contact speed stays bounded 4
+PASS probe contact speed stays bounded 5
+PASS probe contact speed stays bounded 6
+PASS probe contact speed stays bounded 7
+PASS probe contact speed stays bounded 8
+PASS probe contact speed stays bounded 9
+PASS probe contact speed stays bounded 10
+PASS probe contact speed stays bounded 11
+PASS actual collision lifts nearby dynamic model
+PASS probe does not unfreeze or move frozen model
+PASS probe does not push distant models
+PASS contact volume is removed before tray flight
+PASS restart cancels emergence contacts immediately
+PASS move button stores during incoming flights
+PASS move keeps fourth tray item and stores first three
+PASS storage spends once
+PASS storage raises complete combo region
+PASS stored item remains raycast selectable
+PASS stored item remains raycast selectable
+PASS stored item remains raycast selectable
+PASS stored model visual center aligns with cell 0
+PASS model center matches recessed artwork cell in texture pixels 0
+PASS stored model uses configured pose without extra tilt 0
+PASS stored model visual center aligns with cell 1
+PASS model center matches recessed artwork cell in texture pixels 1
+PASS stored model uses configured pose without extra tilt 1
+PASS stored model visual center aligns with cell 2
+PASS model center matches recessed artwork cell in texture pixels 2
+PASS stored model uses configured pose without extra tilt 2
+PASS temporary region follows occupancy: temporary-store-720x1280
+PASS original camera scale preserved: temporary-store-720x1280
+PASS probe region remains above the main tray: temporary-store-720x1280 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: temporary-store-720x1280 width=0.9733576
+PASS temporary region follows occupancy: temporary-store-720x1565
+PASS original camera scale preserved: temporary-store-720x1565
+PASS probe region remains above the main tray: temporary-store-720x1565 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: temporary-store-720x1565 width=0.9733576
+PASS temporary region follows occupancy: temporary-store-768x1024
+PASS original camera scale preserved: temporary-store-768x1024
+PASS probe region remains above the main tray: temporary-store-768x1024 top=292.0001
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: temporary-store-768x1024 width=0.9733577
+PASS fewer than three moves remaining item into existing storage
+PASS empty tray does not spend move
+PASS taking all stored items hides storage and restores combo position
+PASS stored items return to tray without loss or stuck flights
+PASS storage can reopen
+PASS immediate storage re-pick cancels old flight and completes tray arrival
+PASS storage reopens before reset
+PASS new round clears storage and panel offset
+PASS original panel loaded, ring inactive before first triple
+PASS new player sees first elimination instruction
+PASS temporary region follows occupancy: first-stage-empty
+PASS original camera scale preserved: first-stage-empty
+PASS probe region remains above the main tray: first-stage-empty top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: first-stage-empty width=0.9733576
+PASS probe thumbnail is independent of random board rotation and scale
+PASS actual 3D mesh occlusion identifies hidden target
+PASS production first triple lights stars
+PASS first match teaches remaining picks and reward
+PASS temporary region follows occupancy: hint-earn-probe
+PASS original camera scale preserved: hint-earn-probe
+PASS probe region remains above the main tray: hint-earn-probe top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: hint-earn-probe width=0.9733576
+PASS reward instruction follows actual remaining chances
+PASS last chance overrides reward instruction
+PASS production three-click continuation grants one bound model
+PASS actual authored purple Spine animation runs at two combo
+PASS first reward explains hidden target retrieval
+PASS reward is bound immediately but cannot be consumed before its star lands
+PASS temporary region follows occupancy: reward-star-flying
+PASS original camera scale preserved: reward-star-flying
+PASS probe region remains above the main tray: reward-star-flying top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: reward-star-flying width=0.9733576
+PASS pause freezes reward flight and cannot reveal a model
+PASS landing reveals the reserved model with a bounded pop
+PASS temporary region follows occupancy: reward-model-appearing
+PASS original camera scale preserved: reward-model-appearing
+PASS probe region remains above the main tray: reward-model-appearing top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: reward-model-appearing width=0.9733576
+PASS cached model thumbnail contains visible geometry: reward-model-appearing
+PASS physical occlusion reward 2
+PASS physical occlusion reward 3
+PASS physical occlusion reward 4
+PASS physical occlusion reward 5
+PASS physical occlusion reward 6
+PASS physical occlusion reward 7
+PASS physical occlusion reward 8
+PASS physical occlusion reward 9
+PASS physical occlusion reward 10
+PASS production reward distribution is 3/3/2/2
+PASS same-type targets have separate instance bindings
+PASS ordinary/automatic source pickup removes only its lower-layer mapping
+PASS automatic pickup preserved combo state
+PASS rapid stacked rewards finish without restoring a consumed binding
+PASS real long-press draws particle connection to bound target
+PASS temporary region follows occupancy: long-press-particles
+PASS original camera scale preserved: long-press-particles
+PASS probe region remains above the main tray: long-press-particles top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: long-press-particles width=0.9733576
+PASS cached model thumbnail contains visible geometry: long-press-particles
+PASS long-press release never consumes model or stars
+PASS drag cancels long-press without pickup
+PASS long press and cancelled drag do not complete first-use teaching
+PASS short press accepts exactly one physical target; accepted=19 before=18 interact=True
+PASS probe disables body and all child collisions in the accepting frame before flight or scale
+PASS disabled display colliders cannot push an unregistered neighbour outside the contact volume
+PASS real probe click starts emergence contact
+PASS pause freezes both emergence animation and contact lifetime
+PASS successful use switches to regular interaction hint immediately
+PASS stale click cannot consume next model
+PASS pause immediately clears preview
+PASS real probe flight removes contact before arrival
+PASS third same-type probe pickup is accepted
+PASS probe match refills stars without granting a new model
+PASS pool checkout token cannot revive a consumed binding
+PASS move tool accepts all six tray items while pickup flights are still running
+PASS move clears the whole logical tray and spends once
+PASS return animation rejects duplicate move, revival and shuffle
+PASS return animation blocks picking moving items
+PASS pause freezes return flight without releasing gameplay lock
+PASS ordinary move finishes in the pot without storage or shuffle
+PASS returned item restores full board scale and rotation 0
+PASS returned item restores board physics and colliders 0
+PASS returned item restores full board scale and rotation 1
+PASS returned item restores board physics and colliders 1
+PASS returned item restores full board scale and rotation 2
+PASS returned item restores board physics and colliders 2
+PASS returned item restores full board scale and rotation 3
+PASS returned item restores board physics and colliders 3
+PASS returned item restores full board scale and rotation 4
+PASS returned item restores board physics and colliders 4
+PASS returned item restores full board scale and rotation 5
+PASS returned item restores board physics and colliders 5
+PASS move preserves earned probes and never refills stars
+PASS returned item is collectible again
+PASS undo after return does not restore consumed probe bindings
+PASS seven different items open the actual revival offer
+PASS temporary region follows occupancy: revival-offer
+PASS original camera scale preserved: revival-offer
+PASS probe region remains above the main tray: revival-offer top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: revival-offer width=0.9733576
+PASS cached model thumbnail contains visible geometry: revival-offer
+PASS real revival returns all seven before starting shuffle
+PASS revival starts shuffle only after return completes
+PASS revival finishes without spending move/shuffle inventory or losing probes
+PASS temporary region follows occupancy: restored-scale-720x1280
+PASS original camera scale preserved: restored-scale-720x1280
+PASS probe region remains above the main tray: restored-scale-720x1280 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: restored-scale-720x1280 width=0.9733576
+PASS cached model thumbnail contains visible geometry: restored-scale-720x1280
+PASS temporary region follows occupancy: restored-scale-720x1565
+PASS original camera scale preserved: restored-scale-720x1565
+PASS probe region remains above the main tray: restored-scale-720x1565 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: restored-scale-720x1565 width=0.9733576
+PASS cached model thumbnail contains visible geometry: restored-scale-720x1565
+PASS temporary region follows occupancy: restored-scale-720x1600
+PASS original camera scale preserved: restored-scale-720x1600
+PASS probe region remains above the main tray: restored-scale-720x1600 top=291.9999
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: restored-scale-720x1600 width=0.9733576
+PASS cached model thumbnail contains visible geometry: restored-scale-720x1600
+PASS temporary region follows occupancy: restored-scale-768x1024
+PASS original camera scale preserved: restored-scale-768x1024
+PASS probe region remains above the main tray: restored-scale-768x1024 top=292.0001
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: restored-scale-768x1024 width=0.9733577
+PASS cached model thumbnail contains visible geometry: restored-scale-768x1024
+PASS stage transition clears probe stacks without a temporary region
+PASS temporary region follows occupancy: second-stage-empty
+PASS original camera scale preserved: second-stage-empty
+PASS probe region remains above the main tray: second-stage-empty top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: second-stage-empty width=0.9733576
+PASS camera layout never changes board world coordinates
+PASS timeout opens actual revival offer even with empty tray
+PASS temporary region follows occupancy: time-revival-offer
+PASS original camera scale preserved: time-revival-offer
+PASS probe region remains above the main tray: time-revival-offer top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: time-revival-offer width=0.9733576
+PASS time revival keeps five-minute benefit and begins return/shuffle sequence
+PASS empty-tray time revival completes shuffle
+PASS restart invalidates old stage identities
+PASS empty candidate set does not advance rotation
+PASS home cleans up display, input and preview
+PASS settled production pile supplies real occluded reward targets
+PASS showcase uses real whole-tray return
+PASS Spine animation color 1
+PASS lit stars match the ring rainbow tier 1
+PASS temporary region follows occupancy: showcase-combo-1
+PASS original camera scale preserved: showcase-combo-1
+PASS probe region remains above the main tray: showcase-combo-1 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-combo-1 width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-combo-1
+PASS temporary region follows occupancy: ring-double-alpha-before
+PASS original camera scale preserved: ring-double-alpha-before
+PASS probe region remains above the main tray: ring-double-alpha-before top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: ring-double-alpha-before width=0.9733576
+PASS cached model thumbnail contains visible geometry: ring-double-alpha-before
+PASS Spine animation color 2
+PASS lit stars match the ring rainbow tier 2
+PASS temporary region follows occupancy: showcase-combo-2
+PASS original camera scale preserved: showcase-combo-2
+PASS probe region remains above the main tray: showcase-combo-2 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-combo-2 width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-combo-2
+PASS Spine animation color 3
+PASS lit stars match the ring rainbow tier 3
+PASS temporary region follows occupancy: showcase-combo-3
+PASS original camera scale preserved: showcase-combo-3
+PASS probe region remains above the main tray: showcase-combo-3 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-combo-3 width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-combo-3
+PASS Spine animation color 4
+PASS lit stars match the ring rainbow tier 4
+PASS temporary region follows occupancy: showcase-combo-4
+PASS original camera scale preserved: showcase-combo-4
+PASS probe region remains above the main tray: showcase-combo-4 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-combo-4 width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-combo-4
+PASS Spine animation color 5
+PASS lit stars match the ring rainbow tier 5
+PASS temporary region follows occupancy: showcase-combo-5
+PASS original camera scale preserved: showcase-combo-5
+PASS probe region remains above the main tray: showcase-combo-5 top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-combo-5 width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-combo-5
+PASS production pile supplies another rainbow-tier reward
+PASS temporary region follows occupancy: showcase-reward-flying
+PASS original camera scale preserved: showcase-reward-flying
+PASS probe region remains above the main tray: showcase-reward-flying top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-reward-flying width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-reward-flying
+PASS temporary region follows occupancy: showcase-reward-reveal
+PASS original camera scale preserved: showcase-reward-reveal
+PASS probe region remains above the main tray: showcase-reward-reveal top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-reward-reveal width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-reward-reveal
+PASS temporary region follows occupancy: showcase-preview
+PASS original camera scale preserved: showcase-preview
+PASS probe region remains above the main tray: showcase-preview top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-preview width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-preview
+PASS temporary region follows occupancy: showcase-tray-comparison
+PASS original camera scale preserved: showcase-tray-comparison
+PASS probe region remains above the main tray: showcase-tray-comparison top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: showcase-tray-comparison width=0.9733576
+PASS cached model thumbnail contains visible geometry: showcase-tray-comparison
+PASS three chances fill the authored golden arc
+PASS spending a chance animates the arc and extinguishes its star
+PASS temporary region follows occupancy: chance-extinguishing
+PASS original camera scale preserved: chance-extinguishing
+PASS probe region remains above the main tray: chance-extinguishing top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: chance-extinguishing width=0.9733576
+PASS cached model thumbnail contains visible geometry: chance-extinguishing
+PASS pause freezes chance feedback
+PASS two remaining stars settle at the top arc threshold
+PASS temporary region follows occupancy: chance-two-stars
+PASS original camera scale preserved: chance-two-stars
+PASS probe region remains above the main tray: chance-two-stars top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: chance-two-stars width=0.9733576
+PASS cached model thumbnail contains visible geometry: chance-two-stars
+PASS one remaining chance keeps only the left star and arc segment
+PASS last chance warning takes priority over retained reward instructions
+PASS temporary region follows occupancy: chance-one-star
+PASS original camera scale preserved: chance-one-star
+PASS probe region remains above the main tray: chance-one-star top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: chance-one-star width=0.9733576
+PASS cached model thumbnail contains visible geometry: chance-one-star
+PASS broken combo starts with the breathing ring still visible
+PASS broken combo fades the Spine ring instead of hiding it abruptly
+PASS broken combo clears the arc and all lit stars
+PASS broken combo restores normal star skin while grey stars remain visible
+PASS learning survives stage changes and retained probes remain usable after combo breaks
+PASS temporary region follows occupancy: chance-empty
+PASS original camera scale preserved: chance-empty
+PASS probe region remains above the main tray: chance-empty top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: chance-empty width=0.9733576
+PASS cached model thumbnail contains visible geometry: chance-empty
+PASS lighting stars bounces and flashes while the arc refills
+PASS temporary region follows occupancy: chance-lighting
+PASS original camera scale preserved: chance-lighting
+PASS probe region remains above the main tray: chance-lighting top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: chance-lighting width=0.9733576
+PASS cached model thumbnail contains visible geometry: chance-lighting
+PASS rapid spend/refill/spend settles to the latest state without stale flashes
+PASS another elimination refills all three chances
+PASS temporary region follows occupancy: chance-refilled
+PASS original camera scale preserved: chance-refilled
+PASS probe region remains above the main tray: chance-refilled top=292
+PASS visible probe artwork covers at least 95 percent without horizontal clipping: chance-refilled width=0.9733576
+PASS cached model thumbnail contains visible geometry: chance-refilled
+PASS reset immediately clears in-flight chance visuals
+PASS start return sequence before transition cancellation
+PASS restart cancels return and prevents delayed revival shuffle in the new stage
+PASS create reward for in-flight invalidation regression
+PASS invalidation fixture begins with a genuinely flying reward
+PASS collecting target during flight cancels the star without creating a stale model
+PASS another star is in flight before restart
+PASS restart removes in-flight stars and prevents delayed rewards in the new stage
+COMPLETE

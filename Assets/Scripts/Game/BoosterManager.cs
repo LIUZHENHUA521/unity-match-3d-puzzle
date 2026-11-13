@@ -97,7 +97,7 @@ public class BoosterManager : Singleton<BoosterManager>
     #region Undo Booster
     public void Undo() // Remove the most recently collected object from the stack.
     {
-        if(BoardTools.Enabled)InputController.Instance.ReturnSourceTrayToBowl();
+        if(BoardTools.Enabled)InputController.Instance.MoveSourceItemsToStore();
         else InputController.Instance.UndoLast();
     }
     private void CheckUndoInteractibility() // Check for undo button interactibility.

@@ -7,7 +7,9 @@ public static class GameplayBoardLayout {
     public static float RegionScale(Camera camera) => Mathf.Lerp(.7f, 1, Mathf.InverseLerp(960, 1280, Height(camera) - SafeBottom));
     // Main tray image bounds end at y=292; its visible contour is inset further.
     // Keep touch regions separate while removing excess blank space between panels.
-    public static float ProbeY(Camera camera) => 296 + ProbeHeight * .5f;
+    // Move the entire probe root, including its touch region, when storage opens.
+    public const float StoreClearance = 70;
+    public static float ProbeY(Camera camera) => 296 + ProbeHeight * .5f + StoreClearance * BoardToolVisual.StoreExpansion;
     public static bool Enabled => ComboProbeController.Instance && ComboProbeController.Instance.Running;
     public static float SafeBottom => Screen.safeArea.yMin * 720f / Mathf.Max(1, Screen.width);
     public static float Height(Camera camera) => 720f / camera.aspect;

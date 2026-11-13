@@ -8,11 +8,12 @@ using UnityEngine;
 // No gameplay RNG is used here: particle autoRandomSeed belongs to the native particle system.
 public sealed class BoardToolVisual : MonoBehaviour {
     public const float FindDurationMultiplier=.7f,FindUnitSize=.0209f,FindWidth=.15f;
-    public const float StoreShowZ=1f,StoreHideZ=-3f,StoreDepth=6.998f;
-    // Move the board and stored objects together, about 61 pixels on a 720-wide layout.
+    public const float StoreShowZ=.9f,StoreHideZ=-3f,StoreDepth=6.998f;
+    public const float StoreSize = .8f;
+    // Keep the model offset proportional to the compact storage artwork.
     public static Vector3 StoreLayoutOffset(Camera camera){
         float ratio=Match3DTray.Instance?Vector3.Distance(Match3DTray.Instance.SlotPosition(0),Match3DTray.Instance.SlotPosition(1))/.71f:1.4f;
-        return camera.transform.up*((StoreShowZ-1.44f)*ratio);
+        return camera.transform.up*((StoreShowZ-1.55f)*ratio);
     }
     static BoardToolVisual instance;
     readonly List<GameObject> effects=new List<GameObject>();
@@ -20,6 +21,8 @@ public sealed class BoardToolVisual : MonoBehaviour {
     // Keep this pool limited to tool VFX; gameplay ObjectUnit instances use BoardItemPool.
     readonly Dictionary<string,Stack<GameObject>> pooledEffects=new Dictionary<string,Stack<GameObject>>();
     GameObject background;float backgroundZ=StoreHideZ;Tween backgroundTween;
+    float storeExpansion;Tween expansionTween;
+    public static float StoreExpansion=>instance?instance.storeExpansion:0;
     public static int ActiveEffectCount=>instance?instance.effects.FindAll(x=>x).Count:0;
     public static int PooledEffectCount=>instance?instance.pooledEffects.Values.Sum(bucket=>bucket.Count):0;
     public static bool HasBackground=>instance&&instance.background&&instance.background.activeSelf;
@@ -28,7 +31,7 @@ public sealed class BoardToolVisual : MonoBehaviour {
     void Awake(){instance=this;}
     void OnDestroy(){Clear();DestroyPooled();if(instance==this)instance=null;}
     public static void Reset(){if(instance)instance.Clear();}
-    void Clear(){StopAllCoroutines();if(backgroundTween!=null)backgroundTween.Kill();backgroundTween=null;while(effects.Count>0)Recycle(effects[effects.Count-1]);if(background){backgroundTween=null;backgroundZ=StoreHideZ;background.SetActive(false);}backgroundZ=StoreHideZ;}
+    void Clear(){if(expansionTween!=null)expansionTween.Kill();expansionTween=null;storeExpansion=0;StopAllCoroutines();if(backgroundTween!=null)backgroundTween.Kill();backgroundTween=null;while(effects.Count>0)Recycle(effects[effects.Count-1]);if(background){backgroundTween=null;backgroundZ=StoreHideZ;background.SetActive(false);}backgroundZ=StoreHideZ;}
     void DestroyPooled(){foreach(var bucket in pooledEffects.Values)while(bucket.Count>0){var obj=bucket.Pop();if(obj)Destroy(obj);}pooledEffects.Clear();if(background)Destroy(background);background=null;}
     GameObject Spawn(string name){var prefab=Resources.Load<GameObject>("SourceTools/"+name);if(!prefab){Debug.LogError("Missing imported source tool visual "+name);return null;}
         GameObject obj=null;if(pooledEffects.TryGetValue(name,out var bucket))while(bucket.Count>0&&!obj){var candidate=bucket.Pop();if(candidate)obj=candidate;}
@@ -77,6 +80,8 @@ public sealed class BoardToolVisual : MonoBehaviour {
         yield return null;while(fx&&ps.IsAlive(true))yield return null;Recycle(fx);
     }
     public static void SetStoreVisible(bool visible){var owner=Ensure();if(!owner)return;if(!owner.background){if(!visible)return;var prefab=Resources.Load<GameObject>("SourceTools/StoreContentBG");if(!prefab){Debug.LogError("Missing imported store background");return;}owner.background=Instantiate(prefab);owner.background.name="Source StoreContentBG";}
+        if(owner.expansionTween!=null)owner.expansionTween.Kill();
+        owner.expansionTween=DOTween.To(()=>owner.storeExpansion,x=>owner.storeExpansion=x,visible?1f:0f,BoardTools.StoreSeconds).SetEase(Ease.OutQuad);
         owner.background.SetActive(true);
         if(owner.backgroundTween!=null)owner.backgroundTween.Kill();owner.backgroundTween=DOTween.To(()=>owner.backgroundZ,x=>{owner.backgroundZ=x;owner.LayoutBackground();},visible?StoreShowZ:StoreHideZ,BoardTools.StoreSeconds).SetEase(Ease.OutQuad).OnComplete(()=>{if(!visible&&owner.background)owner.background.SetActive(false);});owner.LayoutBackground();
     }
@@ -87,6 +92,6 @@ public sealed class BoardToolVisual : MonoBehaviour {
         float ratio=Match3DTray.Instance?Vector3.Distance(Match3DTray.Instance.SlotPosition(0),Match3DTray.Instance.SlotPosition(1))/.71f:1.4f;
         var p=center+camera.transform.up*(backgroundZ*ratio);var screen=camera.WorldToScreenPoint(p);screen.z=StoreDepth;background.transform.position=camera.ScreenToWorldPoint(screen);
         // Preserve the blue three-cell artwork's 349 x 156 aspect at the existing board width.
-        background.transform.rotation=camera.transform.rotation;background.transform.localScale=new Vector3(2.67f,2.67f*156/349,.861290395f)*ratio;
+        background.transform.rotation=camera.transform.rotation;background.transform.localScale=new Vector3(2.67f,2.67f*156/349,.861290395f)*ratio*StoreSize;
     }
 }

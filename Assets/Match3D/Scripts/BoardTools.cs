@@ -15,7 +15,7 @@ public sealed class BoardTools : MonoBehaviour {
         if(!TrySpend(AddTimeType))return false;
         game.currentLevelTime+=AddTimeSeconds;flow.ShowTips("时间 +3 分钟");return true;
     }
-    public const int ReturnCount=7;
+    public const int ReturnCount=3;
     public const float StoreSeconds=.36f,StoreScaleSeconds=.2f;
     // WX metadata field defaults: 3=OutSine, 26=InBack, 27=OutBack.
     public const Ease StoreXEase=Ease.OutSine,StoreYEase=Ease.InBack,StoreZEase=Ease.OutBack,StoreScaleEase=Ease.InBack;
@@ -99,7 +99,6 @@ public sealed class BoardTools : MonoBehaviour {
             owner.columns[owner.nextColumn].Add(obj);
             owner.LayoutColumn(owner.nextColumn,obj);
             owner.nextColumn=(owner.nextColumn+1)%owner.columns.Length;
-            obj.transform.DOScale(ItemFlightMotion.StoreScale(obj,obj.transform.localScale),StoreScaleSeconds).SetEase(StoreScaleEase);
         }
     }
     public static void ReleaseStored(GameObject obj){
@@ -113,19 +112,22 @@ public sealed class BoardTools : MonoBehaviour {
         // SetStoreContentPos then walks the point's local up vector by .75 per
         // item (the Content is rotated -90deg around X, so this is camera
         // depth), and applies a small alternating .1 local offset.
-        const float contentScale=1.4f;
+        // Follow the same responsive slot spacing as the storage background.
+        float contentScale=Match3DTray.Instance?Vector3.Distance(Match3DTray.Instance.SlotPosition(0),Match3DTray.Instance.SlotPosition(1))/.71f:1.4f;
         const float storePointY=1.55f;
-        const float storePointDepth=2f + .46f*contentScale;
+        float storePointDepth=2f + .46f*contentScale;
         var trayCenter=Match3DTray.Instance?Match3DTray.Instance.SlotPosition(3):camera.transform.TransformPoint(0,-5.04f,1.58f);
         var screen=camera.WorldToScreenPoint(trayCenter);screen.z=storePointDepth;
         var result=camera.ScreenToWorldPoint(screen);
-        float x=(column==0?-.83f:column==1?.01f:.83f)*contentScale;
+        // Centers of the recessed cells in the 349 x 156 artwork, not the outer frame.
+        float cellX=column==0?74.5f:column==1?173f:271f;
+        float x=(cellX/349f-.5f)*2.67f*contentScale;
         float localStack=.75f*(1-count+index);
-        float stagger=index==0?0:(index%2==1?-.1f:.1f);
-        result+=camera.transform.right*(x+stagger*contentScale);
+        float stagger=0;
+        result+=camera.transform.right*((x+stagger*contentScale)*BoardToolVisual.StoreSize);
         // Content rotation maps StorePointList local +Y to camera -forward.
         result-=camera.transform.forward*(localStack*contentScale);
-        result+=camera.transform.up*(storePointY*contentScale)+BoardToolVisual.StoreLayoutOffset(camera);
+        result+=camera.transform.up*((storePointY+(78f-73f)/349f*2.67f*BoardToolVisual.StoreSize)*contentScale)+BoardToolVisual.StoreLayoutOffset(camera);
         return result;
     }
 
@@ -217,23 +219,47 @@ public sealed class BoardTools : MonoBehaviour {
         }
         moving.Clear();shuffling=false;
     }
+    public static Quaternion StoreRotation(GameObject obj)=>Match3DTrayDisplaySettings.Rotation(
+        Match3DTrayDisplayBinding.For(obj)?.pose,Camera.main?Camera.main.transform.rotation:Quaternion.identity);
+    // Imported models have different pivots. Center their visible geometry in camera space,
+    // preserving camera depth so stacked items retain their picking order.
+    public static Vector3 StoreItemPosition(GameObject obj,Vector3 anchor,Quaternion rotation,Vector3 scale){
+        var camera=Camera.main;if(!camera)return anchor;
+        var t=obj.transform;var oldPosition=t.position;var oldRotation=t.rotation;var oldScale=t.localScale;
+        try{
+            t.SetPositionAndRotation(anchor,rotation);t.localScale=scale;
+            bool found=false;var bounds=new Bounds();
+            foreach(var renderer in obj.GetComponentsInChildren<Renderer>()){
+                if(!renderer.enabled||!(renderer is MeshRenderer||renderer is SkinnedMeshRenderer))continue;
+                if(!found){bounds=renderer.bounds;found=true;}else bounds.Encapsulate(renderer.bounds);
+            }
+            if(!found)return anchor;
+            var offset=bounds.center-anchor;
+            return anchor-camera.transform.right*Vector3.Dot(offset,camera.transform.right)
+                -camera.transform.up*Vector3.Dot(offset,camera.transform.up);
+        }finally{t.SetPositionAndRotation(oldPosition,oldRotation);t.localScale=oldScale;}
+    }
     void LayoutColumn(int column,GameObject newlyMoved=null){
         var items=columns[column];items.RemoveAll(x=>!x);
         for(int i=0;i<items.Count;i++){
-            var obj=items[i];obj.transform.DOKill();var pos=StorePosition(column,i,items.Count);
+            var obj=items[i];obj.transform.DOKill();
+            var rotation=StoreRotation(obj);
+            var scale=ItemFlightMotion.StoreScale(obj,obj.transform.localScale)*BoardToolVisual.StoreSize;
+            var pos=StoreItemPosition(obj,StorePosition(column,i,items.Count),rotation,scale);
+            obj.transform.DOScale(scale,StoreScaleSeconds).SetEase(StoreScaleEase);
             if(obj==newlyMoved){
                 // Queue the moved objects visibly: a short side-slide first, then a
                 // clean handoff into the storage slot. The stagger makes the three
                 // objects read as a deliberate sequence instead of one clump.
                 var camera=Camera.main;var side=camera?camera.transform.right*.72f:Vector3.right*.72f;
                 var handoff=obj.transform.position+side+Vector3.up*.08f;
-                var sequence=DOTween.Sequence().SetUpdate(true);
+                var sequence=DOTween.Sequence().SetTarget(obj.transform).SetUpdate(true);
                 sequence.AppendInterval(i*.055f);
                 sequence.Append(obj.transform.DOMove(handoff,.12f).SetEase(Ease.OutQuad));
                 sequence.Append(obj.transform.DOMove(pos,.24f).SetEase(Ease.InOutSine));
-                var settleRotation=obj.transform.rotation*Quaternion.Euler(0,0,(i%2==0?7f:-7f));
-                sequence.Join(obj.transform.DORotateQuaternion(settleRotation,.16f).SetEase(Ease.OutQuad));
+                sequence.Join(obj.transform.DORotateQuaternion(rotation,.16f).SetEase(Ease.OutQuad));
             }else{
+                obj.transform.DORotateQuaternion(rotation,StoreSeconds).SetEase(Ease.OutQuad);
                 obj.transform.DOMoveX(pos.x,StoreSeconds).SetEase(StoreXEase);
                 obj.transform.DOMoveY(pos.y,StoreSeconds).SetEase(StoreYEase);
                 obj.transform.DOMoveZ(pos.z,StoreSeconds).SetEase(StoreZEase);

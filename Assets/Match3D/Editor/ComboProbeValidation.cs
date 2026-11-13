@@ -138,10 +138,92 @@ public static class ComboProbeValidation {
     static void Triple(int type, ProbePickSource last = ProbePickSource.Manual) {
         for (int i = 0; i < 3; i++) Pick(Spawn(type, new Vector3(-2 + i, 4, 1)), i == 2 ? last : ProbePickSource.Manual);
     }
+    static void ValidateProbeLiftPhysics(){
+        var objects=new List<GameObject>();
+        try{
+            var origin=new Vector3(40,50,0);
+            var selected=GameObject.CreatePrimitive(PrimitiveType.Sphere);objects.Add(selected);
+            selected.transform.position=origin;selected.transform.localScale=Vector3.one*.5f;selected.GetComponent<Collider>().enabled=false;
+            Rigidbody[] bodies=new Rigidbody[3];
+            for(int i=0;i<3;i++){
+                var go=GameObject.CreatePrimitive(PrimitiveType.Cube);objects.Add(go);
+                go.transform.localScale=Vector3.one*.3f;
+                go.transform.position=origin+(i==0?new Vector3(0,.43f,0):i==1?new Vector3(.25f,.43f,0):new Vector3(3,.43f,0));
+                var body=go.AddComponent<Rigidbody>();body.useGravity=false;
+                LevelGenerator.Instance.objectsOnScene.Add(go);ItemPhysicsController.Instance.Register(body);
+                body.isKinematic=i==1;bodies[i]=body;
+            }
+            var frozen=bodies[1].position;var far=bodies[2].position;var near=bodies[0].position;
+            Physics.SyncTransforms();ProbeLiftContact.Begin(selected);
+            Check(ProbeLiftContact.ActiveCount==1,"probe creates temporary physical contact volume");
+            for(int step=0;step<12;step++){
+                foreach(var contact in Object.FindObjectsOfType<ProbeLiftContact>())if(contact.gameObject.activeSelf)contact.Step(.02f);
+                Physics.Simulate(.02f);
+                Check(bodies[0].velocity.magnitude<=ProbeLiftContact.MaxSpeed+.01f,"probe contact speed stays bounded "+step);
+            }
+            Check(bodies[0].position.y>near.y+.02f,"actual collision lifts nearby dynamic model");
+            Check(bodies[1].isKinematic&&bodies[1].position==frozen,"probe does not unfreeze or move frozen model");
+            Check(Vector3.Distance(bodies[2].position,far)<.001f,"probe does not push distant models");
+            Check(ProbeLiftContact.ActiveCount==0,"contact volume is removed before tray flight");
+            ProbeLiftContact.Begin(selected);ProbeLiftContact.Clear();
+            Check(ProbeLiftContact.ActiveCount==0,"restart cancels emergence contacts immediately");
+        }finally{
+            ProbeLiftContact.Clear();
+            foreach(var obj in objects)if(obj){
+                var body=obj.GetComponent<Rigidbody>();if(body)ItemPhysicsController.Instance.RemoveForPick(body);
+                LevelGenerator.Instance.objectsOnScene.Remove(obj);Object.DestroyImmediate(obj);
+            }
+        }
+    }
     static IEnumerator Core() {
         Check(Match3DFlow.Instance && Match3DFlow.Instance.StartupComplete, "real scene finishes startup");
         ValidateArcPixels();
         Physics.autoSimulation = false; Start(); yield return null;
+        ClearFixture();
+        ValidateProbeLiftPhysics();
+        var storageInput=InputController.Instance;
+        float restingY=GameplayBoardLayout.ProbeY(Camera.main);
+        var storageItems=Enumerable.Range(0,4).Select(i=>Spawn(960+i,new Vector3(i*.2f,4,0))).ToArray();
+        foreach(var item in storageItems)Pick(item);
+        int usesBeforeStore=BoardTools.UsedCount(0);
+        Check(BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo()),"move button stores during incoming flights");
+        Check(storageInput.objectsOnStack.SequenceEqual(new[]{storageItems[3]})&&BoardTools.StoredCount==3,"move keeps fourth tray item and stores first three");
+        Check(BoardTools.UsedCount(0)==usesBeforeStore+1,"storage spends once");
+        yield return new WaitForSecondsRealtime(.6f);
+        Check(BoardToolVisual.HasBackground&&Mathf.Abs(GameplayBoardLayout.ProbeY(Camera.main)-restingY-GameplayBoardLayout.StoreClearance)<.01f,"storage raises complete combo region");
+        Physics.SyncTransforms();
+        foreach(var item in storageItems.Take(3)){
+            var point=Camera.main.WorldToScreenPoint(item.transform.position);
+            Check(storageInput.PickAt(point)==item,"stored item remains raycast selectable");
+        }
+        for(int i=0;i<3;i++){
+            var item=storageItems[i];var renderers=item.GetComponentsInChildren<Renderer>().Where(r=>r.enabled&&(r is MeshRenderer||r is SkinnedMeshRenderer)).ToArray();
+            var bounds=renderers[0].bounds;foreach(var renderer in renderers.Skip(1))bounds.Encapsulate(renderer.bounds);
+            var center=Camera.main.WorldToScreenPoint(bounds.center);var anchor=Camera.main.WorldToScreenPoint(BoardTools.StorePosition(i,0,1));
+            Check(Vector2.Distance(center,anchor)<1,"stored model visual center aligns with cell "+i);
+            var background=GameObject.Find("Source StoreContentBG").transform;
+            var localCenter=background.InverseTransformPoint(bounds.center);
+            float[] artCenters={74.5f,173f,271f};
+            Check(Mathf.Abs((localCenter.x+.5f)*349-artCenters[i])<1&&Mathf.Abs((.5f-localCenter.y)*156-73)<1,
+                "model center matches recessed artwork cell in texture pixels "+i);
+            Check(Quaternion.Angle(item.transform.rotation,BoardTools.StoreRotation(item))<.1f,"stored model uses configured pose without extra tilt "+i);
+        }
+        foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1565),new Vector2Int(768,1024)})Capture("temporary-store-"+size.x+"x"+size.y,size.x,size.y);
+        Check(BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo())&&BoardTools.StoredCount==4&&storageInput.objectsOnStack.Count==0,"fewer than three moves remaining item into existing storage");
+        Check(!BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo()),"empty tray does not spend move");
+        yield return new WaitForSecondsRealtime(.6f);
+        foreach(var item in storageItems)Pick(item);
+        yield return new WaitForSecondsRealtime(.6f);
+        Check(BoardTools.StoredCount==0&&!BoardToolVisual.HasBackground&&Mathf.Abs(GameplayBoardLayout.ProbeY(Camera.main)-restingY)<.01f,"taking all stored items hides storage and restores combo position");
+        Check(storageInput.objectsOnStack.Count==4&&!storageInput.IsBusy,"stored items return to tray without loss or stuck flights");
+        Check(BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo()),"storage can reopen");
+        // Re-pick immediately, before the storage handoff sequence finishes.
+        foreach(var item in storageItems.Take(3))Pick(item);
+        yield return new WaitForSecondsRealtime(.6f);
+        Check(BoardTools.StoredCount==0&&storageInput.objectsOnStack.Count==4&&!storageInput.IsBusy,"immediate storage re-pick cancels old flight and completes tray arrival");
+        Check(BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo()),"storage reopens before reset");
+        Start();yield return null;
+        Check(BoardTools.StoredCount==0&&BoardToolVisual.StoreExpansion==0,"new round clears storage and panel offset");
         var owner = ComboProbeController.Instance; var view = owner.View;
         Check(view && !view.Ring.gameObject.activeSelf, "original panel loaded, ring inactive before first triple");
         Check(view.HintText == "先消一组，点亮三星", "new player sees first elimination instruction");
@@ -203,12 +285,19 @@ public static class ComboProbeValidation {
         slot.OnPointerDown(press); slot.OnPointerUp(press);
         Check(InputController.Instance.AcceptedPicks == accepts + 1 && !owner.State.Contains(top), "short press accepts exactly one physical target; accepted=" + InputController.Instance.AcceptedPicks + " before=" + accepts + " interact=" + owner.CanInteract);
         ValidateProbeCollisionIsolation(target.gameObject);
+        Check(ProbeLiftContact.ActiveCount==1,"real probe click starts emergence contact");
+        var pausedLiftPosition=target.transform.position;
+        Time.timeScale=0;yield return new WaitForSecondsRealtime(.15f);
+        Check(Vector3.Distance(target.transform.position,pausedLiftPosition)<.0001f&&ProbeLiftContact.ActiveCount==1,"pause freezes both emergence animation and contact lifetime");
+        Time.timeScale=1;
+
         Check(owner.HasUsedProbe && view.HintText == "点击取物 · 长按定位", "successful use switches to regular interaction hint immediately");
         Check(!owner.UseTop(1, top), "stale click cannot consume next model");
         slot.OnPointerDown(press); yield return new WaitForSecondsRealtime(.3f);
         Time.timeScale = 0; yield return null;
         Check(!view.Preview.Active, "pause immediately clears preview"); Time.timeScale = 1;
         yield return new WaitForSecondsRealtime(1.2f);
+        Check(ProbeLiftContact.ActiveCount==0,"real probe flight removes contact before arrival");
         // A third same-name physical target completes a triple using a probe: no reward loop.
         int countBefore = owner.State.Count;
         var matchingColumn = Enumerable.Range(0, 4).First(c => owner.State.Top(c) != 0);
@@ -388,7 +477,7 @@ public static class ComboProbeValidation {
             var before=other.position;
             var physics=isolated.GetPhysicsScene();
             for(int i=0;i<8;i++) physics.Simulate(1f/60);
-            Check(!other.isKinematic && Vector3.Distance(other.position,before)<.00001f && other.velocity.sqrMagnitude<.000001f,"deep probe extraction creates no impulse or displacement in a dynamic overlapping neighbour");
+            Check(!other.isKinematic && Vector3.Distance(other.position,before)<.00001f && other.velocity.sqrMagnitude<.000001f,"disabled display colliders cannot push an unregistered neighbour outside the contact volume");
         } finally {
             SceneManager.MoveGameObjectToScene(picked,originalScene);
             if(neighbour)Object.DestroyImmediate(neighbour);
@@ -425,6 +514,16 @@ public static class ComboProbeValidation {
             foreach (var presentation in Object.FindObjectsOfType<Match3DThemePresentation>()) if (presentation.Active) presentation.Fit();
             Match3DTray.Instance.SendMessage("LateUpdate");
             foreach (var tools in Object.FindObjectsOfType<BoardToolVisual>()) tools.SendMessage("LateUpdate");
+            // Captures switch aspect synchronously; settle stored models into the new projection.
+            if(BoardTools.StoredCount>0){
+                var columns=(List<GameObject>[])typeof(BoardTools).GetField("columns",Flags).GetValue(Object.FindObjectOfType<BoardTools>());
+                for(int column=0;column<columns.Length;column++)for(int i=0;i<columns[column].Count;i++)
+                    if(columns[column][i]){
+                        var item=columns[column][i];var rotation=BoardTools.StoreRotation(item);
+                        item.transform.position=BoardTools.StoreItemPosition(item,BoardTools.StorePosition(column,i,columns[column].Count),rotation,item.transform.localScale);
+                        item.transform.rotation=rotation;
+                    }
+            }
             ComboProbeController.Instance.View.SendMessage("LateUpdate");
             Canvas.ForceUpdateCanvases(); foreach (var fit in Object.FindObjectsOfType<Match3DUIFitContent>()) fit.Fit(); Canvas.ForceUpdateCanvases();
             camera.Render(); RenderTexture.active = rt;
@@ -435,7 +534,7 @@ public static class ComboProbeValidation {
             var mesh = ring.canvasRenderer.GetMesh();
             report.Add("ring active="+ring.gameObject.activeInHierarchy+" cull="+ring.canvasRenderer.cull+" vertices="+(mesh ? mesh.vertexCount : 0)+" bounds="+(mesh ? mesh.bounds.ToString() : "none")+" scale="+ring.transform.lossyScale+" texture="+ring.mainTexture+" rect="+ring.rectTransform.rect);
             if((mesh ? mesh.vertexCount : 0)>0)report.Add("ring vertex="+camera.WorldToScreenPoint(ring.transform.TransformPoint(mesh.vertices[0]))+" colors="+string.Join(",",mesh.colors32.Take(4)));
-            Check(BoardTools.StoredCount==0&&!BoardToolVisual.HasBackground,"temporary region is absent: "+name);
+            Check(BoardToolVisual.HasBackground==(BoardTools.StoredCount>0),"temporary region follows occupancy: "+name);
             Check(Mathf.Abs(camera.orthographicSize-Match3DThemePresentation.Size(camera.aspect))<.0001f,"original camera scale preserved: "+name);
             float trayTop=0;
             foreach(var art in Match3DTray.Instance.GetComponentsInChildren<Image>()){

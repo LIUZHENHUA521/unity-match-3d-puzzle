@@ -13,7 +13,7 @@ public static class BoardToolsValidation {
             Check((int)BoardTools.StoreXEase==3&&(int)BoardTools.StoreYEase==26&&(int)BoardTools.StoreZEase==27&&(int)BoardTools.StoreScaleEase==26,"store ease numeric values match WX enum metadata, including InBack not OutElastic");
             var a=make("A");var a2=make("A");var b=make("B");var c=make("C");
             var stack=new List<GameObject>{a,a2,b,c};
-            Check(BoardTools.ReturnCandidates(stack).SequenceEqual(new[]{a,a2,b,c}),"return takes the entire tray");
+            Check(BoardTools.ReturnCandidates(stack).SequenceEqual(new[]{a,a2,b}),"move takes the first three tray items");
             Check(BoardTools.ReturnCandidates(new[]{a}).SequenceEqual(new[]{a}),"return fewer than three");
             var b1=make("B");var b2=make("B");var aa=make("AA");var a3=make("A");
             var board=new List<GameObject>{a,a2,b,c,b1,b2,aa,a3};int draws=0;
