@@ -22,9 +22,9 @@ public sealed class BoardCameraZoomControls : MonoBehaviour {
         value.font = Match3DDefaultFont.Current; value.fontSize = 32; value.fontStyle = FontStyle.Bold;
         value.alignment = TextAnchor.MiddleCenter; value.color = Color.white;
         value.text = "1.0 x"; value.raycastTarget = false;
-        minus.onClick.AddListener(() => BoardCameraZoom.Instance?.Step(-.2f));
-        plus.onClick.AddListener(() => BoardCameraZoom.Instance?.Step(.2f));
-        reset.onClick.AddListener(() => BoardCameraZoom.Instance?.Restore());
+        minus.onClick.AddListener(() => {Match3DFlow.Instance?.PotVibrate();BoardCameraZoom.Instance?.Step(-.2f);});
+        plus.onClick.AddListener(() => {Match3DFlow.Instance?.PotVibrate();BoardCameraZoom.Instance?.Step(.2f);});
+        reset.onClick.AddListener(() => {Match3DFlow.Instance?.PotVibrate();BoardCameraZoom.Instance?.Restore();});
     }
     Button MakeButton(string name, string asset, Vector2 position) {
         var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));

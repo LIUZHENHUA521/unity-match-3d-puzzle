@@ -13,7 +13,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
     Dictionary<int,PotReplayPose> state;readonly Dictionary<int,GameObject> objects=new Dictionary<int,GameObject>();
     readonly Dictionary<int,Renderer[]> renderers=new Dictionary<int,Renderer[]>();
     Dictionary<int,PotReplayPose> next;
-    readonly List<Behaviour> disabled=new List<Behaviour>();Text readout;Slider slider;
+    readonly List<Behaviour> disabled=new List<Behaviour>();Text readout,speedLabel;Slider slider;
     public float Duration=>data?.duration??0;
     public void Load(PotReplayData value){
         if(Active)throw new InvalidOperationException("请先关闭当前回放");
@@ -48,7 +48,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
     void Disable(Behaviour b){if(b&&b.enabled){b.enabled=false;disabled.Add(b);}}
     void LateUpdate(){if(!ready)return;if(playing)time=Mathf.Min(Duration,time+Time.unscaledDeltaTime*speed);Apply(time);if(time>=Duration)playing=false;}
     public void Seek(float value){time=Mathf.Clamp(value,0,Duration);currentFrame=-1;if(ready)Apply(time);}
-    public void SetSpeed(float value){speed=Mathf.Clamp(value,.5f,3);}
+    public void SetSpeed(float value){speed=Mathf.Clamp(value,.5f,3);if(speedLabel)speedLabel.text=speed.ToString("0.#",System.Globalization.CultureInfo.InvariantCulture)+"×";}
     public void Pause(){playing=!playing;if(playing&&time>=Duration)Seek(0);}
     void Apply(float value){
         int frame=0;for(int i=1;i<data.frames.Count&&data.frames[i].t<=value;i++)frame=i;
@@ -72,7 +72,8 @@ public sealed class PotReplayPlayer : MonoBehaviour {
         var root=Match3DFlow.Instance.PotReplayOverlay(false);
         readout=PotReplayUI.Label(root,"每日挑战回放",new Vector2(0,-40),new Vector2(650,90));
         PotReplayUI.Button(root,"暂停 / 继续",new Vector2(-190,-145),()=>Pause());
-        PotReplayUI.Button(root,"倍速",new Vector2(0,-145),()=>SetSpeed(speed>=3?.5f:speed+.5f));
+        var speedButton=PotReplayUI.SpeedButton(root,new Vector2(0,-147),()=>SetSpeed(speed>=3?.5f:speed+.5f));
+        speedLabel=speedButton.GetComponentInChildren<Text>();SetSpeed(speed);
         PotReplayUI.Button(root,"退出回放",new Vector2(190,-145),Exit);
         slider=PotReplayUI.Progress(root,new Vector2(0,-215));slider.onValueChanged.AddListener(v=>Seek(v*Duration));
     }

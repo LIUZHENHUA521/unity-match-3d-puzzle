@@ -40,11 +40,15 @@ public static class PotProbeActivationValidation {
         float deadline = Time.realtimeSinceStartup + 60;
         while ((!Match3DFlow.Instance || !Match3DFlow.Instance.StartupComplete) && Time.realtimeSinceStartup < deadline) yield return null;
         var rt = new RenderTexture(720, 1565, 24); rt.Create(); Camera.main.targetTexture = rt; Camera.main.aspect = 720f / 1565;
+        bool hadEffects = PlayerPrefs.HasKey("goose.effects");
+        int effects = PlayerPrefs.GetInt("goose.effects", 1);
+        PlayerPrefs.SetInt("goose.effects", 1);
         string error = null; var steps = Core();
         while (true) {
             bool more = false; try { more = steps.MoveNext(); } catch (Exception e) { error = e.ToString(); }
             if (!more || error != null) break; yield return steps.Current;
         }
+        if (hadEffects) PlayerPrefs.SetInt("goose.effects", effects); else PlayerPrefs.DeleteKey("goose.effects");
         Time.timeScale = 1; Match3DFlow.Instance.Home();
         File.AppendAllText(Output + "/checks.txt", error == null ? "COMPLETE\n" : "FAIL " + error + "\n");
         SessionState.SetBool(Key, false); EditorApplication.Exit(error == null ? 0 : 1);
@@ -52,6 +56,41 @@ public static class PotProbeActivationValidation {
     static IEnumerator Core() {
         Fresh(); yield return null;
         var owner = ComboProbeController.Instance; var input = InputController.Instance;
+        var sounding = Spawn(2090, 0); Bind(sounding);
+        Check(Use(0), "audio fixture accepted");
+        var sound = Object.FindObjectOfType<PotProbeActivation>().GetComponent<AudioSource>();
+        Check(sound && sound.clip && Mathf.Abs(sound.clip.length - .239206f) < .01f && !sound.isPlaying,
+            "selected Kenney clip is loaded and waits for beam launch");
+        yield return new WaitForSeconds(.12f);
+        Check(sound.isPlaying, "launch audio plays during beam travel");
+        Time.timeScale = 0;
+        yield return null; yield return null;
+        Check(!sound.isPlaying, "game pause pauses launch audio");
+        yield return new WaitForSecondsRealtime(.3f);
+        Time.timeScale = 1;
+        yield return null; yield return null;
+        Check(sound.isPlaying, "resume continues paused launch audio");
+        PlayerPrefs.SetInt("goose.effects", 0);
+        yield return null; yield return null;
+        Check(!sound.isPlaying, "disabling effects stops active launch audio");
+        PlayerPrefs.SetInt("goose.effects", 1);
+        yield return null; yield return null;
+        Check(!sound.isPlaying, "reenabling effects does not replay same launch");
+        Fresh(); yield return null;
+        PlayerPrefs.SetInt("goose.effects", 0);
+        var muted = Spawn(2091, 0); Bind(muted); Check(Use(0), "muted probe accepted");
+        sound = Object.FindObjectOfType<PotProbeActivation>().GetComponent<AudioSource>();
+        yield return new WaitForSeconds(.12f);
+        Check(!sound.isPlaying, "muted launch stays silent");
+        PlayerPrefs.SetInt("goose.effects", 1);
+        Fresh(); yield return null;
+        var resetSound = Spawn(2092, 0); Bind(resetSound); Check(Use(0), "audio restart fixture accepted");
+        sound = Object.FindObjectOfType<PotProbeActivation>().GetComponent<AudioSource>();
+        yield return new WaitForSeconds(.12f);
+        Check(sound.isPlaying, "restart fixture has active sound");
+        Fresh();
+        Check(!sound.isPlaying, "restart immediately stops launch sound");
+        yield return null;
         var a = Spawn(2100, -1); var b = Spawn(2101, 1); Bind(a); Bind(b);
         var aStart = a.transform.position; var bStart = b.transform.position;
         Check(Use(0), "first transmission accepted");

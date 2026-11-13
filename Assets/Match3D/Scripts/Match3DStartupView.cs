@@ -35,7 +35,7 @@ public sealed class Match3DStartupView : MonoBehaviour {
     }
     public void ShowError(string message,Action onRetry){
         status.text=message;progress.transform.parent.gameObject.SetActive(false);retry.gameObject.SetActive(true);retry.onClick.RemoveAllListeners();
-        retry.onClick.AddListener(()=>{retry.gameObject.SetActive(false);onRetry();});
+        retry.onClick.AddListener(()=>{Match3DFlow.Instance?.PotVibrate();retry.gameObject.SetActive(false);onRetry();});
     }
     public void Fit(){
         var root=(RectTransform)transform;

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public sealed class Match3DMailboxView : MonoBehaviour {
  public RectTransform list;public GameObject rowTemplate;public Text status;public Button more;public Sprite unread,read;
  Match3DInvitations service;Match3DCommonDialog dialog;
- public void Connect(Match3DInvitations value){service=value;service.MailChanged+=Render;service.Changed+=UpdateStatus;more.onClick.AddListener(()=>service.RefreshMail(true));Render();service.RefreshMail();}
+ public void Connect(Match3DInvitations value){service=value;service.MailChanged+=Render;service.Changed+=UpdateStatus;more.onClick.AddListener(()=>{Match3DFlow.Instance?.PotVibrate();service.RefreshMail(true);});Render();service.RefreshMail();}
  void UpdateStatus(){if(!service)return;more.interactable=!service.Busy;status.text=service.Busy?"正在加载…":!string.IsNullOrEmpty(service.Status)?service.Status:service.Mails.Count==0?"暂时没有邮件":"";}
  void Render(){
   if(!service)return;for(int i=list.childCount-1;i>=0;i--)if(list.GetChild(i).gameObject!=rowTemplate){list.GetChild(i).gameObject.SetActive(false);Destroy(list.GetChild(i).gameObject);}

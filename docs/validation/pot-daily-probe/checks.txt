@@ -1,0 +1,29 @@
+PASS testTools=False stage=1 probe visible
+PASS testTools=False stage=1 only tool privilege differs
+PASS testTools=False stage=1 fresh combo state
+PASS testTools=False stage=1 all restored items registered
+PASS testTools=False stage=1 manual match activates combo
+PASS testTools=False stage=1 magnet preserves combo rules
+PASS testTools=False stage=2 probe visible
+PASS testTools=False stage=2 only tool privilege differs
+PASS testTools=False stage=2 fresh combo state
+PASS testTools=False stage=2 all restored items registered
+PASS testTools=False stage=2 manual match activates combo
+PASS testTools=False stage=2 magnet preserves combo rules
+PASS restart resets and enables probe
+PASS home hides probe
+PASS testTools=True stage=1 probe visible
+PASS testTools=True stage=1 only tool privilege differs
+PASS testTools=True stage=1 fresh combo state
+PASS testTools=True stage=1 all restored items registered
+PASS testTools=True stage=1 manual match activates combo
+PASS testTools=True stage=1 magnet preserves combo rules
+PASS testTools=True stage=2 probe visible
+PASS testTools=True stage=2 only tool privilege differs
+PASS testTools=True stage=2 fresh combo state
+PASS testTools=True stage=2 all restored items registered
+PASS testTools=True stage=2 manual match activates combo
+PASS testTools=True stage=2 magnet preserves combo rules
+PASS restart resets and enables probe
+PASS home hides probe
+COMPLETE

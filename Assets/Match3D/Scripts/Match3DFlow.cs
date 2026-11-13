@@ -203,7 +203,20 @@ public partial class Match3DFlow : MonoBehaviour {
         foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;peerText=null;if(tips)tips.Hide();BlocksGameplay=false;
     }
     void Music(AudioClip clip){if(music.clip!=clip){music.clip=clip;if(clip)music.Play();}music.mute=!SettingsMusic;}
-    void Click(){if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
+    void Click(){PotVibrate();if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
+    float potLastVibrationTime=float.NegativeInfinity;
+    public void PotVibrate(){
+        if(!SettingsVibration||Application.isEditor||PotReplayPlayer.Active)return;
+        // Use real time so paused menus work, and coalesce overlapping feedback.
+        float now=Time.realtimeSinceStartup;
+        if(now-potLastVibrationTime<.05f)return;
+        potLastVibrationTime=now;
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
+        WeChatWASM.WX.VibrateShort(new WeChatWASM.VibrateShortOption{type="light"});
+#elif UNITY_IOS || UNITY_ANDROID
+        Handheld.Vibrate();
+#endif
+    }
     public void SelectSound(){if(SettingsEffects&&library.selectSound)effects.PlayOneShot(library.selectSound);}
     public void MatchSound(){if(SettingsEffects&&library.matchSound)effects.PlayOneShot(library.matchSound);}
     void StopBoard(bool preservePool=false){ComboProbeController.End();ResetToolOffer();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");ResetRevival();if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;pendingPick=false;}
@@ -309,6 +322,8 @@ public partial class Match3DFlow : MonoBehaviour {
         IBoardRandom sourceRandom=dailyLevel!=null&&!IsPvp?dailyLevel.RandomForStage(Stage):source!=null?BoardGlobalRandom.Instance:null;
         if(dailyLevel!=null&&!IsPvp&&dailyLevel.generatorVersion=="shared-v2"){
             if(!dailyLevel.IsValid(prefabs.Length)){Notice("每日关卡版本不兼容，请更新游戏");return;}
+            // Snapshot restoration bypasses Spawn, but needs the same live gameplay systems.
+            ComboProbeController.BeginStage(true,TodaySeed);
             SpawnDailyOpening(prefabs,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);return;
         }
         var tiles=sourceTutorial?LevelLayoutConfig.GenerateFirstStage(source,sourceRandom):dailyLevel!=null&&!IsPvp?Match3DDailyLevel.Generate(prefabs.Length,dailyLevel.layers,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
@@ -534,11 +549,7 @@ public partial class Match3DFlow : MonoBehaviour {
         view.Bind("Home",Home);
         }
         var clip=win?library.winSound:library.loseSound;if(SettingsEffects&&clip)effects.PlayOneShot(clip);
-#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
-        if(!win&&SettingsVibration)WeChatWASM.WX.VibrateShort(new WeChatWASM.VibrateShortOption{type="light"});
-#elif UNITY_IOS || UNITY_ANDROID
-        if(!win&&SettingsVibration&&!Application.isEditor)Handheld.Vibrate();
-#endif
+        if(!win)PotVibrate();
     }
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
     [System.Runtime.InteropServices.DllImport("__Internal")] static extern void GooseShareResult(string query);

@@ -165,6 +165,7 @@ public class InputController : Singleton<InputController>
         if(selection&&selection.Selected==obj){if(UsesSourceFlight)selection.Commit();CancelPointer();}
         if(!UsesSourceFlight)BoardTools.ReleaseStored(obj);
         AcceptedPicks++;LastPickState="picked";
+        if(playSound&&!magnetic&&source==ProbePickSource.Manual&&Match3DFlow.Instance)Match3DFlow.Instance.PotVibrate();
         if(playSound&&!UsesSourceFlight&&Match3DFlow.Instance)Match3DFlow.Instance.SelectSound();
         if(UsesSourceFlight)obj.transform.DOKill(false);
         pickHistory.Add(obj);
@@ -410,6 +411,9 @@ public class InputController : Singleton<InputController>
         if(!UsesSourceFlight||BoardTools.Busy||!BoardTools.CanUse(0)||!GameManager.Instance.GameIsPlaying())return false;
         var items=BoardTools.ReturnCandidates(objectsOnStack,Mathf.Min(count,BoardTools.ReturnCount));
         if(items.Count==0||!BoardTools.TrySpend(0))return false;
+        PotMoveTrayItemsToStore(items);return true;
+    }
+    void PotMoveTrayItemsToStore(List<GameObject> items){
         CancelSelection();
         foreach(var obj in items){
             obj.transform.DOKill();magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);PotProbeActivation.Stop(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
@@ -419,13 +423,13 @@ public class InputController : Singleton<InputController>
             obj.GetComponent<SpecialItemAnimation>()?.EnterStore();
         }
         BoardTools.Store(items);
-        RepositionSource();BoosterManager.Instance.CheckHintInteractibility();return true;
+        RepositionSource();BoosterManager.Instance.CheckHintInteractibility();
     }
-    // Both revival routes return the tray and then shuffle without spending ordinary tools.
-    // An empty tray is valid for a time revival: it still shuffles the board.
+    // Both revival routes move the entire tray into storage without spending ordinary tools.
+    // An empty tray is valid for a time revival.
     public bool ReviveSourceTray(){
         if(!UsesSourceFlight||BoardTools.Busy)return false;
-        BeginReturnToBowl(objectsOnStack.Where(x=>x).ToList(),true);return true;
+        PotMoveTrayItemsToStore(objectsOnStack.Where(x=>x).ToList());return true;
     }
     sealed class BowlReturn {
         public GameObject obj; public Rigidbody body;

@@ -22,6 +22,9 @@ public sealed class PotProbeActivation : MonoBehaviour {
     CommandBuffer outline;
     Material silhouette, particleMaterial;
     ParticleSystem ribbon;
+    static AudioClip launchClip;
+    AudioSource launchAudio;
+    bool launchProcessed, audioPaused;
     int count;
     public static int ActiveCount => active.Count;
     public float Elapsed => Mathf.Max(0, Time.time - started);
@@ -43,6 +46,14 @@ public sealed class PotProbeActivation : MonoBehaviour {
         var effect = new GameObject("Pot probe activation").AddComponent<PotProbeActivation>();
         effect.item = target; effect.origin = source; effect.started = Time.time; effect.camera = Camera.main;
         effect.identity = target.GetComponent<ComboProbeTarget>();
+        if (!launchClip) launchClip = Resources.Load<AudioClip>("Match3D/ComboProbe/PotProbeLaunch");
+        if (launchClip) {
+            effect.launchAudio = effect.gameObject.AddComponent<AudioSource>();
+            effect.launchAudio.playOnAwake = false;
+            effect.launchAudio.spatialBlend = 0;
+            effect.launchAudio.volume = .7f;
+            effect.launchAudio.clip = launchClip;
+        }
         if (effect.identity) { effect.token = effect.identity.Token; effect.generation = effect.identity.Generation; }
         effect.silhouette = new Material(outlineShader);
         effect.particleMaterial = new Material(particleShader);
@@ -66,6 +77,23 @@ public sealed class PotProbeActivation : MonoBehaviour {
         effect.ribbon.Play(); active[target] = effect; effect.Tick();
     }
     void LateUpdate() { Tick(); }
+    void TickAudio(float elapsed) {
+        if (!launchAudio) return;
+        if (!GameAudioCatalog.Enabled) {
+            launchAudio.Stop(); audioPaused = false;
+            if (elapsed >= SourceSeconds) launchProcessed = true;
+            return;
+        }
+        if (Time.timeScale <= 0) {
+            if (launchAudio.isPlaying) { launchAudio.Pause(); audioPaused = true; }
+            return;
+        }
+        if (audioPaused) { launchAudio.UnPause(); audioPaused = false; }
+        if (!launchProcessed && elapsed >= SourceSeconds) {
+            launchProcessed = true;
+            if (elapsed < HitSeconds) launchAudio.Play();
+        }
+    }
     void Dot(Vector3 screen, float size, float alpha, bool white = false) {
         if (count >= particles.Length) return;
         screen.z = 1.1f;
@@ -84,6 +112,7 @@ public sealed class PotProbeActivation : MonoBehaviour {
         float elapsed = Elapsed;
         // Keep a brief fading outline during emergence, then leave the normal mesh.
         if (elapsed >= Duration + .12f) { Finish(); return; }
+        TickAudio(elapsed);
         float activation = Mathf.Clamp01((elapsed - HitSeconds) / ActivateSeconds);
         float fade = 1 - Mathf.Clamp01((elapsed - Duration) / .12f);
         silhouette.SetFloat("_PotOpacity", (elapsed < HitSeconds ? .15f : .7f + .3f * Mathf.Sin(activation * Mathf.PI)) * fade);
@@ -124,6 +153,7 @@ public sealed class PotProbeActivation : MonoBehaviour {
     }
     void Finish() { Release(); Destroy(gameObject); }
     void Release() {
+        if (launchAudio) launchAudio.Stop();
         if (!ReferenceEquals(item, null) && active.TryGetValue(item, out var current) && current == this) active.Remove(item);
         if (outline != null) { if (camera) camera.RemoveCommandBuffer(CameraEvent.AfterForwardAlpha, outline); outline.Release(); outline = null; }
         if (ribbon) { ribbon.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); ribbon.gameObject.SetActive(false); }

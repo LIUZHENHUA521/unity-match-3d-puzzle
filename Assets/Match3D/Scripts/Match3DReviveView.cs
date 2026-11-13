@@ -18,7 +18,7 @@ public sealed class Match3DReviveView : MonoBehaviour {
     public void DescribeReturnRevival(bool timeout){
         animatedContent.Find("Description").gameObject.SetActive(false);
         AddToolText("Return description",animatedContent,new Vector2(0,-85),new Vector2(540,112),
-            timeout?"增加5分钟\n槽内物品回锅并洗牌":"槽内物品全部回锅\n并重新洗牌",29,new Color32(30,112,173,255));
+            timeout?"增加5分钟\n槽内物品全部移至暂存区":"槽内物品全部移出\n放入暂存区",29,new Color32(30,112,173,255));
     }
     public void ConfigureTool(int type,Action accept,Action decline){
         string[] names={"移出","吸附","洗牌","加时"};

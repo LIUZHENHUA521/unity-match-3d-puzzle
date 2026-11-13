@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public sealed class Match3DRewardsView : MonoBehaviour {
  public RectTransform list;public GameObject rowTemplate;public Text status;public Button refresh,more;
  int cursor=-1;bool busy;Match3DCommonDialog dialog;
- public void Connect(){refresh.onClick.AddListener(()=>StartCoroutine(Load(false)));more.onClick.AddListener(()=>StartCoroutine(Load(true)));StartCoroutine(Load(false));}
+ public void Connect(){refresh.onClick.AddListener(()=>{Match3DFlow.Instance?.PotVibrate();StartCoroutine(Load(false));});more.onClick.AddListener(()=>{Match3DFlow.Instance?.PotVibrate();StartCoroutine(Load(true));});StartCoroutine(Load(false));}
  IEnumerator Load(bool append){
   if(busy)yield break;busy=true;refresh.interactable=more.interactable=false;status.text="我的红包 · 正在加载…";
   Match3DRewards.Reply reply=null;yield return Match3DRewards.Instance.Request("list","{\"cursor\":"+(append?cursor:0)+"}",r=>reply=r);
