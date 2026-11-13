@@ -1,0 +1,560 @@
+TAP version 13
+# Subtest: verified identity proof is stored as a digest; only assignments leave gateway
+ok 1 - verified identity proof is stored as a digest; only assignments leave gateway
+  ---
+  duration_ms: 1.694208
+  ...
+# Subtest: invalid login, wrong app and missing WeChat profile never call AB service
+ok 2 - invalid login, wrong app and missing WeChat profile never call AB service
+  ---
+  duration_ms: 0.471208
+  ...
+# Subtest: concurrent pulls coalesce and service errors are sanitized
+ok 3 - concurrent pulls coalesce and service errors are sanitized
+  ---
+  duration_ms: 12.912625
+  ...
+# Subtest: HTTP requires login and ignores forged user, test selection and group
+ok 4 - HTTP requires login and ignores forged user, test selection and group
+  ---
+  duration_ms: 49.288042
+  ...
+# Subtest: capability comes from current request and concurrent old/new requests serialize proofs
+ok 5 - capability comes from current request and concurrent old/new requests serialize proofs
+  ---
+  duration_ms: 67.882042
+  ...
+# Subtest: concurrent native completions and lost-ACK retries persist once without a start record
+ok 6 - concurrent native completions and lost-ACK retries persist once without a start record
+  ---
+  duration_ms: 4.049958
+  ...
+# Subtest: every immutable field conflicts; owner isolation cannot rewrite an event
+ok 7 - every immutable field conflicts; owner isolation cannot rewrite an event
+  ---
+  duration_ms: 3.903833
+  ...
+# Subtest: auth, enums, identifiers, bounds and single-event validation
+ok 8 - auth, enums, identifiers, bounds and single-event validation
+  ---
+  duration_ms: 0.53575
+  ...
+# Subtest: old offline completion retains occurredAt and a delayed-upload diagnostic
+ok 9 - old offline completion retains occurredAt and a delayed-upload diagnostic
+  ---
+  duration_ms: 0.237333
+  ...
+# Subtest: HTTP auth, method, payload size, malformed input, unavailable persistence and rate limiting
+ok 10 - HTTP auth, method, payload size, malformed input, unavailable persistence and rate limiting
+  ---
+  duration_ms: 390.979625
+  ...
+# Subtest: new record capability survives start/finish ordering; old records stay unmarked
+ok 11 - new record capability survives start/finish ordering; old records stay unmarked
+  ---
+  duration_ms: 5.703375
+  ...
+# Subtest: same deck, ready and load handshake
+ok 12 - same deck, ready and load handshake
+  ---
+  duration_ms: 3.210667
+  ...
+# Subtest: duplicate and forged picks cannot advance progress
+ok 13 - duplicate and forged picks cannot advance progress
+  ---
+  duration_ms: 1.148167
+  ...
+# Subtest: triple removes exactly three and chronological undo
+ok 14 - triple removes exactly three and chronological undo
+  ---
+  duration_ms: 0.413333
+  ...
+# Subtest: seven distinct types lose; forged winner ignored
+ok 15 - seven distinct types lose; forged winner ignored
+  ---
+  duration_ms: 0.224542
+  ...
+# Subtest: clear wins and ends once
+ok 16 - clear wins and ends once
+  ---
+  duration_ms: 2.185167
+  ...
+# Subtest: queue cancellation, duplicate queue, private room full
+ok 17 - queue cancellation, duplicate queue, private room full
+  ---
+  duration_ms: 0.197
+  ...
+# Subtest: disconnect forfeits and timeout ties clean up
+ok 18 - disconnect forfeits and timeout ties clean up
+  ---
+  duration_ms: 0.313208
+  ...
+# Subtest: load deadline cancels; lobby expires
+ok 19 - load deadline cancels; lobby expires
+  ---
+  duration_ms: 0.276458
+  ...
+# Subtest: contact ticket requires authenticated game owner and carries no raw identity
+ok 20 - contact ticket requires authenticated game owner and carries no raw identity
+  ---
+  duration_ms: 1.994833
+  ...
+# Subtest: invalid source account or unsigned contact config fail closed
+ok 21 - invalid source account or unsigned contact config fail closed
+  ---
+  duration_ms: 0.266417
+  ...
+# Subtest: HTTP contact endpoint ignores client-supplied owner and rejects missing auth
+ok 22 - HTTP contact endpoint ignores client-supplied owner and rejects missing auth
+  ---
+  duration_ms: 50.218375
+  ...
+# Subtest: documented older signed contact route remains accepted
+ok 23 - documented older signed contact route remains accepted
+  ---
+  duration_ms: 0.313708
+  ...
+# Subtest: daily practice endpoint requires login and ignores client-supplied dates/seeds
+ok 24 - daily practice endpoint requires login and ignores client-supplied dates/seeds
+  ---
+  duration_ms: 15.384125
+  ...
+# Subtest: missing published document and unsupported generator fail closed; source fallback never selects future dates
+ok 25 - missing published document and unsupported generator fail closed; source fallback never selects future dates
+  ---
+  duration_ms: 3.589667
+  ...
+# Subtest: real HTTP daily endpoint routes through shared login and returns pinned configs without rewards
+ok 26 - real HTTP daily endpoint routes through shared login and returns pinned configs without rewards
+  ---
+  duration_ms: 166.97175
+  ...
+# Subtest: model themes are validated, pinned per player, and protected from old clients
+ok 27 - model themes are validated, pinned per player, and protected from old clients
+  ---
+  duration_ms: 3.742667
+  ...
+# Subtest: shared daily board is identical for concurrent players and remains frozen across schedule changes and retries
+ok 28 - shared daily board is identical for concurrent players and remains frozen across schedule changes and retries
+  ---
+  duration_ms: 118.44025
+  ...
+# Subtest: shared protocol/resource rejection rolls back day creation, while protocol 3 serves exact opening
+ok 29 - shared protocol/resource rejection rolls back day creation, while protocol 3 serves exact opening
+  ---
+  duration_ms: 53.975875
+  ...
+# Subtest: beta selection precedes normal shared pin; one config serves both tiers without granting tools
+ok 30 - beta selection precedes normal shared pin; one config serves both tiers without granting tools
+  ---
+  duration_ms: 3.940916
+  ...
+# Subtest: new friend grants all four once; existing accounts and self invitation never grant
+ok 31 - new friend grants all four once; existing accounts and self invitation never grant
+  ---
+  duration_ms: 2.438416
+  ...
+# Subtest: cancel/no login grants nothing; malformed inviter ignored; forged auth rejected
+ok 32 - cancel/no login grants nothing; malformed inviter ignored; forged auth rejected
+  ---
+  duration_ms: 0.9555
+  ...
+# Subtest: debit response loss retry, concurrent debit, refund retry and refunded replay are idempotent
+ok 33 - debit response loss retry, concurrent debit, refund retry and refunded replay are idempotent
+  ---
+  duration_ms: 3.818291
+  ...
+# Subtest: persistent records survive service restart and credentials cannot access another wallet receipt
+ok 34 - persistent records survive service restart and credentials cannot access another wallet receipt
+  ---
+  duration_ms: 0.684625
+  ...
+# Subtest: cancel before a delayed debit creates terminal receipt without crediting inventory
+ok 35 - cancel before a delayed debit creates terminal receipt without crediting inventory
+  ---
+  duration_ms: 0.227125
+  ...
+# Subtest: HTTP routes use server identity and require bearer token; legacy PVP stays available
+ok 36 - HTTP routes use server identity and require bearer token; legacy PVP stays available
+  ---
+  duration_ms: 110.677708
+  ...
+# Subtest: installed database SDK uses collection-based transactions and preserves callback results
+ok 37 - installed database SDK uses collection-based transactions and preserves callback results
+  ---
+  duration_ms: 40.045583
+  ...
+# Subtest: profile exposes stable server registration time on login and inventory refresh
+ok 38 - profile exposes stable server registration time on login and inventory refresh
+  ---
+  duration_ms: 0.41825
+  ...
+# Subtest: test assist is server owned, defaults off, and survives profile refresh
+ok 39 - test assist is server owned, defaults off, and survives profile refresh
+  ---
+  duration_ms: 1.138875
+  ...
+# Subtest: legacy wallets default add-time to zero; consume and refund are atomic and idempotent
+ok 40 - legacy wallets default add-time to zero; consume and refund are atomic and idempotent
+  ---
+  duration_ms: 0.739041
+  ...
+# Subtest: HTTP negotiates four inventory fields on every inventory route and keeps legacy clients readable
+ok 41 - HTTP negotiates four inventory fields on every inventory route and keeps legacy clients readable
+  ---
+  duration_ms: 25.625583
+  ...
+# Subtest: new invitations upgrade legacy wallets and add time exactly once per new friend
+ok 42 - new invitations upgrade legacy wallets and add time exactly once per new friend
+  ---
+  duration_ms: 0.587375
+  ...
+# Subtest: announcement read changes no inventory; reward only claim and retry/concurrency grant once
+ok 43 - announcement read changes no inventory; reward only claim and retry/concurrency grant once
+  ---
+  duration_ms: 10.271458
+  ...
+# Subtest: target isolation, invalid user/token, immutable idempotent send and admin credentials
+ok 44 - target isolation, invalid user/token, immutable idempotent send and admin credentials
+  ---
+  duration_ms: 0.840042
+  ...
+# Subtest: full-server excludes future registrations, expired claim rejected, receipt survives restart
+ok 45 - full-server excludes future registrations, expired claim rejected, receipt survives restart
+  ---
+  duration_ms: 0.4615
+  ...
+# Subtest: pagination and attention include mails beyond first page; suspicious ids safe
+ok 46 - pagination and attention include mails beyond first page; suspicious ids safe
+  ---
+  duration_ms: 18.451458
+  ...
+# Subtest: mail claims serialize with inventory consume; no lost updates
+ok 47 - mail claims serialize with inventory consume; no lost updates
+  ---
+  duration_ms: 0.635167
+  ...
+# Subtest: HTTP mail uses same login token and send rejects normal players
+ok 48 - HTTP mail uses same login token and send rejects normal players
+  ---
+  duration_ms: 131.692
+  ...
+# Subtest: four-item mail grants add-time once and legacy mail preserves existing add-time
+ok 49 - four-item mail grants add-time once and legacy mail preserves existing add-time
+  ---
+  duration_ms: 0.569625
+  ...
+# Subtest: status verifies the provider state, exposes a whitelist and never applies
+ok 50 - status verifies the provider state, exposes a whitelist and never applies
+  ---
+  duration_ms: 3.937417
+  ...
+# Subtest: prepare queries then applies using verified game identity and active merchant default
+ok 51 - prepare queries then applies using verified game identity and active merchant default
+  ---
+  duration_ms: 0.249417
+  ...
+# Subtest: already authorized prepare does not create another authorization
+ok 52 - already authorized prepare does not create another authorization
+  ---
+  duration_ms: 0.140166
+  ...
+# Subtest: invalid tokens, unverified profiles and wrong AppIDs cannot query or apply
+ok 53 - invalid tokens, unverified profiles and wrong AppIDs cannot query or apply
+  ---
+  duration_ms: 0.44225
+  ...
+# Subtest: provider errors, mismatched identity and malformed responses fail closed without leaking data
+ok 54 - provider errors, mismatched identity and malformed responses fail closed without leaking data
+  ---
+  duration_ms: 0.757916
+  ...
+# Subtest: concurrent requests share one application and per-account retry limits apply
+ok 55 - concurrent requests share one application and per-account retry limits apply
+  ---
+  duration_ms: 106.254541
+  ...
+# Subtest: HTTP ignores forged routing, recipient, authorization number and payment parameters
+ok 56 - HTTP ignores forged routing, recipient, authorization number and payment parameters
+  ---
+  duration_ms: 38.481625
+  ...
+# Subtest: pot capability separates concurrent clients while retaining progress capability
+ok 57 - pot capability separates concurrent clients while retaining progress capability
+  ---
+  duration_ms: 33.441583
+  ...
+# Subtest: pot HTTP capability comes from new header, never request body
+ok 58 - pot HTTP capability comes from new header, never request body
+  ---
+  duration_ms: 42.570125
+  ...
+# Subtest: concurrent starts/finishes deduplicate and late start preserves terminal
+ok 59 - concurrent starts/finishes deduplicate and late start preserves terminal
+  ---
+  duration_ms: 3.137667
+  ...
+# Subtest: finish first, identity isolation, immutable metadata
+ok 60 - finish first, identity isolation, immutable metadata
+  ---
+  duration_ms: 0.783583
+  ...
+# Subtest: reject auth expiry and malformed data
+ok 61 - reject auth expiry and malformed data
+  ---
+  duration_ms: 0.424541
+  ...
+# Subtest: HTTP shares login identity and persistence failures are not acknowledged
+ok 62 - HTTP shares login identity and persistence failures are not acknowledged
+  ---
+  duration_ms: 88.559666
+  ...
+# Subtest: add-time records retain actual remaining seconds, rewarded uses and independent revival
+ok 63 - add-time records retain actual remaining seconds, rewarded uses and independent revival
+  ---
+  duration_ms: 0.463167
+  ...
+# Subtest: separate channels survive concurrent finish retries and late starts without duplicate records
+ok 64 - separate channels survive concurrent finish retries and late starts without duplicate records
+  ---
+  duration_ms: 0.990084
+  ...
+# Subtest: new channel telemetry rejects malformed, partial, inconsistent or impossible counts
+ok 65 - new channel telemetry rejects malformed, partial, inconsistent or impossible counts
+  ---
+  duration_ms: 0.329875
+  ...
+# Subtest: legacy retries stay unchanged; explicit channel zeroes remain distinct from unknown
+ok 66 - legacy retries stay unchanged; explicit channel zeroes remain distinct from unknown
+  ---
+  duration_ms: 0.170625
+  ...
+# Subtest: second-stage wins issue exactly one voucher regardless of first-stage telemetry
+ok 67 - second-stage wins issue exactly one voucher regardless of first-stage telemetry
+  ---
+  duration_ms: 29.625042
+  ...
+# Subtest: legacy first-stage rejection can be retried unchanged and cannot issue twice
+ok 68 - legacy first-stage rejection can be retried unchanged and cannot issue twice
+  ---
+  duration_ms: 4.522458
+  ...
+# Subtest: legacy first-stage rejection retries retain expiry, quota and receipt checks
+ok 69 - legacy first-stage rejection retries retain expiry, quota and receipt checks
+  ---
+  duration_ms: 7.473167
+  ...
+# Subtest: failed second-stage records and unrelated legacy rejections are not rehabilitated
+ok 70 - failed second-stage records and unrelated legacy rejections are not rehabilitated
+  ---
+  duration_ms: 0.630416
+  ...
+# Subtest: reward settlement preserves split channels and retries issue one voucher
+ok 71 - reward settlement preserves split channels and retries issue one voucher
+  ---
+  duration_ms: 3.850542
+  ...
+# Subtest: qualification defaults off, authentic source identity and immutable retry
+ok 72 - qualification defaults off, authentic source identity and immutable retry
+  ---
+  duration_ms: 0.555875
+  ...
+# Subtest: two stages, concurrency, original voucher retry, quotas isolated by tier
+ok 73 - two stages, concurrency, original voucher retry, quotas isolated by tier
+  ---
+  duration_ms: 1.33225
+  ...
+# Subtest: tier forgery, foreign/expired qualification and mismatched level remain rejected
+ok 74 - tier forgery, foreign/expired qualification and mismatched level remain rejected
+  ---
+  duration_ms: 0.626375
+  ...
+# Subtest: inventory receipts must be valid and become non-refundable when settled
+ok 75 - inventory receipts must be valid and become non-refundable when settled
+  ---
+  duration_ms: 1.414792
+  ...
+# Subtest: legacy qualifications retain test-account isolation
+ok 76 - legacy qualifications retain test-account isolation
+  ---
+  duration_ms: 0.679084
+  ...
+# Subtest: disabling unlimited magnet cannot rehabilitate an earlier reward run
+ok 77 - disabling unlimited magnet cannot rehabilitate an earlier reward run
+  ---
+  duration_ms: 0.276375
+  ...
+# Subtest: hourly release uses Beijing time, ceiling rounding, carryover and daily cap
+ok 78 - hourly release uses Beijing time, ceiling rounding, carryover and daily cap
+  ---
+  duration_ms: 0.232333
+  ...
+# Subtest: entry does not reserve; concurrent winners share the last released slot and retries do not debit
+ok 79 - entry does not reserve; concurrent winners share the last released slot and retries do not debit
+  ---
+  duration_ms: 3.550334
+  ...
+# Subtest: daily exhaustion, zero quota, missing quota and close during gameplay fail closed
+ok 80 - daily exhaustion, zero quota, missing quota and close during gameplay fail closed
+  ---
+  duration_ms: 0.917583
+  ...
+# Subtest: cross-midnight awards count on issuance day and old runs cannot bypass personal daily limit
+ok 81 - cross-midnight awards count on issuance day and old runs cannot bypass personal daily limit
+  ---
+  duration_ms: 0.646375
+  ...
+# Subtest: daily snapshots distinguish tiers, pin one player/day/tier and bind reward records
+ok 82 - daily snapshots distinguish tiers, pin one player/day/tier and bind reward records
+  ---
+  duration_ms: 0.660667
+  ...
+# Subtest: published config is snapshotted and later edits or midnight never change an existing run
+ok 83 - published config is snapshotted and later edits or midnight never change an existing run
+  ---
+  duration_ms: 0.4045
+  ...
+# Subtest: already-issued legacy runs still settle against their original fixed snapshot
+ok 84 - already-issued legacy runs still settle against their original fixed snapshot
+  ---
+  duration_ms: 0.415791
+  ...
+# Subtest: explicit model themes require protocol 2 before creating reward eligibility
+ok 85 - explicit model themes require protocol 2 before creating reward eligibility
+  ---
+  duration_ms: 0.252542
+  ...
+# Subtest: add-time receipts are checked, cannot be refunded after settlement, and cannot be omitted
+ok 86 - add-time receipts are checked, cannot be refunded after settlement, and cannot be omitted
+  ---
+  duration_ms: 1.277875
+  ...
+# Subtest: shared opening rejects incompatible clients without issuing a run; supported clients finish both stages normally
+ok 87 - shared opening rejects incompatible clients without issuing a run; supported clients finish both stages normally
+  ---
+  duration_ms: 15.695666
+  ...
+# Subtest: test accounts earn real vouchers for both tiers with all test tools and idempotent retries
+ok 88 - test accounts earn real vouchers for both tiers with all test tools and idempotent retries
+  ---
+  duration_ms: 1.74125
+  ...
+# Subtest: test tool permission comes from the immutable run, not request data or later account changes
+ok 89 - test tool permission comes from the immutable run, not request data or later account changes
+  ---
+  duration_ms: 0.493459
+  ...
+# Subtest: test accounts still need inventory receipts and available quota
+ok 90 - test accounts still need inventory receipts and available quota
+  ---
+  duration_ms: 0.384084
+  ...
+# Subtest: new qualifications cannot settle legacy practice versions or unknown practice runs
+ok 91 - new qualifications cannot settle legacy practice versions or unknown practice runs
+  ---
+  duration_ms: 0.229458
+  ...
+# Subtest: bachelor: last slot is atomic, entry does not reserve, retries do not debit twice
+ok 92 - bachelor: last slot is atomic, entry does not reserve, retries do not debit twice
+  ---
+  duration_ms: 0.582334
+  ...
+# Subtest: bachelor: missing, invalid or zero quota denies entry; live edits and closing apply to existing runs
+ok 93 - bachelor: missing, invalid or zero quota denies entry; live edits and closing apply to existing runs
+  ---
+  duration_ms: 0.526166
+  ...
+# Subtest: bachelor: crossing midnight charges issuance date, personal limit and old awarded runs stay idempotent
+ok 94 - bachelor: crossing midnight charges issuance date, personal limit and old awarded runs stay idempotent
+  ---
+  duration_ms: 1.368667
+  ...
+# Subtest: elite: last slot is atomic, entry does not reserve, retries do not debit twice
+ok 95 - elite: last slot is atomic, entry does not reserve, retries do not debit twice
+  ---
+  duration_ms: 1.418875
+  ...
+# Subtest: elite: missing, invalid or zero quota denies entry; live edits and closing apply to existing runs
+ok 96 - elite: missing, invalid or zero quota denies entry; live edits and closing apply to existing runs
+  ---
+  duration_ms: 1.168958
+  ...
+# Subtest: elite: crossing midnight charges issuance date, personal limit and old awarded runs stay idempotent
+ok 97 - elite: crossing midnight charges issuance date, personal limit and old awarded runs stay idempotent
+  ---
+  duration_ms: 0.736875
+  ...
+# Subtest: elite quota is fully available at midnight and never refills hourly; bachelor keeps hourly release
+ok 98 - elite quota is fully available at midnight and never refills hourly; bachelor keeps hourly release
+  ---
+  duration_ms: 0.539708
+  ...
+# Subtest: beta changes apply only to new qualifications; ordinary clients cannot opt into beta
+ok 99 - beta changes apply only to new qualifications; ordinary clients cannot opt into beta
+  ---
+  duration_ms: 68.615833
+  ...
+# Subtest: seven day table grants real tools; day seven stays completed until next day then repeats
+ok 100 - seven day table grants real tools; day seven stays completed until next day then repeats
+  ---
+  duration_ms: 26.552375
+  ...
+# Subtest: missed days retain progress and cannot claim missed calendar days
+ok 101 - missed days retain progress and cannot claim missed calendar days
+  ---
+  duration_ms: 2.4535
+  ...
+# Subtest: server Beijing midnight refreshes and a response-lost retry crossing midnight does not claim next day
+ok 102 - server Beijing midnight refreshes and a response-lost retry crossing midnight does not claim next day
+  ---
+  duration_ms: 0.768042
+  ...
+# Subtest: concurrent devices and retries credit exactly one reward and state is read only
+ok 103 - concurrent devices and retries credit exactly one reward and state is read only
+  ---
+  duration_ms: 1.079042
+  ...
+# Subtest: untrusted input, stale dates, skipped days, cycles and forged amounts never grant
+ok 104 - untrusted input, stale dates, skipped days, cycles and forged amounts never grant
+  ---
+  duration_ms: 3.6385
+  ...
+# Subtest: wrong snapshots cannot advance progress; extra reward fields ignored
+ok 105 - wrong snapshots cannot advance progress; extra reward fields ignored
+  ---
+  duration_ms: 0.458459
+  ...
+# Subtest: account isolation, service restart, old three-tool inventory and actual consumption
+ok 106 - account isolation, service restart, old three-tool inventory and actual consumption
+  ---
+  duration_ms: 0.908208
+  ...
+# Subtest: full inventory and failed commits roll back progress together with reward
+ok 107 - full inventory and failed commits roll back progress together with reward
+  ---
+  duration_ms: 1.249917
+  ...
+# Subtest: a backwards clock cannot award another reward
+ok 108 - a backwards clock cannot award another reward
+  ---
+  duration_ms: 0.363958
+  ...
+# Subtest: HTTP integration authenticates, grants and negotiates old/new inventory shape
+ok 109 - HTTP integration authenticates, grants and negotiates old/new inventory shape
+  ---
+  duration_ms: 130.871542
+  ...
+# Subtest: two actual WebSocket clients create, ready, pick and disconnect
+ok 110 - two actual WebSocket clients create, ready, pick and disconnect
+  ---
+  duration_ms: 206.90025
+  ...
+1..110
+# tests 110
+# suites 0
+# pass 110
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 658.571167

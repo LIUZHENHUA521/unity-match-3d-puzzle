@@ -26,6 +26,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         assert self.path == '/invites/ab'
         assert self.headers.get('X-Goose-Progress-Display') == '1'
+        assert self.headers.get('X-Pot-Combo-Praise') == '1'
         assert json.loads(self.rfile.read(int(self.headers['Content-Length']))) == {}
         token = self.headers.get('Authorization', '').replace('Bearer ', '')
         counts[token] = counts.get(token, 0) + 1
