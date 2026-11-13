@@ -16,18 +16,18 @@ public static class PotReplayRuntimeValidation {
   try{
    if(EditorApplication.timeSinceStartup>deadline)throw new Exception("runtime replay timeout at "+step);
    var flow=Match3DFlow.Instance;if(!flow||!flow.StartupComplete)return;
-   if(step==0){var level=new Match3DDailyLevel{date="2026-11-13",tier="bachelor",version="runtime-fixture",generatorVersion="daily-v1",seed=123,seconds=300,initialCount=30,limitHeight=8,layers=new[]{new ChallengeLayer(30,3,4)}};flow.PreviewDailyOpening(level,1);step=1;return;}
+   if(step==0){var level=new Match3DDailyLevel{date="2026-11-13",tier="bachelor",version="runtime-fixture",generatorVersion="daily-v1",seed=123,seconds=300,initialCount=30,limitHeight=8,layers=new[]{new ChallengeLayer(30,3,4)}};flow.PreviewDailyOpening(level,2);step=1;return;}
    if(step==1){if(flow.CreationInProgress)return;baseline=Time.realtimeSinceStartup;step=2;return;}
    if(step==2){if(Time.realtimeSinceStartup-baseline<1)return;
     foreach(var b in new MonoBehaviour[]{Match3DGameRecords.Instance,PotReplayService.Instance,Match3DInvitations.Instance})if(b){b.StopAllCoroutines();b.enabled=false;}
     var account=Match3DInvitations.Instance;typeof(Match3DInvitations).GetField("<State>k__BackingField",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(account,new Match3DInvitations.Reply{inviteCode=new string('a',64)});typeof(Match3DInvitations).GetField("token",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(account,"fixture-no-network");
     typeof(Match3DFlow).GetField("<LocalPreview>k__BackingField",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(flow,false);
-    PotReplayRecorder.Instance.Begin(new Match3DGameRecords.Record{recordId=new string('c',32),runId=new string('d',32),stage=1,initialCount=15},flow.PotDailyLevel);
+    PotReplayRecorder.Instance.Begin(new Match3DGameRecords.Record{recordId=new string('c',32),runId=new string('d',32),stage=2,initialCount=30},flow.PotDailyLevel);
     baseline=Time.realtimeSinceStartup;step=20;return;
    }
-   if(step==20){if(Time.realtimeSinceStartup-baseline<1)return;PotReplayRecorder.Instance.Finish("quit");var path=PotReplayService.PathFor(new string('a',64),new string('c',32),".pending");Check(File.Exists(path),"recorder persisted a real daily recording");File.Copy(path,"/tmp/pot-replay-runtime-detail.json",true);File.Delete(path);
+   if(step==20){if(Time.realtimeSinceStartup-baseline<1)return;var recording=(PotReplayData)typeof(PotReplayRecorder).GetField("data",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(PotReplayRecorder.Instance);Check(recording!=null&&recording.frames.Count==0,"recorder never retains historical frames");PotReplayRecorder.Instance.Finish("quit");var path=PotReplayService.PathFor(new string('a',64),new string('c',32),".ready");Check(File.Exists(path),"recorder persisted a ready manifest");using(var writer=new StreamWriter("/tmp/pot-replay-runtime-detail.json"))foreach(var part in PotReplayJournal.JsonPieces(path))writer.Write(part);PotReplayJournal.DeleteCompleted(path);
     typeof(Match3DFlow).GetField("<LocalPreview>k__BackingField",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(flow,true);
-    var opening=flow.CaptureDailyOpening();data=new PotReplayData{level=flow.PotDailyLevel,opening=opening,stage=1,duration=2,status="quit",recordId=new string('a',32),runId=new string('b',32)};
+    var opening=flow.CaptureDailyOpening();data=new PotReplayData{level=flow.PotDailyLevel,opening=opening,stage=2,duration=2,status="quit",recordId=new string('a',32),runId=new string('b',32)};
     for(int i=0;i<3;i++){var frame=new PotReplayFrame{t=i,full=true,remaining=300-i,tray=i==1?new[]{opening.items[0].id}:new int[0],cameraPosition=Camera.main.transform.position,cameraRotation=Camera.main.transform.rotation,fov=Camera.main.fieldOfView,cameraSize=Camera.main.orthographicSize,orthographic=Camera.main.orthographic};foreach(var item in opening.items)frame.items.Add(new PotReplayPose{id=item.id,p=item.position+Vector3.right*i*.1f,r=item.rotation,s=item.scale,visible=i!=2,zone=i==1?1:0});data.frames.Add(frame);}
     attempts=PlayerPrefs.GetInt("goose.result.attempts",0);flow.gameObject.AddComponent<PotReplayPlayer>().Load(data);step=3;return;
    }
