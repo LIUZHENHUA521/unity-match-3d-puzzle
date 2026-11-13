@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-13",
+  "functions": {
+    "hitABTest": "Active",
+    "createABTest": "Active",
+    "listABTests": "Active",
+    "listABTestRecords": "Active",
+    "updateABTest": "Active"
+  },
+  "server": {
+    "DeployId": "030",
+    "Status": "normal",
+    "FlowRatio": 100,
+    "BuildId": 2612452619
+  },
+  "admin": {
+    "beforeSha256": "f1467a14ea994bd28b8a2cb26fdfa598100af9da2b3bfd120979a42ea21d470d",
+    "afterSha256": "596f62687071cae5aeecf80baef517e486ab54051a9f7c57a5901b07bbbd90a4",
+    "filename": "index-unity-ab-596f62687071.js",
+    "replacements": 8,
+    "unrelatedBytesPreserved": true
+  },
+  "wechat": {
+    "version": "0.1.64",
+    "totalBytes": 31408517,
+    "uploaded": true,
+    "submittedForReview": false
+  },
+  "tests": {
+    "gooseServer": 101,
+    "cloudFunctions": 31,
+    "unityRuntimeChecks": 11
+  },
+  "identitySmoke": {
+    "valid": {
+      "ok": true,
+      "results": {}
+    },
+    "forged": {
+      "ok": false,
+      "error": "goose_identity_required"
+    },
+    "fixtureDeleted": true
+  },
+  "ingest": {
+    "valid": {
+      "status": 400,
+      "error": "invalid_rows"
+    },
+    "wrongApp": {
+      "status": 403,
+      "error": "internal_ingest_appid_mismatch"
+    },
+    "noRowsWritten": true
+  }
+}
