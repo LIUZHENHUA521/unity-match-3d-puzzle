@@ -1,0 +1,24 @@
+PASS first transmission accepted
+PASS second transmission accepted independently
+PASS normal pick repositions slots without cancelling two transmissions
+PASS reordering retains original per-pick clocks: first lifts while second activates
+PASS only first pickup owns an emergence contact
+PASS concurrent pickups arrive and release effects
+PASS probe completes triple
+PASS effect survives immediate removal of matched target from logical board
+PASS triple waits for transmitted light before moving
+PASS triple does not recycle any object before probe arrival
+PASS probe triple completes without stale visuals
+PASS cancellation fixture starts
+PASS move tool accepts during transmission
+PASS moving to storage immediately clears transmission
+PASS cancelled transmission never resumes lift from storage
+PASS pooled identity fixture starts
+PASS pool token reassignment cancels old effect
+PASS restart fixture starts
+PASS restart immediately clears activation resources
+PASS restart prevents delayed pickups in new stage
+PASS real pile supplies an occluded probe target
+PASS real pile probe accepted
+PASS real pile activation lands normally
+COMPLETE

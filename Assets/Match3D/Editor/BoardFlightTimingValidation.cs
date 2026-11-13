@@ -110,8 +110,8 @@ public static class BoardFlightTimingValidation {
   foreach(var item in groupB)input.AddObjectOnStack(item);
   deadline=Time.realtimeSinceStartup+2;
   while(GameManager.Instance.GameIsPlaying()&&Time.realtimeSinceStartup<deadline)yield return null;
-  Check(GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH&&Time.time-began>=.69f&&Time.time-secondBegan<.69f,"first EndCombine checks empty board without waiting for concurrent second match");
-  Check(input.HasPendingVisuals,"win checkpoint permits remaining parallel visuals");
+  Check(GameManager.Instance.gameStatus==GameManager.GameStatus.FINISH&&Time.time-began>=.69f&&Time.time-secondBegan>=.74f,"win waits for both concurrent matches to finish before settlement");
+  Check(!input.HasPendingVisuals,"win checkpoint has no uncounted parallel match");
   Match3DFlow.Instance.Home();yield return Setup();
   var realItems=LevelGenerator.Instance.objectsOnScene.GroupBy(x=>x.name).Select(g=>g.First()).Take(6).ToArray();
   Check(realItems.Length==6,"six distinct original model types available");

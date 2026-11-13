@@ -53,7 +53,7 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
         }catch(System.Exception){ /* Older hosts retain Unity's safe-area fallback. */ }
 #endif
     }
-    void Awake(){SetupToolBackgrounds();headerPosition=header.anchoredPosition;footerPosition=footer.anchoredPosition;}
+    void Awake(){gameObject.AddComponent<BoardCameraZoomControls>().Build(header);SetupToolBackgrounds();headerPosition=header.anchoredPosition;footerPosition=footer.anchoredPosition;}
     void LateUpdate(){
         var size=((RectTransform)transform).rect.size;
         float units=size.x/Mathf.Max(1,Screen.width);

@@ -5,7 +5,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 function setup(wx){
  const library={},events=[];
- vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/GooseMerchantAuthorization.jslib'),'utf8'),{LibraryManager:{library},mergeInto:Object.assign,wx,UTF8ToString:x=>x,Module:{SendMessage:(target,method,json)=>events.push({target,method,...JSON.parse(json)})}});
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/PotMerchantAuthorization.jslib'),'utf8'),{LibraryManager:{library},mergeInto:Object.assign,wx,UTF8ToString:x=>x,Module:{SendMessage:(target,method,json)=>events.push({target,method,...JSON.parse(json)})}});
  return {library,events,open:(patch={})=>library.GooseMerchantAuthorizationOpen('Game',JSON.stringify({requestId:'request1',appid:'wx-game',mchid:'1234567890',packageInfo:'package',...patch}))};
 }
 function api(requestMerchantTransfer){return {getAccountInfoSync:()=>({miniProgram:{appId:'wx-game'}}),requestMerchantTransfer};}

@@ -51,6 +51,7 @@ public sealed class BoardTools : MonoBehaviour {
     public static bool Busy=>Shuffling||(InputController.Instance&&InputController.Instance.ReturningToBowl);
     sealed class ShuffleItem { public GameObject obj;public Rigidbody body;public Vector3 start,target;public Quaternion rotation,tilt;public float delay,lift;public bool wasKinematic;public Dictionary<Collider,bool> colliders; }
     public static bool Enabled=>InputController.Instance&&InputController.Instance.UsesSourceFlight;
+    public static void AppendStoredItems(List<GameObject> result){if(instance)foreach(var column in instance.columns)foreach(var item in column)if(item)result.Add(item);}
     public static int StoredCount=>instance?instance.columns.Sum(x=>x.Count(o=>o)):0;
     public static bool IsStored(GameObject obj)=>obj&&instance&&instance.columns.Any(x=>x.Contains(obj));
     static BoardTools Ensure(){

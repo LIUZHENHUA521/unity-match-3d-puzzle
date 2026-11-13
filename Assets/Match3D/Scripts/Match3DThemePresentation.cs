@@ -1,22 +1,24 @@
 using UnityEngine;
 using System.Linq;
 // Apply the fixed top-down camera pose and viewport offset for solo play.
-// The normal input path does not move, orbit or follow pile height.
+// User zoom is layered on the fitted pose; pile height never drives the camera.
 // Provenance and call-path evidence: Tools/LayeredPile/camera-shadow-alignment.md
 // and docs/refactoring/2026-11-04-naming.md.
+[DefaultExecutionOrder(-100)]
 public sealed class Match3DThemePresentation : MonoBehaviour {
  public bool Active=>visual;
  public const int SourceControlMode=2; // LevelControlType.flatTopView, not an inspector tuning option.
  public static readonly Quaternion SourceRotation=Quaternion.Euler(90f,0,0);
  public static Vector3 SourcePosition=>new Vector3(0,0,.5f)+SourceRotation*new Vector3(0,0,-30);
  GameObject visual;Camera camera;CameraFitter fitter;bool fitted,orthographic;Vector3 position;Quaternion rotation;float size,near,far,fov;Rect rect;CameraClearFlags clear;Color background;bool hdr;int culling;
+ BoardCameraZoom zoom;
  Transform pan;
  public static readonly Vector3 PanBowlLocalCenter=new Vector3(.105f,0,0);
  public Vector3 PanBowlCenter=>pan?pan.TransformPoint(PanBowlLocalCenter):Vector3.zero;
  Collider[] legacyColliders;bool[] colliderStates;
  Renderer[] legacy;bool[] enabledStates;BoardLighting lighting;
  public void Begin(string theme){
-  End();var prefab=Resources.Load<GameObject>("Match3D/Scenes/"+theme);if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
+  End();if(!zoom)zoom=GetComponent<BoardCameraZoom>();if(!zoom)zoom=gameObject.AddComponent<BoardCameraZoom>();zoom.ResetView();var prefab=Resources.Load<GameObject>("Match3D/Scenes/"+theme);if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
   visual=Instantiate(prefab);visual.name=theme+" source visuals";
   AddPanCollision(visual);
   pan=visual.transform.Find("Grab3D Frying Pan");
@@ -48,13 +50,20 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
    collider.sharedMaterial=BoardPhysicsSettings.DefaultSurface;
   }
  }
- // Screen-space item size relative to the original camera; fixed throughout play.
+ // Baseline screen-space item size before the optional player-controlled zoom.
  public const float ItemScreenScale=.9f;
  public static float OriginalSize(float aspect)=>6.5f*Mathf.Max(1,(9f/16)/Mathf.Max(.01f,aspect));
  public static float Size(float aspect)=>OriginalSize(aspect)/ItemScreenScale;
- public void Fit(){if(camera&&visual){camera.orthographicSize=Size(camera.aspect);camera.fieldOfView=60*Mathf.Max(1,(9f/16)/camera.aspect);if(GameplayBoardLayout.Enabled)GameplayBoardLayout.FitBoard(camera,PanBowlCenter,4.1f);}}
+ public void Fit(){if(camera&&visual){
+  var oldPosition=camera.transform.position;float oldSize=camera.orthographicSize;
+  camera.transform.SetPositionAndRotation(SourcePosition,SourceRotation);
+  camera.orthographicSize=Size(camera.aspect);camera.fieldOfView=60*Mathf.Max(1,(9f/16)/camera.aspect);
+  if(GameplayBoardLayout.Enabled)GameplayBoardLayout.FitBoard(camera,PanBowlCenter,4.1f);
+  if(zoom)zoom.Apply(camera,oldPosition,oldSize,Time.unscaledDeltaTime);
+ }}
  void LateUpdate(){Fit();}
  public void End(){
+  if(zoom)zoom.ResetView();
   if(lighting)lighting.End();
   if(visual){visual.SetActive(false);Destroy(visual);visual=null;}pan=null;
   if(legacy!=null)for(int i=0;i<legacy.Length;i++)if(legacy[i])legacy[i].enabled=enabledStates[i];legacy=null;

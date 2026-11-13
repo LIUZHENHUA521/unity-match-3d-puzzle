@@ -1,0 +1,13 @@
+PASS missing service falls back
+PASS no login has no group
+PASS authenticated assignments load and keys are case insensitive
+PASS unassigned test keeps default
+PASS account switch immediately hides previous group
+PASS second account gets independent assignment
+PASS paused or removed test clears old cache
+PASS expired cache falls back even during retry
+PASS service failure never invents a group
+PASS late previous-account response is discarded
+PASS 401 refreshes login and hides cached groups
+ALL PASSED
+

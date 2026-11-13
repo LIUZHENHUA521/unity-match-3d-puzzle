@@ -6,7 +6,7 @@ using UnityEngine;
 
 // Validate the 12 newly recovered special-goose profiles against their serialized source shapes.
 // Run in the disposable Play Mode validation project after importing the original item prefabs.
-public static class BoardGooseColliderValidation {
+public static class BoardPotColliderValidation {
     [Serializable] class Data {public Profile[] items;}
     [Serializable] class Profile {public string name,source;public int[] col,realCol;public Node[] nodes;}
     [Serializable] class Node {public int[] indices;public int layer;public Shape[] colliders;}

@@ -2,7 +2,7 @@ using UnityEngine;
 
 // Adapted from Yuming0929/goose-catch, commit 028e75a21e25e8199385934633b8ff1759f24d59.
 // Items.tsx positions and delays; Experience.tsx static centre attractor.
-public class GooseSpawnMotion : MonoBehaviour {
+public class PotSpawnMotion : MonoBehaviour {
     public const float WorldScale = .6f;
     static readonly Vector3 Centre = new Vector3(0,0,.15f);
     Rigidbody body;

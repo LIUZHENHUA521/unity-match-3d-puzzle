@@ -22,7 +22,7 @@ function fixture(){
   wx:{shareAppMessage:options=>calls.push(options),onHide(){},onShow(){},offHide(){},offShow(){}}
  };
  vm.createContext(context);
- for(const name of ['GooseShareCard','GooseInvites','GooseRewardShare']){
+ for(const name of ['PotShareCard','PotInvites','PotRewardShare']){
   vm.runInContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL',name+'.jslib'),'utf8'),context);
  }
  // Resolve only declared dependencies, as the WebGL linker does.

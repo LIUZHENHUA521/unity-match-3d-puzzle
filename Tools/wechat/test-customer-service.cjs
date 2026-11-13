@@ -6,7 +6,7 @@ const path=require('node:path');
 const url='https://work.weixin.qq.com/kfid/test?enc_scene=signed&scene_param='+ 'a'.repeat(64);
 function setup(wx,window){
  const library={};
- vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/GooseProfile.jslib'),'utf8'),{LibraryManager:{library},mergeInto:Object.assign,UTF8ToString:value=>value,wx,window});
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/PotProfile.jslib'),'utf8'),{LibraryManager:{library},mergeInto:Object.assign,UTF8ToString:value=>value,wx,window});
  return (link=url)=>library.GooseCustomerServiceOpen(link);
 }
 test('user tap opens the dedicated game account synchronously',()=>{

@@ -15,7 +15,9 @@ public class InputController : Singleton<InputController>
     public bool IsBusy => ReturningToBowl || IsResolving || resolution != null || HasPendingVisuals;
     public bool UsesSourceFlight => Match3DFlow.Instance && !Match3DFlow.Instance.IsPvp && (Match3DFlow.Instance.Stage==1||Match3DFlow.Instance.Stage==2);
     public bool HasPendingVisuals => sourceFlying.Count>0 || sourceCombining.Count>0;
-    public bool CanEvaluateWin => !UsesSourceFlight || sourceCompletionCheckReady;
+    // A completed triple must not release victory while another triple is still
+    // animating: its Matched() callback has not necessarily updated the record yet.
+    public bool CanEvaluateWin => !UsesSourceFlight || (sourceCompletionCheckReady && !HasPendingVisuals);
     readonly HashSet<GameObject> sourceFlying=new HashSet<GameObject>();
     readonly HashSet<GameObject> sourceCombining=new HashSet<GameObject>();
     readonly Dictionary<GameObject,List<Tween>> sourceMoves=new Dictionary<GameObject,List<Tween>>();
@@ -27,7 +29,7 @@ public class InputController : Singleton<InputController>
     readonly Dictionary<GameObject, Quaternion> boardRotations = new Dictionary<GameObject, Quaternion>();
     private readonly Dictionary<GameObject, Dictionary<Collider,bool>> boardColliders = new Dictionary<GameObject, Dictionary<Collider,bool>>();
     private Match3DSelectionFeedback selection;
-    private void Awake() { Input.multiTouchEnabled = false; selection=gameObject.AddComponent<Match3DSelectionFeedback>(); }
+    private void Awake() { Input.multiTouchEnabled = true; selection=gameObject.AddComponent<Match3DSelectionFeedback>(); }
     public void CancelSelection(){CancelPointer();activeFinger=null;}
     private void ClearPointerTarget(){pressedObject=null;if(selection)selection.Cancel();}
     private void CancelPointer(){ClearPointerTarget();pointerHeld=false;pointerStartedOnUI=false;}
@@ -121,6 +123,9 @@ public class InputController : Singleton<InputController>
     }
     private void Update()
     {
+        if (BoardCameraZoom.Instance && BoardCameraZoom.Instance.ProcessTouches(PointerOnButton)) {
+            LastPickState="camera gesture";CancelSelection();return;
+        }
         if (!GameManager.Instance.GameIsPlaying() || (Match3DFlow.Instance && Match3DFlow.Instance.BlocksGameplay)) {
             LastPickState="blocked";CancelPointer(); activeFinger = null; return;
         }
@@ -148,10 +153,10 @@ public class InputController : Singleton<InputController>
     }
     sealed class MagnetFlight { public Vector3 start; public Quaternion rotation; public float started,delay; }
     readonly Dictionary<GameObject,MagnetFlight> magnetFlights=new Dictionary<GameObject,MagnetFlight>();
-    sealed class ProbeFlight {public Vector3 start;public Quaternion rotation;public float started;}
+    sealed class ProbeFlight {public Vector3 start;public Quaternion rotation;public float started;public bool contactStarted;}
     readonly Dictionary<GameObject,ProbeFlight> probeFlights=new Dictionary<GameObject,ProbeFlight>();
     const float MagnetSeconds=ItemFlightMotion.MagnetSeconds;
-    public void AddObjectOnStack(GameObject obj,bool playSound=true,bool magnetic=false,float magnetDelay=0,ProbePickSource source=ProbePickSource.Manual)
+    public void AddObjectOnStack(GameObject obj,bool playSound=true,bool magnetic=false,float magnetDelay=0,ProbePickSource source=ProbePickSource.Manual,Vector3? potProbeOrigin=null)
     {
         if (BoardTools.Busy || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
             objectsOnStack.Count >= 7 || objectsOnStack.Contains(obj)) return;
@@ -186,23 +191,23 @@ public class InputController : Singleton<InputController>
         boardColliders[obj]=colliderStates;
         objectsOnStack.Add(obj);
         objectsOnStack = objectsOnStack.GroupBy(x => x.name).SelectMany(g => g).ToList();
-        if(UsesSourceFlight){if(magnetic)magnetFlights[obj]=new MagnetFlight{start=obj.transform.position,rotation=obj.transform.rotation,started=Time.unscaledTime,delay=magnetDelay};SourcePick(obj,magnetic?ProbePickSource.Automatic:source);BoardTools.ReleaseStored(obj);return;}
+        if(UsesSourceFlight){if(magnetic)magnetFlights[obj]=new MagnetFlight{start=obj.transform.position,rotation=obj.transform.rotation,started=Time.unscaledTime,delay=magnetDelay};SourcePick(obj,magnetic?ProbePickSource.Automatic:source,potProbeOrigin);BoardTools.ReleaseStored(obj);return;}
         Reposition();
         if (resolution != null) StopCoroutine(resolution);
         resolution = StartCoroutine(Resolve());
     }
-    private void SourcePick(GameObject obj,ProbePickSource source)
+    private void SourcePick(GameObject obj,ProbePickSource source,Vector3? potProbeOrigin)
     {
-        // CheckLevelState runs at each EndCombine, not after every concurrent match has finished.
-        // A later pickup invalidates an earlier completion checkpoint until a new callback runs.
+        // Each pickup invalidates the completion checkpoint. CanEvaluateWin also
+        // waits for every concurrent flight/combine to finish before settlement.
         sourceCompletionCheckReady=false;
         bool probe=source==ProbePickSource.Probe;
         if(probe){
             probeFlights[obj]=new ProbeFlight{start=obj.transform.position,rotation=obj.transform.rotation,started=Time.time};
-            ProbeLiftContact.Begin(obj);
+            if(potProbeOrigin.HasValue)PotProbeActivation.Begin(obj,potProbeOrigin.Value);
         }
         LastFlightDuration=magnetFlights.TryGetValue(obj,out var magnet)?MagnetSeconds+magnet.delay:ItemFlightMotion.MoveSeconds;
-        if(probe)LastFlightDuration+=ProbeLiftContact.Duration;
+        if(probe)LastFlightDuration+=PotProbeActivation.Duration+ProbeLiftContact.Duration;
         float flightSeconds=LastFlightDuration;
         var initial=scales[obj];var target=ItemFlightMotion.PickScale(obj,initial);
         var display=Match3DTrayDisplayBinding.For(obj);if(display)target*=display.pose.scale;
@@ -213,19 +218,19 @@ public class InputController : Singleton<InputController>
                 elapsed=t;if(obj)obj.transform.localScale=ItemFlightMotion.MagnetScale(initial,target,t-magnet.delay);
             },flightSeconds,flightSeconds).SetUpdate(true).SetEase(Ease.Linear).SetTarget(obj.transform).OnComplete(()=>{
                 if(!obj)return;
-                sourceFlying.Remove(obj);magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);
+                sourceFlying.Remove(obj);magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);PotProbeActivation.Stop(obj);
                 if(objectsOnStack.Contains(obj)&&!arrivedObject.Contains(obj))arrivedObject.Add(obj);
             });
             BoardToolVisual.MagnetTrail(obj,magnet.delay);
         }else{
         // BeClick starts scale at release; RefreshContentDisplay starts all three axes immediately.
         obj.transform.DOScale(initial*ItemFlightMotion.ScalePeak,ItemFlightMotion.ScalePeakSeconds)
-            .SetDelay(probe?ProbeLiftContact.Duration:0).SetUpdate(!probe).SetEase(Ease.OutQuad).OnComplete(()=>{
+            .SetDelay(probe?PotProbeActivation.Duration+ProbeLiftContact.Duration:0).SetUpdate(!probe).SetEase(Ease.OutQuad).OnComplete(()=>{
                 if(!obj)return;
                 obj.transform.DOScale(target,ItemFlightMotion.MoveSeconds-ItemFlightMotion.ScalePeakSeconds)
                     .SetUpdate(!probe).SetEase(Ease.InSine).OnComplete(()=>{
                         if(!obj)return;
-                        sourceFlying.Remove(obj);magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);
+                        sourceFlying.Remove(obj);magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);PotProbeActivation.Stop(obj);
                         if(objectsOnStack.Contains(obj)&&!arrivedObject.Contains(obj))arrivedObject.Add(obj);
                         obj.transform.DOPunchScale(initial*ItemFlightMotion.PunchScale,ItemFlightMotion.PunchSeconds,1,1);
                     });
@@ -259,12 +264,21 @@ public class InputController : Singleton<InputController>
             var rotation=display?Match3DTrayDisplaySettings.Rotation(display.pose,cameraRotation):Camera.main?cameraRotation*Quaternion.Euler(-90,0,0):Quaternion.identity;
             if(probeFlights.TryGetValue(obj,out var probe)){
                 float elapsed=Mathf.Max(0,Time.time-probe.started);
-                float duration=ProbeLiftContact.Duration+ItemFlightMotion.MoveSeconds;
+                float duration=PotProbeActivation.Duration+ProbeLiftContact.Duration+ItemFlightMotion.MoveSeconds;
                 var motion=DOTween.To(()=>elapsed,t=>{
                     if(!obj)return;
-                    if(t<ProbeLiftContact.Duration){obj.transform.position=ProbeLiftContact.Lift(probe.start,t);obj.transform.rotation=probe.rotation;}
-                    else{
-                        float u=Mathf.Clamp01((t-ProbeLiftContact.Duration)/ItemFlightMotion.MoveSeconds);
+                    // Repositioning after another pick retains this pickup's original clock.
+                    float local=t-PotProbeActivation.Duration;
+                    if(local<0){
+                        obj.transform.position=probe.start;obj.transform.rotation=probe.rotation;
+                        obj.transform.localScale=scales[obj]*PotProbeActivation.ActivationScale(t);
+                    }else if(local<ProbeLiftContact.Duration){
+                        if(!probe.contactStarted){probe.contactStarted=true;ProbeLiftContact.Begin(obj);}
+                        obj.transform.localScale=scales[obj];
+                        obj.transform.position=ProbeLiftContact.Lift(probe.start,local);obj.transform.rotation=probe.rotation;
+                    }else{
+                        ProbeLiftContact.Stop(obj);
+                        float u=Mathf.Clamp01((local-ProbeLiftContact.Duration)/ItemFlightMotion.MoveSeconds);
                         obj.transform.position=Vector3.Lerp(ProbeLiftContact.Lift(probe.start,ProbeLiftContact.Duration),slot,u);
                         obj.transform.rotation=Quaternion.Slerp(probe.rotation,rotation,u*u);
                     }
@@ -324,7 +338,7 @@ public class InputController : Singleton<InputController>
     }
     private void RemoveSourceVisual(GameObject obj){
         if(!obj)return;
-        obj.transform.DOKill();magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);sourceFlying.Remove(obj);sourceCombining.Remove(obj);sourceMoves.Remove(obj);
+        obj.transform.DOKill();magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);PotProbeActivation.Stop(obj);sourceFlying.Remove(obj);sourceCombining.Remove(obj);sourceMoves.Remove(obj);
         scales.Remove(obj);boardRotations.Remove(obj);boardColliders.Remove(obj);ItemFlightMotion.Forget(obj);GameAudioCatalog.Forget(obj);
         // LevelObjectPool.Recycle keeps the ObjectUnit for a later Get(objName);
         // only the logical board list is removed at combine time.
@@ -397,7 +411,7 @@ public class InputController : Singleton<InputController>
         if(items.Count==0||!BoardTools.TrySpend(0))return false;
         CancelSelection();
         foreach(var obj in items){
-            obj.transform.DOKill();magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
+            obj.transform.DOKill();magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);PotProbeActivation.Stop(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
             objectsOnStack.Remove(obj);arrivedObject.Remove(obj);pickHistory.Remove(obj);
             var body=obj.GetComponent<Rigidbody>();body.isKinematic=true;body.detectCollisions=true;
             if(boardColliders.TryGetValue(obj,out var flags))foreach(var flag in flags)if(flag.Key)flag.Key.enabled=flag.Value;
@@ -425,7 +439,7 @@ public class InputController : Singleton<InputController>
         var center=LayeredItemPile.Instance&&LayeredItemPile.Instance.Running?LayeredItemPile.Instance.ReturnPosition():new Vector3(0,2,.15f);
         for(int i=0;i<items.Count;i++){
             var obj=items[i];obj.transform.DOKill();
-            magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
+            magnetFlights.Remove(obj);probeFlights.Remove(obj);ProbeLiftContact.Stop(obj);PotProbeActivation.Stop(obj);sourceMoves.Remove(obj);sourceFlying.Remove(obj);
             objectsOnStack.Remove(obj);arrivedObject.Remove(obj);pickHistory.Remove(obj);
             var item=new BowlReturn{obj=obj,body=obj.GetComponent<Rigidbody>(),start=obj.transform.position,
                 scale=obj.transform.localScale,rotation=obj.transform.rotation,
@@ -520,7 +534,7 @@ public class InputController : Singleton<InputController>
         foreach (var item in objectsOnStack) if (item) item.transform.DOKill();
         foreach(var item in sourceCombining)if(item){item.transform.DOKill();ItemFlightMotion.Forget(item);GameAudioCatalog.Forget(item);BoardItemPool.Recycle(item);}
         foreach(var item in LevelGenerator.Instance.objectsOnScene)ItemFlightMotion.Forget(item);
-        magnetFlights.Clear();probeFlights.Clear();ProbeLiftContact.Clear();sourceCombining.Clear();sourceFlying.Clear();sourceMoves.Clear();sourceCompletionCheckReady=true;
+        magnetFlights.Clear();probeFlights.Clear();ProbeLiftContact.Clear();PotProbeActivation.Clear();sourceCombining.Clear();sourceFlying.Clear();sourceMoves.Clear();sourceCompletionCheckReady=true;
         objectsOnStack.Clear(); arrivedObject.Clear(); scales.Clear(); boardRotations.Clear(); boardColliders.Clear(); pickHistory.Clear();
     }
 }

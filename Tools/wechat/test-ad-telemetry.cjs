@@ -1,6 +1,6 @@
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
-const telemetry=fs.readFileSync('Assets/Match3D/Plugins/WebGL/GooseAdTelemetry.jslib','utf8');
-const adsSource=fs.readFileSync('Assets/Match3D/Plugins/WebGL/GooseReviveAds.jslib','utf8');
+const telemetry=fs.readFileSync('Assets/Match3D/Plugins/WebGL/PotAdTelemetry.jslib','utf8');
+const adsSource=fs.readFileSync('Assets/Match3D/Plugins/WebGL/PotReviveAds.jslib','utf8');
 const tick=()=>new Promise(setImmediate);
 const OWNER='a'.repeat(64),OTHER='b'.repeat(64);
 const event=(id='1'.repeat(32),owner=OWNER)=>({schemaVersion:1,eventType:'completed',owner,impressionId:id,recordId:'2'.repeat(32),runId:'3'.repeat(32),stage:2,placement:'tool_magnet',adUnitId:'adunit-test',clientVersion:'0.1',platform:'ios',occurredAt:0});

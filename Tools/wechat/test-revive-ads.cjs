@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const source=fs.readFileSync('Assets/Match3D/Plugins/WebGL/GooseReviveAds.jslib','utf8');
+const source=fs.readFileSync('Assets/Match3D/Plugins/WebGL/PotReviveAds.jslib','utf8');
 const flush=()=>new Promise(setImmediate);
 function fixture(){
  const messages=[],ads=new Map(),timers=new Map();let serial=0,creates=0;

@@ -53,10 +53,9 @@ public sealed class ComboProbePreview : MonoBehaviour {
         Vector3 start = camera.WorldToScreenPoint(origin.position);
         Vector3 end = camera.WorldToScreenPoint(target.transform.position);
         float unit = camera.pixelWidth / 720f;
-        var delta = end - start; var side = new Vector3(-delta.y, delta.x, 0).normalized;
         for (int i = 0; i < particles.Length; i++) {
             float t = i / (float)(particles.Length - 1);
-            Vector3 point = Vector3.Lerp(start, end, t) + side * (Mathf.Sin(t * Mathf.PI) * 25 * unit + Mathf.Sin(t * 15 - Time.unscaledTime * 3) * 2 * unit * Mathf.Sin(t * Mathf.PI));
+            Vector3 point = PotProbeActivation.ConnectionPoint(start, end, t, unit, Time.unscaledTime);
             point.z = 1.1f;
             particles[i].position = camera.ScreenToWorldPoint(point);
             particles[i].startSize = GameplayBoardLayout.WorldPerPoint(camera) * (3 + Mathf.Sin(t * 25 - Time.unscaledTime * 4));

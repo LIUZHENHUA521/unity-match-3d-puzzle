@@ -7,12 +7,12 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-public static class BoardGooseAnimationValidation
+public static class BoardPotAnimationValidation
 {
     const string Root = "Assets/Match3D/OriginalModels";
     public static string Run()
     {
-        var data = BoardGooseAnimationImporter.Read();
+        var data = BoardPotAnimationImporter.Read();
         int channels = 0, keys = 0, movedSkeletons = 0, deformedMeshes = 0;
         var random = UnityEngine.Random.state;
         try

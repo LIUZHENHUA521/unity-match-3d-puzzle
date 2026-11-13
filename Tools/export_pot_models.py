@@ -1,4 +1,4 @@
-# Usage: python Tools/export_goose_models.py /path/to/extracted/model-bundles
+# Usage: python Tools/export_pot_models.py /path/to/extracted/model-bundles
 # Requires UnityPy 1.25.4; leaves the source bundles unchanged.
 import UnityPy,json,hashlib,re,sys
 from pathlib import Path

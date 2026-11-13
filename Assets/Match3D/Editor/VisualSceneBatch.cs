@@ -1,7 +1,7 @@
 using UnityEditor;using UnityEditor.SceneManagement;using UnityEngine;using System.IO;using System;using System.Linq;
 [InitializeOnLoad]public static class VisualSceneBatch{
  static VisualSceneBatch(){EditorApplication.playModeStateChanged+=Changed;}
- public static void Run(){OriginalModelImporter.ImportMissingSourceModels();BoardModelSizeImporter.Import();BoardLevelPlanImporter.Import();BoardSceneImporter.Import();OriginalModelImporter.ApplySourceShadowFlags();OriginalModelImporter.ApplySourceMaterials();BoardGooseAnimationImporter.Import();BoardToolVisualImporter.Build();SessionState.SetBool("visual-batch",true);EditorSceneManager.OpenScene(Match3DBuilder.Scene);EditorApplication.isPlaying=true;}
+ public static void Run(){OriginalModelImporter.ImportMissingSourceModels();BoardModelSizeImporter.Import();BoardLevelPlanImporter.Import();BoardSceneImporter.Import();OriginalModelImporter.ApplySourceShadowFlags();OriginalModelImporter.ApplySourceMaterials();BoardPotAnimationImporter.Import();BoardToolVisualImporter.Build();SessionState.SetBool("visual-batch",true);EditorSceneManager.OpenScene(Match3DBuilder.Scene);EditorApplication.isPlaying=true;}
  static void Changed(PlayModeStateChange s){if(!SessionState.GetBool("visual-batch",false)||s!=PlayModeStateChange.EnteredPlayMode)return;EditorApplication.delayCall+=StartFrameChecks;}
  static void StartFrameChecks(){new GameObject("Source validation driver").AddComponent<BoardValidationDriver>().StartCoroutine(FrameChecks());}
  static System.Collections.IEnumerator FrameChecks(){yield return BoardCreationFramesValidation.Run();yield return BoardFlightTimingValidation.Run();yield return BoardSelectionPhysicsFramesValidation.Run();yield return BoardToolsFramesValidation.Run();yield return BoardAudioFramesValidation.Run();yield return BoardToolVisualValidation.RunFrames();Test();}
@@ -33,13 +33,13 @@ using UnityEditor;using UnityEditor.SceneManagement;using UnityEngine;using Syst
    RunCheck("source-tool-visual",()=>{BoardToolVisualValidation.Run();});
    RunCheck("source-tools",()=>{BoardToolsValidation.Run();});
    RunCheck("source-highlight",()=>{BoardHighlightValidation.Run();});
-   RunCheck("source-animation",()=>{BoardGooseAnimationValidation.Run();});
+   RunCheck("source-animation",()=>{BoardPotAnimationValidation.Run();});
    RunCheck("source-audio",()=>{BoardAudioValidation.Run();});
    RunCheck("source-creation",()=>{BoardCreationValidation.Run();});
    RunCheck("source-random",()=>{BoardRandomValidation.Run();});
    RunCheck("source-generation",()=>{BoardGenerationValidation.Run();});
    RunCheck("source-interaction",()=>{BoardInteractionValidation.Run();});
-   RunCheck("source-goose-collider",()=>{BoardGooseColliderValidation.Run();});
+   RunCheck("source-goose-collider",()=>{BoardPotColliderValidation.Run();});
    RunCheck("source-item-materials",()=>{BoardItemMaterialsValidation.Run();});
    RunCheck("source-item-render",()=>{BoardItemRenderValidation.Run();});
    RunCheck("source-ambient",()=>{BoardAmbientValidation.Run();});

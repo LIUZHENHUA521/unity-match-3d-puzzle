@@ -38,7 +38,7 @@ public static class Match3DValidation {
             if(step==0&&(!flow||string.IsNullOrEmpty(flow.ScreenName)))return;
             switch(step){
                 case 0:Require(flow&&flow.ScreenName=="home","home launch");flow.ShowThemes();Require(flow.ScreenName!="themes"&&flow.library.themes[0].sourceEnvironment=="CountrysideStove","elite skips theme selection and uses countryside");flow.Home();flow.Begin(0);Require(generator.objectsOnScene.Count==12&&!GameManager.Instance.GameIsPlaying(),"whole source tutorial board spawns before play");Require(GameManager.Instance.currentLevelTime==0,"source tutorial has no countdown");Require(BoardEnvironment.CurrentName=="CountrysideStove","source tutorial selects first-level scene");Later(4);break;
-                case 1:Require(generator.objectsOnScene.Count==12,"tutorial has 12 items");Require(generator.objectsOnScene.All(o=>!o.GetComponent<GooseSpawnMotion>()&&o.GetComponent<Rigidbody>().useGravity),"ordinary gravity restored without centre attraction");Require(generator.objectsOnScene.GroupBy(x=>x.name).Count()==2,"tutorial has two types");Require(GameManager.Instance.GameIsPlaying(),"tutorial starts after settling");Require(generator.objectsOnScene.All(o=>o.transform.position.y>-.5f),"tutorial bodies stay above floor");Time.timeScale=8;Later(.1);break;
+                case 1:Require(generator.objectsOnScene.Count==12,"tutorial has 12 items");Require(generator.objectsOnScene.All(o=>!o.GetComponent<PotSpawnMotion>()&&o.GetComponent<Rigidbody>().useGravity),"ordinary gravity restored without centre attraction");Require(generator.objectsOnScene.GroupBy(x=>x.name).Count()==2,"tutorial has two types");Require(GameManager.Instance.GameIsPlaying(),"tutorial starts after settling");Require(generator.objectsOnScene.All(o=>o.transform.position.y>-.5f),"tutorial bodies stay above floor");Time.timeScale=8;Later(.1);break;
                 case 2:
                     if(generator.objectsOnScene.Count>0){if(!input.IsBusy){foreach(var obj in generator.objectsOnScene.GroupBy(x=>x.name).First().Take(3).ToArray())input.AddObjectOnStack(obj);}due=EditorApplication.timeSinceStartup+.15;return;}
                     Time.timeScale=1;Later(.5);break;
@@ -52,7 +52,7 @@ public static class Match3DValidation {
                 case 10:
                     if(generator.objectsOnScene.Count>0){if(!input.IsBusy){foreach(var obj in generator.objectsOnScene.GroupBy(x=>x.name).First().Take(3).ToArray())input.AddObjectOnStack(obj);}due=EditorApplication.timeSinceStartup+.15;return;}
                     Time.timeScale=1;Later(.5);break;
-                case 11:Require(flow.HasGoose("daily"),"hard-stage collection unlock");flow.Home();flow.ShowCollection();Require(flow.ScreenName=="collection","collection navigation");flow.Begin(1);flow.Home();Later(4);break;
+                case 11:Require(flow.HasPot("daily"),"hard-stage collection unlock");flow.Home();flow.ShowCollection();Require(flow.ScreenName=="collection","collection navigation");flow.Begin(1);flow.Home();Later(4);break;
                 case 12:Require(generator.objectsOnScene.Count==0&&!GameManager.Instance.GameIsPlaying(),"home cancels pending start");Finish(null);break;
             }
         }catch(Exception e){Finish(e);}

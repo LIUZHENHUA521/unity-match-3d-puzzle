@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public static class BoardGooseAnimationImporter
+public static class BoardPotAnimationImporter
 {
     const string Root = "Assets/Match3D/OriginalModels";
     [Serializable] public class Export { public Model[] models; public Clip[] clips; }

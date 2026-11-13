@@ -34,10 +34,14 @@ public sealed class ComboProbeController : MonoBehaviour {
             owner.view = new GameObject("Combo probe region").AddComponent<ComboProbeView>();
             owner.view.Initialize(owner);
         }
-        if (owner.view) owner.view.gameObject.SetActive(enabled);
+        if (owner.view) {
+            owner.view.gameObject.SetActive(enabled);
+            owner.view.Praise.BeginStage(enabled ? Match3DABExperiments.GetABGroup(PotComboPraise.TestKey) : null);
+        }
     }
     public static void End() { if (Instance) Instance.EndStage(); }
     void EndStage() {
+        PotProbeActivation.Clear();
         Running = false; targets.Clear(); State.Reset(); operation = 0;
         if (view) { view.ResetView(); view.gameObject.SetActive(false); }
     }
@@ -58,9 +62,14 @@ public sealed class ComboProbeController : MonoBehaviour {
         if (!Running) return;
         var target = obj.GetComponent<ComboProbeTarget>();
         if (target) { State.Remove(target.Token); }
+        int previousCombo = State.Combo;
         bool reward = State.Pick(++operation, source, matched);
         if (reward) GrantReward();
-        if (view) view.Refresh();
+        if (view) {
+            view.Refresh();
+            if (State.Combo > previousCombo) view.Praise.ShowCombo(State.Combo);
+            else if (State.Combo == 0) view.Praise.ResetImmediate();
+        }
     }
     public bool GrantReward() {
         if (!Running || !Camera.main) return false;
@@ -114,7 +123,8 @@ public sealed class ComboProbeController : MonoBehaviour {
         if (!CanInteract || State.Top(column) != expected || (view && view.Rewards.IsPending(expected))) return false;
         var target = Target(expected); if (!target) { RemoveInvalid(); return false; }
         int before = InputController.Instance.AcceptedPicks;
-        InputController.Instance.AddObjectOnStack(target.gameObject, source: ProbePickSource.Probe);
+        InputController.Instance.AddObjectOnStack(target.gameObject, source: ProbePickSource.Probe,
+            potProbeOrigin: view ? (Vector3?)view.Slot(column).transform.position : null);
         bool accepted = InputController.Instance.AcceptedPicks > before;
         if (accepted) { HasUsedProbe = true; if (view) view.Refresh(); }
         return accepted;

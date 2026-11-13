@@ -25,6 +25,7 @@ public sealed class ComboProbeView : MonoBehaviour {
     const float RingFadeDuration = .3f;
     float ringFadeRemaining;
     int revision = -1, currentColor = -2;
+    public PotComboPraise Praise { get; private set; }
     public ComboProbePreview Preview { get; private set; }
     public RectTransform Root => root;
     public SkeletonGraphic Ring => ring;
@@ -88,6 +89,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         }
         Preview = gameObject.AddComponent<ComboProbePreview>();
         Rewards = gameObject.AddComponent<ComboProbeRewardFeedback>(); Rewards.Initialize(owner, this, assets);
+        Praise = gameObject.AddComponent<PotComboPraise>(); Praise.Initialize(root);
         Layout(); Refresh();
     }
     static Image Picture(string name, Sprite sprite, Transform parent, Vector2 position, Vector2 size) {
@@ -178,6 +180,7 @@ public sealed class ComboProbeView : MonoBehaviour {
     }
     public void ResetView() {
         ringFadeRemaining = 0;
+        if (Praise) Praise.ResetImmediate();
         if (ring) { SetRingAlpha(0); ring.gameObject.SetActive(false); }
         if (Rewards) Rewards.ResetImmediate(); rewardRevision = -1;
         icons.Dispose(); // A new stage/theme must capture its current scene lighting again.

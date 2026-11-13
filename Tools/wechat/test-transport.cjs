@@ -14,7 +14,7 @@ const library={};
 const context={LibraryManager:{library},mergeInto:Object.assign,UTF8ToString:s=>s,
   Module:{SendMessage:(target,method,json)=>events.push(JSON.parse(json))},wx};
 vm.createContext(context);
-vm.runInContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/GooseTransport.jslib'),'utf8'),context);
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/PotTransport.jslib'),'utf8'),context);
 context.GooseTransport=library.$GooseTransport;
 library.GooseConnect('test','https://example.invalid','match','',1);
 library.GooseDisconnect('test');

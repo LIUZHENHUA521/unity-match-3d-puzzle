@@ -234,12 +234,12 @@ public partial class Match3DFlow : MonoBehaviour {
         // Both home challenge entries use the sole countryside theme directly.
         BeginReward(0,"elite");
     }
-    public bool HasGoose(string id){return PlayerPrefs.GetInt("goose.collection."+id,0)>0;}
+    public bool HasPot(string id){return PlayerPrefs.GetInt("goose.collection."+id,0)>0;}
     public void ShowCollection(){
         Clear();ScreenName="collection";var view=Match3DUIView.Load("Collection",page);view.Bind("Back",Home);
-        view.Text("Count","已收集 "+library.themes.Count(t=>HasGoose(t.id))+" / "+library.themes.Length);
+        view.Text("Count","已收集 "+library.themes.Count(t=>HasPot(t.id))+" / "+library.themes.Length);
         for(int i=0;i<library.themes.Length;i++){
-            int index=i;var theme=library.themes[i];bool got=HasGoose(theme.id);
+            int index=i;var theme=library.themes[i];bool got=HasPot(theme.id);
             var art=view.Get<Image>("Goose"+i);art.sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+theme.gooseSprite);
             art.color=got?Color.white:new Color(.28f,.28f,.28f,.8f);
             view.Text("Name"+i,theme.title);view.Text("Status"+i,got?"已获得 · 永久收藏":"通关主题第二关解锁");

@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
-const source = fs.readFileSync('Assets/Match3D/Plugins/WebGL/GooseDefaultFont.jslib', 'utf8');
+const source = fs.readFileSync('Assets/Match3D/Plugins/WebGL/PotDefaultFont.jslib', 'utf8');
 function check(platform, supported, expected) {
   const library = {};
   const context = { LibraryManager: { library }, mergeInto: Object.assign,

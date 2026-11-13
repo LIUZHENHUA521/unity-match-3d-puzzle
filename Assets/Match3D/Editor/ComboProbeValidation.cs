@@ -285,11 +285,26 @@ public static class ComboProbeValidation {
         slot.OnPointerDown(press); slot.OnPointerUp(press);
         Check(InputController.Instance.AcceptedPicks == accepts + 1 && !owner.State.Contains(top), "short press accepts exactly one physical target; accepted=" + InputController.Instance.AcceptedPicks + " before=" + accepts + " interact=" + owner.CanInteract);
         ValidateProbeCollisionIsolation(target.gameObject);
-        Check(ProbeLiftContact.ActiveCount==1,"real probe click starts emergence contact");
+        Check(ProbeLiftContact.ActiveCount==0&&PotProbeActivation.ActiveCount==1,"probe starts transmission before emergence contact");
+        var activationStart=target.transform.position;
+        var activationScale=target.transform.localScale;
+        yield return new WaitForSeconds(.18f);
+        Check(Vector3.Distance(target.transform.position,activationStart)<.0001f&&ProbeLiftContact.ActiveCount==0,"light travels while linked object stays in pile");
+        Capture("pot-probe-transmission",720,1565);
+        var effect=Object.FindObjectOfType<PotProbeActivation>();float pausedTime=effect.Elapsed;
+        Time.timeScale=0;yield return new WaitForSecondsRealtime(.15f);
+        Check(effect&&Mathf.Abs(effect.Elapsed-pausedTime)<.0001f&&Vector3.Distance(target.transform.position,activationStart)<.0001f,"pause freezes transmission and target");
+        Time.timeScale=1;
+        yield return new WaitForSeconds(.24f);
+        Check(Vector3.Distance(target.transform.position,activationStart)<.0001f&&target.transform.localScale.magnitude>activationScale.magnitude*1.02f,"arrival activates target with scale pulse before movement");
+        Capture("pot-probe-activation",720,1565);
+        yield return new WaitForSeconds(.18f);
+        Check(ProbeLiftContact.ActiveCount==1&&target.transform.position.y>activationStart.y,"target emerges only after activation completes");
         var pausedLiftPosition=target.transform.position;
         Time.timeScale=0;yield return new WaitForSecondsRealtime(.15f);
         Check(Vector3.Distance(target.transform.position,pausedLiftPosition)<.0001f&&ProbeLiftContact.ActiveCount==1,"pause freezes both emergence animation and contact lifetime");
         Time.timeScale=1;
+        Capture("pot-probe-emergence",720,1565);
 
         Check(owner.HasUsedProbe && view.HintText == "点击取物 · 长按定位", "successful use switches to regular interaction hint immediately");
         Check(!owner.UseTop(1, top), "stale click cannot consume next model");
@@ -297,7 +312,7 @@ public static class ComboProbeValidation {
         Time.timeScale = 0; yield return null;
         Check(!view.Preview.Active, "pause immediately clears preview"); Time.timeScale = 1;
         yield return new WaitForSecondsRealtime(1.2f);
-        Check(ProbeLiftContact.ActiveCount==0,"real probe flight removes contact before arrival");
+        Check(ProbeLiftContact.ActiveCount==0&&PotProbeActivation.ActiveCount==0,"real probe flight removes contact and activation visual before arrival");
         // A third same-name physical target completes a triple using a probe: no reward loop.
         int countBefore = owner.State.Count;
         var matchingColumn = Enumerable.Range(0, 4).First(c => owner.State.Top(c) != 0);

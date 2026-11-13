@@ -17,13 +17,13 @@ public sealed class ComboProbeSlot : Selectable, IPointerClickHandler, IDragHand
     }
     public override void OnPointerDown(PointerEventData e) {
         base.OnPointerDown(e); Cancel();
-        if (!owner.CanInteract || e.button != PointerEventData.InputButton.Left) return;
+        if (Input.touchCount > 1 || (BoardCameraZoom.Instance && BoardCameraZoom.Instance.SuppressPick) || !owner.CanInteract || e.button != PointerEventData.InputButton.Left) return;
         token = owner.State.Top(column); if (token == 0 || view.Rewards.IsPending(token)) return;
         held = true; pointer = e.pointerId; began = Time.unscaledTime; origin = e.position;
     }
     public override void OnPointerUp(PointerEventData e) {
         base.OnPointerUp(e); if (!held || e.pointerId != pointer) return;
-        bool use = !cancelled && !previewed && Time.unscaledTime - began < HoldSeconds && Valid() &&
+        bool use = Input.touchCount <= 1 && !(BoardCameraZoom.Instance && BoardCameraZoom.Instance.SuppressPick) && !cancelled && !previewed && Time.unscaledTime - began < HoldSeconds && Valid() &&
             RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, e.position, e.pressEventCamera);
         long expected = token; Cancel(); if (use) owner.UseTop(column, expected);
     }
@@ -37,7 +37,7 @@ public sealed class ComboProbeSlot : Selectable, IPointerClickHandler, IDragHand
     bool Valid() => owner && owner.CanInteract && owner.State.Top(column) == token && !view.Rewards.IsPending(token) && owner.Target(token);
     void Update() {
         if (!held) return;
-        if (!Valid()) { Cancel(); return; }
+        if (Input.touchCount > 1 || (BoardCameraZoom.Instance && BoardCameraZoom.Instance.SuppressPick) || !Valid()) { Cancel(); return; }
         if (!cancelled && !previewed && Time.unscaledTime - began >= HoldSeconds) {
             previewed = true; view.Preview.Show(owner, token, transform);
         }
