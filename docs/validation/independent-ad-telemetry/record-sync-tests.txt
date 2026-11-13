@@ -1,0 +1,27 @@
+PASS legacy rejection retained without startup popup
+PASS legacy migration persists acknowledgement
+PASS other account legacy rejection does not set current error
+PASS fresh HTTP 400 is retained and warned once
+PASS structured server reason and rejection time captured
+PASS diagnostics and acknowledgement survive serialization
+PASS acknowledged rejection does not warn after restart
+PASS new 409 still warns after an earlier acknowledged failure
+PASS multiple fresh rejections warn only once per account per session
+PASS account B upload reached server
+PASS in-flight rejection does not notify switched account
+PASS owner receives its pending rejection after returning
+PASS switch to clean account clears sync error
+PASS HTTP 503 retries and successful receipt drains pending record
+PASS HTTP 401 refreshes login and retries without rejection
+PASS malformed error response retains HTTP fallback
+PASS ad context freezes active record and rejects another account
+PASS telemetry captures correct active record before completion
+PASS finished record cannot issue a new ad context; captured context remains frozen
+PASS new records explicitly advertise independent ad telemetry support
+PASS finish serializes separate channels while retaining legacy tool totals
+PASS finish serializes both revival routes
+PASS queued and persisted telemetry stays immutable after round reset
+PASS queue capacity still warns and protects existing payloads
+ALL PASSED
+
+PASS rejected records are not retried; transient/auth failures are retried
