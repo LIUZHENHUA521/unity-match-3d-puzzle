@@ -8,7 +8,7 @@ using UnityEngine.Scripting;
 // Only included in the standalone authoring player. No account or reward services.
 public sealed class DailyWebPreview : MonoBehaviour {
     public static DailyWebPreview Instance {get;private set;}
-    [Serializable] sealed class Command {public string action;public bool hasOpening;public int stage;public Match3DDailyLevel level;}
+    [Serializable] sealed class Command {public string action;public bool hasOpening;public int stage;public Match3DDailyLevel level;public PotReplayData replay;public float time;}
     [Serializable] sealed class Reply {public string type,message;public int stage,count;public Package package;}
     [Serializable] sealed class Package {public string date,tier,candidateId,previewImage;public int seed;public Match3DDailySnapshot opening;}
     [DllImport("__Internal")] static extern void GooseDailyPreviewEvent(string json);
@@ -19,7 +19,10 @@ public sealed class DailyWebPreview : MonoBehaviour {
         if(busy)return;
         try{
             var command=JsonUtility.FromJson<Command>(json);
-            if(command.action=="load"){
+            if(command.action=="potReplaySeek"&&PotReplayPlayer.Active){PotReplayPlayer.Instance.Seek(command.time);}
+            else if(command.action=="potReplay"){
+                var player=gameObject.GetComponent<PotReplayPlayer>()??gameObject.AddComponent<PotReplayPlayer>();player.Load(command.replay);
+            }else if(command.action=="load"){
                 var level=command.level;
                 // JsonUtility materializes an empty nested class for a missing JSON field.
                 if(level!=null&&!command.hasOpening)level.opening=null;
@@ -31,6 +34,9 @@ public sealed class DailyWebPreview : MonoBehaviour {
             }else if(command.action=="play"&&candidate?.opening!=null){StartCoroutine(Run(Play(command.stage==1?1:2)));}
         }catch(Exception e){Emit(new Reply{type="error",message=e.Message});}
     }
+    public void PotReplayClosed(){Emit(new Reply{type="potReplayClosed"});}
+    public void PotReplayError(string message){Emit(new Reply{type="error",message=message});}
+    public void PotReplayReady(){Emit(new Reply{type="potReplayPlaying"});}
     public void Replay(){if(!busy&&candidate?.opening!=null)StartCoroutine(Run(Play(Match3DFlow.Instance.Stage)));}
     IEnumerator Run(IEnumerator steps){
         busy=true;string failure=null;

@@ -46,6 +46,7 @@ public partial class Match3DFlow {
             reviveClearUsed=true;
         }
         Match3DRewardAcquisition.Commit(offer);
+        PotReplayRecorder.Event("revive",-1,timeout?1:0);
         var usage=timeout?ReviveUsage.time:ReviveUsage.clear;
         if(offer.route==Match3DRewardAcquisition.Route.Share)usage.share++;
         else if(offer.route==Match3DRewardAcquisition.Route.Ad)usage.ad++;

@@ -143,6 +143,8 @@ public partial class Match3DFlow : MonoBehaviour {
         }
         StartupService<Match3DABExperiments>().Initialize(endpoint);
         StartupService<Match3DGameRecords>().Initialize(endpoint);
+        StartupService<PotReplayService>().Initialize(endpoint);
+        StartupService<PotReplayRecorder>();
         StartupService<Match3DAdTelemetry>().Initialize(endpoint);
         StartupService<Match3DRewards>().Initialize(endpoint);
         StartupService<Match3DMerchantAuthorization>().Initialize(endpoint);
@@ -504,7 +506,7 @@ public partial class Match3DFlow : MonoBehaviour {
         view.Show("Freeze",false);view.Bind("Freeze",()=>BoosterManager.Instance.Freeze());
     }
     public bool HandleResult(bool win){
-        if(ScreenName!="game"||resultShown||revivePending)return true;
+        if(PotReplayPlayer.Active||ScreenName!="game"||resultShown||revivePending)return true;
         if(IsPvp){GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;return true;}
         if(!win&&TryOfferRevival())return true;
         return FinishSoloResult(win);

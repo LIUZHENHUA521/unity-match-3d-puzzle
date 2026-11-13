@@ -68,6 +68,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         return new Match3DAdTelemetry.Context{owner=account,recordId=active.recordId,runId=active.runId,stage=active.stage,clientVersion=active.clientVersion,platform=active.platform};
     }
     public void Prepare(string theme,int stage,string date,int count,int seconds){
+        if(PotReplayPlayer.Active)return;
         if(string.IsNullOrEmpty(runId))NewRun();
         toolReceipts.Clear();
         active=new Record{rewardTier=rewardTier,ruleVersion=ruleVersion,recordId=Guid.NewGuid().ToString("N"),runId=runId,themeId=theme,stage=stage,levelDate=date,initialCount=count,timeLimitSeconds=seconds,clientVersion=Application.version,platform=Application.platform.ToString()};
@@ -79,9 +80,10 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         if(string.IsNullOrEmpty(rewardTier)&&Match3DFlow.Instance&&Match3DFlow.Instance.UnlimitedMagnet)active.levelVersion=Match3DTestPrivileges.LevelVersion;
         owner=null;started=false;activeSeconds=0;cleared=0;
     }
-    public void StartRecord(){if(active==null||started)return;started=true;active.startedAt=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    public void StartRecord(){if(PotReplayPlayer.Active||active==null||started)return;started=true;active.startedAt=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         var account=Match3DInvitations.Instance;owner=account&&account.Ready?account.State.inviteCode:null;
         Add("start",active,owner);
+        if(active!=null&&PotReplayRecorder.Instance)PotReplayRecorder.Instance.Begin(active,dailyLevel);
     }
     void Update(){
         var flow=Match3DFlow.Instance;
@@ -103,9 +105,10 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         Save();
         if(rejectionNotifiedOwners.Add(currentOwner))flow.Notice("有闯关记录未能同步，已保留，请稍后联系客服");
     }
-    public void Matched(){if(active!=null&&started)cleared=Mathf.Min(active.initialCount,cleared+3);}
+    public void Matched(){PotReplayRecorder.Event("match",-1,3);if(active!=null&&started)cleared=Mathf.Min(active.initialCount,cleared+3);}
     public void Finish(string status,string reason){
-        if(active==null)return;
+        if(PotReplayPlayer.Active||active==null)return;
+        if(PotReplayRecorder.Instance)PotReplayRecorder.Instance.Finish(status);
         if(!started){active=null;return;}
         active.status=status;active.endReason=reason;active.endedAt=Math.Max(active.startedAt,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());active.activeDurationMs=Math.Min((long)(activeSeconds*1000),active.endedAt-active.startedAt);
         active.clearedCount=cleared;active.remainingSeconds=Mathf.Max(0,GameManager.Instance.currentLevelTime);active.timeReviveUsed=Match3DFlow.Instance&&Match3DFlow.Instance.TimeReviveUsed;

@@ -175,6 +175,7 @@ public class InputController : Singleton<InputController>
         boardRotations[obj] = trayDisplay?trayDisplay.boardRotation:obj.transform.rotation;
         var body = obj.GetComponent<Rigidbody>();
         if (ItemPhysicsController.Instance) ItemPhysicsController.Instance.RemoveForPick(body);
+        var potReplayTile=obj.GetComponent<Match3DTile>();if(potReplayTile)PotReplayRecorder.Event("pick",potReplayTile.id,magnetic?1:0);
         if(UsesSourceFlight){
             // Disable contact before any pickup movement/scale, for manual, probe
             // and magnet paths alike. A 50 ms grace period can kick the pile.

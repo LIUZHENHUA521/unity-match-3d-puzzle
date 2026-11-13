@@ -20,7 +20,7 @@ public sealed class Match3DHomeMenu : MonoBehaviour {
   var parentScale=transform.lossyScale;var scale=artwork.lossyScale;
   content.localScale=new Vector3(scale.x/parentScale.x,scale.y/parentScale.y,1);
  }
- public void Connect(Match3DFlow flow){var view=GetComponent<Match3DUIView>();view.Bind("Dismiss",()=>Destroy(gameObject));view.Bind("Settings",()=>{Destroy(gameObject);flow.ShowSettings(false);});view.Bind("Mail",()=>{Destroy(gameObject);flow.ShowMailbox();});view.Bind("Card",()=>{Destroy(gameObject);flow.ShowUserProfile();});view.Bind("Service",()=>{Destroy(gameObject);Match3DCustomerService.Open();});view.Show("Cash",false);service=Match3DInvitations.Instance;if(service){service.MailChanged+=Refresh;Refresh();service.RefreshMail();}}
+ public void Connect(Match3DFlow flow){var view=GetComponent<Match3DUIView>();view.Bind("Dismiss",()=>Destroy(gameObject));view.Bind("Settings",()=>{Destroy(gameObject);flow.ShowSettings(false);});view.Bind("Mail",()=>{Destroy(gameObject);flow.ShowMailbox();});view.Bind("Card",()=>{Destroy(gameObject);flow.ShowUserProfile();});view.Bind("Service",()=>{Destroy(gameObject);Match3DCustomerService.Open();});view.Show("Cash",true);var replay=view.Bind("Cash",()=>{Destroy(gameObject);flow.ShowPotReplays();});var replayText=replay.GetComponentInChildren<Text>();if(replayText)replayText.text="每日回放";service=Match3DInvitations.Instance;if(service){service.MailChanged+=Refresh;Refresh();service.RefreshMail();}}
  void Refresh(){mailDot.SetActive(service&&service.MailAttention);}
  void OnDestroy(){if(service)service.MailChanged-=Refresh;}
 }
