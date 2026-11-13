@@ -141,6 +141,7 @@ public partial class Match3DFlow : MonoBehaviour {
         if(endpoint.TrimEnd('/')=="https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com"||endpoint.TrimEnd('/')=="https://lzh.tax") {
             PlayerPrefs.DeleteKey("goose.endpoint");PlayerPrefs.Save();endpoint=library.pvpEndpoint;
         }
+        StartupService<Match3DABExperiments>().Initialize(endpoint);
         StartupService<Match3DGameRecords>().Initialize(endpoint);
         StartupService<Match3DRewards>().Initialize(endpoint);
         StartupService<Match3DMerchantAuthorization>().Initialize(endpoint);
