@@ -84,6 +84,13 @@ public static class ItemFlightMotion {
         // Existing tray adapts to the safe area. Scale the source model by the same spacing ratio;
         // no per-model bounding-box cap. Original ContentPointList local spacing is .71 and parent Content scale is 1.4.
         float ratio=Match3DTray.Instance?Vector3.Distance(Match3DTray.Instance.SlotPosition(0),Match3DTray.Instance.SlotPosition(1))/.71f:1f;
-        return Vector3.one*(scales.TryGetValue(obj,out float size)?size*ratio:fallbackScales.TryGetValue(obj,out float fallback)?fallback:boardScale.x*.6f/Match3DFlow.BoardItemScale);
+        if(scales.TryGetValue(obj,out float size))return Vector3.one*(size*ratio);
+        // Fallback models store a 1x world scale, unlike source models whose scale
+        // already follows the live slot spacing. Compensate only this path so
+        // newly collected models match items that were in the tray before zooming.
+        float fallback=fallbackScales.TryGetValue(obj,out float cached)?cached:boardScale.x*.6f/Match3DFlow.BoardItemScale;
+        var zoom=BoardCameraZoom.Instance;
+        if(zoom&&zoom.Available)fallback/=zoom.Zoom;
+        return Vector3.one*fallback;
     }
 }

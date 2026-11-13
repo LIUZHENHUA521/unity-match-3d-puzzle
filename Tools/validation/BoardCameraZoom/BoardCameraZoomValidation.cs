@@ -32,6 +32,34 @@ public static class BoardCameraZoomValidation {
         File.WriteAllBytes("../controls.png",image.EncodeToPNG());
         RenderTexture.active = null; camera.targetTexture = null;
     }
+    static void IncomingTraySizes(Camera camera, BoardCameraZoom zoom, Action fit) {
+        Match3DDefaultFont.InitializeFallback();
+        var tray = new GameObject("Pot tray scale fixture").AddComponent<Match3DTray>();
+        typeof(Match3DTray).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(tray,null);
+        var prefab = new GameObject("PotFallbackPrefab");
+        var cached = new GameObject("PotCachedIncoming"); ItemFlightMotion.Bind(cached,prefab.name,true,prefab);
+        var plain = new GameObject("PotUnmappedIncoming");
+        var original = new GameObject("PotSourceIncoming"); ItemFlightMotion.Bind(original,"BBQHotdog",true);
+        var items = new[]{cached,plain,original};
+        var sizes = new float[items.Length]; var stores = new float[items.Length];
+        zoom.ResetView(); zoom.ProcessContacts(0,default,default,p=>false); fit();
+        for(int i=0;i<items.Length;i++) {
+            var pick=ItemFlightMotion.PickScale(items[i],Vector3.one);
+            sizes[i]=pick.x/camera.orthographicSize;
+            stores[i]=ItemFlightMotion.StoreScale(items[i],pick).x/camera.orthographicSize;
+        }
+        foreach(float multiplier in new[]{1.2f,1.6f,1f}) {
+            zoom.Gesture(camera.pixelRect.center,camera.pixelRect.center,multiplier/zoom.Zoom);
+            for(int frame=0;frame<100;frame++)fit();
+            for(int i=0;i<items.Length;i++) {
+                var pick=ItemFlightMotion.PickScale(items[i],Vector3.one);
+                Check(Mathf.Abs(pick.x/camera.orthographicSize-sizes[i])<.0001f,"incoming tray size invariant "+items[i].name+" at "+multiplier);
+                Check(Mathf.Abs(ItemFlightMotion.StoreScale(items[i],pick).x/camera.orthographicSize-stores[i])<.0001f,"incoming storage size invariant "+items[i].name+" at "+multiplier);
+            }
+        }
+        foreach(var item in items){ItemFlightMotion.Forget(item);UnityEngine.Object.DestroyImmediate(item);}
+        UnityEngine.Object.DestroyImmediate(prefab);
+    }
     public static void Run() {
         try {
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
@@ -153,6 +181,7 @@ public static class BoardCameraZoomValidation {
             }
             Set(presentation, "visual", new GameObject("Capture board")); zoom.BindPresentation(presentation);
             trayItem.SetActive(false); stored.SetActive(false); target.SetActive(false);
+            IncomingTraySizes(camera,zoom,Fit);
             Capture(camera, zoom, controls.gameObject);
             File.WriteAllText("../result.txt", "PASS " + checks + " Unity checks: zoom, midpoint, pan, exact reset, foreground, contact lifecycle and HUD.\n");
             EditorApplication.Exit(0);
