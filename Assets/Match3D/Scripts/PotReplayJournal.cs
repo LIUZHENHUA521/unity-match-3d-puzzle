@@ -18,7 +18,7 @@ public static class PotReplayJournal {
     }
     public static string Line(StreamReader reader){
         var text=new StringBuilder(4096);int c;
-        while((c=reader.Read())!=-1){if(c=='\n')break;if(text.Length>=MaxLineChars)throw new IOException("录像单帧过大");text.Append((char)c);}
+        while((c=reader.Read())!=-1){if(c=='\n')break;if(c=='\r')continue;if(text.Length>=MaxLineChars)throw new IOException("录像单帧过大");text.Append((char)c);}
         return c==-1&&text.Length==0?null:text.ToString();
     }
     public static IEnumerable<string> JsonPieces(string ready){
