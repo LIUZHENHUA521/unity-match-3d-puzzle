@@ -4,6 +4,7 @@ const flush=()=>new Promise(setImmediate);
 function fixture(){
  const messages=[],ads=new Map(),timers=new Map();let serial=0,creates=0;
  const context={LibraryManager:{library:{}},mergeInto:Object.assign,UTF8ToString:x=>x,
+  GooseAdTelemetry:{prepare:()=>true,complete:()=>{},discard:()=>{}},
   Module:{SendMessage:(target,method,value)=>messages.push({target,...JSON.parse(value)})},
   setTimeout:f=>{timers.set(++serial,f);return serial},clearTimeout:id=>timers.delete(id),Promise,
   wx:{createRewardedVideoAd:({adUnitId})=>{
@@ -21,7 +22,7 @@ function fixture(){
  vm.createContext(context);vm.runInContext(source,context);context.GooseReviveAds=context.LibraryManager.library.$GooseReviveAds;
  const lib=context.LibraryManager.library;
  return {messages,ads,timers,lib,creates:()=>creates,state:context.GooseReviveAds,
-  async show(request,id='adunit-test',target='tool'){lib.GooseReviveAdShow(target,id,request);await flush();return ads.get(id)}};
+  async show(request,id='adunit-test',target='tool'){lib.GooseReviveAdShow(target,id,request,JSON.stringify({owner:'test-owner',impressionId:request,adUnitId:id}));await flush();return ads.get(id)}};
 }
 function clean(x,ad){assert.equal(x.state.active,null);assert.equal(ad.close.size,0);assert.equal(ad.error.size,0);assert.equal(x.timers.size,0);assert.equal(ad.destroyed,0)}
 (async()=>{
@@ -49,5 +50,6 @@ function clean(x,ad){assert.equal(x.state.active,null);assert.equal(ad.close.siz
  x=fixture();ad=await x.show('active');await x.show('busy');assert.equal(x.messages[0].completed,false);assert.equal(ad.shows,1);
  x.lib.GooseReviveAdCancel('wrong-id');assert(x.state.active);ad.end({isEnded:true});clean(x,ad);
  const other=await x.show('other','adunit-other');other.end({isEnded:true});clean(x,other);await x.show('original');ad.end({isEnded:true});assert.equal(x.creates(),2);
+ x=fixture();ad=await x.show('cancel-after-show');x.lib.GooseReviveAdCancel('cancel-after-show');assert(x.state.active);await x.show('blocked');assert.equal(x.messages.length,1);ad.end({isEnded:true});assert.equal(x.messages.length,1);clean(x,ad);
  console.log('PASS repeated watches; shared tool/revive unit; no destroyed singleton reuse; listener cleanup; incomplete/undefined close; duplicate/stale callbacks; load/show/event errors and retry; timeout/cancel followed by new request; busy and separate units');
 })().catch(e=>{console.error(e);process.exit(1)});

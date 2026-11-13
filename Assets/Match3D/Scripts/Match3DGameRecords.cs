@@ -17,7 +17,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         public long startedAt,endedAt,activeDurationMs;
         public float remainingSeconds;
         public bool timeReviveUsed;
-        public int acquisitionVersion;
+        public int acquisitionVersion,adTelemetryVersion=1;
         public ReviveUse reviveUsage;
         public ToolUse[] toolUsage=new[]{new ToolUse(),new ToolUse(),new ToolUse(),new ToolUse()};
     }
@@ -63,6 +63,10 @@ public sealed class Match3DGameRecords : MonoBehaviour {
     public void NewDailyRun(Match3DDailyLevel level){NewRun();dailyLevel=level;}
     public void QualifiedRun(string id,string tier,string version,Match3DDailyLevel level=null){runId=id;rewardTier=tier;ruleVersion=version;dailyLevel=level;}
     public void InventoryReceipt(string id){if(active!=null&&started&&!string.IsNullOrEmpty(id))toolReceipts.Add(id);}
+    public Match3DAdTelemetry.Context AdContext(string account){
+        if(active==null||!started||string.IsNullOrEmpty(account)||owner!=account)return null;
+        return new Match3DAdTelemetry.Context{owner=account,recordId=active.recordId,runId=active.runId,stage=active.stage,clientVersion=active.clientVersion,platform=active.platform};
+    }
     public void Prepare(string theme,int stage,string date,int count,int seconds){
         if(string.IsNullOrEmpty(runId))NewRun();
         toolReceipts.Clear();
