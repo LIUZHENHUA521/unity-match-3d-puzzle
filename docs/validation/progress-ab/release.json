@@ -1,0 +1,85 @@
+{
+  "experiment": {
+    "_id": "85ada5876af6f97b0097210d28883a80",
+    "key": "goose_progress_display_ab",
+    "groups": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "status": "active",
+    "trafficRatio": 100,
+    "registerStartTime": 1794570619326,
+    "appids": [
+      "wx74f2d8722c02a6f4"
+    ],
+    "requiredCapability": "progress_display_v1"
+  },
+  "preview": {
+    "group": "B",
+    "manualOverride": true,
+    "actualHitVerified": true
+  },
+  "sourceCommits": {
+    "unity": {
+      "sha": "a812bc60fb28e78fc26bee47c294f8648c6b9351",
+      "branch": "codex/goose-progress-ab-20261113",
+      "parent": "aece6b4baed883f67fd53b7c967a239f34df609c",
+      "mergedHead": "ffc27ef5d83baae42ffa4a9b2c94bda24428923e"
+    },
+    "server": {
+      "sha": "b12f7f865bf7a765cbd67d37ccd5c058e90dee6e",
+      "branch": "codex/goose-progress-ab-20261113",
+      "parent": "codex/unity-shared-ab-20261113",
+      "mergedHead": "2ddfc61c468b1b33ca9a63d77cca70f6be484abf"
+    },
+    "tasks": {
+      "sha": "19490fd677a82d23e13d57e8fd4f1a9e427901f3",
+      "branch": "codex/goose-progress-ab-20261113",
+      "parent": "codex/unity-shared-ab-20261113"
+    }
+  },
+  "server": {
+    "version": "032",
+    "status": "normal",
+    "trafficPercent": 100,
+    "deployedSourceVerified": true
+  },
+  "hitABTest": "Active",
+  "compatibilitySmoke": {
+    "legacyClientExcluded": true,
+    "registrationRangeVerified": true,
+    "temporaryFixtureRemoved": true
+  },
+  "packageOptimization": [
+    {
+      "file": "wasmcode/cf865dd4a0ad7e75.webgl.wasm.code.unityweb.wasm.br",
+      "before": 6364007,
+      "after": 6205867,
+      "rawSha256": "7f28921f3f0b7b73f4a18a3dcdb78e136715f72bca58750ea5ec001a27972b7f"
+    },
+    {
+      "file": "data-package/5b18866941510324.webgl.data.unityweb.bin.br",
+      "before": 22595616,
+      "after": 22266402,
+      "rawSha256": "f0ae755ad3c141af797c8335fe79e13970b7c421fb5375dfc67c4df1b0518c41"
+    }
+  ],
+  "client": {
+    "version": "0.1.66",
+    "upload": "success",
+    "formalRelease": false,
+    "receipt": "upload-info.json",
+    "totalBytes": 31005717,
+    "packageDirectory": "Builds/Wechat/release-0.1.66-progress-ab",
+    "packagingCommit": "06920ffd"
+  },
+  "validation": {
+    "progressAssertions": 31,
+    "abRuntimeChecks": 11,
+    "serverTests": 108,
+    "functionTests": 24,
+    "realDeviceVisualCheck": false
+  }
+}

@@ -1,0 +1,152 @@
+TAP version 13
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# Subtest: Goose rejects forged, expired and cross-app identities including coercible appid
+ok 1 - Goose rejects forged, expired and cross-app identities including coercible appid
+  ---
+  duration_ms: 2.953375
+  ...
+# Subtest: Goose only discovers explicitly scoped active experiments and uses server registration
+ok 2 - Goose only discovers explicitly scoped active experiments and uses server registration
+  ---
+  duration_ms: 2.204208
+  ...
+# Subtest: stable assignments, manual override, child scope and stop behavior
+ok 3 - stable assignments, manual override, child scope and stop behavior
+  ---
+  duration_ms: 2.428375
+  ...
+# Subtest: same openid and test cannot reuse or delete another game record; concurrent hits have one ID
+ok 4 - same openid and test cannot reuse or delete another game record; concurrent hits have one ID
+  ---
+  duration_ms: 1.881625
+  ...
+# Subtest: Goose analytics cannot use animal credentials
+ok 5 - Goose analytics cannot use animal credentials
+  ---
+  duration_ms: 0.797084
+  ...
+# Subtest: admin add resolves Unity player id and openid, preserves manual override and rejects missing players
+ok 6 - admin add resolves Unity player id and openid, preserves manual override and rejects missing players
+  ---
+  duration_ms: 11.582375
+  ...
+# Subtest: child creation inherits game scope and zero traffic remains zero
+ok 7 - child creation inherits game scope and zero traffic remains zero
+  ---
+  duration_ms: 1.578583
+  ...
+# Subtest: progress experiment never assigns old clients, capability cannot be forged in event
+ok 8 - progress experiment never assigns old clients, capability cannot be forged in event
+  ---
+  duration_ms: 1.310042
+  ...
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] game_ingest_not_configured
+# [hitABTest] syncHitsToClickHouse failed: outbound_disabled_in_test
+# [hitABTest] game_ingest_not_configured
+# Subtest: login entry configures SDK missing documents as null for first registration
+ok 9 - login entry configures SDK missing documents as null for first registration
+  ---
+  duration_ms: 0.952875
+  ...
+# Subtest: profile read failures do not create an identity or expose SDK error content
+ok 10 - profile read failures do not create an identity or expose SDK error content
+  ---
+  duration_ms: 0.486
+  ...
+# Subtest: login creates isolated identity, hashes token, hides secrets and ignores forged identity
+ok 11 - login creates isolated identity, hashes token, hides secrets and ignores forged identity
+  ---
+  duration_ms: 0.504292
+  ...
+# Subtest: concurrent and subsequent login preserves first registration
+ok 12 - concurrent and subsequent login preserves first registration
+  ---
+  duration_ms: 0.332875
+  ...
+# Subtest: login fails closed on invalid code, WeChat rejection or missing server secret
+ok 13 - login fails closed on invalid code, WeChat rejection or missing server secret
+  ---
+  duration_ms: 0.120584
+  ...
+# Subtest: expired, revoked, cross-app and mismatched profile sessions fail
+ok 14 - expired, revoked, cross-app and mismatched profile sessions fail
+  ---
+  duration_ms: 1.124417
+  ...
+# Subtest: AB rejects unauthenticated sand claims and forged request identities
+ok 15 - AB rejects unauthenticated sand claims and forged request identities
+  ---
+  duration_ms: 2.563333
+  ...
+# Subtest: AB discovers only explicit sand scope; repeated hit and child keep their groups
+ok 16 - AB discovers only explicit sand scope; repeated hit and child keep their groups
+  ---
+  duration_ms: 1.887625
+  ...
+# Subtest: AB uses sand registration; old game records with same openid do not override sand
+ok 17 - AB uses sand registration; old game records with same openid do not override sand
+  ---
+  duration_ms: 1.611583
+  ...
+# Subtest: legacy lookup does not consume sand records and deterministic record ids stay backward compatible
+ok 18 - legacy lookup does not consume sand records and deterministic record ids stay backward compatible
+  ---
+  duration_ms: 1.458041
+  ...
+# Subtest: sand rejects oversized batches and empty configuration succeeds
+ok 19 - sand rejects oversized batches and empty configuration succeeds
+  ---
+  duration_ms: 0.650458
+  ...
+# Subtest: coercible appid cannot bypass auth; zero traffic never allocates
+ok 20 - coercible appid cannot bypass auth; zero traffic never allocates
+  ---
+  duration_ms: 0.8685
+  ...
+# Subtest: legacy cleanup cannot delete sand records, even with same test and openid
+ok 21 - legacy cleanup cannot delete sand records, even with same test and openid
+  ---
+  duration_ms: 0.686042
+  ...
+# Subtest: existing sand manual assignment is retained even after traffic and registration tighten
+ok 22 - existing sand manual assignment is retained even after traffic and registration tighten
+  ---
+  duration_ms: 1.001917
+  ...
+# Subtest: sand ingest never signs with animal credentials
+ok 23 - sand ingest never signs with animal credentials
+  ---
+  duration_ms: 0.421333
+  ...
+# Subtest: sand endpoints share the current game AppID
+ok 24 - sand endpoints share the current game AppID
+  ---
+  duration_ms: 2.009459
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 58.8835
