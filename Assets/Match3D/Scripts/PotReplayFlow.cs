@@ -29,6 +29,7 @@ public partial class Match3DFlow {
             if(version!=potReplayListVersion||!label)return;
             if(!reply.ok){label.text=reply.error;return;}
             label.text=reply.list==null||reply.list.Length==0?"暂无回放":masters?"同关卡已公开的完整通关录像":"最近的每日挑战录像";
+            if(!masters&&!string.IsNullOrEmpty(PotReplayService.Instance.Status))label.text+="\n"+PotReplayService.Instance.Status;
             int row=0;foreach(var item in reply.list??new PotReplayService.Summary[0]){
                 // Five per page fit the mobile screen; the API page is sliced by the UI cursor below.
                 if(row>=5)break;

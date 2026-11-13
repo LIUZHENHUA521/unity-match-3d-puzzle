@@ -24,10 +24,10 @@ public sealed class PotReplayRecorder : MonoBehaviour {
     void OnShow(WeChatWASM.OnShowListenerResult data){OnApplicationPause(false);}
 #endif
     public void Begin(Match3DGameRecords.Record record,Match3DDailyLevel level){
-        if(data!=null||level==null||Match3DFlow.Instance.LocalPreview||PotReplayPlayer.Active)return;
+        if(record==null||record.stage!=2||data!=null||level==null||Match3DFlow.Instance.LocalPreview||PotReplayPlayer.Active)return;
         var account=Match3DInvitations.Instance;if(!account||!account.Ready)return;
         try{
-            if(PotReplayFiles.List().Sum(x=>PotReplayFiles.Size(x))>64*1024*1024)throw new Exception("local replay storage full");
+            if(PotReplayFiles.List().Sum(x=>PotReplayFiles.Size(x))>128*1024*1024)throw new Exception("local replay storage full");
             owner=account.State.inviteCode;pendingFrames.Clear();
             data=new PotReplayData{opening=Match3DFlow.Instance.CaptureDailyOpening(),recordId=record.recordId,runId=record.runId,stage=record.stage,level=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level))};
             objects.Clear();renderers.Clear();previous.Clear();
@@ -59,14 +59,14 @@ public sealed class PotReplayRecorder : MonoBehaviour {
         data.frames.Add(frame);
         pendingFrames.AppendLine(JsonUtility.ToJson(frame));
         if(full){Flush();lastCheckpoint=elapsed;}
-        if(writtenBytes+pendingFrames.Length>15*1024*1024)throw new Exception("recording size limit");
+        if(writtenBytes+pendingFrames.Length>PotReplayService.MaxJsonBytes)throw new Exception("recording size limit");
     }
     public void Finish(string status){
         if(data==null)return;
         try{Capture(true);Event("finish");data.duration=elapsed;data.status=status;PotReplayService.Instance.Enqueue(owner,data);PotReplayFiles.Delete(journal);data=null;objects.Clear();renderers.Clear();previous.Clear();}
         catch(Exception e){Abort(e);}
     }
-    void Abort(Exception error){Debug.LogWarning("Pot replay unavailable: "+error.Message);data=null;objects.Clear();renderers.Clear();previous.Clear();}
+    void Abort(Exception error){Debug.LogWarning("Pot replay unavailable: "+error.Message);PotReplayService.Instance?.RecordingFailed(error.Message);data=null;objects.Clear();renderers.Clear();previous.Clear();}
     void Flush(){if(pendingFrames.Length==0||string.IsNullOrEmpty(journal))return;string text=pendingFrames.ToString();PotReplayFiles.Append(journal,text);writtenBytes+=Encoding.UTF8.GetByteCount(text);pendingFrames.Clear();}
     void OnApplicationPause(bool paused){hidden=paused;if(paused&&data!=null)try{Flush();}catch(Exception e){Abort(e);}}
     void OnApplicationFocus(bool focus){OnApplicationPause(!focus);}
