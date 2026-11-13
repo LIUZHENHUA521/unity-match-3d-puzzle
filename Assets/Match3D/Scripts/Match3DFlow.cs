@@ -163,6 +163,8 @@ public partial class Match3DFlow : MonoBehaviour {
         if(account.Busy)throw new InvalidOperationException("账号同步超时，请重试");
         if(!account.Ready)throw new InvalidOperationException("登录已失效，请重试");
         if(account.HasPending)throw new InvalidOperationException("道具数据同步失败，请重试");
+        float abDeadline=Time.realtimeSinceStartup+3;
+        while(Match3DABExperiments.Instance&&!Match3DABExperiments.Instance.Ready&&Time.realtimeSinceStartup<abDeadline)yield return null;
         if(!account.MailLoaded){
             account.RefreshMail();
             float mailDeadline=Time.realtimeSinceStartup+20;
@@ -177,6 +179,7 @@ public partial class Match3DFlow : MonoBehaviour {
     void OnDestroy(){CancelSourceCreation();if(stagePreloader)stagePreloader.Cancel();BoardPhysicsSettings.End();if(Instance==this)Instance=null;Time.timeScale=1;}
     void Update(){
         if(ScreenName=="game") {
+            TickProgressDisplay();
             if(BoardTools.Enabled){
                 if(moveToolButton)moveToolButton.interactable=true;
                 if(findToolButton)findToolButton.interactable=true;
@@ -258,17 +261,18 @@ public partial class Match3DFlow : MonoBehaviour {
 #endif
     }
     public void BeginQualified(int theme,string runId,string tier,string version,Match3DDailyLevel level=null,bool testToolsEnabled=false){
-        unlimitedMagnetRun=testToolsEnabled;runModelTheme=null;dailyLevel=level;challengeTier=tier;LocalPreview=false;
+        BeginProgressRun();unlimitedMagnetRun=testToolsEnabled;runModelTheme=null;dailyLevel=level;challengeTier=tier;LocalPreview=false;
         if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=level!=null?level.date:Today;Match3DGameRecords.Instance.QualifiedRun(runId,tier,version,level);StartStage();
     }
     public void ShowRedPackets(){BlocksGameplay=true;var view=OpenModal("RedPackets");view.Bind("Close",()=>CloseModal());view.GetComponent<Match3DRewardsView>().Connect();}
     public void BeginDailyPractice(int theme,Match3DDailyLevel level){
         if(level==null){Begin(theme);return;}
-        runModelTheme=null;
+        BeginProgressRun();runModelTheme=null;
         if(network)network.Disconnect();StopBoard();IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;dailyLevel=level;ThemeIndex=theme;Stage=1;runDate=level.date;
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewDailyRun(level);StartStage();
     }
     public void Begin(int theme){
+        BeginProgressRun();
         dailyLevel=null;runModelTheme=null;challengeTier="bachelor";
 #if UNITY_EDITOR
         var selectedTheme=UnityEditor.EditorPrefs.GetString(EditorThemePreference,"");
@@ -288,6 +292,7 @@ public partial class Match3DFlow : MonoBehaviour {
         ShowTips((dailyLevel?.tier??challengeTier)=="elite"?"基础题完成，进入清北压轴题！":"基础题完成，进入本科压轴题！");
     }
     void StartStage(Match3DThemePresentation reusedPresentation=null,GameObject reusedBoundary=null,bool countAttempt=true){
+        progressDisplay.ResetStage();nextProgressSample=0;
         if(!IsPvp){
             if(PlayerPrefs.GetString("goose.result.date","")!=Today){PlayerPrefs.SetString("goose.result.date",Today);PlayerPrefs.SetInt("goose.result.attempts",0);}
             // Count a new challenge at tutorial start, and each retry of the final stage.
@@ -514,8 +519,8 @@ public partial class Match3DFlow : MonoBehaviour {
     void Result(bool win,string title,string detail){
         LastResult=title;BlocksGameplay=true;Time.timeScale=1;
         if(!IsPvp){
-            float progress=win?1:Mathf.Clamp01(1f-(LevelGenerator.Instance.objectsOnScene.Count)/(float)Mathf.Max(1,InitialCount));
-            string key="goose.result.best."+CurrentTheme.id+"."+Stage;
+            float progress=DisplayProgress(win);
+            string key=progressDisplay.BestKey(CurrentTheme.id,Stage);
             float best=Mathf.Max(progress,PlayerPrefs.GetFloat(key,0));PlayerPrefs.SetFloat(key,best);PlayerPrefs.Save();
             var result=OpenModal(win?"ResultSuccess":"ResultFailure").GetComponent<Match3DResultView>();
             result.Configure(PlayerPrefs.GetInt("goose.result.attempts",1),progress,best,win?(Action)Home:RestartStage,Home,ShareResult);

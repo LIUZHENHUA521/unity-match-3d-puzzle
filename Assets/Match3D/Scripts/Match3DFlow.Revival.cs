@@ -18,7 +18,7 @@ public partial class Match3DFlow {
         revivePending=true;BlocksGameplay=true;GameManager.Instance.gameStatus=GameManager.GameStatus.FAIL;
         InputController.Instance.CancelSelection();Time.timeScale=0;
         int version=++reviveVersion;
-        float progress=Mathf.Clamp01(1f-LevelGenerator.Instance.objectsOnScene.Count/(float)Mathf.Max(1,InitialCount));
+        float progress=DisplayProgress();
         var view=OpenModal(timeout?"ReviveTime":"ReviveClear").GetComponent<Match3DReviveView>();
         var offer=Match3DRewardAcquisition.Next(Match3DRewardAcquisition.Entry.Revive);
         view.Configure(progress,()=>WatchRevivalVideo(timeout,version,view,offer),()=>DeclineRevival(version));

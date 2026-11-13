@@ -35,6 +35,7 @@ public sealed class Match3DABExperiments : MonoBehaviour {
         using(var request=new UnityWebRequest(endpoint+"/invites/ab","POST")){
             request.uploadHandler=new UploadHandlerRaw(Encoding.UTF8.GetBytes("{}"));
             request.downloadHandler=new DownloadHandlerBuffer();request.timeout=15;
+            request.SetRequestHeader("X-Goose-Progress-Display","1");
             request.SetRequestHeader("Content-Type","application/json");request.SetRequestHeader("Authorization","Bearer "+token);
             yield return request.SendWebRequest();
             if(version==generation&&CurrentOwner()==expectedOwner){
