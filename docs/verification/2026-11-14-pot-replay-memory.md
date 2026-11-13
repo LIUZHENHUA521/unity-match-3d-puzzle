@@ -21,4 +21,10 @@
 
 ## 待验证
 
-微信端构建及iPhone 17 Pro真机长局通关/断网重试。没有将本地托管内存测试结果当作真机修复验收。
+iPhone 17 Pro真机长局通关/断网重试。没有将本地托管内存测试结果当作真机修复验收。
+
+## 微信构建与补充验证
+
+- 微信隔离构建已成功：`Builds/PotReplayMemoryWechatProject/Builds/Wechat/minigame`；日志 `Builds/pot-replay-memory-wechat.log` 有 `GOOSE_WECHAT_EXPORT_OK`。新原生文件读写、上传桥和微信内存告警分支均通过构建。未上传新的微信版本。
+- 实际场景补测内存告警通过：录制停止、磁盘文件保留、GameManager对局状态不变。测试中第二次录制的假登录状态会被其他启动请求清空，已在第二轮测试前重置假账号；未据此修改正式登录逻辑。
+- 代码提交342e74ec、0fa3bc56，仅包含本次回放修复；并行探物曝光改动留在工作区，未带入构建。
