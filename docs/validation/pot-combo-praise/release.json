@@ -1,0 +1,54 @@
+{
+  "experiment": {
+    "_id": "7a31fbe06af707cc02bf09d30f17eb30",
+    "key": "pot_combo_praise_ab",
+    "status": "active",
+    "groups": [
+      "A",
+      "B"
+    ],
+    "appids": [
+      "wx74f2d8722c02a6f4"
+    ],
+    "requiredCapability": "pot_combo_praise_v1",
+    "trafficRatio": 100,
+    "registerStartTime": 1794574517969
+  },
+  "testAccount": {
+    "group": "B",
+    "manualOverride": true,
+    "verifiedActualHit": true
+  },
+  "backend": {
+    "DeployId": "033",
+    "Status": "normal",
+    "FlowRatio": 100,
+    "sourceVerified": true,
+    "healthHttpStatus": 200
+  },
+  "unityCommit": "e728e377b68d8f667f38edef0653137eac1922de",
+  "backendCommit": "7369fd53ad0fa4e7ef0940c2240ad1ca3e161597",
+  "validation": {
+    "unity": "28 checks passed",
+    "abRuntime": "11 checks passed",
+    "backend": "110 tests passed",
+    "live": "legacy clients excluded; old registration rejected; test account B returned",
+    "publishScript": "5 tests passed"
+  },
+  "experienceVersion": {
+    "set": false,
+    "reason": "Browser administrator policy blocks mp.weixin.qq.com; user must set experience version manually."
+  },
+  "wechat": {
+    "version": "0.1.67",
+    "uploaded": true,
+    "totalBytes": 31202249,
+    "packageDirectory": "Builds/Wechat/release-0.1.67-pot-combo-praise",
+    "submittedForReview": false,
+    "hashes": {
+      "webgl.wasm.symbols.unityweb.br": "bc5c94d430a05e9733b73fbc9ac7d78519886bb8864ddd9f6a445712b21aca0c",
+      "data-package/304a4ba88c402256.webgl.data.unityweb.bin.br": "9923aedd4f5ae3e6524eeb9a6c1f455c17f6afca5596e4b19bdaa8b22aa0fa78",
+      "wasmcode/6050f382f7a54d4f.webgl.wasm.code.unityweb.wasm.br": "b5d137400e4aed5b1db88fb88150da6c0bbac5db168e16e62e5ac041b8b759f9"
+    }
+  }
+}
