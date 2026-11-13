@@ -24,6 +24,11 @@ public sealed class BoardCameraZoom : MonoBehaviour {
     void OnDestroy() { if (Instance == this) Instance = null; }
     void OnApplicationFocus(bool focus) { if (!focus) CancelGesture(); }
     void OnApplicationPause(bool paused) { if (paused) CancelGesture(); }
+    public void BindPresentation(Match3DThemePresentation owner) { presentation = owner; ResetView(); }
+    public void ReleasePresentation(Match3DThemePresentation owner) {
+        if (presentation != owner) return;
+        ResetView(); presentation = null;
+    }
     public void ResetView() { Zoom = 1; offset = Vector2.zero; restoring = false; CancelGesture(); }
     public void CancelGesture() { tracking = false; rejected = true; SuppressPick = true; }
 

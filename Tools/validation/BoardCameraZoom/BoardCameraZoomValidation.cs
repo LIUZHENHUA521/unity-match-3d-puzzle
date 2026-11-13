@@ -136,6 +136,22 @@ public static class BoardCameraZoomValidation {
             Set(flow, "blocksGameplay", true); zoom.Gesture(midpoint,midpoint,1.3f);
             Check(zoom.Zoom == beforeBlocked, "modal blocks camera changes");
             Set(flow, "blocksGameplay", false);
+            // Reopening a round adds a new presentation on the persistent Flow object.
+            // Keep the old component present, matching LayeredItemPile.Clear/Begin.
+            zoom.ReleasePresentation(presentation); Set(presentation, "visual", null);
+            Check(!zoom.Available, "closed presentation hides zoom");
+            for (int round = 0; round < 3; round++) {
+                var next = flow.gameObject.AddComponent<Match3DThemePresentation>();
+                Set(next, "visual", new GameObject("Round " + round));
+                zoom.BindPresentation(next); zoom.ProcessContacts(0, default, default, p => false);
+                Check(zoom.Available && zoom.Zoom == 1, "new round rebinds zoom " + round);
+                zoom.Step(.2f); Fit();
+                Check(Mathf.Abs(zoom.Zoom - 1.2f) < .001f, "reopened round can zoom " + round);
+                zoom.ReleasePresentation(presentation);
+                Check(zoom.Available && zoom.Zoom > 1, "old presentation cannot reset current round " + round);
+                zoom.ReleasePresentation(next); Set(next, "visual", null); presentation = next;
+            }
+            Set(presentation, "visual", new GameObject("Capture board")); zoom.BindPresentation(presentation);
             trayItem.SetActive(false); stored.SetActive(false); target.SetActive(false);
             Capture(camera, zoom, controls.gameObject);
             File.WriteAllText("../result.txt", "PASS " + checks + " Unity checks: zoom, midpoint, pan, exact reset, foreground, contact lifecycle and HUD.\n");

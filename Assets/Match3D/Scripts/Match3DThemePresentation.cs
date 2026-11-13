@@ -18,7 +18,7 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  Collider[] legacyColliders;bool[] colliderStates;
  Renderer[] legacy;bool[] enabledStates;BoardLighting lighting;
  public void Begin(string theme){
-  End();if(!zoom)zoom=GetComponent<BoardCameraZoom>();if(!zoom)zoom=gameObject.AddComponent<BoardCameraZoom>();zoom.ResetView();var prefab=Resources.Load<GameObject>("Match3D/Scenes/"+theme);if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
+  End();if(!zoom)zoom=GetComponent<BoardCameraZoom>();if(!zoom)zoom=gameObject.AddComponent<BoardCameraZoom>();zoom.BindPresentation(this);var prefab=Resources.Load<GameObject>("Match3D/Scenes/"+theme);if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
   visual=Instantiate(prefab);visual.name=theme+" source visuals";
   AddPanCollision(visual);
   pan=visual.transform.Find("Grab3D Frying Pan");
@@ -63,7 +63,7 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  }}
  void LateUpdate(){Fit();}
  public void End(){
-  if(zoom)zoom.ResetView();
+  if(zoom)zoom.ReleasePresentation(this);
   if(lighting)lighting.End();
   if(visual){visual.SetActive(false);Destroy(visual);visual=null;}pan=null;
   if(legacy!=null)for(int i=0;i<legacy.Length;i++)if(legacy[i])legacy[i].enabled=enabledStates[i];legacy=null;
