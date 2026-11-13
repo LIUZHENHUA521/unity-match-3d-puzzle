@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -22,7 +23,7 @@ public sealed class ItemHighlight : MonoBehaviour {
     }
     readonly Group selection=new Group();readonly List<Group> toolGroups=new List<Group>();
     static readonly int SilhouetteId=Shader.PropertyToID("_Match3DHighlightSilhouette");
-    Camera view;CommandBuffer commands;Material mask,silhouette;Mesh screenQuad;float toolsExpireAt;
+    Camera view;CommandBuffer commands;Material mask,silhouette;Mesh screenQuad;float toolsExpireAt,replayTime;
     // A host backbuffer can have depth without stencil. In that case the
     // NotEqual outline passes cover the entire item in opaque black. Keep the
     // screen-space halo on WebGL without relying on the host framebuffer stencil.
@@ -53,7 +54,13 @@ public sealed class ItemHighlight : MonoBehaviour {
         }
         toolsExpireAt=Time.unscaledTime+duration;
     }
-    void Update(){TickToolLifetime(Time.unscaledTime);}
+    void Update(){if(!PotReplayPlayer.Active)TickToolLifetime(Time.unscaledTime);}
+    public void CaptureReplay(PotReplayPresentation snapshot){snapshot.selectedId=PotReplayPresentation.Id(selection.target);snapshot.highlightIds=toolGroups.Select(g=>PotReplayPresentation.Id(g.target)).Where(id=>id>=0).ToArray();snapshot.highlightRemaining=Mathf.Max(0,toolsExpireAt-Time.unscaledTime);snapshot.highlightTime=Time.time;}
+    public void ApplyReplay(PotReplayPresentation snapshot,Dictionary<int,GameObject> objects,float offset){
+        replayTime=snapshot.highlightTime+offset;objects.TryGetValue(snapshot.selectedId,out var selected);if(selection.target!=selected)Select(selected);
+        var ids=snapshot.highlightRemaining>offset?snapshot.highlightIds:new int[0];
+        if(!toolGroups.Select(g=>PotReplayPresentation.Id(g.target)).SequenceEqual(ids))ShowAutoFind(ids.Where(objects.ContainsKey).Select(id=>objects[id]).ToArray(),1000);
+    }
     void TickToolLifetime(float unscaledNow){if(toolGroups.Count>0&&unscaledNow>=toolsExpireAt)ClearTools();}
     void Populate(Group group,GameObject item,bool lighting){
         Ensure();group.target=item;group.glow=new Material[4];group.outline=new Material[4];
@@ -133,7 +140,7 @@ public sealed class ItemHighlight : MonoBehaviour {
         // Pixel sizes scale with the short screen edge, keeping the perceived width
         // consistent across device pixel ratios and portrait render resolutions.
         float scale=Mathf.Max(.5f,Mathf.Min(width,height)/720f);
-        group.screenHalo.SetVector("_HaloPixels",new Vector4(2f*scale,6f*scale*GlowPulse(Time.time),.65f+.2f*Mathf.Sin(Time.time*3*AnimationSpeed),0));
+        group.screenHalo.SetVector("_HaloPixels",new Vector4(2f*scale,6f*scale*GlowPulse(PotReplayPlayer.Active?replayTime:Time.time),.65f+.2f*Mathf.Sin((PotReplayPlayer.Active?replayTime:Time.time)*3*AnimationSpeed),0));
         commands.Blit(SilhouetteId,BuiltinRenderTextureType.CameraTarget,group.screenHalo,0);DrawCount++;
         commands.ReleaseTemporaryRT(SilhouetteId);
     }

@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 public sealed class PotReplayService : MonoBehaviour {
     [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion;public int stage;public float duration;}
     [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public Summary[] list;public PotReplayData detail;}
-    [Serializable] class RequestBody {public string kind,date,tier,levelVersion,id,recordId,content;public int skip,index,count,offset;}
+    [Serializable] class RequestBody {public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content;public int skip,index,count,offset;}
     [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,key,iv;}
     public const int MaxJsonBytes=64*1024*1024;
     public static PotReplayService Instance {get;private set;}
@@ -36,7 +36,7 @@ public sealed class PotReplayService : MonoBehaviour {
             // A crash leaves a partial replay. Reconstruct a final checkpoint, never call it a win.
             var final=data.frames[data.frames.Count-1];var state=PotReplayState.At(data,final.t,out _);
             final.full=true;final.items=state.Values.OrderBy(x=>x.id).ToList();data.duration=final.t;data.status="incomplete";
-            data.events.Clear();data.events.Add(new PotReplayEvent{seq=0,t=final.t,type="finish"});
+            data.events.Clear();foreach(var frame in data.frames)if(frame.events!=null)data.events.AddRange(frame.events);data.events.Add(new PotReplayEvent{seq=data.events.Count,t=final.t,type="finish"});
             string owner=Path.GetFileName(path).Split('_')[0];Enqueue(owner,data);PotReplayFiles.Delete(path);
         }catch(Exception e){Debug.LogWarning("Pot replay recovery: "+e.Message);}
     }

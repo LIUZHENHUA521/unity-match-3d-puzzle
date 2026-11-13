@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public sealed class PotReplayPlayer : MonoBehaviour {
     public static PotReplayPlayer Instance {get;private set;}
     public static bool Active=>Instance&&Instance.data!=null;
-    PotReplayData data;float time,speed=1;bool playing,ready;int currentFrame=-1;
+    PotReplayData data;float time,speed=1;bool playing,ready;bool seeking;float presentationTime=float.NaN;int currentFrame=-1;
     Dictionary<int,PotReplayPose> state;readonly Dictionary<int,GameObject> objects=new Dictionary<int,GameObject>();
     readonly Dictionary<int,Renderer[]> renderers=new Dictionary<int,Renderer[]>();
     Dictionary<int,PotReplayPose> next;
@@ -46,10 +46,10 @@ public sealed class PotReplayPlayer : MonoBehaviour {
 #endif
     }
     void Disable(Behaviour b){if(b&&b.enabled){b.enabled=false;disabled.Add(b);}}
-    void LateUpdate(){if(!ready)return;if(playing)time=Mathf.Min(Duration,time+Time.unscaledDeltaTime*speed);Apply(time);if(time>=Duration)playing=false;}
-    public void Seek(float value){time=Mathf.Clamp(value,0,Duration);currentFrame=-1;if(ready)Apply(time);}
+    void LateUpdate(){if(!ready)return;if(playing)time=Mathf.Min(Duration,time+Time.unscaledDeltaTime*speed);if(time>=Duration&&playing){playing=false;presentationTime=float.NaN;}Apply(time);}
+    public void Seek(float value){seeking=true;presentationTime=float.NaN;time=Mathf.Clamp(value,0,Duration);currentFrame=-1;if(ready)Apply(time);seeking=false;}
     public void SetSpeed(float value){speed=Mathf.Clamp(value,.5f,3);if(speedLabel)speedLabel.text=speed.ToString("0.#",System.Globalization.CultureInfo.InvariantCulture)+"×";}
-    public void Pause(){playing=!playing;if(playing&&time>=Duration)Seek(0);}
+    public void Pause(){playing=!playing;presentationTime=float.NaN;if(playing&&time>=Duration)Seek(0);if(ready)Apply(time);}
     void Apply(float value){
         int frame=0;for(int i=1;i<data.frames.Count&&data.frames[i].t<=value;i++)frame=i;
         bool changed=frame!=currentFrame;
@@ -64,21 +64,38 @@ public sealed class PotReplayPlayer : MonoBehaviour {
             if(changed){var list=renderers[pair.Key];for(int i=0;i<list.Length;i++)if(list[i])list[i].enabled=p.visible&&(p.render==null||p.render.Length==0||i<p.render.Length&&p.render[i]);}
         }
         var camera=Camera.main;camera.transform.SetPositionAndRotation(Vector3.Lerp(a.cameraPosition,b.cameraPosition,blend),Quaternion.Slerp(a.cameraRotation,b.cameraRotation,blend));camera.fieldOfView=Mathf.Lerp(a.fov,b.fov,blend);camera.orthographic=a.orthographic;camera.orthographicSize=Mathf.Max(.01f,Mathf.Lerp(a.cameraSize,b.cameraSize,blend));
+        if(a.presentation!=null&&presentationTime!=value){
+            float offset=Mathf.Max(0,value-a.t);var probe=ComboProbeController.Instance;
+            BoardToolVisual.ApplyReplay(a.presentation,offset);ItemHighlight.For(camera).ApplyReplay(a.presentation,objects,offset);
+            if(probe)probe.ApplyReplay(a.presentation,objects,offset);
+            PotProbeActivation.ApplyReplay(a.presentation.activations,objects,offset,playing&&!seeking,speed);
+            if(probe&&probe.View&&a.presentation.probe&&b.presentation!=null&&b.presentation.probe&&a.presentation.combo==b.presentation.combo&&a.presentation.stars==b.presentation.stars){
+                var chances=new float[13];for(int i=0;i<13;i++)chances[i]=Mathf.Lerp(a.presentation.chance[i],b.presentation.chance[i],blend);probe.View.Chances.ApplyReplay(chances,a.presentation.combo);
+            }
+            presentationTime=value;
+        }
         GameManager.Instance.currentLevelTime=a.remaining;
-        if(readout)readout.text=$"{(int)value / 60:00}:{(int)value % 60:00} / {(int)Duration / 60:00}:{(int)Duration % 60:00}    {speed:0.#}×\n剩余 {Mathf.CeilToInt(a.remaining)} 秒 · 槽位 {a.tray.Length}/7";
+        if(readout)readout.text=$"{(int)value / 60:00}:{(int)value % 60:00} / {(int)Duration / 60:00}:{(int)Duration % 60:00}    {speed:0.#}×\n剩余 {Mathf.CeilToInt(a.remaining)} 秒 · 槽位 {a.tray.Length}/7{ActionCaption(value)}";
         if(slider)slider.SetValueWithoutNotify(Duration>0?value/Duration:0);
+    }
+    string ActionCaption(float value){
+        for(int i=data.events.Count-1;i>=0;i--){var e=data.events[i];if(e.t>value)continue;if(value-e.t>2)break;
+            if(e.type=="tool")return " · "+new[]{"移出","吸附","洗牌","加时"}[Mathf.Clamp(e.value,0,3)];
+            if(e.type=="probe_generate")return " · 生成探物";if(e.type=="probe_use")return " · 使用探物";
+        }return "";
     }
     void Controls(){
         var root=Match3DFlow.Instance.PotReplayOverlay(false);
-        readout=PotReplayUI.Label(root,"每日挑战回放",new Vector2(0,-40),new Vector2(650,90));
-        PotReplayUI.Button(root,"暂停 / 继续",new Vector2(-190,-145),()=>Pause());
-        var speedButton=PotReplayUI.SpeedButton(root,new Vector2(0,-147),()=>SetSpeed(speed>=3?.5f:speed+.5f));
+        readout=PotReplayUI.Label(root,"每日挑战回放",new Vector2(0,-5),new Vector2(650,70));
+        PotReplayUI.Button(root,"暂停 / 继续",new Vector2(-190,-80),()=>Pause());
+        var speedButton=PotReplayUI.SpeedButton(root,new Vector2(0,-82),()=>SetSpeed(speed>=3?.5f:speed+.5f));
         speedLabel=speedButton.GetComponentInChildren<Text>();SetSpeed(speed);
-        PotReplayUI.Button(root,"退出回放",new Vector2(190,-145),Exit);
-        slider=PotReplayUI.Progress(root,new Vector2(0,-215));slider.onValueChanged.AddListener(v=>Seek(v*Duration));
+        PotReplayUI.Button(root,"退出回放",new Vector2(190,-80),Exit);
+        slider=PotReplayUI.Progress(root,new Vector2(0,-150));slider.onValueChanged.AddListener(v=>Seek(v*Duration));
     }
     public void Exit(){Exit(true);}
     void Exit(bool notify){
+        if(Camera.main)ItemHighlight.For(Camera.main).ClearAll();PotProbeActivation.Clear();BoardToolVisual.Reset();ComboProbeController.End();presentationTime=float.NaN;
         StopAllCoroutines();ready=playing=false;foreach(var b in disabled)if(b)b.enabled=true;disabled.Clear();objects.Clear();renderers.Clear();state=null;next=null;data=null;currentFrame=-1;Time.timeScale=1;
         Match3DFlow.Instance.EndPotReplay();
 #if DAILY_WEB_PREVIEW

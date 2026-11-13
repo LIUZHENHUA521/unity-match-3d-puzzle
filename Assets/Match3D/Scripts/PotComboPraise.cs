@@ -37,7 +37,18 @@ public sealed class PotComboPraise : MonoBehaviour {
         graphic.AnimationState.SetAnimation(0, animation, false);
         graphic.Update(0);
     }
+    public void CaptureReplay(PotReplayPresentation snapshot){
+        snapshot.praiseVisible=graphic&&graphic.gameObject.activeSelf;
+        if(snapshot.praiseVisible){var track=graphic.AnimationState.GetCurrent(0);snapshot.praise=track?.Animation.Name??"";snapshot.praiseTime=track?.TrackTime??0;}
+    }
+    public void ApplyReplay(PotReplayPresentation snapshot,float offset){
+        if(!snapshot.praiseVisible){ResetImmediate();return;}
+        if(!graphic){bool old=treatment;treatment=true;ShowCombo(2);treatment=old;}
+        if(!graphic)return;var animation=graphic.Skeleton.Data.FindAnimation(snapshot.praise);if(animation==null){ResetImmediate();return;}
+        graphic.gameObject.SetActive(true);var track=graphic.AnimationState.SetAnimation(0,animation,false);track.TrackTime=snapshot.praiseTime+offset;graphic.Update(0);
+    }
     void Update() {
+        if(PotReplayPlayer.Active)return;
         if (GameManager.Instance && (GameManager.Instance.gameStatus == GameManager.GameStatus.FINISH ||
             GameManager.Instance.gameStatus == GameManager.GameStatus.FAIL)) { ResetImmediate(); return; }
         if (graphic && graphic.gameObject.activeSelf && graphic.AnimationState.GetCurrent(0)?.IsComplete == true)

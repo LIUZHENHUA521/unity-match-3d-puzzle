@@ -10,7 +10,7 @@ if (typeof window !== 'undefined') {
   const fail = e => { show(String(e.message || e)); emit({ type: 'error', message: status.textContent }) }
   const send = () => {
     if (!instance || !ready || !pending || loading) return
-    if (pending.version !== 'pot-replay-v1' || pending.resourceVersion !== 'pot-replay-resources-1') { pending = null; fail('该录像需要对应版本的播放器'); return }
+    if (!((pending.version === 'pot-replay-v1' && pending.resourceVersion === 'pot-replay-resources-1') || (pending.version === 'pot-replay-v2' && pending.resourceVersion === 'pot-replay-resources-2'))) { pending = null; fail('该录像需要对应版本的播放器'); return }
     loading = true; instance.SendMessage('DailyWebPreview', 'Receive', JSON.stringify({ action: 'potReplay', replay: pending })); pending = null
   }
   window.goosePreviewEvent = data => { if (data.type === 'ready') { ready = true; emit({ type: 'ready' }); send() }; if (data.type === 'potReplayPlaying') { show('每日挑战回放', false); emit({ type: 'playing' }) }; if (data.type === 'potReplayClosed') emit({ type: 'closed' }); if (data.type === 'error') fail(data.message) }

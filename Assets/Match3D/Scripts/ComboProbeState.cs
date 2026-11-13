@@ -43,6 +43,10 @@ public sealed class ComboProbeState {
         foreach (var column in columns) column.Remove(id);
         Revision++; return true;
     }
+    public void RestoreReplay(int combo,int stars,int next,IEnumerable<long>[] values) {
+        Reset();Combo=combo;Stars=stars;NextColumn=next;
+        for(int i=0;i<ColumnCount;i++)foreach(long token in values[i]){columns[i].Add(token);bound.Add(token);}
+    }
     public void Reset() {
         foreach (var column in columns) column.Clear();
         bound.Clear(); Combo = Stars = NextColumn = 0; lastOperation = 0; Revision++;

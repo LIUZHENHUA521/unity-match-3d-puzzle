@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -25,9 +26,9 @@ public sealed class PotProbeActivation : MonoBehaviour {
     static AudioClip launchClip;
     AudioSource launchAudio;
     bool launchProcessed, audioPaused;
-    int count;
+    int count;bool replay;float replayAge;
     public static int ActiveCount => active.Count;
-    public float Elapsed => Mathf.Max(0, Time.time - started);
+    public float Elapsed => replay?replayAge:Mathf.Max(0, Time.time - started);
 
     public static Vector3 ConnectionPoint(Vector3 start, Vector3 end, float t, float unit, float seconds) {
         var delta = end - start;
@@ -76,7 +77,7 @@ public sealed class PotProbeActivation : MonoBehaviour {
         effect.ribbon.GetComponent<ParticleSystemRenderer>().sharedMaterial = effect.particleMaterial;
         effect.ribbon.Play(); active[target] = effect; effect.Tick();
     }
-    void LateUpdate() { Tick(); }
+    void LateUpdate() { if(!replay)Tick(); }
     void TickAudio(float elapsed) {
         if (!launchAudio) return;
         if (!GameAudioCatalog.Enabled) {
@@ -112,7 +113,7 @@ public sealed class PotProbeActivation : MonoBehaviour {
         float elapsed = Elapsed;
         // Keep a brief fading outline during emergence, then leave the normal mesh.
         if (elapsed >= Duration + .12f) { Finish(); return; }
-        TickAudio(elapsed);
+        if(!replay)TickAudio(elapsed);
         float activation = Mathf.Clamp01((elapsed - HitSeconds) / ActivateSeconds);
         float fade = 1 - Mathf.Clamp01((elapsed - Duration) / .12f);
         silhouette.SetFloat("_PotOpacity", (elapsed < HitSeconds ? .15f : .7f + .3f * Mathf.Sin(activation * Mathf.PI)) * fade);
@@ -161,6 +162,22 @@ public sealed class PotProbeActivation : MonoBehaviour {
         parts.Clear();
         if (silhouette) Destroy(silhouette); silhouette = null;
         if (particleMaterial) Destroy(particleMaterial); particleMaterial = null;
+    }
+    public static PotReplayActivation[] CaptureReplay()=>active.Values.Where(e=>e&&!e.replay).Select(e=>new PotReplayActivation{id=PotReplayPresentation.Id(e.item),origin=e.origin,age=e.Elapsed}).Where(e=>e.id>=0).ToArray();
+    public static void ApplyReplay(PotReplayActivation[] values,Dictionary<int,GameObject> objects,float offset,bool playing,float speed){
+        var keep=new HashSet<GameObject>();
+        foreach(var value in values){
+            float age=value.age+offset;if(age>=Duration+.12f||!objects.TryGetValue(value.id,out var obj))continue;keep.Add(obj);
+            if(!active.TryGetValue(obj,out var effect)||!effect){Begin(obj,value.origin);if(!active.TryGetValue(obj,out effect))continue;}
+            effect.replay=true;effect.replayAge=age;effect.origin=value.origin;effect.Tick();
+            var audio=effect.launchAudio;if(!audio||!audio.clip)continue;
+            float position=age-SourceSeconds;
+            if(!GameAudioCatalog.Enabled||position<0||position>=audio.clip.length){audio.Stop();continue;}
+            audio.pitch=speed;
+            if(!playing){audio.Pause();continue;}
+            if(!audio.isPlaying){audio.time=position;audio.Play();}else if(Mathf.Abs(audio.time-position)>.1f)audio.time=position;
+        }
+        foreach(var pair in active.ToArray())if(pair.Value&&pair.Value.replay&&!keep.Contains(pair.Key))pair.Value.Finish();
     }
     public static void Stop(GameObject target) {
         if (!ReferenceEquals(target, null) && active.TryGetValue(target, out var effect) && effect) effect.Finish();

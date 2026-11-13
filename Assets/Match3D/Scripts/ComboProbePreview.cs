@@ -8,7 +8,7 @@ public sealed class ComboProbePreview : MonoBehaviour {
     readonly ParticleSystem.Particle[] particles = new ParticleSystem.Particle[72];
     ComboProbeController owner;
     Transform origin;
-    long token;
+    long token;float replayTime;bool replay;Transform replayOrigin;
     Camera camera;
     CommandBuffer outline;
     Material silhouette, particleMaterial;
@@ -17,8 +17,8 @@ public sealed class ComboProbePreview : MonoBehaviour {
     public int ParticleCount => line ? line.particleCount : 0;
     public long TargetToken => token;
     public void Show(ComboProbeController controller, long id, Transform source) {
-        Clear(); owner = controller; var target = owner.Target(id);
-        if (!target || !owner.CanInteract) return;
+        Clear(); owner = controller;replay=owner.ReplayMode; var target = owner.Target(id);
+        if (!target || (!owner.CanInteract&&!owner.ReplayMode)) return;
         token = id; origin = source; camera = Camera.main;
         if (!silhouette) silhouette = new Material(Resources.Load<Shader>("Match3D/ComboProbe/ProbeOutline"));
         foreach (var renderer in target.GetComponentsInChildren<Renderer>(true)) {
@@ -37,12 +37,12 @@ public sealed class ComboProbePreview : MonoBehaviour {
             particleMaterial = new Material(Resources.Load<Shader>("Match3D/ComboProbe/ProbeParticle"));
             line.GetComponent<ParticleSystemRenderer>().sharedMaterial = particleMaterial;
         }
-        line.gameObject.SetActive(true); line.Play(); Tick();
+        line.gameObject.SetActive(true); line.Play(); Tick();if(!owner.ReplayMode)PotReplayRecorder.Event("probe_preview",PotReplayPresentation.Id(target.gameObject),1);
     }
-    void LateUpdate() { if (Active) Tick(); }
+    void LateUpdate() { if (Active&&!replay) Tick(); }
     void Tick() {
         var target = owner ? owner.Target(token) : null;
-        if (!target || !owner.CanInteract || !origin || !camera) { Clear(); return; }
+        if (!target || (!owner.CanInteract&&!owner.ReplayMode) || !origin || !camera) { Clear(); return; }
         outline.Clear();
         foreach (var part in parts) {
             if (!part.transform || !part.mesh) continue;
@@ -55,17 +55,28 @@ public sealed class ComboProbePreview : MonoBehaviour {
         float unit = camera.pixelWidth / 720f;
         for (int i = 0; i < particles.Length; i++) {
             float t = i / (float)(particles.Length - 1);
-            Vector3 point = PotProbeActivation.ConnectionPoint(start, end, t, unit, Time.unscaledTime);
+            Vector3 point = PotProbeActivation.ConnectionPoint(start, end, t, unit, (replay?replayTime:Time.unscaledTime));
             point.z = 1.1f;
             particles[i].position = camera.ScreenToWorldPoint(point);
-            particles[i].startSize = GameplayBoardLayout.WorldPerPoint(camera) * (3 + Mathf.Sin(t * 25 - Time.unscaledTime * 4));
-            particles[i].startColor = Color.Lerp(new Color32(100, 214, 255, 240), Color.white, .5f + .5f * Mathf.Sin(t * 20 - Time.unscaledTime * 5));
+            particles[i].startSize = GameplayBoardLayout.WorldPerPoint(camera) * (3 + Mathf.Sin(t * 25 - (replay?replayTime:Time.unscaledTime) * 4));
+            particles[i].startColor = Color.Lerp(new Color32(100, 214, 255, 240), Color.white, .5f + .5f * Mathf.Sin(t * 20 - (replay?replayTime:Time.unscaledTime) * 5));
             particles[i].startLifetime = particles[i].remainingLifetime = 1000;
         }
         line.SetParticles(particles, particles.Length);
     }
+    public void CaptureReplay(PotReplayPresentation snapshot){
+        if(!Active)return;snapshot.previewId=PotReplayPresentation.Id(owner.Target(token)?.gameObject);snapshot.previewOrigin=origin.position;snapshot.previewTime=Time.unscaledTime;
+    }
+    public void ApplyReplay(PotReplayPresentation snapshot,Dictionary<int,GameObject> objects,float offset){
+        replay=true;replayTime=snapshot.previewTime+offset;
+        if(snapshot.previewId<0||!objects.TryGetValue(snapshot.previewId,out var obj)){Clear();return;}
+        if(!replayOrigin){replayOrigin=new GameObject("Pot replay preview origin").transform;replayOrigin.SetParent(transform);}
+        replayOrigin.position=snapshot.previewOrigin;var target=obj.GetComponent<ComboProbeTarget>();
+        if(token!=target.Token)Show(ComboProbeController.Instance,target.Token,replayOrigin);Tick();
+    }
     public void Clear() {
-        token = 0; origin = null;
+        if(token!=0&&owner&&!owner.ReplayMode)PotReplayRecorder.Event("probe_preview",PotReplayPresentation.Id(owner.Target(token)?.gameObject),0);
+        token = 0; origin = null;replay=false;
         if (outline != null) { if (camera) camera.RemoveCommandBuffer(CameraEvent.AfterForwardAlpha, outline); outline.Release(); outline = null; }
         foreach (var part in parts) if (part.skin && part.mesh) Destroy(part.mesh); parts.Clear();
         if (line) { line.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); line.gameObject.SetActive(false); }

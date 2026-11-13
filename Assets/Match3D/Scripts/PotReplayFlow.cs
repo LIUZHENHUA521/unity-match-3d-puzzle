@@ -7,8 +7,7 @@ public partial class Match3DFlow {
     RectTransform potReplayOverlay;int potReplayListVersion;string potReplayTier="bachelor";
     public RectTransform PotReplayOverlay(bool full){
         if(potReplayOverlay)Destroy(potReplayOverlay.gameObject);
-        potReplayOverlay=PotReplayUI.Rect(page,"Pot replay overlay",Vector2.zero,new Vector2(720,full?1280:280));
-        if(!full){potReplayOverlay.anchorMin=potReplayOverlay.anchorMax=new Vector2(.5f,0);potReplayOverlay.pivot=new Vector2(.5f,0);}
+        potReplayOverlay=PotReplayUI.Rect(page,"Pot replay overlay",Vector2.zero,new Vector2(720,full?1280:190));
         potReplayOverlay.gameObject.AddComponent<Image>().color=new Color(.96f,.97f,.92f,.97f);return potReplayOverlay;
     }
     public void ShowPotReplays(){
@@ -45,6 +44,7 @@ public partial class Match3DFlow {
     public void BeginPotReplay(Match3DDailyLevel level,int stage,Match3DDailyStage opening){
         StopBoard();LocalPreview=true;IsPvp=false;unlimitedMagnetRun=false;dailyLevel=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level));runModelTheme=null;ThemeIndex=0;Stage=stage;runDate=level.date;
         dailyLevel.opening=new Match3DDailySnapshot{stages=new Match3DDailyStage[2]};dailyLevel.opening.stages[stage-1]=opening;
+        ComboProbeController.BeginStage(true,level.seed);
         SpawnDailyOpening(SourceProfile(stage==1).prefabs,stage==1,null,null);HUD();BlocksGameplay=true;Music(library.gameMusic);
     }
     public void LockPotReplay(){ScreenName="pot-replay";BlocksGameplay=true;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;

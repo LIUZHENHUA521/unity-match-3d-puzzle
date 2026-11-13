@@ -112,7 +112,7 @@ public sealed class ComboProbeView : MonoBehaviour {
     }
     public void Refresh() {
         if (!owner || !root) return;
-        bool visible = owner.Running && Match3DFlow.Instance && Match3DFlow.Instance.ScreenName == "game";
+        bool visible = owner.Running && Match3DFlow.Instance && (Match3DFlow.Instance.ScreenName == "game" || owner.ReplayMode);
         root.gameObject.SetActive(visible); if (!visible) { if (Preview) Preview.Clear(); return; }
         // Successful probe use is learning state, independent of the board revision.
         RefreshHint();
@@ -191,10 +191,28 @@ public sealed class ComboProbeView : MonoBehaviour {
         foreach (var highlight in slotHighlights) if (highlight) highlight.color = Color.clear;
     }
     void LateUpdate() {
+        if(owner&&owner.ReplayMode)return;
         Layout(); Refresh(); AnimateHint();
         if (Rewards) for (int column=0;column<4;column++) for (int layer=0;layer<3;layer++)
             if (models[column,layer] && models[column,layer].gameObject.activeSelf)
                 models[column,layer].rectTransform.localScale = Vector3.one * Rewards.RevealScale(displayedTokens[column,layer]);
+    }
+    public void CaptureReplay(PotReplayPresentation snapshot){
+        snapshot.chance=Chances.CaptureReplay();snapshot.rewards=Rewards.CaptureReplay();
+        snapshot.firstHint=highlightedFirstReward;snapshot.highlightColumn=highlightedColumn;snapshot.hintAge=highlightElapsed;
+        snapshot.ring=ring.AnimationState.GetCurrent(0)?.Animation.Name??"";snapshot.ringVisible=ring.gameObject.activeSelf;snapshot.ringAlpha=ring.color.a;snapshot.ringTime=ring.AnimationState.GetCurrent(0)?.TrackTime??0;
+        Praise.CaptureReplay(snapshot);Preview.CaptureReplay(snapshot);
+    }
+    public void ApplyReplay(PotReplayPresentation snapshot,System.Collections.Generic.Dictionary<int,GameObject> objects,float offset){
+        Layout();Rewards.ApplyReplay(snapshot.rewards,objects,offset);revision=-1;Refresh();
+        Chances.ApplyReplay(snapshot.chance,snapshot.combo);
+        ring.gameObject.SetActive(snapshot.ringVisible);SetRingAlpha(snapshot.ringAlpha);
+        var track=ring.AnimationState.GetCurrent(0);if(snapshot.ring!=""&&(track==null||track.Animation.Name!=snapshot.ring))track=ring.AnimationState.SetAnimation(0,snapshot.ring,true);if(track!=null){track.TrackTime=snapshot.ringTime+offset;ring.Update(0);}
+        highlightedFirstReward=snapshot.firstHint;highlightedColumn=snapshot.highlightColumn;highlightElapsed=snapshot.hintAge+offset;
+        foreach(var h in slotHighlights)h.color=Color.clear;
+        if(highlightedColumn>=0){float pulse=Mathf.Sin(highlightElapsed/1.2f*Mathf.PI);slotHighlights[highlightedColumn].color=new Color(1,.88f,.35f,.22f*pulse*pulse);}
+        for(int column=0;column<4;column++)for(int layer=0;layer<3;layer++)if(models[column,layer].gameObject.activeSelf)models[column,layer].rectTransform.localScale=Vector3.one*Rewards.RevealScale(displayedTokens[column,layer]);
+        Praise.ApplyReplay(snapshot,offset);Preview.ApplyReplay(snapshot,objects,offset);
     }
     void OnDisable() { ResetView(); }
     void OnDestroy() { icons.Dispose(); }

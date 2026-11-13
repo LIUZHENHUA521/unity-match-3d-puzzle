@@ -9,14 +9,15 @@ public sealed class ComboProbeController : MonoBehaviour {
     readonly List<long> stale = new List<long>();
     System.Random rewardRandom;
     long operation;
-    int generation;
+    int generation;bool beforeReplayUsed;
     ComboProbeView view;
     public bool Running { get; private set; }
     // Remember successful use for this session, including across stage restarts.
     public bool HasUsedProbe { get; private set; }
     public int Generation => generation;
     public ComboProbeView View => view;
-    public bool CanInteract => Running && Match3DFlow.Instance && Match3DFlow.Instance.ScreenName == "game" &&
+    public bool ReplayMode { get; private set; }
+    public bool CanInteract => !ReplayMode && Running && Match3DFlow.Instance && Match3DFlow.Instance.ScreenName == "game" &&
         !Match3DFlow.Instance.BlocksGameplay && !Match3DFlow.Instance.CreationInProgress && GameManager.Instance &&
         GameManager.Instance.GameIsPlaying() && !BoardTools.Busy && Time.timeScale > 0 &&
         InputController.Instance && InputController.Instance.objectsOnStack.Count < 7;
@@ -42,7 +43,7 @@ public sealed class ComboProbeController : MonoBehaviour {
     public static void End() { if (Instance) Instance.EndStage(); }
     void EndStage() {
         PotProbeActivation.Clear();
-        Running = false; targets.Clear(); State.Reset(); operation = 0;
+        if(ReplayMode)HasUsedProbe=beforeReplayUsed;ReplayMode=false;Running = false; targets.Clear(); State.Reset(); operation = 0;
         if (view) { view.ResetView(); view.gameObject.SetActive(false); }
     }
     public static void Register(GameObject obj, GameObject prefab) {
@@ -52,6 +53,7 @@ public sealed class ComboProbeController : MonoBehaviour {
         Instance.targets[identity.Token] = identity;
     }
     public ComboProbeTarget Target(long token) {
+        if(ReplayMode)return targets.TryGetValue(token,out var recorded)?recorded:null;
         if (!targets.TryGetValue(token, out var target) || !target || target.Token != token ||
             target.Generation != generation || !target.gameObject.activeInHierarchy ||
             !LevelGenerator.Instance || !InputController.Instance || !LevelGenerator.Instance.objectsOnScene.Contains(target.gameObject) ||
@@ -59,7 +61,7 @@ public sealed class ComboProbeController : MonoBehaviour {
         return target;
     }
     public void PickAccepted(GameObject obj, ProbePickSource source, bool matched) {
-        if (!Running) return;
+        if (!Running || ReplayMode) return;
         var target = obj.GetComponent<ComboProbeTarget>();
         if (target) { State.Remove(target.Token); }
         int previousCombo = State.Combo;
@@ -72,7 +74,7 @@ public sealed class ComboProbeController : MonoBehaviour {
         }
     }
     public bool GrantReward() {
-        if (!Running || !Camera.main) return false;
+        if (!Running || ReplayMode || !Camera.main) return false;
         // Randomize the cheap eligibility list, then stop at the first occluded target.
         // Dense piles normally need one geometry query, not five raycasts for every item.
         var candidates = new List<ComboProbeTarget>();
@@ -86,6 +88,7 @@ public sealed class ComboProbeController : MonoBehaviour {
             if (IsOccluded(chosen.gameObject)) {
                 int column = State.NextColumn;
                 bool added = State.Add(chosen.Token);
+                if(added)PotReplayRecorder.Event("probe_generate",PotReplayPresentation.Id(chosen.gameObject),column);
                 if (added && view) view.Rewards.Play(column, chosen.Token);
                 return added;
             }
@@ -126,8 +129,15 @@ public sealed class ComboProbeController : MonoBehaviour {
         InputController.Instance.AddObjectOnStack(target.gameObject, source: ProbePickSource.Probe,
             potProbeOrigin: view ? (Vector3?)view.Slot(column).transform.position : null);
         bool accepted = InputController.Instance.AcceptedPicks > before;
-        if (accepted) { HasUsedProbe = true; if (view) view.Refresh(); }
+        if (accepted) { PotReplayRecorder.Event("probe_use",PotReplayPresentation.Id(target.gameObject),column);HasUsedProbe = true; if (view) view.Refresh(); }
         return accepted;
+    }
+    public void ApplyReplay(PotReplayPresentation snapshot,Dictionary<int,GameObject> objects,float offset){
+        if(!ReplayMode)beforeReplayUsed=HasUsedProbe;ReplayMode=true;Running=snapshot!=null&&snapshot.probe;
+        if(view)view.gameObject.SetActive(Running);if(!Running)return;
+        targets.Clear();foreach(var pair in objects){var target=pair.Value.GetComponent<ComboProbeTarget>();if(target)targets[target.Token]=target;}
+        State.RestoreReplay(snapshot.combo,snapshot.stars,snapshot.nextColumn,snapshot.columns.Select(c=>(IEnumerable<long>)c.ids.Where(objects.ContainsKey).Select(id=>objects[id].GetComponent<ComboProbeTarget>().Token).ToArray()).ToArray());
+        HasUsedProbe=snapshot.used;if(view)view.ApplyReplay(snapshot,objects,offset);
     }
     void RemoveInvalid() {
         stale.Clear();
@@ -135,7 +145,7 @@ public sealed class ComboProbeController : MonoBehaviour {
         foreach (long token in stale) { State.Remove(token); targets.Remove(token); }
     }
     void LateUpdate() {
-        if (!Running) return;
+        if (!Running || ReplayMode) return;
         RemoveInvalid(); if (view) view.Refresh();
     }
     void OnDestroy() { EndStage(); if (view) Destroy(view.gameObject); if (Instance == this) Instance = null; }

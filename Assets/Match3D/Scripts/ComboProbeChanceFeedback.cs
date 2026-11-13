@@ -56,6 +56,12 @@ public sealed class ComboProbeChanceFeedback : MonoBehaviour {
         }
         stars = count; combo = nextCombo;
     }
+    public float[] CaptureReplay(){
+        var values=new float[13];values[0]=Progress;for(int i=0;i<3;i++){values[1+i*4]=lit[i].color.a;values[2+i*4]=lit[i].rectTransform.localScale.x;values[3+i*4]=flashes[i].color.a;values[4+i*4]=flashes[i].rectTransform.localScale.x;}return values;
+    }
+    public void ApplyReplay(float[] values,int combo){
+        if(values==null||values.Length!=13)return;fill.fillAmount=values[0];for(int i=0;i<3;i++){lit[i].sprite=combo>=ColorCombo?assets.colorStar:assets.lightStar;lit[i].color=new Color(1,1,1,values[1+i*4]);lit[i].rectTransform.localScale=Vector3.one*values[2+i*4];flashes[i].color=new Color(1,1,1,values[3+i*4]);flashes[i].rectTransform.localScale=Vector3.one*values[4+i*4];}
+    }
     void Update() {
         if (Time.deltaTime <= 0) return;
         if (progressElapsed < progressDuration) {

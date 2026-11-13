@@ -20,6 +20,8 @@ public sealed class BoardToolVisual : MonoBehaviour {
     // ObjectPoolMa.GetObjByName/RemoveObj keeps transient effects by prefab name.
     // Keep this pool limited to tool VFX; gameplay ObjectUnit instances use BoardItemPool.
     readonly Dictionary<string,Stack<GameObject>> pooledEffects=new Dictionary<string,Stack<GameObject>>();
+    readonly Dictionary<int,GameObject> replayEffects=new Dictionary<int,GameObject>();
+    static readonly string[] replayNames={"FX_Tool_ReturnBack","FX_Tool_AutoFind","FX_Tool_Messup"};
     GameObject background;float backgroundZ=StoreHideZ;Tween backgroundTween;
     float storeExpansion;Tween expansionTween;
     public static float StoreExpansion=>instance?instance.storeExpansion:0;
@@ -31,12 +33,12 @@ public sealed class BoardToolVisual : MonoBehaviour {
     void Awake(){instance=this;}
     void OnDestroy(){Clear();DestroyPooled();if(instance==this)instance=null;}
     public static void Reset(){if(instance)instance.Clear();}
-    void Clear(){if(expansionTween!=null)expansionTween.Kill();expansionTween=null;storeExpansion=0;StopAllCoroutines();if(backgroundTween!=null)backgroundTween.Kill();backgroundTween=null;while(effects.Count>0)Recycle(effects[effects.Count-1]);if(background){backgroundTween=null;backgroundZ=StoreHideZ;background.SetActive(false);}backgroundZ=StoreHideZ;}
+    void Clear(){foreach(var obj in replayEffects.Values)if(obj)Destroy(obj);replayEffects.Clear();if(expansionTween!=null)expansionTween.Kill();expansionTween=null;storeExpansion=0;StopAllCoroutines();if(backgroundTween!=null)backgroundTween.Kill();backgroundTween=null;while(effects.Count>0)Recycle(effects[effects.Count-1]);if(background){backgroundTween=null;backgroundZ=StoreHideZ;background.SetActive(false);}backgroundZ=StoreHideZ;}
     void DestroyPooled(){foreach(var bucket in pooledEffects.Values)while(bucket.Count>0){var obj=bucket.Pop();if(obj)Destroy(obj);}pooledEffects.Clear();if(background)Destroy(background);background=null;}
     GameObject Spawn(string name){var prefab=Resources.Load<GameObject>("SourceTools/"+name);if(!prefab){Debug.LogError("Missing imported source tool visual "+name);return null;}
         GameObject obj=null;if(pooledEffects.TryGetValue(name,out var bucket))while(bucket.Count>0&&!obj){var candidate=bucket.Pop();if(candidate)obj=candidate;}
         if(!obj)obj=Instantiate(prefab);obj.name=name;obj.transform.SetParent(null,false);obj.SetActive(true);
-        var ps=obj.GetComponent<ParticleSystem>();if(ps){ps.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);ps.Clear(true);}effects.Add(obj);return obj;}
+        var ps=obj.GetComponent<ParticleSystem>();if(ps){ps.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);ps.Clear(true);}effects.Add(obj);PotReplayRecorder.Event("tool_effect",-1,System.Array.IndexOf(replayNames,name));return obj;}
     void Recycle(GameObject obj){effects.Remove(obj);if(!obj)return;var ps=obj.GetComponent<ParticleSystem>();if(ps)ps.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);obj.transform.SetParent(transform,false);obj.SetActive(false);string key=obj.name;if(!pooledEffects.TryGetValue(key,out var bucket))pooledEffects.Add(key,bucket=new Stack<GameObject>());bucket.Push(obj);}
     public static void Return(GameObject item){var owner=Ensure();if(owner&&item)owner.StartCoroutine(owner.FollowReturn(item));}
     IEnumerator FollowReturn(GameObject item){
@@ -84,6 +86,22 @@ public sealed class BoardToolVisual : MonoBehaviour {
         owner.expansionTween=DOTween.To(()=>owner.storeExpansion,x=>owner.storeExpansion=x,visible?1f:0f,BoardTools.StoreSeconds).SetEase(Ease.OutQuad);
         owner.background.SetActive(true);
         if(owner.backgroundTween!=null)owner.backgroundTween.Kill();owner.backgroundTween=DOTween.To(()=>owner.backgroundZ,x=>{owner.backgroundZ=x;owner.LayoutBackground();},visible?StoreShowZ:StoreHideZ,BoardTools.StoreSeconds).SetEase(Ease.OutQuad).OnComplete(()=>{if(!visible&&owner.background)owner.background.SetActive(false);});owner.LayoutBackground();
+    }
+    public static void CaptureReplay(PotReplayPresentation snapshot){
+        if(!instance)return;snapshot.storeVisible=HasBackground;snapshot.storeZ=instance.backgroundZ;snapshot.storeExpansion=instance.storeExpansion;
+        snapshot.tools=instance.effects.Where(o=>o&&o.activeInHierarchy).Select(o=>{var ps=o.GetComponent<ParticleSystem>();return new PotReplayToolEffect{key=o.GetInstanceID(),kind=System.Array.IndexOf(replayNames,o.name),p=o.transform.position,r=o.transform.rotation,s=o.transform.localScale,age=ps?ps.time:0,seed=ps?ps.randomSeed:1};}).Where(e=>e.kind>=0).ToArray();
+    }
+    public static void ApplyReplay(PotReplayPresentation snapshot,float offset){
+        var owner=Ensure();if(!owner)return;var keep=new HashSet<int>();
+        foreach(var value in snapshot.tools){
+            keep.Add(value.key);if(!owner.replayEffects.TryGetValue(value.key,out var obj)||!obj){var prefab=Resources.Load<GameObject>("SourceTools/"+replayNames[value.kind]);if(!prefab)continue;obj=Instantiate(prefab);owner.replayEffects[value.key]=obj;}
+            obj.transform.SetPositionAndRotation(value.p,value.r);obj.transform.localScale=value.s;
+            var ps=obj.GetComponent<ParticleSystem>();if(ps){ps.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);ps.useAutoRandomSeed=false;ps.randomSeed=value.seed;ps.Simulate(value.age+offset,true,true,true);ps.Pause(true);}
+        }
+        foreach(var pair in owner.replayEffects.ToArray())if(!keep.Contains(pair.Key)){if(pair.Value)Destroy(pair.Value);owner.replayEffects.Remove(pair.Key);}
+        if(snapshot.storeVisible&&!owner.background){var prefab=Resources.Load<GameObject>("SourceTools/StoreContentBG");if(prefab)owner.background=Instantiate(prefab);}
+        owner.backgroundZ=snapshot.storeZ;owner.storeExpansion=snapshot.storeExpansion;
+        if(owner.background){owner.background.SetActive(snapshot.storeVisible);owner.LayoutBackground();}
     }
     void LateUpdate(){if(background)LayoutBackground();}
     void LayoutBackground(){
