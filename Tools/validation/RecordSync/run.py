@@ -17,6 +17,7 @@ shutil.copy(ROOT / 'ProjectSettings/ProjectVersion.txt', STAGE / 'ProjectSetting
 deps = json.loads((ROOT / 'Packages/manifest.json').read_text())['dependencies']
 (STAGE / 'Packages/manifest.json').write_text(json.dumps({'dependencies': {k: v for k, v in deps.items() if k.startswith('com.unity.modules.')}}))
 shutil.copy(ROOT / 'Assets/Match3D/Scripts/Match3DGameRecords.cs', STAGE / 'Assets/Match3DGameRecords.cs')
+shutil.copy(ROOT / 'Assets/Match3D/Scripts/Match3DAdTelemetry.cs', STAGE / 'Assets/Match3DAdTelemetry.cs')
 shutil.copy(Path(__file__).with_name('FixtureDependencies.cs'), STAGE / 'Assets/FixtureDependencies.cs')
 shutil.copy(Path(__file__).with_name('RecordSyncProbe.cs'), STAGE / 'Assets/Editor/RecordSyncProbe.cs')
 for name in ('result.txt', 'slow-started'):

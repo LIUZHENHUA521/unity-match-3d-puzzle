@@ -26,7 +26,7 @@ public partial class Match3DFlow {
                 bool applied=BoardTools.RunPaid(type,()=>{BoosterManager.Instance.CheckHintInteractibility();action();});
                 if(applied){Match3DRewardAcquisition.Commit(offer);BoardTools.RecordAcquisition(type,offer.route);}
                 else ShowTips("当前无法使用该道具");
-            });
+            },type);
         },Close);
         view.SetAcquisitionRoute(offer.route);
     }

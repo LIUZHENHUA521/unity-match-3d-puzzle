@@ -68,9 +68,16 @@ public sealed class RecordSyncRunner:MonoBehaviour {
   GameManager.Instance=new GameObject("Game manager").AddComponent<GameManager>();
   GameManager.Instance.currentLevelTime=100;flow.TimeReviveUsed=true;
   flow.ReviveUsage.clear.share=1;flow.ReviveUsage.time.ad=1;
-  records.Prepare("daily",2,"2026-11-12",3,600);records.StartRecord();records.Finish("quit","home");
+  records.Prepare("daily",2,"2026-11-12",3,600);records.StartRecord();
+  var adContext=records.AdContext("owner-a");
+  Assert(adContext!=null&&adContext.stage==2&&!string.IsNullOrEmpty(adContext.recordId)&&records.AdContext("owner-b")==null,"ad context freezes active record and rejects another account");
+  var telemetry=new GameObject("Ad telemetry").AddComponent<Match3DAdTelemetry>();telemetry.Initialize(endpoint);
+  Assert(JsonUtility.FromJson<Match3DAdTelemetry.Context>(telemetry.Capture("playback","adunit-test","tool_magnet")).recordId==adContext.recordId,"telemetry captures correct active record before completion");
+  records.Finish("quit","home");
+  Assert(records.AdContext("owner-a")==null&&adContext.stage==2,"finished record cannot issue a new ad context; captured context remains frozen");
   var payload=Queue.items[Queue.items.Count-1].json;
   var snapshot=JsonUtility.FromJson<Match3DGameRecords.Record>(payload);
+  Assert(snapshot.adTelemetryVersion==1,"new records explicitly advertise independent ad telemetry support");
   Assert(snapshot.acquisitionVersion==1&&snapshot.toolUsage.Length==4&&Array.TrueForAll(snapshot.toolUsage,x=>x.share==1&&x.ad==2&&x.rewarded==3&&x.free==1&&x.inventory==1&&x.test==1),"finish serializes separate channels while retaining legacy tool totals");
   Assert(snapshot.reviveUsage.clear.share==1&&snapshot.reviveUsage.time.ad==1&&snapshot.timeReviveUsed,"finish serializes both revival routes");
   flow.ReviveUsage=new Match3DGameRecords.ReviveUse();
