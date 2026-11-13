@@ -18,6 +18,8 @@ public sealed class ComboProbeView : MonoBehaviour {
     readonly long[,] displayedTokens = new long[4,3];
     int rewardRevision = -1;
     readonly RawImage[,] models = new RawImage[4, 3];
+    const float ModelSize = 86f;
+    const float TopModelSizeMultiplier = 1.5f;
     readonly ComboProbeSlot[] slots = new ComboProbeSlot[4];
     readonly ComboProbeIcons icons = new ComboProbeIcons();
     ComboProbeAssets assets;
@@ -82,7 +84,7 @@ public sealed class ComboProbeView : MonoBehaviour {
             for (int layer = 0; layer < 3; layer++) {
                 var visual = new GameObject("Model layer " + layer, typeof(RectTransform), typeof(RawImage));
                 visual.layer = 5; visual.transform.SetParent(cell.transform, false);
-                var r = (RectTransform)visual.transform; r.sizeDelta = new Vector2(86, 86);
+                var r = (RectTransform)visual.transform; r.sizeDelta = Vector2.one * ModelSize;
                 models[i, layer] = visual.GetComponent<RawImage>(); models[i, layer].raycastTarget = false;
             }
             slots[i] = cell.GetComponent<ComboProbeSlot>(); slots[i].Initialize(owner, this, i); slots[i].targetGraphic = hit;
@@ -141,6 +143,8 @@ public sealed class ComboProbeView : MonoBehaviour {
                 displayedTokens[column,layer] = stack[stack.Count - shown + layer];
                 model.texture = icons.For(owner.Target(displayedTokens[column,layer]));
                 int depth = shown - layer - 1;
+                // Keep the top item readable without changing the reveal animation's scale.
+                model.rectTransform.sizeDelta = Vector2.one * ModelSize * (depth == 0 ? TopModelSizeMultiplier : 1f);
                 model.rectTransform.anchoredPosition = new Vector2(0, depth * 4);
                 model.color = new Color(1, 1, 1, depth == 0 ? 1 : .72f);
             }
