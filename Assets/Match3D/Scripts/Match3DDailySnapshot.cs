@@ -41,7 +41,7 @@ public partial class Match3DFlow {
         }).OrderBy(o=>o.id).ToArray();
         return state;
     }
-    void SpawnDailyOpening(GameObject[] prefabs,bool firstStage,Match3DThemePresentation reusedPresentation,GameObject reusedBoundary){
+    void SpawnDailyOpening(GameObject[] prefabs,bool firstStage,Match3DThemePresentation reusedPresentation,GameObject reusedBoundary,bool animate=true){
         var state=dailyLevel.opening.stages[Stage-1];
         var seconds=Stage==2?dailyLevel.seconds:SourceProfile(true).seconds;
         InitialCount=state.items.Length;LastResult="";CreationInProgress=true;
@@ -52,22 +52,57 @@ public partial class Match3DFlow {
         layeredPile.Begin(false,reusedPresentation,reusedBoundary,state.maxHeight,firstStage);
         pilePhysics.HoldDailyOpening();layeredPile.RestoreDailyState(state);
         int version=++creationVersion;
-        StartCoroutine(RestoreDailyItems(state,prefabs,version));
+        StartCoroutine(RestoreDailyItems(state,prefabs,version,animate));
     }
-    IEnumerator RestoreDailyItems(Match3DDailyStage state,GameObject[] prefabs,int version){
+    IEnumerator RestoreDailyItems(Match3DDailyStage state,GameObject[] prefabs,int version,bool animate){
         int batch=0;
+        var visible=new List<(Transform target,Vector3 scale)>();
         foreach(var item in state.items){
             if(version!=creationVersion)yield break;
             var tile=new ChallengeTile{id=item.id,type=item.type};
             var obj=CreateBoardItem(tile,prefabs[item.type],item.position,item.rotation,true,false,item);
             layeredPile.RestoreDailyVisibility(obj.GetComponent<Rigidbody>(),item.visible);
             pilePhysics.RememberDailyBody(obj.GetComponent<Rigidbody>(),item.dynamic);
+            // Register keeps the full authored scale; only presentation is animated.
+            // DailyOpeningHeld keeps colliders stationary until the first player action.
+            if(animate&&item.visible){visible.Add((obj.transform,item.scale));obj.transform.localScale=Vector3.zero;}
             if(++batch%12==0)yield return null;
         }
+        if(animate){
+            visible.Sort((a,b)=>a.target.position.y.CompareTo(b.target.position.y));
+            yield return AnimatePotDailyOpening(visible,version);
+        }
+        if(version!=creationVersion)yield break;
         Physics.SyncTransforms();CreationInProgress=false;
         GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.StartRecord();
         BoosterManager.Instance.BoostersInteractibility(true);
+    }
+    IEnumerator AnimatePotDailyOpening(List<(Transform target,Vector3 scale)> visible,int version){
+        var growing=new List<(Transform target,Vector3 scale,float started)>();
+        int next=0;float clock=0,nextBatch=0;
+        float interval=SourceCreateInterval(visible.Count);
+        while(next<visible.Count||growing.Count>0){
+            // Paint zero scale before advancing; pauses and cancelled boards never advance.
+            yield return null;
+            if(version!=creationVersion)yield break;
+            if(Time.timeScale<=0)continue;
+            // A loading hitch must not consume the whole visible animation in one frame.
+            clock+=Mathf.Min(Time.deltaTime,Time.fixedDeltaTime*2);
+            for(int i=growing.Count-1;i>=0;i--){
+                var item=growing[i];
+                float progress=Mathf.Clamp01((clock-item.started)/LayeredItemPile.CreationGrowSeconds);
+                if(item.target)item.target.localScale=item.scale*progress;
+                if(progress>=1||!item.target)growing.RemoveAt(i);
+            }
+            if(clock<nextBatch)continue;
+            int count=Mathf.Min(SourceFrameCreateCount,LayeredItemPile.CreationGrowingLimit-growing.Count);
+            for(int i=0;i<count&&next<visible.Count;i++){
+                var item=visible[next++];growing.Add((item.target,item.scale,clock));
+            }
+            // One batch per rendered frame, with no catch-up burst after a stall.
+            nextBatch=clock+interval;
+        }
     }
 #if UNITY_EDITOR || DAILY_WEB_PREVIEW
     public void PreviewDailyOpening(Match3DDailyLevel level,int stage){

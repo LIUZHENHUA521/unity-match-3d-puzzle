@@ -45,7 +45,7 @@ public partial class Match3DFlow {
         StopBoard();LocalPreview=true;IsPvp=false;unlimitedMagnetRun=false;dailyLevel=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level));runModelTheme=null;ThemeIndex=0;Stage=stage;runDate=level.date;
         dailyLevel.opening=new Match3DDailySnapshot{stages=new Match3DDailyStage[2]};dailyLevel.opening.stages[stage-1]=opening;
         ComboProbeController.BeginStage(true,level.seed);
-        SpawnDailyOpening(SourceProfile(stage==1).prefabs,stage==1,null,null);HUD();BlocksGameplay=true;Music(library.gameMusic);
+        SpawnDailyOpening(SourceProfile(stage==1).prefabs,stage==1,null,null,animate:false);HUD();BlocksGameplay=true;Music(library.gameMusic);
     }
     public void LockPotReplay(){ScreenName="pot-replay";BlocksGameplay=true;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(gameplayHUD)gameplayHUD.gameObject.SetActive(false);
