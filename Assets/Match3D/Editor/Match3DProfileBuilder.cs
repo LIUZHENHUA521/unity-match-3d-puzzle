@@ -18,7 +18,7 @@ public static class Match3DProfileBuilder {
    var ui=root.gameObject.AddComponent<Match3DUIView>();var profile=root.gameObject.AddComponent<Match3DUserProfileView>();
    Pic("image_User_tittle",content,-5,343,599,172);Pic("image_User_bg",content,.5f,-68,655,722);Pic("用户信息",content,0,222,223,63);
    var close=Button(Pic("img_exit_x",content,313,258,81,81,"MailSkinPS"));Pic("img_avatarCircleframe",content,1,50,174,174);
-   var mask=Rect("Avatar circle mask",content,1,56,150,150).gameObject.AddComponent<Match3DCircleGraphic>();mask.raycastTarget=false;mask.gameObject.AddComponent<Mask>().showMaskGraphic=false;var avatar=Rect("Wechat Avatar",mask.transform,0,0,150,150).gameObject.AddComponent<RawImage>();avatar.raycastTarget=false;profile.avatar=avatar;profile.defaultAvatar=AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"ProfileSkinPS/图层 45.png");avatar.texture=profile.defaultAvatar;
+   var holder=Rect("Avatar circle mask",content,1,56,150,150);var avatar=Rect("Wechat Avatar",holder,0,0,150,150).gameObject.AddComponent<PotAvatarGraphic>();avatar.raycastTarget=false;profile.avatar=avatar;profile.defaultAvatar=AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"ProfileSkinPS/图层 45.png");avatar.texture=profile.defaultAvatar;
    profile.sync=Button(Pic("img_add_photo",content,61.5f,9.5f,57,57));
    Pic("image_BlueWhite_cube",content,0,-212,570,315);Pic("image_LightBlue_cube",content,.5f,-212,541,287);
    profile.nickname=Field(content,"Nickname",-105,"昵称：",92);profile.userId=Field(content,"User ID",-159,"用户ID：",130);

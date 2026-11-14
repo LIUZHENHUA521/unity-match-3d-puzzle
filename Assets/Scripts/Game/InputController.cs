@@ -59,11 +59,11 @@ public class InputController : Singleton<InputController>
         int count;
         // A full buffer may have omitted the nearest mesh. Grow and retry rather
         // than relying on Physics' unspecified hit order in a dense pile.
-        while ((count = Physics.RaycastNonAlloc(ray, pickHits, 100f, 1 << ItemColliderGeometry.PickLayer,
+        while ((count = Physics.RaycastNonAlloc(ray, pickHits, camera.farClipPlane, 1 << ItemColliderGeometry.PickLayer,
                                                QueryTriggerInteraction.Ignore)) == pickHits.Length)
             System.Array.Resize(ref pickHits, pickHits.Length * 2);
         pickBodies.Clear();
-        Rigidbody nearest = null; float distance = 100f;
+        Rigidbody nearest = null; float distance = camera.farClipPlane;
         for (int i = 0; i < count; i++) {
             var hit = pickHits[i]; var body = hit.collider.attachedRigidbody;
             if (!body || !body.CompareTag("Collectable")) continue;

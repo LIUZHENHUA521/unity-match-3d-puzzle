@@ -16,7 +16,7 @@ using UnityEngine;
     public int stage;
     public float touchHeight,maxHeight,threshold,physicsThreshold;
     public Match3DDailyItem[] items;
-    static bool Finite(float n)=>!float.IsNaN(n)&&!float.IsInfinity(n)&&Mathf.Abs(n)<=50;
+    static bool Finite(float n)=>!float.IsNaN(n)&&!float.IsInfinity(n)&&n>=-50&&n<=PotCapacityPlan.MaximumHeight;
     public bool IsValid(int count,int pool){
         return Finite(touchHeight)&&Finite(maxHeight)&&Finite(threshold)&&Finite(physicsThreshold)&&items!=null&&items.Length==count&&items.All(i=>i!=null&&i.IsValid(count,pool))&&items.Select(i=>i.id).Distinct().Count()==count&&items.GroupBy(i=>i.type).All(g=>g.Count()%3==0)&&items.Any(i=>i.visible);
     }
@@ -28,7 +28,7 @@ using UnityEngine;
     public bool visible,dynamic;
     static bool Number(float n,float min,float max)=>!float.IsNaN(n)&&!float.IsInfinity(n)&&n>=min&&n<=max;
     static bool Vector(Vector3 v,float min,float max)=>Number(v.x,min,max)&&Number(v.y,min,max)&&Number(v.z,min,max);
-    public bool IsValid(int count,int pool)=>id>=0&&id<count&&type>=0&&type<pool&&Vector(position,-50,50)&&Vector(scale,.00001f,100)&&Number(rotation.x,-1,1)&&Number(rotation.y,-1,1)&&Number(rotation.z,-1,1)&&Number(rotation.w,-1,1)&&Mathf.Abs(Quaternion.Dot(rotation,rotation)-1)<.002f;
+    public bool IsValid(int count,int pool)=>id>=0&&id<count&&type>=0&&type<pool&&Number(position.x,-50,50)&&Number(position.z,-50,50)&&Number(position.y,-50,PotCapacityPlan.MaximumHeight)&&Vector(scale,.00001f,100)&&Number(rotation.x,-1,1)&&Number(rotation.y,-1,1)&&Number(rotation.z,-1,1)&&Number(rotation.w,-1,1)&&Mathf.Abs(Quaternion.Dot(rotation,rotation)-1)<.002f;
 }
 
 public partial class Match3DFlow {
@@ -49,6 +49,7 @@ public partial class Match3DFlow {
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Prepare(CurrentTheme.id,Stage,runDate,InitialCount,seconds);
         ItemColliderGeometry.ConfigureLayers();BoardPhysicsSettings.Begin();
         BoardEnvironment.Select(CurrentTheme.sourceEnvironment,firstStage);
+        if(!firstStage)PotCapacityPlan.ConfigureLayers(dailyLevel.layers);
         layeredPile.Begin(false,reusedPresentation,reusedBoundary,state.maxHeight,firstStage);
         pilePhysics.HoldDailyOpening();layeredPile.RestoreDailyState(state);
         int version=++creationVersion;

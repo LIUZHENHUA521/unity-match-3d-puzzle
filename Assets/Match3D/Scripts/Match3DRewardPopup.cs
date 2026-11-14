@@ -10,6 +10,7 @@ public sealed class Match3DRewardPopup : MonoBehaviour {
     public Sprite[] toolIcons;
     public Sprite redPacketIcon;
     public Text buttonLabel, timestamp;
+    public Text potScreenshotHint;
     public Button confirm;
     bool confirmed;
     Action onConfirm;
@@ -25,6 +26,9 @@ public sealed class Match3DRewardPopup : MonoBehaviour {
         confirm.onClick.RemoveAllListeners();
         confirm.onClick.AddListener(Confirm);
         buttonLabel.text = string.IsNullOrWhiteSpace(buttonText) ? "领取" : buttonText;
+        bool hasRedPacket = false;
+        for (int i = 0; i < rewards.Count; i++) hasRedPacket |= rewards[i].IsRedPacket;
+        if (potScreenshotHint) potScreenshotHint.gameObject.SetActive(hasRedPacket);
         timestamp.gameObject.SetActive(receivedAt > 0);
         timestamp.text = receivedAt > 0
             ? DateTimeOffset.FromUnixTimeMilliseconds(receivedAt).ToOffset(TimeSpan.FromHours(8)).ToString("yyyy-M-d HH:mm:ss") : "";

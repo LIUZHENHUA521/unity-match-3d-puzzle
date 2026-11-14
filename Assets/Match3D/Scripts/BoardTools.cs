@@ -40,9 +40,10 @@ public sealed class BoardTools : MonoBehaviour {
     public static int AdUses(int type)=>instance?instance.adUses[type]:0;
     static int paidType=-1;
     public static int Remaining(int type)=>(Match3DInvitations.Instance?Match3DInvitations.Instance.Inventory(type):0);
-    public static bool CanUse(int type)=>type>=0&&type<ToolCount&&(Match3DTestPrivileges.UnlimitedTools||paidType==type||(Match3DInvitations.Instance&&!Match3DInvitations.Instance.Busy&&!Match3DInvitations.Instance.HasPending&&Match3DInvitations.Instance.Inventory(type)>0));
-    public static bool TrySpend(int type){if(paidType!=type)return false;MarkUsed(type);return true;}
-    public static bool RunPaid(int type,Action action){int before=UsedCount(type);paidType=type;try{action();return UsedCount(type)>before;}finally{paidType=-1;}}
+    public static bool HasUseRemaining(int type)=>type>=0&&type<ToolCount&&UsedCount(type)<1;
+    public static bool CanUse(int type)=>HasUseRemaining(type)&&(Match3DTestPrivileges.UnlimitedTools||paidType==type||(Match3DInvitations.Instance&&!Match3DInvitations.Instance.Busy&&!Match3DInvitations.Instance.HasPending&&Match3DInvitations.Instance.Inventory(type)>0));
+    public static bool TrySpend(int type){if(paidType!=type||!HasUseRemaining(type))return false;MarkUsed(type);return true;}
+    public static bool RunPaid(int type,Action action){if(!HasUseRemaining(type))return false;int before=UsedCount(type);paidType=type;try{action();return UsedCount(type)>before;}finally{paidType=-1;}}
     public static void MarkUsed(int type){PotReplayRecorder.Event("tool",-1,type);var owner=Ensure();if(owner&&type>=0&&type<ToolCount)owner.used[type]++;}
     public static int UsedCount(int type)=>instance&&type>=0&&type<ToolCount?instance.used[type]:0;
     bool shuffling;

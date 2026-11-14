@@ -32,5 +32,6 @@ public sealed class Match3DRewardPresenter : MonoBehaviour {
         current.transform.SetAsLastSibling();
         current.Configure(request.items, () => { current = null; request.completed?.Invoke(); }, request.label, request.receivedAt);
         Match3DModalMotion.Play(current.gameObject);
+        if (flow) flow.PotPlayReceivedRewardSound();
     }
 }

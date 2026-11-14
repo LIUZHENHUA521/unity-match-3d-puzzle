@@ -44,16 +44,17 @@ public static class AddTimeToolValidation {
         game.currentLevelTime=100;
         Check(!BoardTools.AddTime()&&game.currentLevelTime==100,"direct use cannot bypass payment");
         Check(BoardTools.RunPaid(3,()=>BoardTools.AddTime())&&game.currentLevelTime==280,"paid add-time grants exactly 180 seconds");
-        Check(BoardTools.RunPaid(3,()=>BoardTools.AddTime())&&game.currentLevelTime==460,"repeated use adds another 180 seconds");
+        Check(!BoardTools.RunPaid(3,()=>BoardTools.AddTime())&&game.currentLevelTime==280,"repeated use cannot add time twice in one stage");
         Check(!f.TimeReviveUsed,"add-time does not consume revival");
         yield return new WaitForSecondsRealtime(.8f);Capture("toolbar");
+        Setup();yield return null;
         Action<bool,string> reply=null;Match3DRewardedVideo.EditorShowOverride=done=>reply=done;
         Button().onClick.Invoke();yield return new WaitForSecondsRealtime(.6f);
         var popup=UnityEngine.Object.FindObjectOfType<Match3DReviveView>();Check(popup&&popup.progress.text=="加时道具"&&Time.timeScale==0,"zero stock opens paused add-time offer");Capture("offer");
         float before=game.currentLevelTime;popup.revive.onClick.Invoke();reply(false,"未完整观看");Check(game.currentLevelTime==before&&popup.group.interactable,"incomplete advertisement grants no time");
         popup.revive.onClick.Invoke();var completed=reply;completed(true,null);completed(true,null);
         Check(Mathf.Abs(game.currentLevelTime-(before+180))<.001f&&BoardTools.AdUses(3)==1&&Time.timeScale==1,"duplicate ad callbacks grant exactly once: time="+game.currentLevelTime+", expected="+(before+180)+", ads="+BoardTools.AdUses(3)+", scale="+Time.timeScale);
-        yield return null;
+        Setup();yield return null;
         Button().onClick.Invoke();yield return new WaitForSecondsRealtime(.6f);popup=UnityEngine.Object.FindObjectOfType<Match3DReviveView>();before=game.currentLevelTime;popup.close.onClick.Invoke();Check(game.currentLevelTime==before&&Time.timeScale==1,"close preserves time and resumes play");
         yield return null;Button().onClick.Invoke();yield return new WaitForSecondsRealtime(.6f);UnityEngine.Object.FindObjectOfType<Match3DReviveView>().revive.onClick.Invoke();var stale=reply;
         Setup();yield return null;before=game.currentLevelTime;stale(true,null);Check(game.currentLevelTime==before&&BoardTools.UsedCount(3)==0,"stale callback cannot change a new board");
@@ -63,15 +64,15 @@ public static class AddTimeToolValidation {
         int ads=0;Match3DRewardedVideo.EditorShowOverride=done=>ads++;before=game.currentLevelTime;Button().onClick.Invoke();
         float deadline=Time.realtimeSinceStartup+8;while(service.Busy&&Time.realtimeSinceStartup<deadline)yield return null;
         Check(!service.Busy&&service.Inventory(3)==1&&BoardTools.UsedCount(3)==1&&ads==0&&Mathf.Abs(game.currentLevelTime-before-180)<1,"inventory grants 180 seconds and consumes one without ads");
-        // A server rejection must not grant the local effect, and its refund settles the pending request.
+        // A repeated click must be rejected locally without another debit or advertisement.
         before=game.currentLevelTime;Button().onClick.Invoke();deadline=Time.realtimeSinceStartup+8;while(service.Busy&&Time.realtimeSinceStartup<deadline)yield return null;
-        Check(!service.Busy&&!service.HasPending&&BoardTools.UsedCount(3)==1&&game.currentLevelTime<=before&&ads==0,"failed debit grants no time and settles pending request");
+        Check(!service.Busy&&!service.HasPending&&BoardTools.UsedCount(3)==1&&game.currentLevelTime<=before&&ads==0,"repeat click grants no time and leaves no pending request");
         game.currentLevelTime=0;f.HandleResult(false);yield return new WaitForSecondsRealtime(.6f);Match3DRewardedVideo.EditorShowOverride=done=>done(true,null);
         UnityEngine.Object.FindObjectOfType<Match3DReviveView>().revive.onClick.Invoke();Check(f.TimeReviveUsed&&game.currentLevelTime==300,"timeout revival independently grants original 300 seconds");
-        Check(BoardTools.RunPaid(3,()=>BoardTools.AddTime())&&game.currentLevelTime==480,"add-time remains usable after revival");
+        Check(!BoardTools.RunPaid(3,()=>BoardTools.AddTime())&&game.currentLevelTime==300,"revival does not reset add-time quota");
         var records=Match3DGameRecords.Instance;
         var record=(Match3DGameRecords.Record)typeof(Match3DGameRecords).GetField("active",Flags).GetValue(records);
-        f.Home();Check(record!=null&&record.timeReviveUsed&&record.remainingSeconds==480&&record.toolUsage.Length==4&&record.toolUsage[3].inventory==2,"quit records keep extended time, fourth tool and revival before reset");
+        f.Home();Check(record!=null&&record.timeReviveUsed&&record.remainingSeconds==300&&record.toolUsage.Length==4&&record.toolUsage[3].inventory==1,"quit records keep extended time, fourth tool and revival before reset");
         Setup();yield return null;
         game.gameStatus=GameManager.GameStatus.FAIL;Check(!BoardTools.RunPaid(3,()=>BoardTools.AddTime()),"finished board rejects add-time");
         f.Home();f.Begin(0);BoardCreationTestSupport.FinishPending(f);game.gameStatus=GameManager.GameStatus.PLAY;

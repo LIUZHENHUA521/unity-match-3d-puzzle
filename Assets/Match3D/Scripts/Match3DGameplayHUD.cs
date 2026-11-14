@@ -63,8 +63,8 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
         bool limited=BoardTools.Enabled;
         for(int i=0;i<quantities.Length;i++){
             quantities[i].transform.parent.gameObject.SetActive(limited);
-            if(limited)quantities[i].text=Match3DTestPrivileges.UnlimitedTools?"∞":BoardTools.Remaining(i).ToString();
-            if(i<toolBackgrounds.Length&&toolBackgrounds[i])toolBackgrounds[i].sprite=limited&&!(Match3DTestPrivileges.UnlimitedTools)&&BoardTools.UsedCount(i)>0&&usedBackground?usedBackground:normalBackgrounds[i];
+            if(limited)quantities[i].text=!BoardTools.HasUseRemaining(i)?"0":Match3DTestPrivileges.UnlimitedTools?"1":BoardTools.Remaining(i).ToString();
+            if(i<toolBackgrounds.Length&&toolBackgrounds[i])toolBackgrounds[i].sprite=limited&&BoardTools.UsedCount(i)>0&&usedBackground?usedBackground:normalBackgrounds[i];
         }
     }
 }

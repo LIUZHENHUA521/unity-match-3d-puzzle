@@ -268,9 +268,8 @@ public partial class Match3DFlow : MonoBehaviour {
     public string SourceEnvironmentForTheme(int theme){return library.themes[theme].sourceEnvironment;}
     public void BeginReward(int theme,string tier){
 #if UNITY_EDITOR
-        // Editor play does not have a WeChat identity or reward qualification.
-        Begin(theme);challengeTier=tier;LocalPreview=true;unlimitedMagnetRun=true;
-        ShowTips("编辑器本地试玩 · 道具免费 · 不发放红包");
+        var preview=GetComponent<PotEditorBetaLevels>()??gameObject.AddComponent<PotEditorBetaLevels>();
+        preview.Begin(endpoint,theme,tier);
 #else
         if(Match3DRewards.Instance)Match3DRewards.Instance.Begin(theme,tier,library.themes[theme].id);
 #endif
@@ -359,18 +358,18 @@ public partial class Match3DFlow : MonoBehaviour {
         GameManager.Instance.currentLevelTime=seconds;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(layered){
             AppliedModelSize=BoardLayoutSettings.ModelSizeMultiplier;
-            float highestLayer=tiles.Max(t=>t.height);
-            float visibilityLimit=sourceTutorial?4f:dailyLevel!=null?dailyLevel.limitHeight:SourceProfile().limitHeight;
-            if(!sourceTutorial)visibilityLimit=BoardEnvironment.MapHeight(visibilityLimit,highestLayer);
-            BoardEnvironment.Select(CurrentTheme.sourceEnvironment,sourceTutorial);layeredPile.Begin(true,reusedPresentation,reusedBoundary,visibilityLimit,sourceTutorial);
+            BoardEnvironment.Select(CurrentTheme.sourceEnvironment,sourceTutorial);
             var random=sourceRandom??BoardGlobalRandom.Instance;
-            // LoopCreateObj builds all descriptions bottom-to-top, then List.Sort compares Y.
-            // Rotation is sampled later, at CreateUnitObj, in the sorted creation order.
+            var plan=sourceTutorial?null:PotCapacityPlan.Build(tiles);
+            if(plan!=null)plan.Apply();
+            float visibilityLimit=sourceTutorial?4f:dailyLevel!=null?dailyLevel.limitHeight:SourceProfile().limitHeight;
+            if(plan!=null&&plan.layerTops.Count<=4)visibilityLimit=BoardEnvironment.MapHeight(visibilityLimit,plan.BaseTop);
+            layeredPile.Begin(true,reusedPresentation,reusedBoundary,visibilityLimit,sourceTutorial);
             var descriptions=new List<BoardCreateInfo>(tiles.Count);float previousHeight=1.5f;
             foreach(var group in tiles.GroupBy(t=>t.layer).OrderBy(g=>g.Key)){
-                float height=sourceTutorial?group.First().height:BoardEnvironment.MapHeight(group.First().height,highestLayer);
+                float height=plan!=null?plan.layerTops[group.Key]:group.First().height;
                 foreach(var tile in group)descriptions.Add(new BoardCreateInfo{tile=tile,position=BoardEnvironment.Position(previousHeight,height,random)});
-                previousHeight=height; // saved _layerMinDistance = 0
+                previousHeight=height;
             }
             descriptions.Sort((a,b)=>a.position.y.CompareTo(b.position.y));
             CreationInProgress=true;int version=++creationVersion;
@@ -613,6 +612,7 @@ public partial class Match3DFlow : MonoBehaviour {
 
     public string ToolUnavailableReason(int type){
         if(type<0||type>=BoardTools.ToolCount)return "道具类型无效";
+        if(!BoardTools.HasUseRemaining(type))return "本关该道具已使用，每种道具每关限用一次";
         if(BlocksGameplay)return "请先关闭当前弹窗";
         if(!GameManager.Instance.GameIsPlaying())return "当前无法使用道具，请在游戏中使用";
         if(type==BoardTools.AddTimeType&&(IsPvp||Stage==1))return "当前关卡不限时，无需使用加时";

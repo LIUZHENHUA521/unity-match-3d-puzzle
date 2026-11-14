@@ -7,7 +7,7 @@ public static class BoardEnvironment {
     public static string CurrentName {get;private set;}="CountrysideStove";
     public static bool IsFirstStage {get;private set;}
     public static bool UsesSoftContainer=>!IsFirstStage;
-    public static void Select(string name,bool firstStage=false){CurrentName=string.IsNullOrEmpty(name)?"CountrysideStove":name;IsFirstStage=firstStage;}
+    public static void Select(string name,bool firstStage=false){CurrentName=string.IsNullOrEmpty(name)?"CountrysideStove":name;IsFirstStage=firstStage;SoftTransitionContainer.ConfigureHeight(SoftTransitionContainer.ConeHeight);}
     public static float HorizontalHalfExtent=>IsFirstStage?FirstStageContainer.HorizontalHalfExtent:SoftTransitionContainer.TopApothem/Mathf.Cos(Mathf.PI/SoftTransitionContainer.Sides);
     public static Border GetBorder(float height){
         if(IsFirstStage){var border=FirstStageContainer.GetBorder(height);return new Border{position=border.position,scale=border.scale};}
@@ -16,8 +16,9 @@ public static class BoardEnvironment {
         return new Border{position=SoftTransitionContainer.ToWorld(new Vector3(0,localHeight,0)),scale=new Vector3(radius*2,0,radius*2)};
     }
     public static float MapHeight(float height,float highestLayer){
-        if(highestLayer<=SoftTransitionContainer.SpawnCeiling)return height;
-        return 1.5f+(height-1.5f)*(SoftTransitionContainer.SpawnCeiling-1.5f)/(highestLayer-1.5f);
+        const float originalCeiling=24;
+        if(highestLayer<=originalCeiling)return height;
+        return 1.5f+(height-1.5f)*(originalCeiling-1.5f)/(highestLayer-1.5f);
     }
     public static float WeightedHeight(float min,float max,float w0,float w1,double unit){
         if(Mathf.Approximately(w0,w1))return Mathf.Lerp(min,max,(float)unit);
@@ -45,7 +46,7 @@ public static class BoardEnvironment {
     public static GameObject CreateBoundary(bool firstStage=false)=>firstStage?FirstStageContainer.CreateBoundary():SoftTransitionContainer.Create();
     public static void UseSecondStageBoundary(GameObject boundary){
         if(!boundary)throw new InvalidOperationException("Missing boundary during stage transition");
-        if(boundary.GetComponentInChildren<SoftTransitionContainer>())return;
+
         // Stage transition has already removed the first-stage items. Disable the
         // original subtree immediately so no old walls survive until frame end.
         foreach(Transform child in boundary.transform){child.gameObject.SetActive(false);UnityEngine.Object.Destroy(child.gameObject);}

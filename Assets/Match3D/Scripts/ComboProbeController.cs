@@ -5,6 +5,7 @@ using UnityEngine;
 public sealed class ComboProbeController : MonoBehaviour {
     public static ComboProbeController Instance { get; private set; }
     public readonly ComboProbeState State = new ComboProbeState();
+    public readonly PotProbeExposure Exposure = new PotProbeExposure();
     readonly Dictionary<long, ComboProbeTarget> targets = new Dictionary<long, ComboProbeTarget>();
     readonly List<long> stale = new List<long>();
     System.Random rewardRandom;
@@ -42,7 +43,7 @@ public sealed class ComboProbeController : MonoBehaviour {
     }
     public static void End() { if (Instance) Instance.EndStage(); }
     void EndStage() {
-        PotProbeActivation.Clear();
+        PotProbeActivation.Clear(); Exposure.Reset();
         if(ReplayMode)HasUsedProbe=beforeReplayUsed;ReplayMode=false;Running = false; targets.Clear(); State.Reset(); operation = 0;
         if (view) { view.ResetView(); view.gameObject.SetActive(false); }
     }
@@ -95,9 +96,12 @@ public sealed class ComboProbeController : MonoBehaviour {
         }
         return false;
     }
-    public bool IsOccluded(GameObject obj) {
+    public bool IsOccluded(GameObject obj) => CheckOcclusion(obj, out _);
+    public bool IsExposed(GameObject obj) => !CheckOcclusion(obj, out bool pickable) && pickable;
+    bool CheckOcclusion(GameObject obj, out bool pickable) {
+        pickable = false;
         var camera = Camera.main;
-        if (!camera || !obj) return false;
+        if (!camera || !obj || !InputController.Instance || !LevelGenerator.Instance) return false;
         var renderers = obj.GetComponentsInChildren<Renderer>(true);
         bool first = true; Bounds bounds = default;
         foreach (var r in renderers) if (r is MeshRenderer || r is SkinnedMeshRenderer) {
@@ -116,6 +120,7 @@ public sealed class ComboProbeController : MonoBehaviour {
             float targetDistance = Vector3.Dot(sample - ray.origin, ray.direction);
             // The first exact visible mesh can be in front of this target, even for renderer-culled deep layers.
             var hit = InputController.Instance.PickAt(camera.WorldToScreenPoint(sample));
+            if (hit == obj) pickable = true;
             if (hit && hit != obj && !BoardTools.IsStored(hit) && !InputController.Instance.objectsOnStack.Contains(hit) &&
                 LevelGenerator.Instance.objectsOnScene.Contains(hit) &&
                 Vector3.Dot(hit.transform.position - ray.origin, ray.direction) < targetDistance) return true;
@@ -123,7 +128,7 @@ public sealed class ComboProbeController : MonoBehaviour {
         return false;
     }
     public bool UseTop(int column, long expected) {
-        if (!CanInteract || State.Top(column) != expected || (view && view.Rewards.IsPending(expected))) return false;
+        if (!CanInteract || Exposure.IsDismissing(expected) || State.Top(column) != expected || (view && view.Rewards.IsPending(expected))) return false;
         var target = Target(expected); if (!target) { RemoveInvalid(); return false; }
         int before = InputController.Instance.AcceptedPicks;
         InputController.Instance.AddObjectOnStack(target.gameObject, source: ProbePickSource.Probe,
@@ -137,6 +142,7 @@ public sealed class ComboProbeController : MonoBehaviour {
         if(view)view.gameObject.SetActive(Running);if(!Running)return;
         targets.Clear();foreach(var pair in objects){var target=pair.Value.GetComponent<ComboProbeTarget>();if(target)targets[target.Token]=target;}
         State.RestoreReplay(snapshot.combo,snapshot.stars,snapshot.nextColumn,snapshot.columns.Select(c=>(IEnumerable<long>)c.ids.Where(objects.ContainsKey).Select(id=>objects[id].GetComponent<ComboProbeTarget>().Token).ToArray()).ToArray());
+        Exposure.ApplyReplay(snapshot.probeDismissals,objects,offset);
         HasUsedProbe=snapshot.used;if(view)view.ApplyReplay(snapshot,objects,offset);
     }
     void RemoveInvalid() {
@@ -146,7 +152,9 @@ public sealed class ComboProbeController : MonoBehaviour {
     }
     void LateUpdate() {
         if (!Running || ReplayMode) return;
-        RemoveInvalid(); if (view) view.Refresh();
+        RemoveInvalid(); Exposure.Tick(this, Time.deltaTime); if (view) view.Refresh();
     }
     void OnDestroy() { EndStage(); if (view) Destroy(view.gameObject); if (Instance == this) Instance = null; }
+    void OnApplicationFocus(bool focused) { if (!focused) Exposure.ResetConfirmation(); }
+    void OnApplicationPause(bool paused) { if (paused) Exposure.ResetConfirmation(); }
 }

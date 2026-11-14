@@ -90,6 +90,10 @@ public static class Match3DRewardPopupBuilder {
             popup.buttonLabel.text = "领取";
             popup.buttonLabel.resizeTextForBestFit = true;
             popup.buttonLabel.resizeTextMinSize = 18; popup.buttonLabel.resizeTextMaxSize = 46;
+            popup.potScreenshotHint = Label("PotScreenshotHint", content, 0, -445, 600, 36, 24);
+            popup.potScreenshotHint.text = "请先截图保存，再联系客服兑换";
+            popup.potScreenshotHint.color = new Color32(255, 230, 153, 255);
+            popup.potScreenshotHint.gameObject.SetActive(false);
             PrefabUtility.SaveAsPrefabAsset(root.gameObject, Root + "UI/RewardReceived.prefab");
             AssetDatabase.SaveAssets();
         } finally { UnityEngine.Object.DestroyImmediate(root.gameObject); }

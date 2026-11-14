@@ -6,8 +6,16 @@ using UnityEngine;
 // This owns the hollow static wall, floor and ceiling; no imported geometry is read.
 public sealed class SoftTransitionContainer : MonoBehaviour {
     public const int Sides=16;
-    public const float Height=26,BottomApothem=1.15f,TopApothem=4.8f,TiltDegrees=0;
-    public const float WallThickness=.3f,CeilingThickness=2f,Clearance=.04f,SpawnCeiling=24;
+    public const float ConeHeight=26,BottomApothem=1.15f,TopApothem=4.8f,TiltDegrees=0;
+    public const float WallThickness=.3f,CeilingThickness=2f,Clearance=.04f;
+    public static float Height {get;private set;}=ConeHeight;
+    public static float SpawnCeiling=>Height-2;
+    public static float CylinderStart {get;private set;}=ConeHeight;
+    public static void ConfigureHeight(float height,float cylinderStart=ConeHeight){
+        if(float.IsNaN(height)||float.IsInfinity(height)||height<0)throw new ArgumentOutOfRangeException(nameof(height));
+        Height=Mathf.Max(ConeHeight,height);
+        CylinderStart=Mathf.Clamp(cylinderStart,0,ConeHeight);
+    }
     public static readonly Quaternion Orientation=Quaternion.Euler(TiltDegrees,0,0);
     static readonly Quaternion InverseOrientation=Quaternion.Inverse(Orientation);
     // Align the upright shell axis with the authored pan bowl center in XZ.
@@ -25,7 +33,7 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
     static Vector2[] MakeNormals(){var normals=new Vector2[Sides];for(int i=0;i<Sides;i++){float a=i*Mathf.PI*2/Sides;normals[i]=new Vector2(Mathf.Cos(a),Mathf.Sin(a));}return normals;}
 
     public static float DesignApothem(float h){
-        h=Mathf.Clamp(h,0,Height);
+        h=Mathf.Clamp(h,0,CylinderStart);
         if(h<=10)return BottomApothem+.05f*h;
         if(h>=14)return 2.1f+.225f*(h-14);
         float t=(h-10)/4,t2=t*t,t3=t2*t;
@@ -33,9 +41,10 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
     }
     // Use the actual piecewise planar collider surface when fitting items.
     public static float Apothem(float h){
+        if(h>=CylinderStart)return DesignApothem(CylinderStart);
         for(int i=1;i<RingHeights.Length;i++)if(h<=RingHeights[i])
-            return Mathf.Lerp(DesignApothem(RingHeights[i-1]),DesignApothem(RingHeights[i]),Mathf.InverseLerp(RingHeights[i-1],RingHeights[i],h));
-        return TopApothem;
+            return Mathf.Lerp(DesignApothem(RingHeights[i-1]),DesignApothem(RingHeights[i]),Mathf.InverseLerp(RingHeights[i-1],Mathf.Min(RingHeights[i],CylinderStart),h));
+        return DesignApothem(CylinderStart);
     }
     public static Vector3 Vertex(float h,int index,float thickness=0){
         float r=(DesignApothem(h)+thickness)/Mathf.Cos(Mathf.PI/Sides),a=(index+.5f)*Mathf.PI*2/Sides;
@@ -54,14 +63,17 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
     void Build(){
         wallMaterial=new PhysicMaterial("Container smooth surface"){dynamicFriction=0,staticFriction=0,bounciness=0,frictionCombine=PhysicMaterialCombine.Minimum,bounceCombine=PhysicMaterialCombine.Minimum};
         var vertices=new List<Vector3>();var triangles=new List<int>();
-        foreach(float h in RingHeights){for(int i=0;i<Sides;i++)vertices.Add(Vertex(h,i));for(int i=0;i<Sides;i++)vertices.Add(Vertex(h,i,WallThickness));}
-        for(int row=0;row<RingHeights.Length-1;row++)for(int i=0;i<Sides;i++){
+        var rings=new List<float>();
+        foreach(float h in RingHeights)if(h<CylinderStart)rings.Add(h);
+        rings.Add(CylinderStart);if(Height>CylinderStart)rings.Add(Height);
+        foreach(float h in rings){for(int i=0;i<Sides;i++)vertices.Add(Vertex(h,i));for(int i=0;i<Sides;i++)vertices.Add(Vertex(h,i,WallThickness));}
+        for(int row=0;row<rings.Count-1;row++)for(int i=0;i<Sides;i++){
             int next=(i+1)%Sides,a=row*Sides*2+i,b=row*Sides*2+next,c=b+Sides*2,d=a+Sides*2;
             Quad(triangles,a,b,c,d); // Inner normals face the empty playable cavity.
             Quad(triangles,a+Sides,d+Sides,c+Sides,b+Sides);
         }
         for(int i=0;i<Sides;i++){
-            int next=(i+1)%Sides,top=(RingHeights.Length-1)*Sides*2;
+            int next=(i+1)%Sides,top=(rings.Count-1)*Sides*2;
             Quad(triangles,i,i+Sides,next+Sides,next); // annular bottom, never a disk
             Quad(triangles,top+i,top+next,top+next+Sides,top+i+Sides);
         }

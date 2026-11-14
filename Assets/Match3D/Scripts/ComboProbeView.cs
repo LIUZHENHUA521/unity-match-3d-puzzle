@@ -18,6 +18,7 @@ public sealed class ComboProbeView : MonoBehaviour {
     readonly long[,] displayedTokens = new long[4,3];
     int rewardRevision = -1;
     readonly RawImage[,] models = new RawImage[4, 3];
+    readonly float[,] modelAlpha = new float[4, 3];
     const float ModelSize = 86f;
     const float TopModelSizeMultiplier = 1.5f;
     readonly ComboProbeSlot[] slots = new ComboProbeSlot[4];
@@ -146,8 +147,20 @@ public sealed class ComboProbeView : MonoBehaviour {
                 // Keep the top item readable without changing the reveal animation's scale.
                 model.rectTransform.sizeDelta = Vector2.one * ModelSize * (depth == 0 ? TopModelSizeMultiplier : 1f);
                 model.rectTransform.anchoredPosition = new Vector2(0, depth * 4);
-                model.color = new Color(1, 1, 1, depth == 0 ? 1 : .72f);
+                modelAlpha[column, layer] = depth == 0 ? 1 : .72f;
             }
+        }
+        ApplyModelAnimation();
+    }
+    void ApplyModelAnimation() {
+        if (!Rewards) return;
+        for (int column = 0; column < 4; column++) for (int layer = 0; layer < 3; layer++) {
+            var model = models[column, layer];
+            if (!model || !model.gameObject.activeSelf) continue;
+            long token = displayedTokens[column, layer];
+            float visibility = owner.Exposure.Visibility(token);
+            model.rectTransform.localScale = Vector3.one * Rewards.RevealScale(token) * visibility;
+            model.color = new Color(1, 1, 1, modelAlpha[column, layer] * visibility);
         }
     }
     void SetRingAlpha(float alpha) {
@@ -197,12 +210,11 @@ public sealed class ComboProbeView : MonoBehaviour {
     void LateUpdate() {
         if(owner&&owner.ReplayMode)return;
         Layout(); Refresh(); AnimateHint();
-        if (Rewards) for (int column=0;column<4;column++) for (int layer=0;layer<3;layer++)
-            if (models[column,layer] && models[column,layer].gameObject.activeSelf)
-                models[column,layer].rectTransform.localScale = Vector3.one * Rewards.RevealScale(displayedTokens[column,layer]);
+        ApplyModelAnimation();
     }
     public void CaptureReplay(PotReplayPresentation snapshot){
         snapshot.chance=Chances.CaptureReplay();snapshot.rewards=Rewards.CaptureReplay();
+        snapshot.probeDismissals = owner.Exposure.CaptureReplay(owner);
         snapshot.firstHint=highlightedFirstReward;snapshot.highlightColumn=highlightedColumn;snapshot.hintAge=highlightElapsed;
         snapshot.ring=ring.AnimationState.GetCurrent(0)?.Animation.Name??"";snapshot.ringVisible=ring.gameObject.activeSelf;snapshot.ringAlpha=ring.color.a;snapshot.ringTime=ring.AnimationState.GetCurrent(0)?.TrackTime??0;
         Praise.CaptureReplay(snapshot);Preview.CaptureReplay(snapshot);
@@ -215,7 +227,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         highlightedFirstReward=snapshot.firstHint;highlightedColumn=snapshot.highlightColumn;highlightElapsed=snapshot.hintAge+offset;
         foreach(var h in slotHighlights)h.color=Color.clear;
         if(highlightedColumn>=0){float pulse=Mathf.Sin(highlightElapsed/1.2f*Mathf.PI);slotHighlights[highlightedColumn].color=new Color(1,.88f,.35f,.22f*pulse*pulse);}
-        for(int column=0;column<4;column++)for(int layer=0;layer<3;layer++)if(models[column,layer].gameObject.activeSelf)models[column,layer].rectTransform.localScale=Vector3.one*Rewards.RevealScale(displayedTokens[column,layer]);
+        ApplyModelAnimation();
         Praise.ApplyReplay(snapshot,offset);Preview.ApplyReplay(snapshot,objects,offset);
     }
     void OnDisable() { ResetView(); }

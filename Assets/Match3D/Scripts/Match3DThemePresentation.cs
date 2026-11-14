@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Linq;
 // Apply the fixed top-down camera pose and viewport offset for solo play.
-// User zoom is layered on the fitted pose; pile height never drives the camera.
+// Capacity raises only camera depth; orthographic scale and player zoom stay unchanged.
 // Provenance and call-path evidence: Tools/LayeredPile/camera-shadow-alignment.md
 // and docs/refactoring/2026-11-04-naming.md.
 [DefaultExecutionOrder(-100)]
@@ -9,7 +9,7 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  public bool Active=>visual;
  public const int SourceControlMode=2; // LevelControlType.flatTopView, not an inspector tuning option.
  public static readonly Quaternion SourceRotation=Quaternion.Euler(90f,0,0);
- public static Vector3 SourcePosition=>new Vector3(0,0,.5f)+SourceRotation*new Vector3(0,0,-30);
+ public static Vector3 SourcePosition=>new Vector3(0,0,.5f)+SourceRotation*new Vector3(0,0,-Mathf.Max(30,SoftTransitionContainer.Height+4));
  GameObject visual;Camera camera;CameraFitter fitter;bool fitted,orthographic;Vector3 position;Quaternion rotation;float size,near,far,fov;Rect rect;CameraClearFlags clear;Color background;bool hdr;int culling;
  BoardCameraZoom zoom;
  Transform pan;
@@ -34,7 +34,7 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
   }
   camera=Camera.main;if(!camera)return;position=camera.transform.position;rotation=camera.transform.rotation;size=camera.orthographicSize;orthographic=camera.orthographic;near=camera.nearClipPlane;far=camera.farClipPlane;fov=camera.fieldOfView;rect=camera.rect;clear=camera.clearFlags;background=camera.backgroundColor;hdr=camera.allowHDR;culling=camera.cullingMask;
   fitter=camera.GetComponent<CameraFitter>();if(fitter){fitted=fitter.enabled;fitter.enabled=false;}
-  camera.transform.SetPositionAndRotation(SourcePosition,SourceRotation);camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.clear;camera.allowHDR=false;camera.cullingMask=503;camera.orthographic=true;camera.nearClipPlane=.3f;camera.farClipPlane=1000;camera.rect=new Rect(0,0,1,1);Fit();
+  camera.transform.SetPositionAndRotation(SourcePosition,SourceRotation);camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.clear;camera.allowHDR=false;camera.cullingMask=503;camera.orthographic=true;camera.nearClipPlane=.3f;camera.farClipPlane=Mathf.Max(1000,SoftTransitionContainer.Height+100);camera.rect=new Rect(0,0,1,1);Fit();
  }
  // The visual and camera are owned by this presentation for the whole run.
  // Stage transitions reuse them without pose changes; a vertical collider does
@@ -56,7 +56,9 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  public static float Size(float aspect)=>OriginalSize(aspect)/ItemScreenScale;
  public void Fit(){if(camera&&visual){
   var oldPosition=camera.transform.position;float oldSize=camera.orthographicSize;
+  if(lighting&&lighting.Active)QualitySettings.shadowDistance=Mathf.Max(40,SoftTransitionContainer.Height+10);
   camera.transform.SetPositionAndRotation(SourcePosition,SourceRotation);
+  camera.farClipPlane=Mathf.Max(1000,SoftTransitionContainer.Height+100);
   camera.orthographicSize=Size(camera.aspect);camera.fieldOfView=60*Mathf.Max(1,(9f/16)/camera.aspect);
   if(GameplayBoardLayout.Enabled)GameplayBoardLayout.FitBoard(camera,PanBowlCenter,4.1f);
   if(zoom)zoom.Apply(camera,oldPosition,oldSize,Time.unscaledDeltaTime);

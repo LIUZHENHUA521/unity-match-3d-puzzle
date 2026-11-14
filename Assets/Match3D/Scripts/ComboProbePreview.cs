@@ -18,7 +18,7 @@ public sealed class ComboProbePreview : MonoBehaviour {
     public long TargetToken => token;
     public void Show(ComboProbeController controller, long id, Transform source) {
         Clear(); owner = controller;replay=owner.ReplayMode; var target = owner.Target(id);
-        if (!target || (!owner.CanInteract&&!owner.ReplayMode)) return;
+        if (!target || owner.Exposure.IsDismissing(id) || (!owner.CanInteract&&!owner.ReplayMode)) return;
         token = id; origin = source; camera = Camera.main;
         if (!silhouette) silhouette = new Material(Resources.Load<Shader>("Match3D/ComboProbe/ProbeOutline"));
         foreach (var renderer in target.GetComponentsInChildren<Renderer>(true)) {
@@ -42,7 +42,7 @@ public sealed class ComboProbePreview : MonoBehaviour {
     void LateUpdate() { if (Active&&!replay) Tick(); }
     void Tick() {
         var target = owner ? owner.Target(token) : null;
-        if (!target || (!owner.CanInteract&&!owner.ReplayMode) || !origin || !camera) { Clear(); return; }
+        if (!target || owner.Exposure.IsDismissing(token) || (!owner.CanInteract&&!owner.ReplayMode) || !origin || !camera) { Clear(); return; }
         outline.Clear();
         foreach (var part in parts) {
             if (!part.transform || !part.mesh) continue;

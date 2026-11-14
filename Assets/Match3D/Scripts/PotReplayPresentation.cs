@@ -5,6 +5,7 @@ using UnityEngine;
 
 [Serializable] public sealed class PotReplayProbeColumn { public int[] ids=new int[0]; }
 [Serializable] public sealed class PotReplayReward { public int id,column;public float age;public bool color; }
+[Serializable] public sealed class PotReplayProbeDismissal { public int id; public float age; }
 [Serializable] public sealed class PotReplayActivation { public int id;public Vector3 origin;public float age; }
 [Serializable] public sealed class PotReplayToolEffect { public int key,kind;public Vector3 p,s;public Quaternion r;public float age;public uint seed; }
 [Serializable] public sealed class PotReplayPresentation {
@@ -16,6 +17,7 @@ using UnityEngine;
     public PotReplayProbeColumn[] columns=new PotReplayProbeColumn[0];
     public float[] chance=new float[0];
     public PotReplayReward[] rewards=new PotReplayReward[0];
+    public PotReplayProbeDismissal[] probeDismissals=new PotReplayProbeDismissal[0];
     public PotReplayActivation[] activations=new PotReplayActivation[0];
     public PotReplayToolEffect[] tools=new PotReplayToolEffect[0];
     public static int Id(GameObject obj)=>obj&&obj.GetComponent<Match3DTile>()?obj.GetComponent<Match3DTile>().id:-1;
