@@ -209,18 +209,24 @@ public static class ComboProbeValidation {
             Check(Quaternion.Angle(item.transform.rotation,BoardTools.StoreRotation(item))<.1f,"stored model uses configured pose without extra tilt "+i);
         }
         foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1565),new Vector2Int(768,1024)})Capture("temporary-store-"+size.x+"x"+size.y,size.x,size.y);
-        Check(BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo())&&BoardTools.StoredCount==4&&storageInput.objectsOnStack.Count==0,"fewer than three moves remaining item into existing storage");
-        Check(!BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo()),"empty tray does not spend move");
+        Check(!BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo())&&BoardTools.StoredCount==3&&storageInput.objectsOnStack.Count==1,"second move is blocked without changing storage or tray");
         yield return new WaitForSecondsRealtime(.6f);
-        foreach(var item in storageItems)Pick(item);
+        foreach(var item in storageItems.Take(3))Pick(item);
         yield return new WaitForSecondsRealtime(.6f);
         Check(BoardTools.StoredCount==0&&!BoardToolVisual.HasBackground&&Mathf.Abs(GameplayBoardLayout.ProbeY(Camera.main)-restingY)<.01f,"taking all stored items hides storage and restores combo position");
         Check(storageInput.objectsOnStack.Count==4&&!storageInput.IsBusy,"stored items return to tray without loss or stuck flights");
-        Check(BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo()),"storage can reopen");
+        Check(!BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo()),"emptying storage does not restore the stage's move allowance");
+        Start();yield return null;ClearFixture();
+        Check(!BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo())&&BoardTools.UsedCount(0)==0,"empty tray does not spend move");
+        storageItems=Enumerable.Range(0,2).Select(i=>Spawn(970+i,new Vector3(i*.2f,4,0))).ToArray();
+        foreach(var item in storageItems)Pick(item);
+        Check(BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo())&&BoardTools.StoredCount==2&&storageInput.objectsOnStack.Count==0,"fresh stage stores fewer than three items");
         // Re-pick immediately, before the storage handoff sequence finishes.
-        foreach(var item in storageItems.Take(3))Pick(item);
+        foreach(var item in storageItems)Pick(item);
         yield return new WaitForSecondsRealtime(.6f);
-        Check(BoardTools.StoredCount==0&&storageInput.objectsOnStack.Count==4&&!storageInput.IsBusy,"immediate storage re-pick cancels old flight and completes tray arrival");
+        Check(BoardTools.StoredCount==0&&storageInput.objectsOnStack.Count==2&&!storageInput.IsBusy,"immediate storage re-pick cancels old flight and completes tray arrival");
+        Start();yield return null;ClearFixture();
+        Pick(Spawn(980,new Vector3(0,4,0)));
         Check(BoardTools.RunPaid(0,()=>BoosterManager.Instance.Undo()),"storage reopens before reset");
         Start();yield return null;
         Check(BoardTools.StoredCount==0&&BoardToolVisual.StoreExpansion==0,"new round clears storage and panel offset");
@@ -355,9 +361,9 @@ public static class ComboProbeValidation {
         Check(flow.RevivePending&&Time.timeScale==0,"seven different items open the actual revival offer");
         yield return new WaitForSecondsRealtime(.6f);Capture("revival-offer",720,1565);
         var popup=Object.FindObjectOfType<Match3DReviveView>();int shuffleUses=BoardTools.UsedCount(2);popup.revive.onClick.Invoke();
-        Check(flow.ClearReviveUsed&&input.ReturningToBowl&&!BoardTools.Shuffling&&input.objectsOnStack.Count==0,"real revival returns all seven before starting shuffle");
+        Check(flow.ClearReviveUsed&&!input.ReturningToBowl&&!BoardTools.Shuffling&&input.objectsOnStack.Count==0&&BoardTools.StoredCount==7,"real revival moves all seven into temporary storage");
         yield return new WaitForSecondsRealtime(.6f);
-        Check(!input.ReturningToBowl&&BoardTools.Shuffling,"revival starts shuffle only after return completes");
+        Check(!input.ReturningToBowl&&!BoardTools.Shuffling&&BoardTools.StoredCount==7&&BoardToolVisual.HasBackground,"revival retains selectable storage without shuffling the board");
         yield return new WaitForSecondsRealtime(1.3f);
         Check(!BoardTools.Busy&&BoardTools.UsedCount(0)==toolUses+1&&BoardTools.UsedCount(2)==shuffleUses&&owner.State.Count==earned,"revival finishes without spending move/shuffle inventory or losing probes");
         foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1565),new Vector2Int(720,1600),new Vector2Int(768,1024)})
@@ -371,8 +377,8 @@ public static class ComboProbeValidation {
         Check(flow.RevivePending,"timeout opens actual revival offer even with empty tray");
         yield return new WaitForSecondsRealtime(.6f);Capture("time-revival-offer",720,1565);
         Object.FindObjectOfType<Match3DReviveView>().revive.onClick.Invoke();
-        Check(flow.TimeReviveUsed&&GameManager.Instance.currentLevelTime==300&&input.ReturningToBowl,"time revival keeps five-minute benefit and begins return/shuffle sequence");
-        yield return new WaitForSecondsRealtime(1.9f);Check(!BoardTools.Busy,"empty-tray time revival completes shuffle");
+        Check(flow.TimeReviveUsed&&GameManager.Instance.currentLevelTime==300&&!input.ReturningToBowl&&BoardTools.StoredCount==0,"empty-tray time revival grants five minutes without creating storage or return flights");
+        yield return new WaitForSecondsRealtime(1.9f);Check(!BoardTools.Busy,"empty-tray time revival leaves gameplay ready");
         var targetOnBoard = LevelGenerator.Instance.objectsOnScene[0]; var tokenOnBoard = targetOnBoard.GetComponent<ComboProbeTarget>().Token;
         owner.State.Add(tokenOnBoard); view.Refresh();
         Start(); yield return null;
