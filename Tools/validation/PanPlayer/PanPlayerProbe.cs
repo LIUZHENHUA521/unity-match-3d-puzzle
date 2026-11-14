@@ -23,7 +23,7 @@ public sealed class PanPlayerProbe : MonoBehaviour {
             bool hit = collider.Raycast(new Ray(new Vector3(0, 20, 0), Vector3.down), out var floor, 40);
             lines.Add("mesh readable=" + mesh.sharedMesh.isReadable + "; floor hit=" + hit + "; floor=" + floor.point.ToString("F4"));
             if (!hit || floor.point.y < .45f) throw new Exception("Visible pan has no valid player collision surface");
-            FirstStageContainer.CreateBoundary();
+            var boundary = FirstStageContainer.CreateBoundary();
             int cases = 0;
             foreach (var fixture in items)
             foreach (float size in new[] { .5f, 1f, 1.25f })
@@ -48,6 +48,26 @@ public sealed class PanPlayerProbe : MonoBehaviour {
                 item.SetActive(false);
                 Destroy(item);
                 cases++;
+            }
+            boundary.SetActive(false);Destroy(boundary);
+            BoardEnvironment.Select("CountrysideStove");SoftTransitionContainer.Create();
+            foreach (var fixture in items)
+            foreach (float size in new[] { .5f, 1f, 1.25f })
+            foreach (bool kinematic in new[] { false, true }) {
+                var item = Instantiate(fixture.prefab);
+                item.transform.localScale *= BoardLayoutSettings.ModelScale(fixture.prefab) / BoardLayoutSettings.ModelSizeMultiplier * size;
+                item.transform.SetPositionAndRotation(SoftTransitionContainer.Origin, Quaternion.identity);
+                var body = item.GetComponent<Rigidbody>();BoardPhysicsSettings.Apply(body);body.isKinematic = kinematic;
+                float top = SoftTransitionContainer.SolidPoints(item).Max(p => p.y);
+                item.transform.position += Vector3.up * (floor.point.y - .05f - top);body.position = item.transform.position;
+                bool rescued = PotPanFloor.Recover(body);
+                float bottom = SoftTransitionContainer.SolidPoints(item).Min(p => p.y);
+                var position = item.transform.position;
+                bool stable = !PotPanFloor.Recover(body) && item.transform.position == position;
+                bool supported = rescued && bottom >= floor.point.y + .039f && stable && body.isKinematic == kinematic;
+                if (!supported) failures++;
+                lines.Add((supported ? "PASS " : "FAIL ") + fixture.prefab.name + " rescue size=" + size + " kinematic=" + kinematic + " bottom=" + bottom.ToString("F4"));
+                item.SetActive(false);Destroy(item);cases++;
             }
             lines.Add("cases=" + cases + "; failures=" + failures);
         } catch (Exception error) {

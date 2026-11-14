@@ -49,6 +49,7 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
    collider.sharedMesh=mesh.sharedMesh;collider.convex=false;collider.isTrigger=false;
    collider.sharedMaterial=BoardPhysicsSettings.DefaultSurface;
   }
+  PotPanFloor.Bind(pan);
  }
  // Baseline screen-space item size before the optional player-controlled zoom.
  public const float ItemScreenScale=.9f;

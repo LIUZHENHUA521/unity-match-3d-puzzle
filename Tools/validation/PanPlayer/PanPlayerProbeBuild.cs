@@ -26,7 +26,7 @@ public static class PanPlayerProbeBuild {
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         var probe = new GameObject("Pan player regression").AddComponent<PanPlayerProbe>();
         probe.panPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab");
-        var names = new[] { "Party_ChocolateBar", "Party_BreadSlice", "Party_Bottle" };
+        var names = new[] { "Party_ChocolateBar", "Party_BreadSlice", "Party_Bottle", "Party_Pizza", "Party_Waffle", "Party_PancakesStack", "Kitchen_pizza" };
         probe.items = new PanPlayerProbe.ItemFixture[names.Length];
         for (int i = 0; i < names.Length; i++) {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Generated/ModelAdapter/" + names[i] + "/" + names[i] + ".prefab");

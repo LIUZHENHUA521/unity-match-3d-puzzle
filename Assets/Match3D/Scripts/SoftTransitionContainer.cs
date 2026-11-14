@@ -130,7 +130,8 @@ public sealed class SoftTransitionContainer : MonoBehaviour {
             foreach(var p in points)supports[i]=Mathf.Max(supports[i],Vector2.Dot(Normals[i],new Vector2(p.x-offset.x,p.z-offset.z)));
             required=Mathf.Max(required,supports[i]+Clearance);
         }
-        float ceiling=Height-halfHeight-Clearance,floor=halfHeight+Clearance;
+        float panHeight=PotPanFloor.TryHeight(desired,out var surfaceY)?ToLocal(new Vector3(desired.x,surfaceY,desired.z)).y:0;
+        float ceiling=Height-halfHeight-Clearance,floor=Mathf.Max(0,panHeight)+halfHeight+Clearance;
         if(floor>ceiling||required>Apothem(ceiling-halfHeight))throw new InvalidOperationException("Item cannot fit selected container: "+obj.name);
         center.y=Mathf.Clamp(center.y,floor,ceiling);
         if(Apothem(center.y-halfHeight)<required){

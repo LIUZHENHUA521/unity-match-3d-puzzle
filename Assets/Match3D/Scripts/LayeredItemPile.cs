@@ -122,6 +122,9 @@ public sealed class LayeredItemPile : MonoBehaviour {
     }
     public void RefreshVisibility(){
         if(!Running||Creating||(ItemPhysicsController.Instance&&ItemPhysicsController.Instance.DailyOpeningHeld))return;
+        // Picks detach from this list; tools own their temporary poses. Repair only
+        // board items, before recalculating height and visibility for the tail.
+        if(!BoardTools.Busy)foreach(var e in entries)if(e.body&&e.finishCreate&&e.growth>=1)PotPanFloor.Recover(e.body);
         RefreshSourceMaxHeight();if(entries.Count==0)return;
         float u=Mathf.Clamp01((BoardLayoutSettings.MinVisibleY-touchHeight)/BoardLayoutSettings.MinVisibleY);
         float depth=Mathf.Lerp(BoardLayoutSettings.VisibleMin,BoardLayoutSettings.VisibleMax,u);
