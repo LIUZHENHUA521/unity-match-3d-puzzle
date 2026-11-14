@@ -10,7 +10,7 @@ public sealed class ComboProbeSlot : Selectable, IPointerClickHandler, IDragHand
     long token;
     float began;
     Vector2 origin;
-    bool held, previewed, cancelled;
+    bool held, cancelled;
     public void Initialize(ComboProbeController controller, ComboProbeView display, int index) {
         owner = controller; view = display; column = index; transition = Transition.None;
         navigation = new Navigation { mode = Navigation.Mode.None };
@@ -19,11 +19,14 @@ public sealed class ComboProbeSlot : Selectable, IPointerClickHandler, IDragHand
         base.OnPointerDown(e); Cancel();
         if (Input.touchCount > 1 || (BoardCameraZoom.Instance && BoardCameraZoom.Instance.SuppressPick) || !owner.CanInteract || e.button != PointerEventData.InputButton.Left) return;
         token = owner.State.Top(column); if (token == 0 || owner.Exposure.IsDismissing(token) || view.Rewards.IsPending(token)) return;
+        if (!Valid()) return;
         held = true; pointer = e.pointerId; began = Time.unscaledTime; origin = e.position;
+        view.Preview.Show(owner, token, transform);
+        Match3DFlow.Instance?.PotVibrate();
     }
     public override void OnPointerUp(PointerEventData e) {
         base.OnPointerUp(e); if (!held || e.pointerId != pointer) return;
-        bool use = Input.touchCount <= 1 && !(BoardCameraZoom.Instance && BoardCameraZoom.Instance.SuppressPick) && !cancelled && !previewed && Time.unscaledTime - began < HoldSeconds && Valid() &&
+        bool use = Input.touchCount <= 1 && !(BoardCameraZoom.Instance && BoardCameraZoom.Instance.SuppressPick) && !cancelled && Time.unscaledTime - began < HoldSeconds && Valid() &&
             RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, e.position, e.pressEventCamera);
         long expected = token; Cancel(); if (use) owner.UseTop(column, expected);
     }
@@ -38,11 +41,8 @@ public sealed class ComboProbeSlot : Selectable, IPointerClickHandler, IDragHand
     void Update() {
         if (!held) return;
         if (Input.touchCount > 1 || (BoardCameraZoom.Instance && BoardCameraZoom.Instance.SuppressPick) || !Valid()) { Cancel(); return; }
-        if (!cancelled && !previewed && Time.unscaledTime - began >= HoldSeconds) {
-            previewed = true; view.Preview.Show(owner, token, transform);
-        }
     }
-    public void Cancel() { held = previewed = cancelled = false; token = 0; if (view && view.Preview) view.Preview.Clear(); }
+    public void Cancel() { held = cancelled = false; token = 0; if (view && view.Preview) view.Preview.Clear(); }
     protected override void OnDisable() { Cancel(); base.OnDisable(); }
     void OnApplicationFocus(bool focused) { if (!focused) Cancel(); }
     void OnApplicationPause(bool paused) { if (paused) Cancel(); }

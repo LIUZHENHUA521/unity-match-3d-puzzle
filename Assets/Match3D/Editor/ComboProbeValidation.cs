@@ -282,7 +282,11 @@ public static class ComboProbeValidation {
         slot.OnDrag(drag); slot.OnPointerUp(press);
         Check(!view.Preview.Active && InputController.Instance.AcceptedPicks==accepts,"drag cancels long-press without pickup");
         Check(!owner.HasUsedProbe && view.HintText == "点击模型，取出被挡物品", "long press and cancelled drag do not complete first-use teaching");
-        slot.OnPointerDown(press); slot.OnPointerUp(press);
+        slot.OnPointerDown(press);
+        Check(view.Preview.Active && view.Preview.TargetToken == top && view.Preview.ParticleCount > 20,
+            "short press immediately draws connection and target highlight before hold threshold");
+        slot.OnPointerUp(press);
+        Check(!view.Preview.Active, "short press release clears preview");
         Check(InputController.Instance.AcceptedPicks == accepts + 1 && !owner.State.Contains(top), "short press accepts exactly one physical target; accepted=" + InputController.Instance.AcceptedPicks + " before=" + accepts + " interact=" + owner.CanInteract);
         ValidateProbeCollisionIsolation(target.gameObject);
         Check(ProbeLiftContact.ActiveCount==0&&PotProbeActivation.ActiveCount==1,"probe starts transmission before emergence contact");

@@ -6,6 +6,8 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 [InitializeOnLoad]
@@ -56,6 +58,28 @@ public static class PotProbeActivationValidation {
     static IEnumerator Core() {
         Fresh(); yield return null;
         var owner = ComboProbeController.Instance; var input = InputController.Instance;
+        var pressed = Spawn(2089, 0); Bind(pressed);
+        var slot = owner.View.Slot(0);
+        var screen = Camera.main.WorldToScreenPoint(slot.transform.position);
+        var press = new PointerEventData(EventSystem.current) { position = screen,
+            button = PointerEventData.InputButton.Left, pointerId = 7,
+            pointerPressRaycast = new RaycastResult { module = owner.View.Root.GetComponent<GraphicRaycaster>() } };
+        int accepts = input.AcceptedPicks;
+        slot.OnPointerDown(press);
+        Check(owner.View.Preview.Active && owner.View.Preview.ParticleCount > 20,
+            "pointer down immediately shows target highlight and connection");
+        yield return new WaitForSecondsRealtime(.3f);
+        slot.OnPointerUp(press);
+        Check(!owner.View.Preview.Active && input.AcceptedPicks == accepts, "hold release clears preview without pickup");
+        slot.OnPointerDown(press);
+        slot.OnDrag(new PointerEventData(EventSystem.current) { position = screen + Vector3.right * 100, pointerId = 7 });
+        slot.OnPointerUp(press);
+        Check(!owner.View.Preview.Active && input.AcceptedPicks == accepts, "drag cancels immediate preview without pickup");
+        slot.OnPointerDown(press);
+        Check(owner.View.Preview.Active, "short tap previews before release");
+        slot.OnPointerUp(press);
+        Check(!owner.View.Preview.Active && input.AcceptedPicks == accepts + 1, "short tap clears preview and picks exactly once");
+        Fresh(); yield return null;
         var sounding = Spawn(2090, 0); Bind(sounding);
         Check(Use(0), "audio fixture accepted");
         var sound = Object.FindObjectOfType<PotProbeActivation>().GetComponent<AudioSource>();
