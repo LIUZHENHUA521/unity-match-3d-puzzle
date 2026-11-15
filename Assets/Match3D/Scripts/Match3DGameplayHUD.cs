@@ -8,6 +8,15 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
     readonly Image[] toolBackgrounds=new Image[BoardTools.ToolCount];
     readonly Sprite[] normalBackgrounds=new Sprite[BoardTools.ToolCount];
     Sprite usedBackground;Texture2D usedTexture;
+    bool replay;
+    public void SetReplayMode(){
+        replay=true;header.gameObject.SetActive(false);
+        var group=gameObject.AddComponent<CanvasGroup>();group.interactable=false;group.blocksRaycasts=false;
+        foreach(var button in GetComponentsInChildren<Button>(true)){button.onClick.RemoveAllListeners();button.interactable=false;}
+    }
+    public RectTransform ReplayToolTarget(int type){
+        return type>=0&&type<BoardTools.ToolCount?GetComponent<Match3DUIView>().Get<RectTransform>(new[]{"Undo","Hint","Shuffle","AddTime"}[type]):null;
+    }
     void SetupToolBackgrounds(){
         var view=GetComponent<Match3DUIView>();string[] keys={"Undo","Hint","Shuffle","AddTime"};
         for(int i=0;i<BoardTools.ToolCount;i++){
@@ -60,7 +69,7 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
         if(windowSize!=new Vector2Int(Screen.width,Screen.height))RefreshPlatformSafeArea();
         header.anchoredPosition=headerPosition+Vector2.down*HeaderInset(size.x,Screen.width,Screen.height,Screen.safeArea,platformTopFraction);
         footer.anchoredPosition=footerPosition+Vector2.up*Screen.safeArea.yMin*units;
-        bool limited=BoardTools.Enabled;
+        bool limited=BoardTools.Enabled&&!replay;
         for(int i=0;i<quantities.Length;i++){
             quantities[i].transform.parent.gameObject.SetActive(limited);
             if(limited)quantities[i].text=Match3DTestPrivileges.UnlimitedTools?"∞":!BoardTools.HasUseRemaining(i)?"0":BoardTools.Remaining(i).ToString();

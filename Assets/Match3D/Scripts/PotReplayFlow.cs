@@ -48,8 +48,9 @@ public partial class Match3DFlow {
         SpawnDailyOpening(SourceProfile(stage==1).prefabs,stage==1,null,null,animate:false);HUD();BlocksGameplay=true;Music(library.gameMusic);
     }
     public void LockPotReplay(){ScreenName="pot-replay";BlocksGameplay=true;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
-        if(gameplayHUD)gameplayHUD.gameObject.SetActive(false);
+        if(gameplayHUD)gameplayHUD.SetReplayMode();
     }
+    public RectTransform PotReplayToolTarget(int type)=>gameplayHUD?gameplayHUD.ReplayToolTarget(type):null;
     public void EndPotReplay(){
         if(potReplayOverlay)Destroy(potReplayOverlay.gameObject);LocalPreview=false;Home();
     }

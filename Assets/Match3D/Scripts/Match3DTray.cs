@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 // Reference demo: one sliced MatchingPad background plus seven independent cells.
 // A world-space Canvas keeps the existing 3D items visible in front of the tray.
+[DefaultExecutionOrder(16000)]
 public sealed class Match3DTray : MonoBehaviour {
     public static Match3DTray Instance {get;private set;}
     const float Width=680f, Height=122f, Spacing=90f;
@@ -34,7 +35,7 @@ public sealed class Match3DTray : MonoBehaviour {
         Layout();tray.gameObject.SetActive(false);
     }
     void LateUpdate(){
-        bool visible=Match3DFlow.Instance&&Match3DFlow.Instance.ScreenName=="game";
+        bool visible=Match3DFlow.Instance&&(Match3DFlow.Instance.ScreenName=="game"||Match3DFlow.Instance.ScreenName=="pot-replay");
         if(tray.gameObject.activeSelf!=visible)tray.gameObject.SetActive(visible);
         if(visible)Layout();
     }

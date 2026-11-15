@@ -14,6 +14,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
     readonly Dictionary<int,Renderer[]> renderers=new Dictionary<int,Renderer[]>();
     Dictionary<int,PotReplayPose> next;
     readonly List<Behaviour> disabled=new List<Behaviour>();Text readout,speedLabel;Slider slider;
+    PotReplayGestures gestures;
     public float Duration=>data?.duration??0;
     public void Load(PotReplayData value){
         if(Active)throw new InvalidOperationException("请先关闭当前回放");
@@ -77,6 +78,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
         GameManager.Instance.currentLevelTime=a.remaining;
         if(readout)readout.text=$"{(int)value / 60:00}:{(int)value % 60:00} / {(int)Duration / 60:00}:{(int)Duration % 60:00}    {speed:0.#}×\n剩余 {Mathf.CeilToInt(a.remaining)} 秒 · 槽位 {a.tray.Length}/7{ActionCaption(value)}";
         if(slider)slider.SetValueWithoutNotify(Duration>0?value/Duration:0);
+        gestures?.Apply(value);
     }
     string ActionCaption(float value){
         for(int i=data.events.Count-1;i>=0;i--){var e=data.events[i];if(e.t>value)continue;if(value-e.t>2)break;
@@ -92,9 +94,11 @@ public sealed class PotReplayPlayer : MonoBehaviour {
         speedLabel=speedButton.GetComponentInChildren<Text>();SetSpeed(speed);
         PotReplayUI.Button(root,"退出回放",new Vector2(190,-80),Exit);
         slider=PotReplayUI.Progress(root,new Vector2(0,-150));slider.onValueChanged.AddListener(v=>Seek(v*Duration));
+        gestures=new PotReplayGestures(data,(RectTransform)root.parent);
     }
     public void Exit(){Exit(true);}
     void Exit(bool notify){
+        gestures?.Dispose();gestures=null;
         if(Camera.main)ItemHighlight.For(Camera.main).ClearAll();PotProbeActivation.Clear();BoardToolVisual.Reset();ComboProbeController.End();presentationTime=float.NaN;
         StopAllCoroutines();ready=playing=false;foreach(var b in disabled)if(b)b.enabled=true;disabled.Clear();objects.Clear();renderers.Clear();state=null;next=null;data=null;currentFrame=-1;Time.timeScale=1;
         Match3DFlow.Instance.EndPotReplay();
