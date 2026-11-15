@@ -195,6 +195,7 @@ public partial class Match3DFlow : MonoBehaviour {
 
     void Clear(){
         ScreenVersion++;
+        CancelPotReplayDownloadTip();
         ResetToolOffer();
         displayedTime=displayedCount=-1;
         foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;if(tips)tips.Hide();BlocksGameplay=false;

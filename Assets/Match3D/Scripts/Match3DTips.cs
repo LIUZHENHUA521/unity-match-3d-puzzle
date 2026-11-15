@@ -46,13 +46,13 @@ public sealed class Match3DTips : MonoBehaviour {
         return tips;
     }
 
-    public void Show(string value) {
+    public void Show(string value, bool persistent = false) {
         if (string.IsNullOrWhiteSpace(value)) return;
         message.text = value;
         gameObject.SetActive(true);
         transform.SetAsLastSibling();
         Layout();
-        hideAt = Time.realtimeSinceStartup + Duration;
+        hideAt = persistent ? float.PositiveInfinity : Time.realtimeSinceStartup + Duration;
     }
 
     void Layout() {

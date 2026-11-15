@@ -17,3 +17,9 @@ Validation: `Tools/validation/PotReplayGestures/run.py --replay <existing gzip v
 Coverage includes original hand/halo and tray/tool behavior; visible header and original pause entry; settings freezing playback and gestures, blocking underlying controls, and resuming with physics still frozen; speed steps and boundaries; progress press/release; end-of-recording backward seek; recorded remaining time and a synthetic add-time jump; correct progress geometry; settings exit cleanup and restored time scale. The test harness propagates nested coroutine failures.
 
 Reviewed the generated 720 × 1565 screenshots. Outputs are under `work/pot-replay-gestures/project/work/pot-replay-gestures/`, including `pot-replay-controls.png` and `checks.txt`. Verification is Unity play mode; no physical-device test is claimed.
+
+## Persistent download tip
+
+The replay list now shows the existing ShowTips visual with “下载回放中” until download completion. A dedicated tip instance avoids replacing ordinary transient notices. Duplicate watch clicks are ignored while downloading. Success dismisses the tip and loads the replay; failure dismisses it and reports the error. Leaving the page or changing lists invalidates the pending callback and hides the tip, preventing an old response from entering playback. The existing in-flight request may finish in the background.
+
+The isolated Unity validation passed 47 checks, including persistent visibility beyond 1.5 seconds with time paused, explicit dismissal, and normal timed-tip expiry after persistent use. The staging sync now removes stale copied source files so deleted legacy validators cannot break subsequent runs.

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public partial class Match3DFlow {
     public Match3DDailyLevel PotDailyLevel=>dailyLevel;
     RectTransform potReplayOverlay;int potReplayListVersion;string potReplayTier="bachelor";
+    Match3DTips potReplayDownloadTip;bool potReplayDownloading;int potReplayDownloadVersion;
     public RectTransform PotReplayOverlay(bool full){
         if(potReplayOverlay)Destroy(potReplayOverlay.gameObject);
         potReplayOverlay=PotReplayUI.Rect(page,"Pot replay overlay",Vector2.zero,new Vector2(720,full?1280:190));
@@ -16,6 +17,7 @@ public partial class Match3DFlow {
         DrawPotReplayList(false,0);
     }
     void DrawPotReplayList(bool masters,int skip){
+        CancelPotReplayDownloadTip();
         int version=++potReplayListVersion;var root=PotReplayOverlay(true);
         PotReplayUI.Label(root,"每日挑战回放",new Vector2(0,-60),new Vector2(650,70));
         PotReplayUI.Button(root,"我的回放",new Vector2(-190,-150),()=>DrawPotReplayList(false,0));
@@ -35,11 +37,34 @@ public partial class Match3DFlow {
                 var selected=item;float y=-400-row*110;
                 string result=item.status=="win"?"通关":item.status=="fail"?"失败":item.status=="incomplete"?"中断":"退出";
                 PotReplayUI.Label(root,$"{item.date} · {(item.tier=="elite"?"清北":"本科")} · 第{item.stage}关\n{result} · {item.duration:0}秒",new Vector2(-100,y),new Vector2(410,95));
-                PotReplayUI.Button(root,"观看",new Vector2(220,y+5),()=>{label.text="正在下载录像…";StartCoroutine(PotReplayService.Instance.Detail(selected.id,r=>{if(version!=potReplayListVersion||!label)return;if(!r.ok){label.text=r.error;return;}try{StartupService<PotReplayPlayer>().Load(r.detail);}catch(System.Exception e){label.text=e.Message;}}));});row++;
+                PotReplayUI.Button(root,"观看",new Vector2(220,y+5),()=>DownloadPotReplay(selected.id,version,label));row++;
             }
             if(skip>0)PotReplayUI.Button(root,"上一页",new Vector2(-160,-1030),()=>DrawPotReplayList(masters,Mathf.Max(0,skip-5)));
             if(reply.hasMore||(reply.list?.Length??0)>5)PotReplayUI.Button(root,"下一页",new Vector2(160,-1030),()=>DrawPotReplayList(masters,skip+5));
         },potReplayTier));
+    }
+    void CancelPotReplayDownloadTip(){
+        ++potReplayDownloadVersion;potReplayDownloading=false;
+        if(potReplayDownloadTip)potReplayDownloadTip.Hide();
+    }
+    void DownloadPotReplay(string id,int listVersion,Text label){
+        if(potReplayDownloading)return;
+        if(!PotReplayService.Instance){Notice("回放服务未连接");return;}
+        int request=++potReplayDownloadVersion;potReplayDownloading=true;
+        if(!potReplayDownloadTip)potReplayDownloadTip=Match3DTips.Create(canvas.transform);
+        potReplayDownloadTip.Show("下载回放中",persistent:true);
+        bool Current()=>request==potReplayDownloadVersion&&listVersion==potReplayListVersion&&ScreenName=="pot-replays"&&label;
+        void Failed(string error){
+            if(!Current())return;
+            CancelPotReplayDownloadTip();label.text=string.IsNullOrEmpty(error)?"回放下载失败，请重试":error;Notice(label.text);
+        }
+        StartCoroutine(Match3DStartupRunner.Run(PotReplayService.Instance.Detail(id,reply=>{
+            if(!Current())return;
+            if(!reply.ok){Failed(reply.error);return;}
+            CancelPotReplayDownloadTip();
+            try{StartupService<PotReplayPlayer>().Load(reply.detail);}
+            catch(System.Exception error){if(label)label.text=error.Message;Notice("回放加载失败："+error.Message);}
+        }),error=>Failed(error.Message)));
     }
     public void BeginPotReplay(Match3DDailyLevel level,int stage,Match3DDailyStage opening){
         StopBoard();LocalPreview=true;IsPvp=false;unlimitedMagnetRun=false;dailyLevel=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level));runModelTheme=null;ThemeIndex=0;Stage=stage;runDate=level.date;

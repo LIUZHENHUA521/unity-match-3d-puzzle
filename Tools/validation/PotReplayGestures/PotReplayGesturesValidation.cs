@@ -30,6 +30,14 @@ public static class PotReplayGesturesValidation {
     }
     static IEnumerator Core(){
         foreach(var service in new MonoBehaviour[]{Match3DGameRecords.Instance,Match3DInvitations.Instance,PotReplayService.Instance})if(service){service.StopAllCoroutines();service.enabled=false;}
+        var tipCanvas=(Canvas)typeof(Match3DFlow).GetField("canvas",Private).GetValue(Match3DFlow.Instance);
+        var downloadTip=Match3DTips.Create(tipCanvas.transform);Time.timeScale=0;
+        downloadTip.Show("下载回放中",persistent:true);yield return new WaitForSecondsRealtime(Match3DTips.Duration+.2f);
+        Check(downloadTip.gameObject.activeSelf,"download tip remains visible beyond normal duration while game time is paused");
+        downloadTip.Hide();Check(!downloadTip.gameObject.activeSelf,"download tip dismisses explicitly on completion or cancellation");
+        downloadTip.Show("回放下载失败，请重试");yield return new WaitForSecondsRealtime(Match3DTips.Duration+.2f);
+        Check(!downloadTip.gameObject.activeSelf,"ordinary failure tips still expire after persistent use");
+        Object.Destroy(downloadTip.gameObject);Time.timeScale=1;
         var data=JsonUtility.FromJson<PotReplayData>(PotReplayTransfer.Unpack(File.ReadAllBytes(Output+"/fixture.json.gz")));
         var player=new GameObject("Pot replay player").AddComponent<PotReplayPlayer>();player.Load(data);
         float deadline=Time.realtimeSinceStartup+90;
