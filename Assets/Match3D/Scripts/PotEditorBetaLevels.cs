@@ -28,7 +28,7 @@ public sealed class PotEditorBetaLevels : MonoBehaviour {
                 Match3DRewards.Reply reply=null;try{reply=JsonUtility.FromJson<Match3DRewards.Reply>(request.downloadHandler.text);}catch{}
                 if(request.result!=UnityWebRequest.Result.Success||reply==null||!reply.ok){flow.Notice(reply!=null&&!string.IsNullOrEmpty(reply.error)?reply.error:"内测关卡加载失败，请检查网络后重试");yield break;}
                 var level=reply.level;
-                if(level==null||level.sourceDate!="beta"||level.tier!=tier||!Match3DModelThemes.TryGet(level.modelThemeId,flow.SourceEnvironmentForTheme(theme),out var profile)||!level.IsValid(profile.prefabs.Length)){
+                if(level==null||level.tier!=tier||!Match3DModelThemes.TryGet(level.modelThemeId,flow.SourceEnvironmentForTheme(theme),out var profile)||!level.IsValid(profile.prefabs.Length)){
                     flow.Notice("内测关卡配置无效，请检查后台配置或更新编辑器");yield break;
                 }
                 flow.BeginPotEditorBeta(theme,level);
