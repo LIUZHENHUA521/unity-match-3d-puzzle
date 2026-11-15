@@ -69,7 +69,7 @@ public sealed class LayeredItemPile : MonoBehaviour {
         }
         boundary=reusedBoundary??BoardEnvironment.CreateBoundary(firstStage);
         if(reusedBoundary&&!firstStage)BoardEnvironment.UseSecondStageBoundary(boundary);
-        boundary.name=BoardEnvironment.CurrentName+(firstStage?" first stage container":" short transition container");
+        boundary.name=Match3DThemePresentation.SceneAssetName(BoardEnvironment.CurrentName)+(firstStage?" first stage container":" short transition container");
         boundary.SetActive(true);
         // Creation growth is advanced from LateUpdate.  Keeping it on the
         // frame loop avoids a WebGL coroutine resuming several WaitForSeconds

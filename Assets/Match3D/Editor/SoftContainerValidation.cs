@@ -79,7 +79,7 @@ public static class SoftContainerValidation {
             flow.BeginDailyPractice(0,daily);BoardCreationTestSupport.FinishPending(flow);Physics.SyncTransforms();
             Check(LevelGenerator.Instance.objectsOnScene.Count==15,"tutorial count");
             Check(BoardEnvironment.IsFirstStage&&!UnityEngine.Object.FindObjectOfType<SoftTransitionContainer>(),"stage 1 excludes new shell");
-            var original=GameObject.Find(BoardEnvironment.CurrentName+" first stage container");
+            var original=GameObject.Find(Match3DThemePresentation.SceneAssetName(BoardEnvironment.CurrentName)+" first stage container");
             Check(original&&original.GetComponentsInChildren<BoxCollider>(true).Length==25&&original.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="Lv1Col"),"original first-stage collision hierarchy");
             Check(LevelGenerator.Instance.objectsOnScene.All(o=>o.transform.position.y>=1.5f&&o.transform.position.y<=6f),"unchanged tutorial spawn heights");
             var tutorial=Match3DModelThemes.Get(theme.id,theme.profile.environment,true);var replay=daily.RandomForStage(1);
@@ -108,7 +108,7 @@ public static class SoftContainerValidation {
             Check(Vector2.Distance(projectedPan,firstPanViewport)<.00001f,"pan screen position remains unchanged across stages");
             var aligned= presentation.PanBowlCenter;presentation.Fit();
             Check(Vector3.Distance(aligned,presentation.PanBowlCenter)<.0001f,"pan alignment does not accumulate");
-            foreach(var c in GameObject.Find(BoardEnvironment.CurrentName+" source visuals").transform.Find("Grab3D Frying Pan").GetComponentsInChildren<Collider>())Check(c is MeshCollider&&c.enabled,"pan visual keeps attached solid mesh");
+            foreach(var c in GameObject.Find(Match3DThemePresentation.SceneAssetName(BoardEnvironment.CurrentName)).transform.Find("Grab3D Frying Pan").GetComponentsInChildren<Collider>())Check(c is MeshCollider&&c.enabled,"pan visual keeps attached solid mesh");
             var board=LevelGenerator.Instance.objectsOnScene;Check(board.Count==300,"second stage count");
             walls=boundary.GetComponentsInChildren<Collider>();foreach(var obj in board)CheckClear(obj,walls);
             Check(board.Count(o=>o.transform.position.y>25)<10,"no mass ceiling clamp on creation");Simulate(500);
