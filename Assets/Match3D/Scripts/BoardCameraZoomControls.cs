@@ -23,9 +23,9 @@ public sealed class BoardCameraZoomControls : MonoBehaviour {
         value.font = Match3DDefaultFont.Current; value.fontSize = 32; value.fontStyle = FontStyle.Bold;
         value.alignment = TextAnchor.MiddleCenter; value.color = Color.white;
         value.text = "1.0 x"; value.raycastTarget = false;
-        minus.onClick.AddListener(() => {Match3DFlow.Instance?.PotVibrate();BoardCameraZoom.Instance?.Step(-.2f);});
-        plus.onClick.AddListener(() => {Match3DFlow.Instance?.PotVibrate();BoardCameraZoom.Instance?.Step(.2f);});
-        reset.onClick.AddListener(() => {Match3DFlow.Instance?.PotVibrate();BoardCameraZoom.Instance?.Restore();});
+        minus.onClick.AddListener(() => {Match3DFlow.Instance?.HomeClick();BoardCameraZoom.Instance?.Step(-.2f);});
+        plus.onClick.AddListener(() => {Match3DFlow.Instance?.HomeClick();BoardCameraZoom.Instance?.Step(.2f);});
+        reset.onClick.AddListener(() => {Match3DFlow.Instance?.HomeClick();BoardCameraZoom.Instance?.Restore();});
     }
     public void SetReplayMode() {
         replay=true;root.name="Pot replay speed";
@@ -37,7 +37,7 @@ public sealed class BoardCameraZoomControls : MonoBehaviour {
     }
     void ChangeReplaySpeed(float step) {
         var player=PotReplayPlayer.Instance;if(!player||!player.ControlsEnabled)return;
-        Match3DFlow.Instance?.PotVibrate();player.SetSpeed(player.Speed+step);
+        Match3DFlow.Instance?.HomeClick();player.SetSpeed(player.Speed+step);
     }
     Button MakeButton(string name, string asset, Vector2 position) {
         var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
