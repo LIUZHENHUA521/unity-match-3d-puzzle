@@ -14,6 +14,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
     Dictionary<int,PotReplayPose> next;
     readonly List<Behaviour> disabled=new List<Behaviour>();PotReplayProgress slider;
     PotReplayGestures gestures;
+    PotReplayAudio audio;float audioTail;
     public float Duration=>data?.duration??0;
     public float CurrentTime=>time;
     public float Speed=>speed;
@@ -23,7 +24,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
     public void Load(PotReplayData value){
         if(Active)throw new InvalidOperationException("请先关闭当前回放");
         if(value==null||!value.Supported||value.frames==null||value.frames.Count==0||value.level==null||!Match3DModelThemes.TryGet(value.level.modelThemeId,Match3DFlow.Instance.SourceEnvironmentForTheme(0),out var profile)||value.opening==null||!value.opening.IsValid(value.stage==1?15:value.level.initialCount,profile.prefabs.Length))throw new InvalidOperationException("录像版本或资源不兼容，请更新游戏");
-        Instance=this;data=value;time=0;speed=1;ready=playing=settingsOpen=scrubbing=false;StartCoroutine(Prepare());
+        Instance=this;data=value;time=audioTail=0;speed=1;ready=playing=settingsOpen=scrubbing=false;StartCoroutine(Prepare());
     }
     IEnumerator Prepare(){
         Exception failure=null;yield return Match3DStartupRunner.Run(PrepareCore(),e=>failure=e);
@@ -45,14 +46,15 @@ public sealed class PotReplayPlayer : MonoBehaviour {
             foreach(var behaviour in obj.GetComponentsInChildren<MonoBehaviour>())Disable(behaviour);
             foreach(var animator in obj.GetComponentsInChildren<Animator>())Disable(animator);
         }
+        audio=new PotReplayAudio(data,objects);
         Time.timeScale=0;ready=true;playing=true;Controls();Apply(0);
 #if DAILY_WEB_PREVIEW
         if(DailyWebPreview.Instance)DailyWebPreview.Instance.PotReplayReady();
 #endif
     }
     void Disable(Behaviour b){if(b&&b.enabled){b.enabled=false;disabled.Add(b);}}
-    void LateUpdate(){if(!ready)return;if(IsPlaying)time=Mathf.Min(Duration,time+Time.unscaledDeltaTime*speed);if(time>=Duration&&playing){playing=false;presentationTime=float.NaN;}Apply(time);}
-    public void Seek(float value){seeking=true;presentationTime=float.NaN;time=Mathf.Clamp(value,0,Duration);currentFrame=-1;if(ready)Apply(time);seeking=false;}
+    void LateUpdate(){if(!ready)return;if(IsPlaying)time=Mathf.Min(Duration,time+Time.unscaledDeltaTime*speed);else if(time>=Duration&&!settingsOpen&&!scrubbing)audioTail+=Time.unscaledDeltaTime*speed;if(time>=Duration&&playing){playing=false;presentationTime=float.NaN;}Apply(time);}
+    public void Seek(float value){seeking=true;presentationTime=float.NaN;time=Mathf.Clamp(value,0,Duration);audioTail=0;audio?.Seek(time);currentFrame=-1;if(ready)Apply(time);seeking=false;}
     public void SetSpeed(float value){if(ControlsEnabled)speed=Mathf.Clamp(value,.5f,3);}
     public void SetSettingsOpen(bool value){
         if(!ready)return;
@@ -99,6 +101,8 @@ public sealed class PotReplayPlayer : MonoBehaviour {
         Match3DFlow.Instance.UpdatePotReplayTime(a.remaining);
         if(slider)slider.SetValueWithoutNotify(Duration>0?value/Duration:0);
         gestures?.Apply(value);
+        // The final frame stays still while the short completion sound finishes.
+        audio?.Apply(value+audioTail,!seeking&&!settingsOpen&&!scrubbing&&(IsPlaying||value>=Duration),speed);
     }
     void Controls(){
         var flow=Match3DFlow.Instance;
@@ -109,6 +113,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
     public void Exit(){Exit(true);}
     void Exit(bool notify){
         gestures?.Dispose();gestures=null;
+        audio?.Dispose();audio=null;
         if(Camera.main)ItemHighlight.For(Camera.main).ClearAll();PotProbeActivation.Clear();BoardToolVisual.Reset();ComboProbeController.End();presentationTime=float.NaN;
         StopAllCoroutines();ready=playing=settingsOpen=scrubbing=false;foreach(var b in disabled)if(b)b.enabled=true;disabled.Clear();objects.Clear();renderers.Clear();state=null;next=null;data=null;currentFrame=-1;Time.timeScale=1;
         Match3DFlow.Instance.EndPotReplay();
