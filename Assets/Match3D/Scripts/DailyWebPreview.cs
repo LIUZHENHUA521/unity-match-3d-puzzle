@@ -8,7 +8,7 @@ using UnityEngine.Scripting;
 // Only included in the standalone authoring player. No account or reward services.
 public sealed class DailyWebPreview : MonoBehaviour {
     public static DailyWebPreview Instance {get;private set;}
-    [Serializable] sealed class Command {public string action;public bool hasOpening;public int stage;public Match3DDailyLevel level;public PotReplayData replay;public float time;}
+    [Serializable] sealed class Command {public string action;public bool hasOpening,exportOpening;public int stage;public Match3DDailyLevel level;public PotReplayData replay;public float time;}
     [Serializable] sealed class Reply {public string type,message;public int stage,count;public Package package;}
     [Serializable] sealed class Package {public string date,tier,candidateId,previewImage;public int seed;public Match3DDailySnapshot opening;}
     [DllImport("__Internal")] static extern void GooseDailyPreviewEvent(string json);
@@ -30,7 +30,7 @@ public sealed class DailyWebPreview : MonoBehaviour {
                 var check=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level));check.generatorVersion="daily-v1";
                 if(!check.IsValid(23)||!DateTime.TryParseExact(level.date,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out _))throw new Exception("候选参数无效");
                 if(level.opening!=null&&!level.opening.IsValid(level.initialCount,23))throw new Exception("布局版本不兼容，请更换候选");
-                candidate=level;StartCoroutine(Run(candidate.opening==null?Generate():Play(2)));
+                candidate=level;StartCoroutine(Run(candidate.opening==null?Generate():command.exportOpening?ExportOpening():Play(2)));
             }else if(command.action=="play"&&candidate?.opening!=null){StartCoroutine(Run(Play(command.stage==1?1:2)));}
         }catch(Exception e){Emit(new Reply{type="error",message=e.Message});}
     }
@@ -72,6 +72,10 @@ public sealed class DailyWebPreview : MonoBehaviour {
         candidate.opening=opening;candidate.generatorVersion="shared-v2";
         yield return Play(2);
         Emit(new Reply{type="generated",package=new Package{date=candidate.date,tier=candidate.tier,candidateId=candidate.candidateId,seed=candidate.seed,opening=opening,previewImage=CaptureImage()}});
+    }
+    IEnumerator ExportOpening(){
+        yield return Play(2);
+        Emit(new Reply{type="generated",package=new Package{date=candidate.date,tier=candidate.tier,candidateId=candidate.candidateId,seed=candidate.seed,opening=candidate.opening,previewImage=CaptureImage()}});
     }
     IEnumerator Play(int stage){
         Emit(new Reply{type="status",message="正在还原第 "+stage+" 关…"});

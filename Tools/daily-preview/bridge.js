@@ -23,7 +23,7 @@ if (typeof window !== 'undefined') {
   window.addEventListener('message', event => {
     if (!validMessage(event, parent, origin, session)) return
     const data = event.data
-    if (data.type === 'load') { show('正在准备候选…'); send({ action: 'load', level: data.level, hasOpening: !!data.level?.opening }) }
+    if (data.type === 'load') { show('正在准备候选…'); send({ action: 'load', level: data.level, hasOpening: !!data.level?.opening, exportOpening: data.exportOpening === true }) }
     if (data.type === 'play' && (data.stage === 1 || data.stage === 2)) { show('正在还原开局…'); send({ action: 'play', stage: data.stage }) }
   })
   window.addEventListener('pagehide', () => { closed = true; if (instance) instance.Quit() }, { once: true })
