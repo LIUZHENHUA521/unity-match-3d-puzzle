@@ -10,9 +10,10 @@ using UnityEngine.Networking;
 
 public sealed class PotReplayService : MonoBehaviour {
     [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion;public int stage;public float duration;public long createdAt;}
-    [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public Summary[] list;public PotReplayData detail;}
+    [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public DownloadTicket download;public Summary[] list;public PotReplayData detail;}
     [Serializable] class RequestBody {public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
     [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,format;}
+    [Serializable] public class DownloadTicket {public string url,format,sha256;}
     public const int MaxJsonBytes=64*1024*1024;
     public static PotReplayService Instance {get;private set;}
     public event Action<string> Uploaded;
@@ -129,19 +130,56 @@ public sealed class PotReplayService : MonoBehaviour {
     }
     public void RecordingFailed(string reason){Status="回放保存失败："+reason;Debug.LogWarning(Status);}
     public IEnumerator Detail(string id,Action<Reply> done){
-        using(var bytes=new MemoryStream()){
-            int total=1;
-            while(bytes.Length<total){
-                Reply part=null;yield return Send("download",new RequestBody{id=id,offset=(int)bytes.Length},r=>part=r);
-                if(part==null||!part.ok){done(part??new Reply{error="录像下载失败"});yield break;}
-                string error=null;
-                try{if(part.total<1||part.total>PotReplayTransfer.MaxFileBytes||bytes.Length>0&&part.total!=total)throw new IOException("录像大小无效");total=part.total;
-                    var chunk=Convert.FromBase64String(part.content);if(chunk.Length!=Math.Min(196608,total-bytes.Length))throw new IOException("录像下载不完整");bytes.Write(chunk,0,chunk.Length);
-                }catch(Exception e){error=e.Message;}
-                if(error!=null){done(new Reply{error=error});yield break;}
+        var account=Match3DInvitations.Instance;
+        if(!account||!account.Ready){done(new Reply{error="请先登录"});yield break;}
+        string owner=account.State.inviteCode;
+        for(int attempt=0;attempt<2;attempt++){
+            if(!account.Ready||account.State.inviteCode!=owner){done(new Reply{error="账号已切换"});yield break;}
+            Reply ticket=null;yield return Send("download-start",new RequestBody{id=id},r=>ticket=r,expectedOwner:owner);
+            if(ticket==null||!ticket.ok){done(ticket??new Reply{error="录像下载失败"});yield break;}
+            var download=ticket.download;
+            if(download==null||download.format!="gzip-v1"||!ValidDownloadUrl(download.url)||
+                string.IsNullOrEmpty(download.sha256)||!System.Text.RegularExpressions.Regex.IsMatch(download.sha256,"^[a-f0-9]{64}$")){
+                done(new Reply{error="录像下载地址无效"});yield break;
             }
-            Reply result;try{result=new Reply{ok=true,detail=JsonUtility.FromJson<PotReplayData>(PotReplayTransfer.Unpack(bytes.ToArray()))};}catch(Exception e){result=new Reply{error=e.Message};}done(result);
+            using(var request=UnityWebRequest.Get(download.url)){
+                request.timeout=120;request.redirectLimit=0;
+                var operation=request.SendWebRequest();bool tooLarge=false;
+                while(!operation.isDone){
+                    if(!account.Ready||account.State.inviteCode!=owner){request.Abort();done(new Reply{error="账号已切换"});yield break;}
+                    if(request.downloadedBytes>PotReplayTransfer.MaxFileBytes){tooLarge=true;request.Abort();break;}
+                    yield return null;
+                }
+                if(!account.Ready||account.State.inviteCode!=owner){done(new Reply{error="账号已切换"});yield break;}
+                if(tooLarge){done(new Reply{error="录像文件过大"});yield break;}
+                if(request.result!=UnityWebRequest.Result.Success){
+                    // Refresh expired storage authorization once; never forward the account token to storage.
+                    if(attempt==0&&(request.responseCode==0||request.responseCode==401||request.responseCode==403||request.responseCode==408||request.responseCode==429||request.responseCode>=500))continue;
+                    done(new Reply{error="录像下载失败，请重试"});yield break;
+                }
+                Reply result;
+                try{
+                    var bytes=request.downloadHandler.data;
+                    if(bytes==null||bytes.Length<1||bytes.Length>PotReplayTransfer.MaxFileBytes)throw new IOException("录像大小无效");
+                    using(var sha=System.Security.Cryptography.SHA256.Create()){
+                        string actual=BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-","").ToLowerInvariant();
+                        if(actual!=download.sha256)throw new IOException("录像下载不完整，请重试");
+                    }
+                    var detail=JsonUtility.FromJson<PotReplayData>(PotReplayTransfer.Unpack(bytes));
+                    if(detail==null||detail.frames==null||detail.frames.Count==0)throw new IOException("录像内容无效");
+                    result=new Reply{ok=true,detail=detail};
+                }catch(Exception e){result=new Reply{error=e.Message};}
+                done(result);yield break;
+            }
         }
+    }
+    static bool ValidDownloadUrl(string url){
+        if(!Uri.TryCreate(url,UriKind.Absolute,out var uri))return false;
+#if UNITY_EDITOR
+        // Local HTTP fixtures exercise the real downloader; production always requires HTTPS.
+        if(uri.Scheme=="http"&&uri.IsLoopback)return true;
+#endif
+        return uri.Scheme=="https";
     }
     IEnumerator Send(string action,RequestBody body,Action<Reply> done,Action<long> status=null,string expectedOwner=null){
         var account=Match3DInvitations.Instance;

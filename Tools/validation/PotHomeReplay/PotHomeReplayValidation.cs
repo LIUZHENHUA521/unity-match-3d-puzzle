@@ -81,11 +81,11 @@ public static class PotHomeReplayValidation {
         Check(!PotReplayPlayer.Active,"cancelled home download cannot open a replay later");
         Mode("download-ok");yield return Wait(()=>IDs()[0]!=null,"replay can be retried after cancelling download");
         Home().Get<Button>("Bachelor").onClick.Invoke();yield return new WaitForSecondsRealtime(2);
-        Check(Loading()&&!PotReplayPlayer.Active,"actual home button keeps tip visible through a slow first download chunk");
+        Check(Loading()&&!PotReplayPlayer.Active,"actual home button keeps tip visible through slow download authorization");
         Capture("pot-home-downloading",720,1565);
         bool remained=true;float deadline=Time.realtimeSinceStartup+30;
         while(!(PotReplayPlayer.Active&&PotReplayPlayer.Instance.IsPlaying)&&Time.realtimeSinceStartup<deadline){remained&=Loading();yield return null;}
-        Check(remained,"home tip remains visible through all download chunks and scene preparation");
+        Check(remained,"home tip remains visible through file download and scene preparation");
         Check(PotReplayPlayer.Active&&flow.ScreenName=="pot-replay"&&PotReplayPlayer.Instance.IsPlaying,"home entry downloads and opens the existing replay player");
         Check(!Loading(),"home loading tip is dismissed after first frame is ready");
         PotReplayPlayer.Instance.Exit();yield return null;Check(!PotReplayPlayer.Active&&Time.timeScale==1,"replay exit returns cleanly to home");

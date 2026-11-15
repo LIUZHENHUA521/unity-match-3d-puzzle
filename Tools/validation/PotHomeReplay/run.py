@@ -7,6 +7,7 @@ import shutil
 import threading
 import time
 import gzip
+import hashlib
 import argparse
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 
@@ -65,14 +66,12 @@ class Handler(BaseHTTPRequestHandler):
                 response = {'ok': True, 'list': [row('bachelor', 'fail', 'f') for _ in range(20)], 'hasMore': True}
             else:
                 response = {'ok': True, 'list': [row('bachelor'), row('elite', key='b')], 'hasMore': False}
-        elif self.path.endswith('/download'):
-            time.sleep(3 if body.get('offset', 0) == 0 else .03)
+        elif self.path.endswith('/download-start'):
+            time.sleep(3)
             if mode not in ('download-ok', 'download-cancel'):
                 status, response = 503, {'ok': False, 'error': 'fixture download failed'}
             else:
-                import base64
-                offset = body.get('offset', 0)
-                response = {'ok': True, 'total': len(payload), 'content': base64.b64encode(payload[offset:offset+196608]).decode()}
+                response = {'ok': True, 'download': {'url': 'http://127.0.0.1:' + str(self.server.server_port) + '/file', 'format': 'gzip-v1', 'sha256': hashlib.sha256(payload).hexdigest()}}
         elif self.path.endswith('/upload-complete'):
             if mode == 'already-ready': status, response = 404, {'ok': False}
             elif mode == 'upload-fail': status, response = 503, {'ok': False}
@@ -87,6 +86,15 @@ class Handler(BaseHTTPRequestHandler):
         try: self.wfile.write(encoded)
         except (BrokenPipeError, ConnectionResetError): pass
 
+    def do_GET(self):
+        time.sleep(.03)
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/octet-stream')
+        self.send_header('Content-Length', str(len(payload)))
+        self.end_headers()
+        try: self.wfile.write(payload)
+        except (BrokenPipeError, ConnectionResetError): pass
+
 server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
 threading.Thread(target=server.serve_forever, daemon=True).start()
 (DATA / 'endpoint').write_text('http://127.0.0.1:' + str(server.server_port))
@@ -96,7 +104,7 @@ try:
                    check=True, timeout=600, cwd=STAGE)
     report = (DATA / 'checks.txt').read_text()
     print(report)
-    failures = [r for r in requests if r['path'].endswith('/download') and r['mode'] == 'download-fail']
+    failures = [r for r in requests if r['path'].endswith('/download-start') and r['mode'] == 'download-fail']
     assert len(failures) == 1, 'Repeated clicks must not start duplicate downloads'
     if not report.endswith('COMPLETE\n'): raise SystemExit('Home replay validation failed')
 finally:
