@@ -37,7 +37,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
     IEnumerator PrepareCore(){
         var flow=Match3DFlow.Instance;flow.BeginPotReplay(data.level,data.stage,data.opening);
         float deadline=Time.realtimeSinceStartup+90;
-        while(flow.CreationInProgress){if(Time.realtimeSinceStartup>deadline){flow.Notice("回放加载超时");Exit();yield break;}yield return null;}
+        while(flow.CreationInProgress){if(Time.realtimeSinceStartup>deadline){Exit();flow.Notice("回放加载超时");yield break;}yield return null;}
         flow.LockPotReplay();
         Disable(InputController.Instance);Disable(LayeredItemPile.Instance);Disable(ItemPhysicsController.Instance);Disable(GameManager.Instance);
         foreach(var obj in LevelGenerator.Instance.objectsOnScene){
@@ -47,7 +47,7 @@ public sealed class PotReplayPlayer : MonoBehaviour {
             foreach(var animator in obj.GetComponentsInChildren<Animator>())Disable(animator);
         }
         audio=new PotReplayAudio(data,objects);
-        Time.timeScale=0;ready=true;playing=true;Controls();Apply(0);
+        Time.timeScale=0;ready=true;playing=true;Controls();Apply(0);flow.CompletePotReplayLoading();
 #if DAILY_WEB_PREVIEW
         if(DailyWebPreview.Instance)DailyWebPreview.Instance.PotReplayReady();
 #endif

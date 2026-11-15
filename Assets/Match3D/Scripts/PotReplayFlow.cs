@@ -26,8 +26,10 @@ public partial class Match3DFlow {
         if(masters){PotReplayUI.Button(root,"本科局",new Vector2(-100,-230),()=>{potReplayTier="bachelor";DrawPotReplayList(true,0);});PotReplayUI.Button(root,"清北局",new Vector2(100,-230),()=>{potReplayTier="elite";DrawPotReplayList(true,0);});}
         var label=PotReplayUI.Label(root,"正在加载…",new Vector2(0,masters?-290:-230),new Vector2(650,100));
         if(!PotReplayService.Instance){label.text="回放服务未连接";return;}
-        StartCoroutine(PotReplayService.Instance.List(masters,skip,dailyLevel,reply=>{
-            if(version!=potReplayListVersion||!label)return;
+        ShowPotReplayLoadingTip("加载回放中");
+        StartCoroutine(Match3DStartupRunner.Run(PotReplayService.Instance.List(masters,skip,dailyLevel,reply=>{
+            if(version!=potReplayListVersion||!label||ScreenName!="pot-replays")return;
+            CancelPotReplayDownloadTip();
             if(!reply.ok){label.text=reply.error;return;}
             label.text=reply.list==null||reply.list.Length==0?"暂无回放":masters?"同关卡已公开的完整通关录像":"最近的每日挑战录像";
             if(!masters&&!string.IsNullOrEmpty(PotReplayService.Instance.Status))label.text+="\n"+PotReplayService.Instance.Status;
@@ -41,8 +43,16 @@ public partial class Match3DFlow {
             }
             if(skip>0)PotReplayUI.Button(root,"上一页",new Vector2(-160,-1030),()=>DrawPotReplayList(masters,Mathf.Max(0,skip-5)));
             if(reply.hasMore||(reply.list?.Length??0)>5)PotReplayUI.Button(root,"下一页",new Vector2(160,-1030),()=>DrawPotReplayList(masters,skip+5));
-        },potReplayTier));
+        },potReplayTier),error=>{
+            if(version!=potReplayListVersion||!label||ScreenName!="pot-replays")return;
+            CancelPotReplayDownloadTip();label.text=error.Message;Notice("回放列表加载失败："+error.Message);
+        }));
     }
+    void ShowPotReplayLoadingTip(string message){
+        if(!potReplayDownloadTip)potReplayDownloadTip=Match3DTips.Create(canvas.transform);
+        potReplayDownloadTip.Show(message,persistent:true);
+    }
+    public void CompletePotReplayLoading(){CancelPotReplayDownloadTip();}
     void CancelPotReplayDownloadTip(){
         ++potReplayDownloadVersion;potReplayDownloading=false;
         if(potReplayDownloadTip)potReplayDownloadTip.Hide();
@@ -51,8 +61,7 @@ public partial class Match3DFlow {
         if(potReplayDownloading)return;
         if(!PotReplayService.Instance){Notice("回放服务未连接");return;}
         int request=++potReplayDownloadVersion;potReplayDownloading=true;
-        if(!potReplayDownloadTip)potReplayDownloadTip=Match3DTips.Create(canvas.transform);
-        potReplayDownloadTip.Show("下载回放中",persistent:true);
+        ShowPotReplayLoadingTip("下载回放中");
         bool Current()=>request==potReplayDownloadVersion&&listVersion==potReplayListVersion&&ScreenName=="pot-replays"&&label;
         void Failed(string error){
             if(!Current())return;
@@ -61,16 +70,16 @@ public partial class Match3DFlow {
         StartCoroutine(Match3DStartupRunner.Run(PotReplayService.Instance.Detail(id,reply=>{
             if(!Current())return;
             if(!reply.ok){Failed(reply.error);return;}
-            CancelPotReplayDownloadTip();
             try{StartupService<PotReplayPlayer>().Load(reply.detail);}
-            catch(System.Exception error){if(label)label.text=error.Message;Notice("回放加载失败："+error.Message);}
+            catch(System.Exception error){CancelPotReplayDownloadTip();if(label)label.text=error.Message;Notice("回放加载失败："+error.Message);}
         }),error=>Failed(error.Message)));
     }
     public void BeginPotReplay(Match3DDailyLevel level,int stage,Match3DDailyStage opening){
+        ShowPotReplayLoadingTip("下载回放中");
         StopBoard();LocalPreview=true;IsPvp=false;unlimitedMagnetRun=false;dailyLevel=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level));runModelTheme=null;ThemeIndex=0;Stage=stage;runDate=level.date;
         dailyLevel.opening=new Match3DDailySnapshot{stages=new Match3DDailyStage[2]};dailyLevel.opening.stages[stage-1]=opening;
         ComboProbeController.BeginStage(true,level.seed);
-        SpawnDailyOpening(SourceProfile(stage==1).prefabs,stage==1,null,null,animate:false);HUD();BlocksGameplay=true;Music(library.gameMusic);
+        SpawnDailyOpening(SourceProfile(stage==1).prefabs,stage==1,null,null,animate:false);HUD(replay:true);BlocksGameplay=true;Music(library.gameMusic);
     }
     public void LockPotReplay(){ScreenName="pot-replay";BlocksGameplay=true;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
         if(gameplayHUD){gameplayHUD.SetReplayMode();gameplayHUD.GetComponent<Match3DUIView>().Bind("Pause",ShowPotReplaySettings);}

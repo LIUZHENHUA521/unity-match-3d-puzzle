@@ -40,8 +40,18 @@ public static class PotReplayGesturesValidation {
         Object.Destroy(downloadTip.gameObject);Time.timeScale=1;
         var data=JsonUtility.FromJson<PotReplayData>(PotReplayTransfer.Unpack(File.ReadAllBytes(Output+"/fixture.json.gz")));
         var player=new GameObject("Pot replay player").AddComponent<PotReplayPlayer>();player.Load(data);
-        float deadline=Time.realtimeSinceStartup+90;
-        while(!(bool)typeof(PotReplayPlayer).GetField("ready",Private).GetValue(player)&&Time.realtimeSinceStartup<deadline)yield return null;
+        float deadline=Time.realtimeSinceStartup+90;bool sawPreparation=false,tipStayedVisible=true;
+        while(!(bool)typeof(PotReplayPlayer).GetField("ready",Private).GetValue(player)&&Time.realtimeSinceStartup<deadline){
+            if(Match3DFlow.Instance.CreationInProgress){
+                sawPreparation=true;
+                var loadingTip=(Match3DTips)typeof(Match3DFlow).GetField("potReplayDownloadTip",Private).GetValue(Match3DFlow.Instance);
+                tipStayedVisible&=loadingTip&&loadingTip.gameObject.activeInHierarchy;
+            }
+            yield return null;
+        }
+        Check(sawPreparation&&tipStayedVisible,"loading tip survives HUD replacement and stays visible throughout actual scene preparation");
+        var completedTip=(Match3DTips)typeof(Match3DFlow).GetField("potReplayDownloadTip",Private).GetValue(Match3DFlow.Instance);
+        Check(completedTip&&!completedTip.gameObject.activeSelf,"loading tip closes only once replay first frame is ready");
         Check((bool)typeof(PotReplayPlayer).GetField("ready",Private).GetValue(player),"actual uploaded v2 replay loads");player.Pause();yield return null;
         var hud=Object.FindObjectOfType<Match3DGameplayHUD>();
         Check(hud&&hud.footer.gameObject.activeInHierarchy&&hud.header.gameObject.activeSelf,"replay header and footer both visible");

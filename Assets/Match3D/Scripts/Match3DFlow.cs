@@ -193,9 +193,9 @@ public partial class Match3DFlow : MonoBehaviour {
         }
     }
 
-    void Clear(){
+    void Clear(bool preserveReplayTip=false){
         ScreenVersion++;
-        CancelPotReplayDownloadTip();
+        if(!preserveReplayTip)CancelPotReplayDownloadTip();
         ResetToolOffer();
         displayedTime=displayedCount=-1;
         foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;if(tips)tips.Hide();BlocksGameplay=false;
@@ -498,8 +498,8 @@ public partial class Match3DFlow : MonoBehaviour {
         yield return new WaitForSeconds(3);
         {GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.StartRecord();BoosterManager.Instance.BoostersInteractibility(true);}
     }
-    void HUD(){
-        Clear();ScreenName="game";resultShown=false;BlocksGameplay=false;
+    void HUD(bool replay=false){
+        Clear(replay);ScreenName="game";resultShown=false;BlocksGameplay=false;
         var view=Match3DUIView.Load("GameHUD",page);
         gameplayHUD=view.GetComponent<Match3DGameplayHUD>();
         if(gameplayHUD)view.Show("Settings",false);

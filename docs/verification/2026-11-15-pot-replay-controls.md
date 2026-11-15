@@ -20,6 +20,12 @@ Reviewed the generated 720 × 1565 screenshots. Outputs are under `work/pot-repl
 
 ## Persistent download tip
 
-The replay list now shows the existing ShowTips visual with “下载回放中” until download completion. A dedicated tip instance avoids replacing ordinary transient notices. Duplicate watch clicks are ignored while downloading. Success dismisses the tip and loads the replay; failure dismisses it and reports the error. Leaving the page or changing lists invalidates the pending callback and hides the tip, preventing an old response from entering playback. The existing in-flight request may finish in the background.
+The replay list now shows the existing ShowTips visual with “下载回放中” until download completion. A dedicated tip instance avoids replacing ordinary transient notices. Duplicate watch clicks are ignored while downloading. Successful download keeps the tip visible while the replay scene is prepared; it is dismissed only after controls and the first frame are applied; failure dismisses it and reports the error. Leaving the page or changing lists invalidates the pending callback and hides the tip, preventing an old response from entering playback. The existing in-flight request may finish in the background.
 
 The isolated Unity validation passed 47 checks, including persistent visibility beyond 1.5 seconds with time paused, explicit dismissal, and normal timed-tip expiry after persistent use. The staging sync now removes stale copied source files so deleted legacy validators cannot break subsequent runs.
+
+## Loading completion boundary fix
+
+The first download-tip implementation incorrectly dismissed on the Detail response and again during HUD Clear, leaving scene preparation without a visible loading indicator. The replay-only HUD transition now preserves the tip; PotReplayPlayer completes it after Controls and Apply(0). Normal navigation and failures still dismiss it. List fetching also uses a persistent loading tip. Timeout feedback is shown after exit cleanup so Home does not immediately hide the error.
+
+49 Unity play-mode checks passed, including observing the real multi-frame scene creation loop: the tip survives HUD replacement, remains active for every preparation frame, and is inactive after the first replay frame is ready.
