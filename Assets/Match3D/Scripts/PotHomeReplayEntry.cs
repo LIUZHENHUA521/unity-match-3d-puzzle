@@ -53,18 +53,11 @@ public sealed class PotHomeReplayEntry : MonoBehaviour {
         if(opening)return;
         var flow=Match3DFlow.Instance;
         if(owner!=Account()||date!=Match3DFlow.Today){refresh=true;flow.Notice("正在更新今日回放，请稍候…");return;}
-        if(!string.IsNullOrEmpty(ids[index])){opening=true;StartCoroutine(Open(ids[index],generation));return;}
+        if(!string.IsNullOrEmpty(ids[index])){
+            opening=true;int version=generation;
+            flow.OpenPotReplay(ids[index],()=>Current(version),error=>{opening=false;refresh=true;});return;
+        }
         if(PotHomeReplayState.Won(owner,date,tiers[index])){refresh=true;flow.Notice("已通关，回放尚未同步完成，请稍候…");return;}
         flow.BeginReward(0,tiers[index]);
-    }
-    IEnumerator Open(string id,int version){
-        var flow=Match3DFlow.Instance;flow.Notice("正在加载回放…");
-        PotReplayService.Reply reply=null;
-        yield return Match3DStartupRunner.Run(service.Detail(id,r=>reply=r),e=>reply=new PotReplayService.Reply{error=e.Message});
-        if(!Current(version))yield break;
-        opening=false;
-        if(reply==null||!reply.ok){refresh=true;flow.Notice(reply?.error??"录像下载失败，请重试");yield break;}
-        try{var player=flow.GetComponent<PotReplayPlayer>()??flow.gameObject.AddComponent<PotReplayPlayer>();player.Load(reply.detail);}
-        catch(Exception e){flow.Notice("回放加载失败："+e.Message);}
     }
 }

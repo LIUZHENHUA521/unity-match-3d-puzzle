@@ -25,6 +25,7 @@ public static class PotHomeReplayValidation {
     static void Account(string owner){var a=Match3DInvitations.Instance;typeof(Match3DInvitations).GetProperty("State").SetValue(a,new Match3DInvitations.Reply{inviteCode=owner});typeof(Match3DInvitations).GetField("token",Private).SetValue(a,"pot-local-fixture");}
     static Match3DUIView Home()=>Object.FindObjectOfType<Match3DHomeView>().GetComponent<Match3DUIView>();
     static Text Caption(string key)=>Home().Get<Button>(key).transform.Find("Pot replay caption").GetComponent<Text>();
+    static bool Loading(){var tip=(Match3DTips)typeof(Match3DFlow).GetField("potReplayDownloadTip",Private).GetValue(Match3DFlow.Instance);return tip&&tip.gameObject.activeInHierarchy;}
     static string[] IDs()=> (string[])typeof(PotHomeReplayEntry).GetField("ids",Private).GetValue(Object.FindObjectOfType<PotHomeReplayEntry>());
     static IEnumerator Wait(Func<bool> condition,string message){float end=Time.realtimeSinceStartup+12;while(!condition()&&Time.realtimeSinceStartup<end)yield return null;Check(condition(),message);}
     static IEnumerator Core(){
@@ -64,14 +65,29 @@ public static class PotHomeReplayValidation {
         Check(!Home().Get<Button>("Bachelor").transform.Find("Pot home BachelorPacket").gameObject.activeSelf,"ready state removes red packet artwork from caption row");
         Capture("pot-home-ready",720,1565);
         Mode("download-fail");Home().Get<Button>("Bachelor").onClick.Invoke();Home().Get<Button>("Bachelor").onClick.Invoke();
-        yield return new WaitForSecondsRealtime(.8f);
+        yield return new WaitForSecondsRealtime(2);
+        Check(Loading(),"home failure path keeps loading tip visible while HTTP response is pending beyond 1.5 seconds");
+        yield return new WaitForSecondsRealtime(1.4f);
+        Check(!Loading(),"home download failure closes persistent tip");
         Check(!PotReplayPlayer.Active&&flow.ScreenName=="home"&&!(bool)typeof(PotHomeReplayEntry).GetField("opening",Private).GetValue(Object.FindObjectOfType<PotHomeReplayEntry>()),"download failure preserves home and permits retry");
         Mode("pending");Account(Other);yield return new WaitForSecondsRealtime(1.3f);
         Check(IDs().All(string.IsNullOrEmpty)&&!Caption("Bachelor").gameObject.activeSelf,"account switch clears prior replay and win state");
         Account(Owner);Mode("slow");flow.Home();yield return new WaitForSecondsRealtime(.2f);Account(Other);Mode("pending");yield return new WaitForSecondsRealtime(3.2f);
         Check(IDs().All(string.IsNullOrEmpty),"in-flight results from previous account cannot expose its replay");
         Account(Owner);Mode("download-ok");flow.Home();yield return Wait(()=>IDs()[0]!=null,"ready state restores from cloud after reopening home");
-        Home().Get<Button>("Bachelor").onClick.Invoke();yield return Wait(()=>PotReplayPlayer.Active&&flow.ScreenName=="pot-replay","home entry downloads and opens the existing replay player");
+        Mode("download-cancel");Home().Get<Button>("Bachelor").onClick.Invoke();yield return new WaitForSecondsRealtime(.2f);
+        Check(Loading(),"home click starts the shared persistent loading tip");
+        flow.Home();Check(!Loading(),"leaving home during download clears loading tip");yield return new WaitForSecondsRealtime(3.2f);
+        Check(!PotReplayPlayer.Active,"cancelled home download cannot open a replay later");
+        Mode("download-ok");yield return Wait(()=>IDs()[0]!=null,"replay can be retried after cancelling download");
+        Home().Get<Button>("Bachelor").onClick.Invoke();yield return new WaitForSecondsRealtime(2);
+        Check(Loading()&&!PotReplayPlayer.Active,"actual home button keeps tip visible through a slow first download chunk");
+        Capture("pot-home-downloading",720,1565);
+        bool remained=true;float deadline=Time.realtimeSinceStartup+30;
+        while(!(PotReplayPlayer.Active&&PotReplayPlayer.Instance.IsPlaying)&&Time.realtimeSinceStartup<deadline){remained&=Loading();yield return null;}
+        Check(remained,"home tip remains visible through all download chunks and scene preparation");
+        Check(PotReplayPlayer.Active&&flow.ScreenName=="pot-replay"&&PotReplayPlayer.Instance.IsPlaying,"home entry downloads and opens the existing replay player");
+        Check(!Loading(),"home loading tip is dismissed after first frame is ready");
         PotReplayPlayer.Instance.Exit();yield return null;Check(!PotReplayPlayer.Active&&Time.timeScale==1,"replay exit returns cleanly to home");
         replay.Uploaded-=notified;
     }

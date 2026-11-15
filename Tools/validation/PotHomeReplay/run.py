@@ -28,7 +28,7 @@ archive = subprocess.Popen(['git', 'archive', BASE, 'Assets', 'Packages', 'Proje
 subprocess.run(['tar', '-xf', '-', '-C', str(STAGE)], stdin=archive.stdout, check=True)
 archive.stdout.close()
 if archive.wait(): raise SystemExit('Cannot export validation baseline')
-for name in ('PotHomeReplayState', 'PotHomeReplayButton', 'PotHomeReplayEntry', 'PotReplayService', 'Match3DGameRecords'):
+for name in ('PotHomeReplayState', 'PotHomeReplayButton', 'PotHomeReplayEntry', 'PotReplayService', 'PotReplayFlow', 'Match3DGameRecords'):
     for suffix in ('.cs', '.cs.meta'):
         relative = Path('Assets/Match3D/Scripts') / (name + suffix)
         shutil.copy(ROOT / relative, STAGE / relative)
@@ -59,14 +59,15 @@ class Handler(BaseHTTPRequestHandler):
         def row(tier, result='win', key='a'):
             return {'id': key*64, 'recordId': key*32, 'date': today, 'tier': tier, 'status': result,
                     'stage': 2, 'resourceVersion': 'pot-replay-resources-2', 'createdAt': int(time.time()*1000)}
-        if self.path.endswith('/list') and mode in ('ready', 'download-fail', 'download-ok', 'slow'):
+        if self.path.endswith('/list') and mode in ('ready', 'download-fail', 'download-ok', 'download-cancel', 'slow'):
             if mode == 'slow': time.sleep(2)
             if body.get('skip', 0) == 0:
                 response = {'ok': True, 'list': [row('bachelor', 'fail', 'f') for _ in range(20)], 'hasMore': True}
             else:
                 response = {'ok': True, 'list': [row('bachelor'), row('elite', key='b')], 'hasMore': False}
         elif self.path.endswith('/download'):
-            if mode != 'download-ok':
+            time.sleep(3 if body.get('offset', 0) == 0 else .03)
+            if mode not in ('download-ok', 'download-cancel'):
                 status, response = 503, {'ok': False, 'error': 'fixture download failed'}
             else:
                 import base64
@@ -83,7 +84,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Content-Type', 'application/json')
         self.send_header('Content-Length', str(len(encoded)))
         self.end_headers()
-        self.wfile.write(encoded)
+        try: self.wfile.write(encoded)
+        except (BrokenPipeError, ConnectionResetError): pass
 
 server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
 threading.Thread(target=server.serve_forever, daemon=True).start()

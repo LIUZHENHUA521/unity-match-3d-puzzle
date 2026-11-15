@@ -58,20 +58,26 @@ public partial class Match3DFlow {
         if(potReplayDownloadTip)potReplayDownloadTip.Hide();
     }
     void DownloadPotReplay(string id,int listVersion,Text label){
+        OpenPotReplay(id,()=>listVersion==potReplayListVersion&&ScreenName=="pot-replays"&&label,error=>{if(label)label.text=error;});
+    }
+    // Both the home tier buttons and the replay list use this loading lifetime.
+    public void OpenPotReplay(string id,System.Func<bool> current,System.Action<string> failed){
         if(potReplayDownloading)return;
-        if(!PotReplayService.Instance){Notice("回放服务未连接");return;}
+        if(!PotReplayService.Instance){failed?.Invoke("回放服务未连接");Notice("回放服务未连接");return;}
         int request=++potReplayDownloadVersion;potReplayDownloading=true;
         ShowPotReplayLoadingTip("下载回放中");
-        bool Current()=>request==potReplayDownloadVersion&&listVersion==potReplayListVersion&&ScreenName=="pot-replays"&&label;
         void Failed(string error){
-            if(!Current())return;
-            CancelPotReplayDownloadTip();label.text=string.IsNullOrEmpty(error)?"回放下载失败，请重试":error;Notice(label.text);
+            if(request!=potReplayDownloadVersion)return;
+            bool visible=current();CancelPotReplayDownloadTip();if(!visible)return;
+            string message=string.IsNullOrEmpty(error)?"回放下载失败，请重试":error;
+            failed?.Invoke(message);Notice(message);
         }
         StartCoroutine(Match3DStartupRunner.Run(PotReplayService.Instance.Detail(id,reply=>{
-            if(!Current())return;
-            if(!reply.ok){Failed(reply.error);return;}
+            if(request!=potReplayDownloadVersion)return;
+            if(!current()){CancelPotReplayDownloadTip();return;}
+            if(reply==null||!reply.ok){Failed(reply?.error);return;}
             try{StartupService<PotReplayPlayer>().Load(reply.detail);}
-            catch(System.Exception error){CancelPotReplayDownloadTip();if(label)label.text=error.Message;Notice("回放加载失败："+error.Message);}
+            catch(System.Exception error){CancelPotReplayDownloadTip();failed?.Invoke(error.Message);Notice("回放加载失败："+error.Message);}
         }),error=>Failed(error.Message)));
     }
     public void BeginPotReplay(Match3DDailyLevel level,int stage,Match3DDailyStage opening){

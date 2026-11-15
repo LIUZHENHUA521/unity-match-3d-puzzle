@@ -29,3 +29,11 @@ The isolated Unity validation passed 47 checks, including persistent visibility 
 The first download-tip implementation incorrectly dismissed on the Detail response and again during HUD Clear, leaving scene preparation without a visible loading indicator. The replay-only HUD transition now preserves the tip; PotReplayPlayer completes it after Controls and Apply(0). Normal navigation and failures still dismiss it. List fetching also uses a persistent loading tip. Timeout feedback is shown after exit cleanup so Home does not immediately hide the error.
 
 49 Unity play-mode checks passed, including observing the real multi-frame scene creation loop: the tip survives HUD replacement, remains active for every preparation frame, and is inactive after the first replay frame is ready.
+
+## Home entry root cause and regression (0.1.88)
+
+The preceding fix covered the replay list but missed `PotHomeReplayEntry.Open`. The home tier button separately called `flow.Notice("正在加载回放…")`, whose ordinary lifetime is 1.5 seconds. This exactly matches the phone report. That duplicated downloader is now removed. Both entry points call `Match3DFlow.OpenPotReplay`, sharing a persistent download tip, duplicate-click guard, stale-request guard, failure handling and completion after first-frame preparation.
+
+Targeted integration test: actual home buttons and real `PotReplayService.Detail` HTTP chunk requests against the local fixture; the first response is delayed 3 seconds, subsequent chunks 30 ms. All 33 home checks pass, including visibility after 2 seconds while HTTP is pending, visibility through every download/preparation frame, failure retry, duplicate click suppression, navigation cancellation and successful replay entry. The existing 4.8 MiB uploaded gzip recording is used. No production data is mutated.
+
+Negative control: reran the same test using the committed old home-entry implementation from HEAD while retaining the test and shared loader. It fails at the pending-request visibility assertion as expected. Reports: `work/pot-home-replay/project/work/pot-home-replay/fixed-checks.txt` and `baseline-checks.txt`. This verifies the missed entry-point bug rather than only the generic tip component.
