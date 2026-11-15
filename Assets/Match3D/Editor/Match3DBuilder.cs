@@ -17,7 +17,7 @@ public static class Match3DBuilder {
         var vehicles=new[]{"Boat","Car","Helicopter","Horse","Minibus","Plane","Rocket","Truck"}.Select(NormalizeToy).ToArray();
         library.themes=new[]{Theme("daily","每日厨房","每天一道挑战，清空整锅食物","",food),Theme("toys","玩具总动员","找齐玩具，收藏专属大鹅","",toys),Theme("travel","出发去旅行","车船飞机，一起踏上旅途","",vehicles)};
         library.homeMusic=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/Licensed/Carefree.mp3");library.gameMusic=library.homeMusic;
-        library.selectSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/CrazyCombo/tile_click.mp3");library.clickSound=library.selectSound;
+        library.selectSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/CrazyCombo/tile_click.mp3");library.clickSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/S_ButtonClick.wav");
         library.matchSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/CrazyCombo/merge_sound.mp3");
         var old=AssetDatabase.LoadAssetAtPath<Match3DTheme>("Assets/Match3D/Resources/Match3D/ThemeLibrary.asset");if(old){EditorUtility.CopySerialized(library,old);UnityEngine.Object.DestroyImmediate(library);library=old;}else AssetDatabase.CreateAsset(library,"Assets/Match3D/Resources/Match3D/ThemeLibrary.asset");
         library.sourceLevelCatalog=AssetDatabase.LoadAssetAtPath<LevelLayoutConfig>("Assets/Match3D/Resources/Match3D/SourceLevelCatalog.asset");
