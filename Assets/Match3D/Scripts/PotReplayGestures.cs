@@ -13,7 +13,7 @@ public sealed class PotReplayGestures {
     }
     public const float MoveSeconds=.14f,DownSeconds=.06f,UpSeconds=.08f,TapScale=.92f;
     public readonly List<Cue> cues=new List<Cue>();
-    readonly RectTransform layer,hand;
+    readonly RectTransform layer,hand,circle;
     readonly Canvas canvas;
     readonly Camera camera;
 
@@ -24,6 +24,10 @@ public sealed class PotReplayGestures {
         canvas=parent.GetComponentInParent<Canvas>();camera=Camera.main;
         hand=new GameObject("Pot replay hand",typeof(RectTransform)).GetComponent<RectTransform>();hand.SetParent(layer,false);
         hand.anchorMin=hand.anchorMax=hand.pivot=new Vector2(.5f,.5f);hand.sizeDelta=Vector2.zero;
+        var halo=new GameObject("Pot replay circle",typeof(RectTransform),typeof(Image)).GetComponent<Image>();
+        halo.transform.SetParent(hand,false);halo.sprite=Resources.Load<Sprite>("Match3D/PotReplay/PotReplayCircle");
+        if(!halo.sprite)throw new InvalidOperationException("Missing pot replay circle art");
+        halo.raycastTarget=false;circle=halo.rectTransform;circle.sizeDelta=new Vector2(81,84);
         var icon=new GameObject("Pot replay hand icon",typeof(RectTransform),typeof(Image)).GetComponent<Image>();
         icon.transform.SetParent(hand,false);icon.sprite=Resources.Load<Sprite>("Match3D/PotReplay/PotReplayHand");
         if(!icon.sprite)throw new InvalidOperationException("Missing pot replay hand art");
@@ -77,9 +81,11 @@ public sealed class PotReplayGestures {
     public int CueAt(float time){
         int lo=0,hi=cues.Count-1,result=-1;
         while(lo<=hi){int mid=(lo+hi)/2;if(Start(mid)<=time){result=mid;lo=mid+1;}else hi=mid-1;}
-        if(result<0)return -1;
-        var cue=cues[result];return time<=Mathf.Max(cue.time+DownSeconds,cue.end)+UpSeconds+.3f?result:-1;
+        // Keep the hand at the last operation during idle gaps and after the final operation.
+        return cues.Count==0?-1:Mathf.Max(0,result);
     }
+    // crazyCombo bubble.anim: 4/3 clip seconds at speed .5, linear 1 -> 1.1 -> 1.
+    public static float CircleScale(float time)=>1+.1f*Mathf.PingPong(Mathf.Max(0,time)*.75f,1);
     bool Position(Cue cue,out Vector2 position){
         position=default;Vector2 screen;
         if(cue.target==Target.Item){
@@ -95,13 +101,15 @@ public sealed class PotReplayGestures {
         return RectTransformUtility.ScreenPointToLocalPointInRectangle(layer,screen,canvas&&canvas.renderMode!=RenderMode.ScreenSpaceOverlay?canvas.worldCamera:null,out position);
     }
     public void Apply(float time){
-        int i=CueAt(time);if(i<0||!Position(cues[i],out var point)){hand.gameObject.SetActive(false);return;}
+        int i=CueAt(time);Vector2 point=default;
+        // A temporarily unavailable target must not blink the cursor out of existence.
+        while(i>=0&&!Position(cues[i],out point))i--;
+        if(i<0){if(cues.Count==0)hand.gameObject.SetActive(false);return;}
         var cue=cues[i];float start=Start(i);
         if(time<cue.time&&i>0&&Position(cues[i-1],out var previous))point=Vector2.Lerp(previous,point,Ease((time-start)/Mathf.Max(.001f,cue.time-start)));
-        // Bottom-row actions point downward so the palm stays on screen above the buttons.
-        hand.localRotation=Quaternion.Euler(0,0,cue.target==Target.Tool?180:0);
-        float scale=Scale(cue,time),mirror=cue.target!=Target.Tool&&point.x>layer.rect.xMax-115?-1:1;
-        hand.gameObject.SetActive(true);hand.anchoredPosition=point;hand.localScale=new Vector3(scale*mirror,scale,scale);
+        hand.localRotation=Quaternion.identity;
+        hand.gameObject.SetActive(true);hand.anchoredPosition=point;hand.localScale=Vector3.one*Scale(cue,time);
+        circle.localScale=new Vector3(CircleScale(time),CircleScale(time),1);
     }
     public void Dispose(){if(layer)UnityEngine.Object.Destroy(layer.gameObject);}
 }

@@ -10,4 +10,4 @@ The hand asset is copied without visual changes from crazyCombo:
 - Scene size `(143,152)`, local offset `(34.941,-45.246)` and scale `0.8` are retained.
 - `LayoutRoot.ts`: 0.14 s move, 0.06 s shrink to 0.92, 0.08 s restore, quad-out easing.
 
-The replay hand is driven by absolute recording time. Tool gestures point downward and right-edge item gestures mirror horizontally so the palm remains visible. No new recording protocol or server support is required.
+The replay hand is driven by absolute recording time. The hand keeps its original orientation for all targets and remains visible between actions, moving continuously to the next target. The circle is copied byte-for-byte from `client/assets/resources/images/circle.png` (81×84). Its pulse follows `client/assets/bubble.anim`: 4/3-second clip at speed 0.5, linear 1 → 1.1 → 1 scale, looping with replay time. No new recording protocol or server support is required.

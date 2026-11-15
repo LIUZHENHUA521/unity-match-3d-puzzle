@@ -45,15 +45,19 @@ public static class PotReplayGesturesValidation {
         Check(timeline.cues.Count(c=>c.target==PotReplayGestures.Target.Item)==data.events.Count(e=>e.type=="pick"&&e.value==0),"manual picks shown; magnet and probe pickups never duplicate clicks");
         var manual=timeline.cues.First(c=>c.target==PotReplayGestures.Target.Item);player.Seek(manual.time+.06f);yield return null;
         var hand=(RectTransform)typeof(PotReplayGestures).GetField("hand",Private).GetValue(timeline);
+        var circle=hand.Find("Pot replay circle").GetComponent<Image>();
+        Check(circle.sprite&&circle.rectTransform.sizeDelta==new Vector2(81,84)&&circle.transform.GetSiblingIndex()==0&&!circle.raycastTarget,"original circle is rendered behind the hand without intercepting input");
         Check(hand.gameObject.activeSelf&&Mathf.Abs(hand.localScale.x-.92f)<.001f,"hand uses source 92 percent press scale");
-        Vector3 position=hand.position,scale=hand.localScale;yield return null;yield return null;
+        Vector3 position=hand.position,scale=hand.localScale,haloScale=circle.transform.localScale;yield return null;yield return null;
         Check(hand.position==position&&hand.localScale==scale,"paused replay freezes hand animation");
+        Check(circle.transform.localScale==haloScale,"paused replay freezes circle pulse");
         player.SetSpeed(3);player.Seek(manual.time+.06f);Check(hand.position==position&&hand.localScale==scale,"speed changes do not alter an absolute-time gesture");
         player.Seek(Mathf.Min(data.duration,manual.time+5));player.Seek(manual.time+.06f);
         Check(hand.position==position&&hand.localScale==scale,"backward seek reconstructs identical hand state");
         Capture(player,manual.time+.06f,"pot-replay-item",720,1565);
         var tool=timeline.cues.FirstOrDefault(c=>c.target==PotReplayGestures.Target.Tool);
         Check(tool!=null,"real recording contains a tool use");Capture(player,tool.time+.06f,"pot-replay-tool",720,1565);
+        Check(hand.localRotation==Quaternion.identity&&hand.localScale.x>0,"tool hand keeps the original upright orientation without mirroring");
         var probe=timeline.cues.FirstOrDefault(c=>c.target==PotReplayGestures.Target.Probe);
         if(probe!=null)Capture(player,probe.time+.06f,"pot-replay-probe",720,1565);
         else{
@@ -68,7 +72,7 @@ public static class PotReplayGesturesValidation {
         Check(GameObject.Find("Pot replay gestures")==null,"exit disposes hand overlay");
     }
     static void TimelineChecks(RectTransform parent){
-        var pos=new Vector3(1,2,3);var data=new PotReplayData{duration=10,opening=new Match3DDailyStage{items=new[]{new Match3DDailyItem{id=1,position=pos}}}};
+        var pos=Camera.main.ViewportToWorldPoint(new Vector3(.4f,.6f,8));var data=new PotReplayData{duration=10,opening=new Match3DDailyStage{items=new[]{new Match3DDailyItem{id=1,position=pos}}}};
         var p=new PotReplayPresentation{columns=new[]{new PotReplayProbeColumn{ids=new[]{1}},new PotReplayProbeColumn(),new PotReplayProbeColumn(),new PotReplayProbeColumn()}};
         data.frames.Add(new PotReplayFrame{t=0,presentation=p,items=new List<PotReplayPose>{new PotReplayPose{id=1,p=pos}}});
         data.frames.Add(new PotReplayFrame{t=.5f,presentation=p});
@@ -77,7 +81,16 @@ public static class PotReplayGesturesValidation {
         Check(timeline.cues.Count==3&&timeline.cues[0].position==pos,"delta frames retain pre-pick positions and synthetic pickups are filtered");
         Check(timeline.cues[1].preview&&!timeline.cues[2].preview,"cancelled preview stays a preview; successful probe use merges into one hand action");
         Check(Mathf.Abs(PotReplayGestures.Scale(timeline.cues[1],3.8f)-.92f)<.001f,"long preview holds press scale until recorded preview end");
-        Check(timeline.CueAt(2.5f)==-1,"hand hides during idle gaps");timeline.Dispose();
+        Check(timeline.CueAt(2.5f)==0&&timeline.CueAt(10)==2,"idle gaps and replay end retain the last operation");
+        var hand=(RectTransform)typeof(PotReplayGestures).GetField("hand",Private).GetValue(timeline);
+        timeline.Apply(1.2f);Vector2 held=hand.anchoredPosition;timeline.Apply(2.5f);
+        Check(hand.gameObject.activeSelf&&hand.anchoredPosition==held,"hand remains visible at the previous click while waiting");
+        timeline.Apply(3);Vector2 target=hand.anchoredPosition;timeline.Apply(2.93f);Vector2 mid=hand.anchoredPosition;
+        Check(hand.gameObject.activeSelf&&Vector2.Distance(mid,held)>.01f&&Vector2.Distance(mid,target)>.01f&&Vector2.Distance(mid,target)<Vector2.Distance(held,target),"hand moves continuously between operation targets");
+        timeline.Apply(10);Vector2 end=hand.anchoredPosition;timeline.Apply(2.5f);timeline.Apply(10);
+        Check(hand.gameObject.activeSelf&&hand.anchoredPosition==end,"seeking reconstructs the retained cursor position");
+        Check(Mathf.Abs(PotReplayGestures.CircleScale(0)-1)<.001f&&Mathf.Abs(PotReplayGestures.CircleScale(2f/3)-1.05f)<.001f&&Mathf.Abs(PotReplayGestures.CircleScale(4f/3)-1.1f)<.001f&&Mathf.Abs(PotReplayGestures.CircleScale(8f/3)-1)<.001f,"circle pulse matches source animation timing and keyframes");
+        timeline.Dispose();
     }
     static void Capture(PotReplayPlayer player,float time,string name,int width,int height){
         var camera=Camera.main;var previous=camera.targetTexture;float aspect=camera.aspect;
