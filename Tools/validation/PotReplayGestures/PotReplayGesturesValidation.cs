@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Object=UnityEngine.Object;
 
 [InitializeOnLoad]
@@ -23,7 +24,7 @@ public static class PotReplayGesturesValidation {
     static IEnumerator Guard(){
         float deadline=Time.realtimeSinceStartup+90;
         while((!Match3DFlow.Instance||!Match3DFlow.Instance.StartupComplete)&&Time.realtimeSinceStartup<deadline)yield return null;
-        string error=null;var core=Core();
+        string error=null;var core=Match3DStartupRunner.Run(Core(),e=>error=e.ToString());
         while(true){bool more=false;try{more=core.MoveNext();}catch(Exception e){error=e.ToString();}if(!more||error!=null)break;yield return core.Current;}
         Time.timeScale=1;SessionState.SetBool(Key,false);File.AppendAllText(Output+"/checks.txt",error==null?"COMPLETE\n":"FAIL "+error+"\n");EditorApplication.Exit(error==null?0:1);
     }
@@ -35,8 +36,8 @@ public static class PotReplayGesturesValidation {
         while(!(bool)typeof(PotReplayPlayer).GetField("ready",Private).GetValue(player)&&Time.realtimeSinceStartup<deadline)yield return null;
         Check((bool)typeof(PotReplayPlayer).GetField("ready",Private).GetValue(player),"actual uploaded v2 replay loads");player.Pause();yield return null;
         var hud=Object.FindObjectOfType<Match3DGameplayHUD>();
-        Check(hud&&hud.footer.gameObject.activeInHierarchy&&!hud.header.gameObject.activeSelf,"replay footer visible and gameplay header hidden");
-        Check(!hud.GetComponent<CanvasGroup>().blocksRaycasts&&!hud.GetComponent<CanvasGroup>().interactable,"replay HUD cannot trigger live actions");
+        Check(hud&&hud.footer.gameObject.activeInHierarchy&&hud.header.gameObject.activeSelf,"replay header and footer both visible");
+        Check(!hud.footer.GetComponent<CanvasGroup>().blocksRaycasts&&!hud.footer.GetComponent<CanvasGroup>().interactable,"replay footer cannot trigger live actions");
         Check(hud.quantities.All(q=>!q.transform.parent.gameObject.activeSelf),"replay never displays current account inventory");
         Check(Enumerable.Range(0,4).All(i=>hud.ReplayToolTarget(i).gameObject.activeInHierarchy),"all four tool icons stay visible");
         var tray=(RectTransform)typeof(Match3DTray).GetField("tray",Private).GetValue(Match3DTray.Instance);
@@ -68,8 +69,54 @@ public static class PotReplayGesturesValidation {
             Check(hand.gameObject.activeSelf,"probe hand resolves the visible recorded probe column");
         }
         TimelineChecks((RectTransform)hud.transform.parent);
-        player.Exit();yield return null;Check(!PotReplayPlayer.Active&&Time.timeScale==1,"exit restores game time and removes replay state");
+        yield return ControlsChecks(player,hud,data,hand);
+        Match3DFlow.Instance.ShowPotReplaySettings();
+        Object.FindObjectOfType<Match3DSettingsSkin>().support.onClick.Invoke();yield return null;Check(!PotReplayPlayer.Active&&Time.timeScale==1,"exit restores game time and removes replay state");
         Check(GameObject.Find("Pot replay gestures")==null,"exit disposes hand overlay");
+    }
+    static IEnumerator ControlsChecks(PotReplayPlayer player,Match3DGameplayHUD hud,PotReplayData data,RectTransform hand){
+        var view=hud.GetComponent<Match3DUIView>();var slider=hud.header.GetComponentInChildren<PotReplayProgress>();
+        var speed=hud.header.Find("Pot replay speed");var minus=speed.Find("Zoom out").GetComponent<Button>();var plus=speed.Find("Zoom in").GetComponent<Button>();
+        Check(slider&&slider.fillRect&&slider.handleRect&&view.Get<Button>("Pause").IsInteractable(),"original pause, speed controls and artist progress bar are available");
+        Check(GameObject.Find("Pot replay overlay")==null&&!hud.GetComponentsInChildren<Text>().Any(t=>t.text=="退出回放"||t.text=="暂停 / 继续"),"standalone replay buttons and pale panel removed");
+        player.SetSpeed(.5f);yield return null;Check(!minus.interactable&&plus.interactable,"minimum speed disables minus only");
+        plus.onClick.Invoke();Check(Mathf.Abs(player.Speed-1)<.001f,"plus adds half speed");
+        minus.onClick.Invoke();Check(Mathf.Abs(player.Speed-.5f)<.001f,"minus subtracts half speed");
+        player.SetSpeed(3);yield return null;Check(minus.interactable&&!plus.interactable,"maximum speed disables plus only");
+        player.SetSpeed(1);player.Seek(data.duration*.25f);player.Pause();yield return null;
+        Check(player.IsPlaying,"replay runs before opening settings");
+        view.Get<Button>("Pause").onClick.Invoke();yield return null;
+        float stopped=player.CurrentTime;Vector3 handPosition=hand.position;yield return null;yield return null;
+        Check(player.SettingsOpen&&!player.IsPlaying&&player.CurrentTime==stopped&&hand.position==handPosition,"original pause button opens settings and freezes replay and gesture");
+        player.SetSpeed(3);slider.onValueChanged.Invoke(.9f);yield return null;
+        Check(player.Speed==1&&player.CurrentTime==stopped&&!slider.IsInteractable()&&!plus.IsInteractable()&&!minus.IsInteractable(),"settings blocks speed and progress changes");
+        Object.FindObjectOfType<Match3DSettingsSkin>().GetComponent<Match3DUIView>().Get<Button>("Close").onClick.Invoke();yield return null;
+        Check(!player.SettingsOpen&&player.IsPlaying&&player.CurrentTime>stopped&&Time.timeScale==0&&Match3DFlow.Instance.BlocksGameplay,"closing settings resumes only replay while live simulation stays locked");
+        Canvas.ForceUpdateCanvases();var rect=(RectTransform)slider.transform;
+        var pointer=new PointerEventData(EventSystem.current){button=PointerEventData.InputButton.Left,position=RectTransformUtility.WorldToScreenPoint(null,rect.TransformPoint(new Vector3(-120,-40,0)))};
+        slider.OnPointerDown(pointer);float dragTime=player.CurrentTime;yield return null;yield return null;
+        Check(!player.IsPlaying&&player.CurrentTime==dragTime,"pressing progress pauses playback during scrub");
+        slider.value=.4f;slider.OnPointerUp(pointer);yield return null;
+        Check(player.IsPlaying&&player.CurrentTime>=data.duration*.4f,"releasing progress resumes from selected position");
+        player.Seek(data.duration);yield return null;
+        Check(!player.IsPlaying&&player.CurrentTime==data.duration,"replay ends on final frame without restarting");
+        slider.OnPointerDown(pointer);slider.value=.2f;slider.OnPointerUp(pointer);yield return null;
+        Check(player.IsPlaying&&player.CurrentTime<data.duration*.3f,"scrubbing backward from the end resumes playback");
+        player.Pause();
+        var sample=data.frames.First(f=>f.remaining>0);player.Seek(sample.t);
+        int seconds=Mathf.CeilToInt(sample.remaining);
+        Check(view.Get<Text>("Timer").text==$"{seconds/60:00}:{seconds%60:00}","game timer displays recorded remaining time");
+        var added=data.frames.Zip(data.frames.Skip(1),(a,b)=>new{a,b}).FirstOrDefault(x=>x.b.remaining>x.a.remaining+.5f);
+        if(added!=null){player.Seek(added.b.t);seconds=Mathf.CeilToInt(added.b.remaining);Check(view.Get<Text>("Timer").text==$"{seconds/60:00}:{seconds%60:00}","recorded add-time updates game timer");}
+        // Exercise an add-time jump even when this uploaded fixture did not use that tool.
+        int jumpIndex=data.frames.Count/2;var jump=data.frames[jumpIndex];float savedRemaining=jump.remaining;
+        jump.remaining=data.frames[jumpIndex-1].remaining+60;player.Seek(jump.t);seconds=Mathf.CeilToInt(jump.remaining);
+        Check(view.Get<Text>("Timer").text==$"{seconds/60:00}:{seconds%60:00}","remaining timer follows recorded add-time jumps rather than duration minus elapsed");
+        jump.remaining=savedRemaining;player.Seek(data.frames[jumpIndex-1].t);seconds=Mathf.CeilToInt(data.frames[jumpIndex-1].remaining);
+        Check(view.Get<Text>("Timer").text==$"{seconds/60:00}:{seconds%60:00}","backward seek restores the earlier remaining time");
+        Canvas.ForceUpdateCanvases();slider.value=.5f;
+        Check(Mathf.Abs(slider.fillRect.rect.width-630)<.1f&&Mathf.Abs(slider.handleRect.anchoredPosition.x)<.1f&&Mathf.Abs(slider.handleRect.rect.height-81)<.1f,"progress fill and thumb use correct track geometry");
+        Capture(player,data.duration*.4f,"pot-replay-controls",720,1565);
     }
     static void TimelineChecks(RectTransform parent){
         var pos=Camera.main.ViewportToWorldPoint(new Vector3(.4f,.6f,8));var data=new PotReplayData{duration=10,opening=new Match3DDailyStage{items=new[]{new Match3DDailyItem{id=1,position=pos}}}};

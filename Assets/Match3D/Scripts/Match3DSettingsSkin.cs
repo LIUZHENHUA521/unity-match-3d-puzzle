@@ -10,12 +10,12 @@ public sealed class Match3DSettingsSkin : MonoBehaviour {
         var mark=key=="Music"?musicMark:key=="Effects"?effectsMark:vibrationMark;
         if(mark)mark.SetActive(enabled);
     }
-    public void BindSupport(bool ingame=false){
+    public void BindSupport(bool ingame=false,System.Action exit=null){
         support.onClick.RemoveAllListeners();
         if(ingame){
             support.image.sprite=Resources.Load<Sprite>("Match3D/SettingsSkinPS/exit-game");
             support.image.preserveAspect=true;
-            support.onClick.AddListener(()=>{Match3DFlow.Instance.HomeClick();Match3DFlow.Instance.Home();});
+            support.onClick.AddListener(()=>{Match3DFlow.Instance.HomeClick();if(exit!=null)exit();else Match3DFlow.Instance.Home();});
             return;
         }
         support.onClick.AddListener(()=>{

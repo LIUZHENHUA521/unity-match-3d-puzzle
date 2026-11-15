@@ -6,6 +6,7 @@ public sealed class BoardCameraZoomControls : MonoBehaviour {
     RectTransform root;
     Button minus, plus, reset;
     Text value;
+    bool replay;
     const string SkinPath = "Match3D/PotCameraZoomSkin/";
     public void Build(RectTransform header) {
         root = new GameObject("Camera zoom", typeof(RectTransform)).GetComponent<RectTransform>();
@@ -26,6 +27,18 @@ public sealed class BoardCameraZoomControls : MonoBehaviour {
         plus.onClick.AddListener(() => {Match3DFlow.Instance?.PotVibrate();BoardCameraZoom.Instance?.Step(.2f);});
         reset.onClick.AddListener(() => {Match3DFlow.Instance?.PotVibrate();BoardCameraZoom.Instance?.Restore();});
     }
+    public void SetReplayMode() {
+        replay=true;root.name="Pot replay speed";
+        minus.onClick.RemoveAllListeners();plus.onClick.RemoveAllListeners();reset.onClick.RemoveAllListeners();
+        minus.onClick.AddListener(()=>ChangeReplaySpeed(-.5f));
+        plus.onClick.AddListener(()=>ChangeReplaySpeed(.5f));
+        // The centre pill is a readout, not a reset/cycle button during replay.
+        reset.transition=Selectable.Transition.None;reset.interactable=false;
+    }
+    void ChangeReplaySpeed(float step) {
+        var player=PotReplayPlayer.Instance;if(!player||!player.ControlsEnabled)return;
+        Match3DFlow.Instance?.PotVibrate();player.SetSpeed(player.Speed+step);
+    }
     Button MakeButton(string name, string asset, Vector2 position) {
         var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
         var rect = go.GetComponent<RectTransform>(); rect.SetParent(root, false);
@@ -39,6 +52,14 @@ public sealed class BoardCameraZoomControls : MonoBehaviour {
     }
     void LateUpdate() {
         if (!root) return;
+        if(replay){
+            var player=PotReplayPlayer.Instance;root.gameObject.SetActive(PotReplayPlayer.Active);
+            if(!PotReplayPlayer.Active)return;
+            value.text=player.Speed.ToString("0.#",System.Globalization.CultureInfo.InvariantCulture)+" ×";
+            minus.interactable=player.ControlsEnabled&&player.Speed>.5f;
+            plus.interactable=player.ControlsEnabled&&player.Speed<3;
+            return;
+        }
         var zoom = BoardCameraZoom.Instance;
         bool show = zoom && zoom.Available;
         root.gameObject.SetActive(show); if (!show) return;

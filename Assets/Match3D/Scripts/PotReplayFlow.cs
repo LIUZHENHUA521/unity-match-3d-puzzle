@@ -48,7 +48,23 @@ public partial class Match3DFlow {
         SpawnDailyOpening(SourceProfile(stage==1).prefabs,stage==1,null,null,animate:false);HUD();BlocksGameplay=true;Music(library.gameMusic);
     }
     public void LockPotReplay(){ScreenName="pot-replay";BlocksGameplay=true;GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;
-        if(gameplayHUD)gameplayHUD.SetReplayMode();
+        if(gameplayHUD){gameplayHUD.SetReplayMode();gameplayHUD.GetComponent<Match3DUIView>().Bind("Pause",ShowPotReplaySettings);}
+    }
+    public RectTransform PotReplayHeader=>gameplayHUD.header;
+    public void UpdatePotReplayTime(float seconds){
+        int t=Mathf.CeilToInt(Mathf.Max(0,seconds));
+        if(timer)timer.text=seconds<=0&&Stage==1?"∞":$"{t/60:00}:{t%60:00}";
+    }
+    public void ShowPotReplaySettings(){
+        var player=PotReplayPlayer.Instance;if(!PotReplayPlayer.Active||player.SettingsOpen)return;
+        player.SetSettingsOpen(true);
+        // Reuse settings construction without the live game's resume/exit callbacks.
+        ShowSettings(false);var view=modal.GetComponent<Match3DUIView>();view.Text("Title","暂停 / 设置");
+        System.Action close=()=>{CloseModal();BlocksGameplay=true;player.SetSettingsOpen(false);};
+        view.Bind("Close",close);view.Bind("Continue",close);view.Bind("Home",player.Exit);
+        var skin=view.GetComponent<Match3DSettingsSkin>();
+        if(skin)skin.BindSupport(true,player.Exit);
+        else{view.Show("Home",true);view.Text("ContinueText","继续回放");}
     }
     public RectTransform PotReplayToolTarget(int type)=>gameplayHUD?gameplayHUD.ReplayToolTarget(type):null;
     public void EndPotReplay(){

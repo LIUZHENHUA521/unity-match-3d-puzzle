@@ -10,9 +10,10 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
     Sprite usedBackground;Texture2D usedTexture;
     bool replay;
     public void SetReplayMode(){
-        replay=true;header.gameObject.SetActive(false);
-        var group=gameObject.AddComponent<CanvasGroup>();group.interactable=false;group.blocksRaycasts=false;
-        foreach(var button in GetComponentsInChildren<Button>(true)){button.onClick.RemoveAllListeners();button.interactable=false;}
+        replay=true;header.gameObject.SetActive(true);
+        var group=footer.gameObject.AddComponent<CanvasGroup>();group.interactable=false;group.blocksRaycasts=false;
+        foreach(var button in footer.GetComponentsInChildren<Button>(true)){button.onClick.RemoveAllListeners();button.interactable=false;}
+        GetComponent<BoardCameraZoomControls>().SetReplayMode();
     }
     public RectTransform ReplayToolTarget(int type){
         return type>=0&&type<BoardTools.ToolCount?GetComponent<Match3DUIView>().Get<RectTransform>(new[]{"Undo","Hint","Shuffle","AddTime"}[type]):null;
