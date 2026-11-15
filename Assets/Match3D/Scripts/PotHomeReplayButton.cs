@@ -19,8 +19,13 @@ public sealed class PotHomeReplayButton {
         var rect=new GameObject("Pot replay caption",typeof(RectTransform)).GetComponent<RectTransform>();rect.SetParent(root,false);
         rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(0,1);rect.anchoredPosition=new Vector2(40,-88);rect.sizeDelta=new Vector2(root.rect.width-80,62);
         caption=rect.gameObject.AddComponent<Text>();caption.font=Match3DDefaultFont.Current;caption.fontStyle=FontStyle.Bold;caption.fontSize=34;
-        caption.alignment=TextAnchor.MiddleCenter;caption.color=new Color(1,.97f,.72f);caption.raycastTarget=false;
-        var outline=rect.gameObject.AddComponent<Outline>();outline.effectColor=elite?new Color(.62f,.25f,.03f):new Color(0,.3f,.52f);outline.effectDistance=new Vector2(2,-2);
+        caption.alignment=TextAnchor.MiddleCenter;caption.raycastTarget=false;
+        // Warm cream on gold; icy white on blue. Both retain the original artwork's dark edge.
+        caption.color=elite?new Color32(255,249,221,255):new Color32(232,250,255,255);
+        var outline=rect.gameObject.AddComponent<Outline>();
+        outline.effectColor=elite?new Color32(155,71,9,255):new Color32(13,81,136,255);outline.effectDistance=new Vector2(2,-2);
+        var shadow=rect.gameObject.AddComponent<Shadow>();
+        shadow.effectColor=elite?new Color32(112,52,15,110):new Color32(5,46,81,115);shadow.effectDistance=new Vector2(0,-2);
         Render(false,null);
     }
     static Image Layer(RectTransform parent,string part,float x,float y){

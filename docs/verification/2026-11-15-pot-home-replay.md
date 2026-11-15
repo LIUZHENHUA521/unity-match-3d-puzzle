@@ -6,7 +6,7 @@ The current server `mine` list already filters `owner` and `ready:true`. The cli
 
 ## Photoshop assets
 
-Source: the user's open `主界面-排版02已命名(1).psd`, 720 × 1565. The source document was not changed. Exported eight individual PNGs from temporary copies into `Assets/Match3D/Resources/Match3D/PotHomeReplaySkin/`. Positions below are top-left pixels in the original document. The reward caption combines the three original text layers; title, background and packet remain independent. Runtime status captions use the packaged Chinese font with matching tier-colour outline.
+Source: the user's open `主界面-排版02已命名(1).psd`, 720 × 1565. The source document was not changed. Exported eight individual PNGs from temporary copies into `Assets/Match3D/Resources/Match3D/PotHomeReplaySkin/`. Positions below are top-left pixels in the original document. The reward caption combines the three original text layers; title, background and packet remain independent. Runtime status captions use the packaged Chinese font. Per the user's colour correction, the gold button uses cream #FFF9DD with orange-brown #9B4709 outline; the blue button uses icy white #E8FAFF with deep-blue #0D5188 outline. Both use the same 2-pixel outline and a subtle downward shadow, for both pending and ready captions.
 
 | Asset suffix | x | y | width | height |
 | --- | --- | --- | --- | --- |
