@@ -9,7 +9,8 @@ using UnityEngine;
 // Author candidates with the same models, colliders and gameplay as the shipped client.
 public sealed class DailyOpeningWorkshop : EditorWindow {
     const string Pending="goose.dailyWorkshop.pending",Validation="goose.dailyWorkshop.validate";
-    static Match3DDailyLevel candidate;
+    static Match3DDailyLevel candidate,potBoostedCandidate;
+    static string potBoostPreviewImage;
     static string previewImage,status="打开后台下载的候选试玩文件。";
     static bool busy;
     [Serializable] sealed class Export {public string date,tier,candidateId,previewImage;public int seed;public Match3DDailySnapshot opening;}
@@ -24,10 +25,11 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
             if(!string.IsNullOrEmpty(path))Load(path);
         }
         GUI.enabled=!busy&&candidate!=null&&EditorApplication.isPlaying;
-        if(GUILayout.Button("生成两关固定开局"))Start(false);
+        if(GUILayout.Button("配套生成固定开局"))Start(false);
         GUI.enabled=!busy&&candidate?.opening!=null&&EditorApplication.isPlaying;
         if(GUILayout.Button("试玩第一关"))Match3DFlow.Instance.PreviewDailyOpening(candidate,1);
         if(GUILayout.Button("试玩第二关"))Match3DFlow.Instance.PreviewDailyOpening(candidate,2);
+        if(potBoostedCandidate?.opening!=null&&GUILayout.Button("试玩加量版第二关"))Match3DFlow.Instance.PreviewDailyOpening(potBoostedCandidate,2);
         if(GUILayout.Button("导出布局和预览图")){
             var path=EditorUtility.SaveFilePanel("回传后台", "",candidate.date+"-"+candidate.tier+"-opening.json","json");
             if(!string.IsNullOrEmpty(path))WriteExport(path);
@@ -39,6 +41,15 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
         var level=JsonUtility.FromJson<Match3DDailyLevel>(json);
         var opening=Newtonsoft.Json.Linq.JObject.Parse(json)["opening"];
         if(level!=null&&(opening==null||opening.Type==Newtonsoft.Json.Linq.JTokenType.Null))level.opening=null;
+        var extra=Newtonsoft.Json.Linq.JObject.Parse(json)["potBoosted"];
+        potBoostedCandidate=extra is Newtonsoft.Json.Linq.JObject?JsonUtility.FromJson<Match3DDailyLevel>(extra.ToString()):null;
+        potBoostPreviewImage=null;
+        if(potBoostedCandidate!=null){
+            potBoostedCandidate.date=level.date;potBoostedCandidate.tier=level.tier;potBoostedCandidate.version=potBoostedCandidate.candidateId;
+            if(extra["opening"]==null||extra["opening"].Type==Newtonsoft.Json.Linq.JTokenType.Null)potBoostedCandidate.opening=null;
+            var check=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(potBoostedCandidate));check.generatorVersion="daily-v1";
+            if(!check.IsValid(23)||check.initialCount!=level.initialCount+level.potBoostCount||check.layers[0].count!=level.layers[0].count+level.potBoostCount)throw new Exception("加量候选参数无效");
+        }
         return level;
     }
     static void Load(string path){
@@ -80,6 +91,7 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
     }
     static IEnumerator Generate(bool validate){
         var flow=Match3DFlow.Instance;
+        if(validate)potBoostedCandidate=null;
         if(validate)candidate=new Match3DDailyLevel{date="2026-11-12",tier="bachelor",candidateId="candidate-0123456789abcdef01234567",version="validation",generatorVersion="shared-v2",modelThemeId="foodie-party",seed=47231,seconds=600,initialCount=300,limitHeight=21.5f,layers=new[]{new ChallengeLayer(150,23,14),new ChallengeLayer(60,10,18),new ChallengeLayer(45,8,20),new ChallengeLayer(45,7,22)}};
         var source=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(candidate));source.generatorVersion="daily-v1";source.opening=null;
         var opening=new Match3DDailySnapshot{stages=new Match3DDailyStage[2]};
@@ -102,6 +114,15 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
             if(validate){flow.RestartStage();while(flow.CreationInProgress)yield return null;yield return null;Verify(opening.stages[stage-1]);}
         }
         previewImage=CaptureImage();
+        if(!validate&&potBoostedCandidate!=null){
+            var normal=candidate;var normalImage=previewImage;
+            candidate=potBoostedCandidate;potBoostedCandidate=null;
+            var extra=Generate(false);while(extra.MoveNext())yield return extra.Current;
+            candidate.opening.stages[0]=normal.opening.stages[0];
+            potBoostedCandidate=candidate;potBoostPreviewImage=previewImage;
+            candidate=normal;previewImage=normalImage;
+            flow.PreviewDailyOpening(candidate,2);while(flow.CreationInProgress)yield return null;
+        }
         if(validate){
             WriteExport("Builds/DailyOpening/opening.json");
             if(!flow.LocalPreview)throw new Exception("试玩产生了正式记录");
@@ -122,7 +143,12 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
     static void WriteExport(string path){
         if(string.IsNullOrEmpty(previewImage))throw new Exception("请先生成两关开局与预览图");
         var parent=Path.GetDirectoryName(path);if(!string.IsNullOrEmpty(parent))Directory.CreateDirectory(parent);
-        File.WriteAllText(path,JsonUtility.ToJson(new Export{date=candidate.date,tier=candidate.tier,candidateId=candidate.candidateId,seed=candidate.seed,opening=candidate.opening,previewImage=previewImage}));
+        var pack=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(new Export{date=candidate.date,tier=candidate.tier,candidateId=candidate.candidateId,seed=candidate.seed,opening=candidate.opening,previewImage=previewImage}));
+        if(potBoostedCandidate!=null){
+            if(potBoostedCandidate.opening==null||string.IsNullOrEmpty(potBoostPreviewImage))throw new Exception("请先配套生成两版布局");
+            pack["potBoosted"]=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(new Export{date=candidate.date,tier=candidate.tier,candidateId=potBoostedCandidate.candidateId,seed=potBoostedCandidate.seed,opening=potBoostedCandidate.opening,previewImage=potBoostPreviewImage}));
+        }
+        File.WriteAllText(path,pack.ToString(Newtonsoft.Json.Formatting.None));
         status="已导出，请在后台回传并确认试玩。";
     }
     static string CaptureImage(){

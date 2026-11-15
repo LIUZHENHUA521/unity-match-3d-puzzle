@@ -6,10 +6,13 @@ public sealed class Match3DDailyLevel {
     public string date,tier,sourceDate,version,generatorVersion,modelThemeId;
     public int seed,seconds,initialCount;
     public string candidateId;
+    public string potVariant;
+    public int potBoostCount;
     public Match3DDailySnapshot opening;
     public float limitHeight;
     public ChallengeLayer[] layers;
     public bool IsValid(int pool) {
+        if(potBoostCount<0||potBoostCount>597||potBoostCount%3!=0||(!string.IsNullOrEmpty(potVariant)&&potVariant!="normal"&&potVariant!="boosted"))return false;
         DateTime parsed;
         if(!DateTime.TryParseExact(date,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out parsed)||
            (tier!="bachelor"&&tier!="elite")||string.IsNullOrEmpty(version)||(generatorVersion!="daily-v1"&&generatorVersion!="shared-v2")||seed<=0||seconds<30||seconds>3600||layers==null||layers.Length<1||layers.Length>10)return false;
