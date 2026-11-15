@@ -114,7 +114,9 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         active.clearedCount=cleared;active.remainingSeconds=Mathf.Max(0,GameManager.Instance.currentLevelTime);active.timeReviveUsed=Match3DFlow.Instance&&Match3DFlow.Instance.TimeReviveUsed;
         active.acquisitionVersion=1;active.reviveUsage=Match3DFlow.Instance?Match3DFlow.Instance.ReviveUsage:new ReviveUse();
         for(int i=0;i<BoardTools.ToolCount;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=BoardTools.FreeUses(i);active.toolUsage[i].share=BoardTools.ShareUses(i);active.toolUsage[i].ad=BoardTools.AdUses(i);active.toolUsage[i].rewarded=active.toolUsage[i].ad+active.toolUsage[i].share;active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].free-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
-        active.toolReceipts=toolReceipts.ToArray();Add("finish",active,owner);active=null;started=false;
+        active.toolReceipts=toolReceipts.ToArray();
+        if(!Match3DFlow.Instance||!Match3DFlow.Instance.LocalPreview)PotHomeReplayState.MarkWin(owner,active);
+        Add("finish",active,owner);active=null;started=false;
     }
     void Add(string action,Record record,string account){
         if(Match3DFlow.Instance&&Match3DFlow.Instance.LocalPreview)return;

@@ -9,12 +9,13 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public sealed class PotReplayService : MonoBehaviour {
-    [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion;public int stage;public float duration;}
+    [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion;public int stage;public float duration;public long createdAt;}
     [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public Summary[] list;public PotReplayData detail;}
     [Serializable] class RequestBody {public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
     [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,format;}
     public const int MaxJsonBytes=64*1024*1024;
     public static PotReplayService Instance {get;private set;}
+    public event Action<string> Uploaded;
     string endpoint;int nextUpload;public string Status {get;private set;}="";
     public static string DirectoryPath=>Path.Combine(Application.persistentDataPath,"pot-replays-v1");
     public static string PathFor(string owner,string id,string suffix){PotReplayFiles.Ensure();return Path.Combine(DirectoryPath,owner+"_"+id+suffix);}
@@ -91,12 +92,12 @@ public sealed class PotReplayService : MonoBehaviour {
         var recordId=Path.GetFileNameWithoutExtension(path).Substring(owner.Length+1);
             Reply reply=null;long code=0;
             yield return Send("upload-complete",new RequestBody{recordId=recordId},r=>reply=r,c=>code=c,owner);
-            if(reply!=null&&reply.ok){PotReplayJournal.DeleteCompleted(path);Status="录像已同步";yield break;}
+            if(reply!=null&&reply.ok){CompleteUpload(owner,path);yield break;}
             // A previous PUT may already be complete. Retry finalization first, without re-uploading.
             if(code!=404&&code!=410){Status=reply?.error??"录像同步稍后重试";if(code==400||code==413){PotReplayFiles.Move(path,path+".rejected");RecordingFailed(Status);}yield return new WaitForSecondsRealtime(30);yield break;}
             yield return Send("upload-start",new RequestBody{recordId=recordId},r=>reply=r,c=>code=c,owner);
             if(reply==null||!reply.ok){Status=reply?.error??"录像同步稍后重试";if(code==400||code==413)PotReplayFiles.Move(path,path+".rejected");yield return new WaitForSecondsRealtime(30);yield break;}
-            if(reply.ready){PotReplayJournal.DeleteCompleted(path);Status="录像已同步";yield break;}
+            if(reply.ready){CompleteUpload(owner,path);yield break;}
             var ticket=reply.upload;
             if(ticket==null||ticket.format!="gzip-v1"||!Uri.TryCreate(ticket.url,UriKind.Absolute,out var uri)||uri.Scheme!="https")throw new IOException("录像上传地址无效");
             string packed=Path.ChangeExtension(path,".upload");bool uploaded=false;
@@ -110,10 +111,13 @@ public sealed class PotReplayService : MonoBehaviour {
                 if(!uploaded)Status="云存储上传失败，已保留录像等待重试";
             }finally{if(PotReplayFiles.Exists(packed))PotReplayFiles.Delete(packed);}
             if(uploaded){yield return Send("upload-complete",new RequestBody{recordId=recordId},r=>reply=r,c=>code=c,owner);
-                if(reply!=null&&reply.ok){PotReplayJournal.DeleteCompleted(path);Status="录像已同步";}
+                if(reply!=null&&reply.ok){CompleteUpload(owner,path);}
                 else {Status=reply?.error??"录像等待校验重试";if(code==400||code==413){PotReplayFiles.Move(path,path+".rejected");RecordingFailed(Status);}}
             }
             yield return new WaitForSecondsRealtime(30);
+    }
+    void CompleteUpload(string owner,string path){
+        PotReplayJournal.DeleteCompleted(path);Status="录像已同步";Uploaded?.Invoke(owner);
     }
     public IEnumerator List(bool masters,int skip,Match3DDailyLevel level,Action<Reply> done,string tier="bachelor"){
         if(masters){
