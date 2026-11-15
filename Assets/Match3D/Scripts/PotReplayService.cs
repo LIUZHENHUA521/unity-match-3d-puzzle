@@ -11,8 +11,8 @@ using UnityEngine.Networking;
 public sealed class PotReplayService : MonoBehaviour {
     [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion;public int stage;public float duration;}
     [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public Summary[] list;public PotReplayData detail;}
-    [Serializable] class RequestBody {public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content;public int skip,index,count,offset;}
-    [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,key,iv;}
+    [Serializable] class RequestBody {public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
+    [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,format;}
     public const int MaxJsonBytes=64*1024*1024;
     public static PotReplayService Instance {get;private set;}
     string endpoint;int nextUpload;public string Status {get;private set;}="";
@@ -98,11 +98,11 @@ public sealed class PotReplayService : MonoBehaviour {
             if(reply==null||!reply.ok){Status=reply?.error??"录像同步稍后重试";if(code==400||code==413)PotReplayFiles.Move(path,path+".rejected");yield return new WaitForSecondsRealtime(30);yield break;}
             if(reply.ready){PotReplayJournal.DeleteCompleted(path);Status="录像已同步";yield break;}
             var ticket=reply.upload;
-            if(ticket==null||!Uri.TryCreate(ticket.url,UriKind.Absolute,out var uri)||uri.Scheme!="https")throw new IOException("录像上传地址无效");
+            if(ticket==null||ticket.format!="gzip-v1"||!Uri.TryCreate(ticket.url,UriKind.Absolute,out var uri)||uri.Scheme!="https")throw new IOException("录像上传地址无效");
             string packed=Path.ChangeExtension(path,".upload");bool uploaded=false;
             try{
                 Exception failure=null;Status="正在分段压缩录像";
-                yield return Match3DStartupRunner.Run(PotReplayTransfer.PackFile(path,packed,ticket.key,ticket.iv,Busy),e=>failure=e);
+                yield return Match3DStartupRunner.Run(PotReplayTransfer.PackFile(path,packed,Busy),e=>failure=e);
                 if(failure!=null){Status=failure.Message;yield return new WaitForSecondsRealtime(30);yield break;}
                 if(Busy())yield break;
                 Status="录像正在上传云存储";

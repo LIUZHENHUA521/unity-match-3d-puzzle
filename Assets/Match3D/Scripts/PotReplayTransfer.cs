@@ -3,17 +3,15 @@ using System.Collections;
 using UnityEngine;
 using System.IO;
 using System.IO.Compression;
-using System.Security.Cryptography;
 using System.Text;
 
-// The upload ticket is scoped to one encrypted object; no CloudBase login secrets enter the client.
+// Stream gzip directly to disk; upload authorization is independent of the replay contents.
 public static class PotReplayTransfer {
     public const int MaxFileBytes=16*1024*1024;
     // Pack one disk-backed frame/chunk at a time; never allocate an entire uncompressed replay.
-    public static IEnumerator PackFile(string source,string target,string key,string iv,Func<bool> pause=null){
-        using(var output=new LimitedStream(PotReplayFiles.OpenWrite(target),MaxFileBytes))using(var aes=new AesManaged()){
-            aes.Key=Convert.FromBase64String(key);aes.IV=Convert.FromBase64String(iv);aes.Mode=CipherMode.CBC;aes.Padding=PaddingMode.PKCS7;
-            using(var cipher=new CryptoStream(output,aes.CreateEncryptor(),CryptoStreamMode.Write,true))using(var gzip=new GZipStream(cipher,System.IO.Compression.CompressionLevel.Fastest)){
+    public static IEnumerator PackFile(string source,string target,Func<bool> pause=null){
+        using(var output=new LimitedStream(PotReplayFiles.OpenWrite(target),MaxFileBytes)){
+            using(var gzip=new GZipStream(output,System.IO.Compression.CompressionLevel.Fastest)){
                 long total=0;float budget=Time.realtimeSinceStartup;
                 if(source.EndsWith(".ready",StringComparison.Ordinal)){
                     using(var writer=new StreamWriter(gzip,new UTF8Encoding(false),32768,true))foreach(var part in PotReplayJournal.JsonPieces(source)){

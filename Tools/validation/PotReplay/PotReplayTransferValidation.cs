@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -21,14 +20,14 @@ public static class PotReplayTransferValidation {
   long size=new FileInfo(journal).Length;if(size<=16*1024*1024)throw new Exception("fixture too small");
   long before=GC.GetTotalMemory(true);PotReplayJournal.Ready(journal,data,count);long finishGrowth=GC.GetTotalMemory(false)-before;
   if(finishGrowth>8*1024*1024)throw new Exception("finish allocated a full replay copy");
-  var key=Enumerable.Range(0,32).Select(i=>(byte)i).ToArray();var iv=new byte[16];
-  var pack=PotReplayTransfer.PackFile(ready,packed,Convert.ToBase64String(key),Convert.ToBase64String(iv));while(pack.MoveNext()){}
-  using(var aes=new AesManaged()){aes.Key=key;aes.IV=iv;var encrypted=File.ReadAllBytes(packed);var compressed=aes.CreateDecryptor().TransformFinalBlock(encrypted,0,encrypted.Length);var result=JsonUtility.FromJson<PotReplayData>(PotReplayTransfer.Unpack(compressed));if(result.frames.Count!=count||result.duration!=data.duration||result.events.Last().type!="finish")throw new Exception("stream round trip mismatch");}
+  var pack=PotReplayTransfer.PackFile(ready,packed);while(pack.MoveNext()){}
+  var compressed=File.ReadAllBytes(packed);if(compressed[0]!=0x1f||compressed[1]!=0x8b)throw new Exception("upload is not plain gzip");
+  var result=JsonUtility.FromJson<PotReplayData>(PotReplayTransfer.Unpack(compressed));if(result.frames.Count!=count||result.duration!=data.duration||result.events.Last().type!="finish")throw new Exception("stream round trip mismatch");
   // Recovery ignores an incomplete trailing line and uses a full final checkpoint, without building all frames.
   File.Delete(ready);File.AppendAllText(journal,"{\"t\":");var recover=PotReplayJournal.Recover(journal);while(recover.MoveNext()){}
   var m=JsonUtility.FromJson<PotReplayJournal.Manifest>(File.ReadAllText(ready));if(m.frameCount!=count||!m.recovered||!m.lastFrame.full||m.lastFrame.items.Count!=300||m.data.status!="incomplete"||m.data.frames.Count!=0)throw new Exception("stream recovery mismatch");
   // Legacy pending JSON also streams through the same bounded compressor.
-  string legacy="/tmp/pot-stream-legacy.pending";File.WriteAllText(legacy,"{\"payload\":\""+new string('x',17*1024*1024)+"\"}");pack=PotReplayTransfer.PackFile(legacy,"/tmp/pot-stream-legacy.upload",Convert.ToBase64String(key),Convert.ToBase64String(iv));while(pack.MoveNext()){}
+  string legacy="/tmp/pot-stream-legacy.pending";File.WriteAllText(legacy,"{\"payload\":\""+new string('x',17*1024*1024)+"\"}");pack=PotReplayTransfer.PackFile(legacy,"/tmp/pot-stream-legacy.upload");while(pack.MoveNext()){}
   var go=new GameObject("Pot recording first-stage check");var recorder=go.AddComponent<PotReplayRecorder>();recorder.Begin(new Match3DGameRecords.Record{stage=1},new Match3DDailyLevel());if(PotReplayRecorder.Recording)throw new Exception("first stage recorded");UnityEngine.Object.DestroyImmediate(go);
   Debug.Log("POT_REPLAY_STREAM_OK bytes="+size+" frames="+count+" finishManagedGrowth="+finishGrowth+" packed="+new FileInfo(packed).Length);EditorApplication.Exit(0);
  }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}

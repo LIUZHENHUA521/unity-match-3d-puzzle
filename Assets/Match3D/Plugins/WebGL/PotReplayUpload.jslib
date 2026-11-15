@@ -9,7 +9,7 @@ mergeInto(LibraryManager.library, {
       if(!/^https:\/\//.test(r.ticket.url))throw new Error('invalid replay upload URL');
       var fs=wx.getFileSystemManager(),path=wx.env.USER_DATA_PATH+'/pot-replays-v1/'+name;
       if(fs.statSync(path).size>16777216)throw new Error('compressed replay too large');
-      // Only the compressed ciphertext enters wx.request. Raw replay JSON never crosses WASM/JS.
+      // Only the gzip file enters wx.request. Raw replay JSON never crosses WASM/JS.
       PotReplayNetwork.id=r.id;PotReplayNetwork.task=wx.request({url:r.ticket.url,method:'PUT',data:fs.readFileSync(path),timeout:180000,
         header:{'Content-Type':'application/octet-stream',Signature:r.ticket.authorization,Authorization:r.ticket.authorization,'x-cos-security-token':r.ticket.token,'x-cos-meta-fileid':r.ticket.cosFileId,key:encodeURIComponent(r.ticket.cloudPath)},
         success:function(res){done(res.statusCode>=200&&res.statusCode<300,'云存储返回 '+res.statusCode);},
