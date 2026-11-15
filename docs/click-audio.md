@@ -1,3 +1,5 @@
+> 2026-11-15 清理：当前选择/消除/奖励音效保持不变；已移除未使用的原版材质、鹅叫、道具音频与 SourceAudioItems 映射表，选择音效不再回退到旧素材。旧 UI 点击音频在上一轮 GooseArt 清理时删除，当前使用 CrazyCombo/tile_click。下文是历史替换记录。
+
 # Item selection audio
 
 DM-CGS-32.wav from Dustyroom Casual Game Sounds (CC0).

@@ -7,7 +7,7 @@
     "upload": "node upload.cjs",
     "preview": "node upload.cjs --preview",
     "build": "python3 build.py",
-    "test": "node test-transport.cjs"
+    "test": "python3 test-publish.py"
   },
   "dependencies": {
     "miniprogram-ci": "1.9.17"

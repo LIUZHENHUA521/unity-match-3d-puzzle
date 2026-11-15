@@ -18,23 +18,27 @@ public static class BoardAudioValidation {
         Check(sequence.TryBegin(4,1.2f)&&sequence.SelectSource(true,"apple")==1,"combine leaves material-name run intact");
         Check(sequence.SelectSource(true,"pear")==0,"different object resets even if material sound is shared");
         sequence.ResetLevel();Check(sequence.SelectSource(true,"pear")==0,"level reset clears pitch run");
-        var models=BoardModelJson.Read<BoardModelExport>(File.ReadAllText("Assets/Match3D/OriginalModels/models.json"));
-        int profiles=0,goose=0;
+        int profiles=0;
         var holder=new GameObject("Audio validation");var audio=holder.AddComponent<GameAudioCatalog>();
         try{
-            foreach(var model in models.models){
-                Check(GameAudioCatalog.TryProfile(model.name,out var p),"audio profile "+model.name);profiles++;if(p.goose)goose++;
-                if(p.select>0)Check(audio.Clip(p.select)&&audio.Clip(p.select).samples>0,"decoded select clip "+model.name);
-                if(p.combine>0)Check(audio.Clip(p.combine),"decoded custom combine clip "+model.name);
+            foreach(var id in ItemCatalog.GetIds()){
+                Check(GameAudioCatalog.TryProfile(id,out var p),"audio profile "+id);profiles++;
+                Check(p.select>0&&p.combine==0&&!p.goose,"current profile uses replacement selection/default combine: "+id);
             }
-            foreach(int id in new[]{23,24,25,31,32,33,34,35})Check(audio.Clip(id)&&audio.Clip(id).samples>0,"common/goose/tool clip "+id);
-            var sources=holder.GetComponents<AudioSource>();Check(sources.Length==4,"three material sources plus independent goose source");
+            var themes=Resources.Load<Match3DModelThemes>("Match3D/ModelThemes");
+            foreach(var theme in themes.themes){
+                foreach(var prefab in theme.profile.prefabs)Check(GameAudioCatalog.TryProfile(prefab.name,out _),"theme audio bound "+prefab.name);
+                foreach(var prefab in LevelLayoutConfig.GetTutorial(theme.profile).prefabs)Check(GameAudioCatalog.TryProfile(prefab.name,out _),"tutorial audio bound "+prefab.name);
+            }
+            Check(audio.SelectionClip&&audio.SelectionClip.name=="DM-CGS-32"&&audio.SelectionClip.samples==8253,"selection clip and original sample count preserved");
+            Check(audio.Clip(23)&&audio.Clip(23).name=="unfa_cartoon_pop"&&Mathf.Abs(audio.Clip(23).length-8254f/48000f)<.002f,"combine clip decodes with unchanged duration");
+            foreach(int id in new[]{1,4,16,24,25,31,32,33,34,35})Check(!audio.Clip(id),"retired clip route absent "+id);
+            Check(!GameAudioCatalog.TryProfile("Goose_Tomato",out _),"retired source-model mapping absent");
+            var reward=Resources.Load<AudioClip>("Match3D/SourceAudio/PotRewardReceived");Check(reward&&reward.samples>0,"reward clip decodes");
+            var sources=holder.GetComponents<AudioSource>();Check(sources.Length==3,"only three current pitch sources, no goose source");
             for(int i=0;i<3;i++)Check(Mathf.Abs(sources[i].pitch-(1+i*.15f))<.0001f&&sources[i].volume==1&&!sources[i].playOnAwake,"source pitch and volume "+i);
-            Check(Mathf.Abs(sources[3].volume-.4f)<.0001f&&sources[3].pitch==1,"goose volume .4");
         }finally{UnityEngine.Object.DestroyImmediate(holder);}
-        var report="PASS source audio: "+profiles+" original model profiles / "+goose+" goose voices; original decoded clips; fixed 1/1.15/1.3 source pitches, 50ms same-ID gate, object-name reset and level reset, material/combine/tool/goose routing. Editor asset validation, not hardware acoustic equivalence.\n";
-        Directory.CreateDirectory("Temp");File.WriteAllText("Temp/goose-source-audio-validation.txt",report);Debug.Log(report);return report;
+        var report="PASS current audio: "+profiles+" adapter profiles; selection/combine/reward clips; fixed pitches, 50ms gate and reset; retired routes absent.\n";
+        Directory.CreateDirectory("Temp");File.WriteAllText("Temp/pot-audio-validation.txt",report);Debug.Log(report);return report;
     }
-    [Serializable] class BoardModelExport {public BoardModel[] models;}
-    [Serializable] class BoardModel {public string name;}
 }

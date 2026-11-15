@@ -12,7 +12,7 @@ public static class BoardAudioFramesValidation {
   while(true){bool next=false;try{next=core.MoveNext();}catch(Exception e){failure=e.ToString();}if(!next||failure!=null)break;yield return core.Current;}
   (core as IDisposable)?.Dispose();Match3DFlow.Instance.Home();Time.timeScale=scale;Physics.autoSimulation=physics;
   if(had)PlayerPrefs.SetInt("goose.effects",sound);else PlayerPrefs.DeleteKey("goose.effects");
-  string report=failure==null?"PASS source audio live: real model pickup routes original clip and 1/1.15/1.3 pitches; third match plays original combine at its completion callback, no early combine; mute suppresses playback; Home clears bindings. Editor AudioSource requests, not speaker recording.\n":"FAIL source audio live: "+failure+"\n";
+  string report=failure==null?"PASS source audio live: real model pickup routes configured selection clip and 1/1.15/1.3 pitches; third match plays configured combine at its completion callback, no early combine; mute suppresses playback; Home clears bindings. Editor AudioSource requests, not speaker recording.\n":"FAIL source audio live: "+failure+"\n";
   Directory.CreateDirectory("Temp");File.WriteAllText("Temp/goose-source-audio-frames-validation.txt",report);Debug.Log(report);
  }
  static IEnumerator Core(){
@@ -25,14 +25,14 @@ public static class BoardAudioFramesValidation {
   yield return null;
   var input=InputController.Instance;
   input.AddObjectOnStack(chosen[0]);var audio=flow.GetComponent<GameAudioCatalog>();
-  Check(audio&&audio.LastSound==profile.select&&audio.LastPitch==1,"first original material clip/pitch");int count=audio.PlayedCount;
+  Check(audio&&audio.LastSound==profile.select&&audio.LastPitch==1,"first configured selection clip/pitch");int count=audio.PlayedCount;
   yield return new WaitForSeconds(.08f);input.AddObjectOnStack(chosen[1]);
   Check(audio.PlayedCount==count+1&&audio.LastSound==profile.select&&Mathf.Abs(audio.LastPitch-1.15f)<.0001f,"second actual pickup routes pitch source 2");
   yield return new WaitForSeconds(.08f);input.AddObjectOnStack(chosen[2]);
   Check(audio.PlayedCount==count+2&&audio.LastSound==profile.select&&Mathf.Abs(audio.LastPitch-1.3f)<.0001f,"third actual pickup routes pitch source 3");
   yield return new WaitForSeconds(.4f);Check(audio.PlayedCount==count+2,"combine not played before EndCombine");
-  yield return new WaitForSeconds(.45f);Check(audio.PlayedCount==count+3&&audio.LastSound==23&&audio.LastPitch==1,"original combine only at completion");
-  PlayerPrefs.SetInt("goose.effects",0);count=audio.PlayedCount;GameAudioCatalog.Tool(24);Check(audio.PlayedCount==count,"muted tool does not emit audio");
+  yield return new WaitForSeconds(.45f);Check(audio.PlayedCount==count+3&&audio.LastSound==23&&audio.LastPitch==1,"configured combine only at completion");
+  PlayerPrefs.SetInt("goose.effects",0);count=audio.PlayedCount;GameAudioCatalog.Combine(chosen[0]);Check(audio.PlayedCount==count,"muted combine does not emit audio");
   var remaining=board.First();flow.Home();Check(!GameAudioCatalog.TryBoundProfile(remaining,out _),"Home clears profile references");
  }
 }

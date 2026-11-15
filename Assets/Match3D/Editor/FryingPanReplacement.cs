@@ -7,7 +7,7 @@ using UnityEngine;
 [InitializeOnLoad]
 public static class FryingPanReplacement {
     const string Model = "Assets/Match3D/Kitchen/Art/Grab3D/frying-pan.fbx";
-    const string Scene = "Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab";
+    const string Scene = "Assets/Match3D/Resources/Match3D/Scenes/Match3DBoard.prefab";
     static FryingPanReplacement(){EditorApplication.update+=Poll;}
     static void Poll(){
         const string request="Temp/frying-pan-command";
@@ -16,7 +16,7 @@ public static class FryingPanReplacement {
         try{if(command=="inspect")Inspect();else if(command=="build")Build();File.WriteAllText("Temp/frying-pan-result","OK "+command);}
         catch(Exception e){File.WriteAllText("Temp/frying-pan-result",e.ToString());Debug.LogException(e);}
     }
-    [MenuItem("Goose/Art/Replace countryside frying pan")]
+    [MenuItem("Goose/Art/Replace Match3D frying pan")]
     public static void Build(){
         if(EditorApplication.isPlaying)throw new InvalidOperationException("Stop play mode before replacing the prefab.");
         const string art="Assets/Match3D/Kitchen/Art/Grab3D/";

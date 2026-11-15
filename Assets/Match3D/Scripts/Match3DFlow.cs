@@ -14,7 +14,6 @@ public partial class Match3DFlow : MonoBehaviour {
     bool unlimitedMagnetRun;
     public bool UnlimitedTools=>!IsPvp&&unlimitedMagnetRun;
     public bool UnlimitedMagnet=>UnlimitedTools;
-    public bool ServerApplying {get;private set;}
     bool blocksGameplay;
     public bool BlocksGameplay {get=>blocksGameplay||(rewardPresenter&&rewardPresenter.IsShowing);private set=>blocksGameplay=value;}
     public int InitialCount {get;private set;}
@@ -32,16 +31,16 @@ public partial class Match3DFlow : MonoBehaviour {
     Match3DStartupView startupView;
     bool startupSdkReady,startupFontReady,startupServicesReady;
     public bool StartupComplete {get;private set;}
-    Canvas canvas;RectTransform page,modal;Text timer,remaining,peerText;Match3DTips tips;
+    Canvas canvas;RectTransform page,modal;Text timer,remaining;Match3DTips tips;
     ItemPhysicsController pilePhysics;
     LayeredItemPile layeredPile;
     Match3DStagePreloader stagePreloader;
     Match3DDiagnostics diagnostics;
     Match3DGameplayHUD gameplayHUD;
     Button moveToolButton,findToolButton,shuffleToolButton;
-    Match3DNetwork network;AudioSource music,effects;int pvpUndo=3;bool resultShown,pendingPick;
-    int displayedTime=-1,displayedCount=-1,displayedPeer=-1;
-    string runDate,roomId="",lobbyStatus="",endpoint;int otherCleared;
+    AudioSource music,effects;bool resultShown;
+    int displayedTime=-1,displayedCount=-1;
+    string runDate,endpoint;
     public bool SettingsMusic {get {return PlayerPrefs.GetInt("goose.music",1)==1;} }
     public bool SettingsEffects {get {return PlayerPrefs.GetInt("goose.effects",1)==1;} }
     public bool SettingsVibration {get {return PlayerPrefs.GetInt("goose.vibration",1)==1;} }
@@ -136,7 +135,6 @@ public partial class Match3DFlow : MonoBehaviour {
             StartupService<Match3DTray>();
             diagnostics=StartupService<Match3DDiagnostics>();
 #if !DAILY_WEB_PREVIEW
-        network=StartupService<Match3DNetwork>();network.Received=Receive;
         endpoint=PlayerPrefs.GetString("goose.endpoint",library.pvpEndpoint);
         if(endpoint.TrimEnd('/')=="https://goose-3d-pvp-197372-5-1312757046.sh.run.tcloudbase.com"||endpoint.TrimEnd('/')=="https://lzh.tax") {
             PlayerPrefs.DeleteKey("goose.endpoint");PlayerPrefs.Save();endpoint=library.pvpEndpoint;
@@ -191,16 +189,15 @@ public partial class Match3DFlow : MonoBehaviour {
             int count=LevelGenerator.Instance.objectsOnScene.Count;
             if(timer&&t!=displayedTime){timer.text=GameManager.Instance.currentLevelTime>0?(t/60).ToString("00")+":"+(t%60).ToString("00"):(gameplayHUD&&Stage==1?"∞":"00:00");displayedTime=t;}
             if(remaining&&count!=displayedCount)remaining.text="剩余 "+count+" / "+InitialCount;
-            if(peerText&&(count!=displayedCount||otherCleared!=displayedPeer))peerText.text="我方 "+(InitialCount-count)+" / "+InitialCount+"    对手 "+otherCleared+" / "+InitialCount;
-            displayedCount=count;displayedPeer=otherCleared;
+            displayedCount=count;
         }
     }
 
     void Clear(){
         ScreenVersion++;
         ResetToolOffer();
-        displayedTime=displayedCount=displayedPeer=-1;
-        foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;peerText=null;if(tips)tips.Hide();BlocksGameplay=false;
+        displayedTime=displayedCount=-1;
+        foreach(Transform t in page){t.gameObject.SetActive(false);Destroy(t.gameObject);}modal=null;timer=null;remaining=null;if(tips)tips.Hide();BlocksGameplay=false;
     }
     void Music(AudioClip clip){if(music.clip!=clip){music.clip=clip;if(clip)music.Play();}music.mute=!SettingsMusic;}
     void Click(){PotVibrate();if(SettingsEffects&&library.clickSound)effects.PlayOneShot(library.clickSound);}
@@ -219,20 +216,20 @@ public partial class Match3DFlow : MonoBehaviour {
     }
     public void SelectSound(){if(SettingsEffects&&library.selectSound)effects.PlayOneShot(library.selectSound);}
     public void MatchSound(){if(SettingsEffects&&library.matchSound)effects.PlayOneShot(library.matchSound);}
-    void StopBoard(bool preservePool=false){ComboProbeController.End();ResetToolOffer();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");ResetRevival();if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;pendingPick=false;}
+    void StopBoard(bool preservePool=false){ComboProbeController.End();ResetToolOffer();if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","home");ResetRevival();if(stagePreloader)stagePreloader.Cancel();if(Camera.main){var highlight=Camera.main.GetComponent<ItemHighlight>();if(highlight)highlight.ClearAll();}GameAudioCatalog.ResetLevel();CancelSourceCreation();BoardPhysicsSettings.End();if(InputController.Instance)InputController.Instance.CancelSelection();if(layeredPile)layeredPile.Clear();if(pilePhysics)pilePhysics.Clear();if(diagnostics)diagnostics.ResetProbe();Time.timeScale=1;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();GameManager.Instance.gameStatus=GameManager.GameStatus.PREPARING;LevelGenerator.Instance.ClearBoard();if(!preservePool)BoardItemPool.Clear();resultShown=false;}
     public void Home(){
 #if DAILY_WEB_PREVIEW
         if(DailyWebPreview.Instance)DailyWebPreview.Instance.Replay();
         return;
 #else
-        if(network)network.Disconnect();StopBoard();LocalPreview=false;IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
+        StopBoard();LocalPreview=false;IsPvp=false;Clear();ScreenName="home";Music(library.homeMusic);
         Match3DHomeView.Create(this,page,Match3DHomeView.Tab.Home);
         if(Match3DMerchantAuthorization.Instance)Match3DMerchantAuthorization.Instance.OnHome();
 #endif
     }
     public void ShowHomeTab(Match3DHomeView.Tab tab){
         if(tab==Match3DHomeView.Tab.Home){Home();return;}
-        if(network)network.Disconnect();StopBoard();IsPvp=false;Clear();
+        StopBoard();IsPvp=false;Clear();
         ScreenName=tab==Match3DHomeView.Tab.Collection?"collection-tab":"pets-tab";
         Music(library.homeMusic);Match3DHomeView.Create(this,page,tab);
     }
@@ -246,7 +243,7 @@ public partial class Match3DFlow : MonoBehaviour {
         view.Bind("Close",()=>CloseModal());
     }
     public void ShowThemes(){
-        // Both home challenge entries use the sole countryside theme directly.
+        // Both home challenge entries use the Match3D board directly.
         BeginReward(0,"elite");
     }
     public bool HasPot(string id){return PlayerPrefs.GetInt("goose.collection."+id,0)>0;}
@@ -255,7 +252,7 @@ public partial class Match3DFlow : MonoBehaviour {
         view.Text("Count","已收集 "+library.themes.Count(t=>HasPot(t.id))+" / "+library.themes.Length);
         for(int i=0;i<library.themes.Length;i++){
             int index=i;var theme=library.themes[i];bool got=HasPot(theme.id);
-            var art=view.Get<Image>("Goose"+i);art.sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+theme.gooseSprite);
+            var art=view.Get<Image>("Goose"+i);art.sprite=Resources.Load<Sprite>("Match3D/ThemeBackgrounds/foodie-party");art.preserveAspect=true;
             art.color=got?Color.white:new Color(.28f,.28f,.28f,.8f);
             view.Text("Name"+i,theme.title);view.Text("Status"+i,got?"已获得 · 永久收藏":"通关主题第二关解锁");
             view.Text("Play"+i+"Text",got?"再挑战":"去解锁");view.Bind("Play"+i,()=>Begin(index));
@@ -276,13 +273,13 @@ public partial class Match3DFlow : MonoBehaviour {
     }
     public void BeginQualified(int theme,string runId,string tier,string version,Match3DDailyLevel level=null,bool testToolsEnabled=false){
         BeginProgressRun();unlimitedMagnetRun=testToolsEnabled;runModelTheme=null;dailyLevel=level;challengeTier=tier;LocalPreview=false;
-        if(network)network.Disconnect();StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=level!=null?level.date:Today;Match3DGameRecords.Instance.QualifiedRun(runId,tier,version,level);StartStage();
+        StopBoard();IsPvp=false;ThemeIndex=theme;Stage=1;runDate=level!=null?level.date:Today;Match3DGameRecords.Instance.QualifiedRun(runId,tier,version,level);StartStage();
     }
     public void ShowRedPackets(){BlocksGameplay=true;var view=OpenModal("RedPackets");view.Bind("Close",()=>CloseModal());view.GetComponent<Match3DRewardsView>().Connect();}
     public void BeginDailyPractice(int theme,Match3DDailyLevel level){
         if(level==null){Begin(theme);return;}
         BeginProgressRun();runModelTheme=null;
-        if(network)network.Disconnect();StopBoard();IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;dailyLevel=level;ThemeIndex=theme;Stage=1;runDate=level.date;
+        StopBoard();IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;dailyLevel=level;ThemeIndex=theme;Stage=1;runDate=level.date;
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewDailyRun(level);StartStage();
     }
     public void Begin(int theme){
@@ -293,7 +290,7 @@ public partial class Match3DFlow : MonoBehaviour {
         if(Match3DModelThemes.TryGet(selectedTheme,SourceEnvironmentForTheme(theme),out _))runModelTheme=selectedTheme;
 #endif
         // Ordinary MainLevel starts with the recovered first-stage row.
-        if(network)network.Disconnect();StopBoard();LocalPreview=false;IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;ThemeIndex=theme;Stage=1;runDate=Today;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewRun();StartStage();
+        StopBoard();LocalPreview=false;IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;ThemeIndex=theme;Stage=1;runDate=Today;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewRun();StartStage();
     }
     public void RestartStage(){if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","restart");StopBoard();StartStage();}
     public void NextStage(){
@@ -383,7 +380,7 @@ public partial class Match3DFlow : MonoBehaviour {
             float x=(local%3-1)*.48f,z=((local/3)%3-1)*.48f+.15f,y=tile.height+(local/9)*.32f;local++;
             CreateBoardItem(tile,prefabs[tile.type],new Vector3(x,y,z),Quaternion.Euler(legacyRandom.Next(-10,11),legacyRandom.Next(360),legacyRandom.Next(-10,11)),false);
         }
-        StartCoroutine(Ready(IsPvp));
+        StartCoroutine(Ready());
     }
     GameObject CreateBoardItem(ChallengeTile tile,GameObject prefab,Vector3 position,Quaternion rotation,bool layered,bool sourceBoard=false,Match3DDailyItem openingItem=null){
         var obj=layered?BoardItemPool.Get(prefab,prefab.name):Instantiate(prefab);
@@ -495,25 +492,24 @@ public partial class Match3DFlow : MonoBehaviour {
         sourceCreationRunner=null;return sourceCreationSteps;
     }
 #endif
-    IEnumerator Ready(bool pvp){
+    IEnumerator Ready(){
         // Parked items are pickable: do not lock input until the entire queue settles.
         yield return new WaitForSeconds(3);
-        if(pvp){network.Send(new Match3DMessage{type="loaded"});Notice("已准备好，等待对手…");}
-        else {GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.StartRecord();BoosterManager.Instance.BoostersInteractibility(true);}
+        {GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.StartRecord();BoosterManager.Instance.BoostersInteractibility(true);}
     }
     void HUD(){
         Clear();ScreenName="game";resultShown=false;BlocksGameplay=false;
-        var view=Match3DUIView.Load(IsPvp?"PvpGameHUD":"GameHUD",page);
+        var view=Match3DUIView.Load("GameHUD",page);
         gameplayHUD=view.GetComponent<Match3DGameplayHUD>();
         if(gameplayHUD)view.Show("Settings",false);
-        view.Text("Title",IsPvp?"好友对战":CurrentModelThemeTitle+" · 第"+Stage+"关");
+        view.Text("Title",CurrentModelThemeTitle+" · 第"+Stage+"关");
         view.Bind("Pause",()=>ShowSettings(true));timer=view.Get<Text>("Timer");remaining=view.Get<Text>("Remaining");
-        view.Show("Peer",IsPvp);peerText=IsPvp?view.Get<Text>("Peer"):null;
-        view.Text("UndoText",!IsPvp?"移出":"撤回");moveToolButton=view.Bind("Undo",()=>UseTool(0,Undo));
+        view.Show("Peer",false);
+        view.Text("UndoText","移出");moveToolButton=view.Bind("Undo",()=>UseTool(0,Undo));
         view.Text("ShuffleText","打乱");
         shuffleToolButton=view.Bind("Shuffle",()=>UseTool(2,()=>BoardTools.MessUp()));
-        view.Text("HintText",IsPvp?"认输":"凑齐");
-        findToolButton=view.Bind("Hint",()=>UseTool(1,()=>{if(IsPvp)network.Send(new Match3DMessage{type="surrender"});else BoosterManager.Instance.HintButton();}));
+        view.Text("HintText","凑齐");
+        findToolButton=view.Bind("Hint",()=>UseTool(1,()=>BoosterManager.Instance.HintButton()));
         if(!IsPvp){view.Bind("AddTime",()=>UseTool(BoardTools.AddTimeType,()=>BoardTools.AddTime()));view.Show("AddTime",BoardTools.Enabled);}
         foreach(var key in new[]{"Undo","Hint"})view.Show(key,IsPvp||BoardTools.Enabled);
         view.Show("Shuffle",!IsPvp&&BoardTools.Enabled);
@@ -540,12 +536,6 @@ public partial class Match3DFlow : MonoBehaviour {
             float best=Mathf.Max(progress,PlayerPrefs.GetFloat(key,0));PlayerPrefs.SetFloat(key,best);PlayerPrefs.Save();
             var result=OpenModal(win?"ResultSuccess":"ResultFailure").GetComponent<Match3DResultView>();
             result.Configure(PlayerPrefs.GetInt("goose.result.attempts",1),progress,best,win?(Action)Home:RestartStage,Home,ShareResult);
-        }else{
-        var view=OpenModal("Result");view.Text("Title",title);view.Text("Detail",detail);
-        view.Get<Image>("Goose").sprite=Resources.Load<Sprite>("GooseArt/Sprites/"+CurrentTheme.gooseSprite);
-        view.Text("ContinueText",IsPvp?"再次匹配":win&&Stage==1?"挑战第二关":win?"查看图鉴":"再试一次");
-        view.Bind("Continue",()=>{if(IsPvp){StopBoard();ShowPvp();}else if(win&&Stage==1)NextStage();else if(win){StopBoard();ShowCollection();}else RestartStage();});
-        view.Bind("Home",Home);
         }
         var clip=win?library.winSound:library.loseSound;if(SettingsEffects&&clip)effects.PlayOneShot(clip);
         if(!win)PotVibrate();
@@ -560,15 +550,7 @@ public partial class Match3DFlow : MonoBehaviour {
         Notice("请在微信小游戏中分享给好友");
 #endif
     }
-    void Undo(){
-        if(IsPvp){if(pvpUndo>0&&!pendingPick&&!InputController.Instance.IsBusy){pendingPick=true;network.Send(new Match3DMessage{type="undo"});}}
-        else BoosterManager.Instance.Undo();
-    }
-    public bool InterceptPick(GameObject obj){
-        if(!IsPvp||ServerApplying)return false;
-        if(pendingPick||BlocksGameplay||InputController.Instance.IsBusy)return true;
-        var tile=obj.GetComponent<Match3DTile>();if(tile){pendingPick=true;network.Send(new Match3DMessage{type="pick",tileId=tile.id});}return true;
-    }
+    void Undo(){BoosterManager.Instance.Undo();}
     public void ShowModelSize(){
         if(IsPvp||Stage!=2||ScreenName!="game")return;
         Time.timeScale=0;BlocksGameplay=true;var view=OpenModal("ModelSize");
@@ -585,6 +567,12 @@ public partial class Match3DFlow : MonoBehaviour {
     }
     public void ShowMailbox(){
         BlocksGameplay=true;var view=OpenModal("Mailbox");view.Bind("Close",()=>CloseModal());view.GetComponent<Match3DMailboxView>().Connect(Match3DInvitations.Instance);
+    }
+    public void ShowPotSameGames(){
+        BlocksGameplay=true;var view=OpenModal("PotSameGames");
+        view.Bind("Close",()=>CloseModal());
+        view.Bind("CrazyCombo",PotSameGames.OpenCrazyCombo);
+        view.Bind("CurrentGame",()=>ShowHomeFeatureNotice(PotSameGames.CurrentGameNotice));
     }
     public void ShowInvites(){
         BlocksGameplay=true;var view=OpenModal("InviteRewards");
@@ -657,57 +645,6 @@ public partial class Match3DFlow : MonoBehaviour {
         bool current=value;var skin=view.GetComponent<Match3DSettingsSkin>();
         void Refresh(){view.Text(key+"Text",current?"已开启":"已关闭");if(skin)skin.SetState(key,current);}
         Refresh();view.Bind(key,()=>{current=!current;change(current);Refresh();});
-    }
-    public void ShowPvp(){
-        if(network)network.Disconnect();StopBoard();IsPvp=true;ThemeIndex=0;Stage=2;roomId="";lobbyStatus="邀请朋友来一场三消对决";DrawLobby();Music(library.pvpMusic);
-    }
-    void DrawLobby(){
-        Clear();ScreenName="pvp";var view=Match3DUIView.Load("PvpLobby",page);view.Bind("Back",Home);
-        view.Text("Status",lobbyStatus);view.Show("Room",!string.IsNullOrEmpty(roomId));view.Text("Room","房间号："+roomId);
-        var address=view.Get<InputField>("Address");address.SetTextWithoutNotify(endpoint);
-        address.onEndEdit.AddListener(v=>{endpoint=v.Trim();PlayerPrefs.SetString("goose.endpoint",endpoint);});
-        bool connected=network.Connected;
-        foreach(var key in new[]{"Match","Create","Code","Join"})view.Show(key,!connected);
-        view.Show("Ready",connected);view.Show("Leave",connected);
-        view.Bind("Match",()=>ConnectPvp("match",""));view.Bind("Create",()=>ConnectPvp("create",""));
-        var code=view.Get<InputField>("Code");view.Bind("Join",()=>ConnectPvp("join",code.text));
-        view.Bind("Ready",()=>network.Send(new Match3DMessage{type="ready"}));view.Bind("Leave",ShowPvp);
-    }
-    void ConnectPvp(string action,string room){lobbyStatus="正在连接…";network.Connect(endpoint,action,room);Notice(lobbyStatus);}
-    void Receive(Match3DMessage m){
-        if(m.type=="connected"){DrawLobby();return;}
-        if(m.type=="queued"){lobbyStatus="正在等待另一位真人玩家…";DrawLobby();return;}
-        if(m.type=="room"){roomId=m.roomId;lobbyStatus=m.players.Length+" / 2 位玩家\n"+m.players.Count(x=>x.ready)+" 人已准备";DrawLobby();return;}
-        if(m.type=="prepare"){
-            StopBoard();IsPvp=true;pvpUndo=3;otherCleared=0;var tiles=new List<ChallengeTile>();
-            for(int i=0;i<m.deck.Length;i++)tiles.Add(new ChallengeTile{id=i,type=m.deck[i],layer=0,height=.65f});
-            Spawn(tiles,m.seed,m.seconds);HUD();Notice("双方正在加载物品…");return;
-        }
-        if(m.type=="start"){GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;GameManager.Instance.currentLevelTime=300;Notice("对战开始！");return;}
-        if(m.type=="move"){
-            if(m.playerId!=network.PlayerId){otherCleared=m.cleared;return;}
-            pendingPick=false;pvpUndo=m.undoLeft;ServerApplying=true;
-            if(m.action=="pick"){
-                var obj=LevelGenerator.Instance.objectsOnScene.FirstOrDefault(x=>x&&x.GetComponent<Match3DTile>().id==m.tileId);
-                if(obj)InputController.Instance.AddObjectOnStack(obj);
-            }else if(m.action=="undo")InputController.Instance.UndoLast();
-            ServerApplying=false;return;
-        }
-        if(m.type=="result"){
-            pendingPick=false;StopAllCoroutines();GameManager.Instance.StopAllCoroutines();BlocksGameplay=true;Time.timeScale=1;
-            bool win=m.winner==network.PlayerId;string reason=m.reason=="disconnect"?"对手已断线":m.reason=="overflow"?"一方槽位已满":m.reason=="timeout"?"时间到，按消除数量结算":m.reason=="load_timeout"?"加载超时，本局取消":"本局已结束";
-            resultShown=true;StartCoroutine(FinishPvp(win,string.IsNullOrEmpty(m.winner)?"平局 / 本局结束":win?"对战胜利！":"本次惜败",reason));return;
-        }
-        if(m.type=="left"){if(ScreenName=="pvp"){lobbyStatus="房间已结束";network.Disconnect();DrawLobby();}return;}
-        if(m.type=="error"){pendingPick=false;Notice(m.message);return;}
-        if(m.type=="disconnected"){
-            pendingPick=false;if(ScreenName=="game"&&!resultShown){GameManager.Instance.gameStatus=GameManager.GameStatus.FAIL;resultShown=true;Result(false,"连接已断开","请检查网络后重新匹配");}
-            else if(ScreenName=="pvp"){lobbyStatus=m.message;network.Disconnect();DrawLobby();}
-        }
-    }
-    IEnumerator FinishPvp(bool win,string title,string reason){
-        yield return new WaitForSecondsRealtime(.9f);
-        GameManager.Instance.gameStatus=GameManager.GameStatus.FINISH;Result(win,title,reason);
     }
     public void ShowHomeFeatureNotice(string message){Notice(message);}
     public void Notice(string value){ShowTips(value);}

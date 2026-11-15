@@ -26,7 +26,6 @@ public static class Match3DGameplaySkinBuilder {
             var importer=(TextureImporter)AssetImporter.GetAtPath(path);importer.textureType=TextureImporterType.Sprite;importer.spriteImportMode=SpriteImportMode.Single;importer.spritePixelsPerUnit=100;
             importer.alphaIsTransparency=true;importer.mipmapEnabled=false;importer.npotScale=TextureImporterNPOTScale.None;importer.wrapMode=TextureWrapMode.Clamp;importer.maxTextureSize=2048;importer.textureCompression=TextureImporterCompression.Uncompressed;importer.SaveAndReimport();
         }
-        if(!File.Exists(UI+"PvpGameHUD.prefab"))AssetDatabase.CopyAsset(UI+"GameHUD.prefab",UI+"PvpGameHUD.prefab");
         var root=PrefabUtility.LoadPrefabContents(UI+"GameHUD.prefab");
         try{
             if(root.GetComponent<Match3DGameplayHUD>())throw new Exception("Gameplay skin already applied; edit the prefab directly.");
@@ -60,7 +59,7 @@ public static class Match3DGameplaySkinBuilder {
             view.bindings=bindings.ToArray();PrefabUtility.SaveAsPrefabAsset(root,UI+"GameHUD.prefab");
         }finally{PrefabUtility.UnloadPrefabContents(root);}
         BuildTray();
-        var country="Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab";root=PrefabUtility.LoadPrefabContents(country);
+        var country="Assets/Match3D/Resources/Match3D/Scenes/Match3DBoard.prefab";root=PrefabUtility.LoadPrefabContents(country);
         try{root.GetComponentInChildren<Match3DCameraBackdrop>(true).GetComponent<SpriteRenderer>().sprite=AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Match3D/Resources/Match3D/ThemeBackgrounds/foodie-party.jpg");PrefabUtility.SaveAsPrefabAsset(root,country);}finally{PrefabUtility.UnloadPrefabContents(root);}
         AssetDatabase.SaveAssets();
         AddTimeToolBuilder.Build();

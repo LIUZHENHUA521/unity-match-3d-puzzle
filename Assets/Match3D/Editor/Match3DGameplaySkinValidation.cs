@@ -39,8 +39,6 @@ public static class Match3DGameplaySkinValidation {
         const string path="Assets/Match3D/Resources/Match3D/UI/CollectionTray.prefab";
         var root=PrefabUtility.LoadPrefabContents(path);
         try{root.GetComponent<Match3DTraySkin>().footerBackground=(RectTransform)root.transform.Find("Toolbar background");PrefabUtility.SaveAsPrefabAsset(root,path);}finally{PrefabUtility.UnloadPrefabContents(root);}
-        const string pvp="Assets/Match3D/Resources/Match3D/UI/PvpGameHUD.prefab";
-        root=PrefabUtility.LoadPrefabContents(pvp);try{root.name="PvpGameHUD";PrefabUtility.SaveAsPrefabAsset(root,pvp);}finally{PrefabUtility.UnloadPrefabContents(root);}
     }
     [MenuItem("Goose/UI/Validate gameplay art in Play Mode")]
     public static void Run(){

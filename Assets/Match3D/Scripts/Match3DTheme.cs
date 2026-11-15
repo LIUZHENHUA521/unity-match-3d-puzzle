@@ -5,8 +5,9 @@ public class Match3DTheme : ScriptableObject {
     // Serialized dependency keeps the source level catalog in WebGL/WeChat
     // builds even though gameplay also supports Resources.Load lookup.
     public LevelLayoutConfig sourceLevelCatalog;
+    // Historical serialized name: shared by login, rewards, records and replay services.
     public string pvpEndpoint="https://9nanimal.cn";
-    public AudioClip homeMusic,gameMusic,pvpMusic,clickSound,selectSound,matchSound,winSound,loseSound;
+    public AudioClip homeMusic,gameMusic,clickSound,selectSound,matchSound,winSound,loseSound;
     public Font font;
 }
 [System.Serializable] public class ThemeEntry {

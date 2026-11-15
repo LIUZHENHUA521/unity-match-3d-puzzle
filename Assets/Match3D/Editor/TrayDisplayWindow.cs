@@ -42,7 +42,7 @@ public sealed class TrayDisplayWindow : EditorWindow {
         var rows=themed.Concat(catalog.profiles.SelectMany(p=>p.prefabs.Where(m=>m).Select(m=>new{model=m,label=ThemeLabel(p.environment)+" / "+m.name}))).Concat(imported).GroupBy(x=>x.model).Select(g=>g.First()).ToArray();
         models=rows.Select(x=>x.model).ToArray();labels=rows.Select(x=>x.label).ToArray();selected=previous?Array.IndexOf(models,previous):0;selected=Mathf.Clamp(selected,0,Mathf.Max(0,models.Length-1));Reload();
     }
-    static string ThemeLabel(string value)=>value=="CountrysideStove"?"乡村":value=="GroceryStore"?"小卖部":value=="Barbecue"?"烧烤摊":value;
+    static string ThemeLabel(string value)=>value=="CountrysideStove"?"Match3D":value=="GroceryStore"?"小卖部":value=="Barbecue"?"烧烤摊":value;
     void Reload(){
         draft=new Match3DTrayDisplaySettings.Pose();boardMultiplier=1;resetTray=false;var settings=AssetDatabase.LoadAssetAtPath<Match3DTrayDisplaySettings>(SettingsPath);
         if(models.Length>0&&settings){settings.Invalidate();boardMultiplier=settings.BoardMultiplier(models[selected]);if(settings.TryGet(models[selected],out var stored))draft=stored.Copy();}hasUnsavedChanges=false;Repaint();

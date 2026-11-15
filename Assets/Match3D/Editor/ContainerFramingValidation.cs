@@ -57,7 +57,7 @@ public static class ContainerFramingValidation {
         Check(report.triples==99,"depleted via 99 actual triples");
         Check(LevelGenerator.Instance.objectsOnScene.All(o=>SoftTransitionContainer.Contains(o.transform.position,-.1f)),"last items stay in translated shell");
     }
-    static Transform Pan()=>GameObject.Find("CountrysideStove source visuals").transform.Find("Grab3D Frying Pan");
+    static Transform Pan()=>GameObject.Find("Match3DBoard").transform.Find("Grab3D Frying Pan");
     static void AssertPose(){
         Check(Vector3.Distance(firstCamera,camera.transform.position)<.00001f&&Quaternion.Angle(firstRotation,camera.transform.rotation)<.001f,"camera remains unchanged");
         var matrix=Pan().localToWorldMatrix;for(int i=0;i<16;i++)Check(Mathf.Abs(matrix[i]-firstPan[i])<.00001f,"pan remains unchanged");

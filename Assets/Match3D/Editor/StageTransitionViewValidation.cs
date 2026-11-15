@@ -37,7 +37,7 @@ public static class StageTransitionViewValidation {
         var flow=Match3DFlow.Instance;var profile=LevelLayoutConfig.Get("CountrysideStove");
         var daily=new Match3DDailyLevel{date="2026-11-10",tier="bachelor",version="stable-view",generatorVersion="daily-v1",modelThemeId="foodie-party",seed=47231,seconds=600,initialCount=300,limitHeight=profile.limitHeight,layers=profile.layers};
         flow.BeginDailyPractice(0,daily);BoardCreationTestSupport.FinishPending(flow);yield return null;yield return null;
-        visual=GameObject.Find("CountrysideStove source visuals").transform;pan=visual.Find("Grab3D Frying Pan");
+        visual=GameObject.Find("Match3DBoard").transform;pan=visual.Find("Grab3D Frying Pan");
         initialView=camera.worldToCameraMatrix;initialProjection=camera.projectionMatrix;initialPan=pan.localToWorldMatrix;
         panRenderers=pan.GetComponentsInChildren<Renderer>();rendererStates=panRenderers.Select(r=>r.enabled).ToArray();
         baseline=RenderPan("first-stage.png");

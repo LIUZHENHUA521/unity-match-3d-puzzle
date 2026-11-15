@@ -34,7 +34,7 @@ public static class Match3DUIPreviewSetup {
                         var bar=(RectTransform)view.Get<Transform>("Tab Home").parent;
                         var footer=view.Get<RectTransform>("Footer background");footer.anchoredPosition=Vector2.zero;footer.sizeDelta=new Vector2(0,bar.rect.height);
                     }
-                    bool fit=new[]{"PauseSettings","Reward","Result","ModelSize","Themes","Collection","PvpLobby"}.Contains(root.name);
+                    bool fit=new[]{"PauseSettings","Reward","ModelSize","Collection"}.Contains(root.name);
                     if(fit && !root.GetComponent<Match3DUIFitContent>()){
                         var children=root.transform.Cast<Transform>().ToArray();
                         var content=new GameObject("Content - edit UI here",typeof(RectTransform)).GetComponent<RectTransform>();

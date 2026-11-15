@@ -22,7 +22,7 @@ using UnityEngine.SceneManagement;
  var physics=scene.GetPhysicsScene();var lines=new List<string>();bool prior=BoardPhysicsSettings.Active;
  try{
  BoardPhysicsSettings.Begin();ItemColliderGeometry.ConfigureLayers();
- var pan=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab"));
+ var pan=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Resources/Match3D/Scenes/Match3DBoard.prefab"));
  UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(pan,scene);Match3DThemePresentation.AddPanCollision(pan);
  var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Generated/ModelAdapter/Party_ChocolateBar/Party_ChocolateBar.prefab");
  for(int n=0;n<12;n++){
@@ -42,7 +42,7 @@ using UnityEngine.SceneManagement;
  static void Inspect(){
  var lines=new List<string>();
  var live=Object.FindObjectsOfType<BoardItemIdentity>();foreach(var i in live.Where(i=>i.name.Contains("Chocolate")))lines.Add("live "+i.name+" "+i.transform.position);
- var root=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab"));
+ var root=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Match3D/Resources/Match3D/Scenes/Match3DBoard.prefab"));
  foreach(var mf in root.GetComponentsInChildren<MeshFilter>().Where(m=>m.transform.IsChildOf(root.transform.Find("Grab3D Frying Pan")))){
  var vertices=mf.sharedMesh.vertices.Select(v=>mf.transform.TransformPoint(v)).ToArray();
  lines.Add("pan center vertices "+string.Join(",",vertices.Where(v=>new Vector2(v.x,v.z).magnitude<1).Select(v=>v.y.ToString("F4")).Distinct()));

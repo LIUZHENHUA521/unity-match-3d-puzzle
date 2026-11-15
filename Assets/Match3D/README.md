@@ -1,3 +1,5 @@
+> 2026-11-15：`Resources/GooseArt` 已整体删除，PVP 客户端与相关页面已移除。下文关于原版 UI/音频的说明是早期实现记录，不代表当前资源状态；其他来源资源不在本轮清理范围。
+
 # 编辑器可玩版
 
 Unity 2021.3.1f1c1，打开 `Assets/Scenes/Match3D.unity` 后 Play。旧 FoodPileChallenge 和 GameScene 保留。

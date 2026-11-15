@@ -160,7 +160,6 @@ public class InputController : Singleton<InputController>
     {
         if (BoardTools.Busy || !GameManager.Instance.GameIsPlaying() || (IsResolving&&!UsesSourceFlight) || !obj || !obj.CompareTag("Collectable") ||
             objectsOnStack.Count >= 7 || objectsOnStack.Contains(obj)) return;
-        if (Match3DFlow.Instance && Match3DFlow.Instance.InterceptPick(obj)) return;
         if(UsesSourceFlight&&playSound&&LayeredItemPile.Instance)LayeredItemPile.Instance.RecordSelectionHeight(obj.transform.position.y);
         if(selection&&selection.Selected==obj){if(UsesSourceFlight)selection.Commit();CancelPointer();}
         if(!UsesSourceFlight)BoardTools.ReleaseStored(obj);

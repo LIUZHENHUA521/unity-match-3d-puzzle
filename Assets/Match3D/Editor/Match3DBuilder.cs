@@ -10,19 +10,15 @@ public static class Match3DBuilder {
     public static void Build(){
         if(EditorApplication.isPlaying)throw new Exception("Stop play before building");
         AssetDatabase.Refresh();
-        foreach(string path in Directory.GetFiles("Assets/Match3D/Resources/GooseArt/Sprites","*.png")){
-            var imp=AssetImporter.GetAtPath(path) as TextureImporter;if(imp==null)continue;
-            if(imp.textureType!=TextureImporterType.Sprite){imp.textureType=TextureImporterType.Sprite;imp.spriteImportMode=SpriteImportMode.Single;imp.alphaIsTransparency=true;imp.maxTextureSize=2048;imp.SaveAndReimport();}
-        }
         Directory.CreateDirectory("Assets/Match3D/Resources/Match3D");
         var library=ScriptableObject.CreateInstance<Match3DTheme>();
         var food=new[]{"cheese","ice-cream","sandwich","coockie-man","toast","pancake-big","sandwich-toast","hotdog"}.Select(x=>AssetDatabase.LoadAssetAtPath<GameObject>("Assets/FoodPile/Generated/"+x+".prefab")).ToArray();
         var toys=new[]{"Bear","Bunny","Dinosaur","Doll","Duck","Robot","Sheep","Bee"}.Select(NormalizeToy).ToArray();
         var vehicles=new[]{"Boat","Car","Helicopter","Horse","Minibus","Plane","Rocket","Truck"}.Select(NormalizeToy).ToArray();
-        library.themes=new[]{Theme("daily","每日厨房","每天一道挑战，清空整锅食物","Goose_Potato_2_Icon",food),Theme("toys","玩具总动员","找齐玩具，收藏专属大鹅","Goose_Eggplant_2_Icon",toys),Theme("travel","出发去旅行","车船飞机，一起踏上旅途","Goose_GreenPepper_2_Icon",vehicles)};
-        string audio="Assets/Match3D/Resources/GooseArt/Audio";
-        Func<string,AudioClip> clip=name=>Directory.GetFiles(audio).Where(x=>!x.EndsWith(".meta")&&Path.GetFileNameWithoutExtension(x)==name).Select(x=>AssetDatabase.LoadAssetAtPath<AudioClip>(x)).FirstOrDefault();
-        library.homeMusic=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/Licensed/Carefree.mp3");library.gameMusic=library.homeMusic;library.pvpMusic=clip("BGM_PVP");library.clickSound=clip("S_ButtonClick");library.selectSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/CrazyCombo/tile_click.mp3");library.matchSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/CrazyCombo/merge_sound.mp3");library.winSound=clip("S_Win");library.loseSound=clip("S_Lose");
+        library.themes=new[]{Theme("daily","每日厨房","每天一道挑战，清空整锅食物","",food),Theme("toys","玩具总动员","找齐玩具，收藏专属大鹅","",toys),Theme("travel","出发去旅行","车船飞机，一起踏上旅途","",vehicles)};
+        library.homeMusic=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/Licensed/Carefree.mp3");library.gameMusic=library.homeMusic;
+        library.selectSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/CrazyCombo/tile_click.mp3");library.clickSound=library.selectSound;
+        library.matchSound=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Match3D/Audio/CrazyCombo/merge_sound.mp3");
         var old=AssetDatabase.LoadAssetAtPath<Match3DTheme>("Assets/Match3D/Resources/Match3D/ThemeLibrary.asset");if(old){EditorUtility.CopySerialized(library,old);UnityEngine.Object.DestroyImmediate(library);library=old;}else AssetDatabase.CreateAsset(library,"Assets/Match3D/Resources/Match3D/ThemeLibrary.asset");
         library.sourceLevelCatalog=AssetDatabase.LoadAssetAtPath<LevelLayoutConfig>("Assets/Match3D/Resources/Match3D/SourceLevelCatalog.asset");
         EditorSceneManager.OpenScene("Assets/Scenes/FoodPileChallenge.unity");
@@ -86,15 +82,14 @@ public static class Match3DBuilder {
             else if(cmd=="creationprepare")BoardPrefabPreparation.Bake();
             else if(cmd=="creationbudgetcheck")CreationBudgetValidation.Start();
             else if(cmd=="traydisplaycandidates")TrayDisplayPresets.CaptureCandidates();
-            else if(cmd=="traydisplaydefaults")TrayDisplayPresets.ApplyCountrysideDefaults();
+            else if(cmd=="traydisplaydefaults")TrayDisplayPresets.ApplyMatch3DDefaults();
             else if(cmd=="traydisplayopen")TrayDisplayWindow.Open();
             else if(cmd=="traydisplayfries")TrayDisplayPresets.CaptureFries();
-            else if(cmd=="traydisplayrefine")TrayDisplayPresets.ApplyCountrysideDefaults(true);
+            else if(cmd=="traydisplayrefine")TrayDisplayPresets.ApplyMatch3DDefaults(true);
             else if(cmd=="traydisplaycheck")TrayDisplayValidation.Start();
             else if(cmd=="creationframescheck")BoardCreationFramesValidation.Start();
             else if(cmd=="selectioncheck")SelectionFeedbackValidation.Run();
             else if(cmd=="highlightcheck")BoardHighlightValidation.Run();
-            else if(cmd=="pvptest")Match3DNetworkValidation.Run();
             else if(cmd=="home")Match3DFlow.Instance.Home();
             else if(cmd=="tutorial")Match3DFlow.Instance.Begin(0);
             else if(cmd=="hard")Match3DFlow.Instance.NextStage();

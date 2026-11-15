@@ -5,7 +5,7 @@ using UnityEngine;
 public sealed class Match3DHomeView : MonoBehaviour {
     public const string BachelorReward="2", EliteReward="10";
     public enum Tab { Home, Collection, Pets }
-    public UnityEngine.UI.Button signIn, invite, community;
+    public UnityEngine.UI.Button signIn, invite, community, sameGames;
     public RectTransform artwork;
     Match3DUIView view;
     Rect lastSafe;Vector2 lastSize;Vector2Int lastScreen;
@@ -44,6 +44,7 @@ public sealed class Match3DHomeView : MonoBehaviour {
         if(home.signIn){home.signIn.gameObject.SetActive(true);home.signIn.onClick.AddListener(()=>{flow.HomeClick();flow.ShowSignIn();});home.signIn.gameObject.AddComponent<Match3DSignInBadge>();}
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});
         if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();Match3DGameCommunity.Open();});
+        if(tab==Tab.Home && home.sameGames)home.sameGames.onClick.AddListener(()=>{flow.HomeClick();flow.ShowPotSameGames();});
         if(!home.artwork)home.Layout();
         if(tab==Tab.Home){
             Match3DHomeButtonMotion.Attach(ui.Get<UnityEngine.UI.Button>("Elite"),.08f,true);
@@ -51,6 +52,7 @@ public sealed class Match3DHomeView : MonoBehaviour {
             Match3DHomeButtonMotion.Attach(ui.Get<UnityEngine.UI.Button>("Settings"),0,false);
             Match3DHomeButtonMotion.Attach(home.invite,.04f,false);
             Match3DHomeButtonMotion.Attach(home.community,.08f,false);
+            Match3DHomeButtonMotion.Attach(home.sameGames,.12f,false);
         }
         return home;
     }

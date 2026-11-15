@@ -1,0 +1,32 @@
+PASS legacy environment resolves to renamed board
+PASS renamed board root loads
+PASS old board resource path removed
+PASS extracted art directory removed
+PASS retired page absent: PvpLobby
+PASS retired page absent: PvpGameHUD
+PASS retired page absent: Result
+PASS retired page absent: Themes
+PASS UI bindings intact: GameHUD
+PASS no missing scripts: GameHUD
+PASS UI bindings intact: ModelSize
+PASS no missing scripts: ModelSize
+PASS UI bindings intact: Diagnostics
+PASS no missing scripts: Diagnostics
+PASS UI bindings intact: Collection
+PASS no missing scripts: Collection
+PASS UI bindings intact: Reward
+PASS no missing scripts: Reward
+PASS retained music and interaction sounds assigned
+PASS removed result sounds have no dangling references
+PASS home startup succeeds without PVP transport
+PASS no PVP network service
+PASS collection uses current theme artwork
+PASS reward dialog opens
+PASS settings opens
+PASS single-player first stage starts
+PASS first-stage items created
+PASS second-stage items created
+PASS model-size dialog opens and pauses
+PASS single-player result opens without retired page or sound
+PASS home restores time and input
+ALL CHECKS PASSED

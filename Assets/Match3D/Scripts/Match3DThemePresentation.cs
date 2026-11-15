@@ -17,9 +17,11 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  public Vector3 PanBowlCenter=>pan?pan.TransformPoint(PanBowlLocalCenter):Vector3.zero;
  Collider[] legacyColliders;bool[] colliderStates;
  Renderer[] legacy;bool[] enabledStates;BoardLighting lighting;
+ // Keep existing environment IDs compatible with saved levels and replay data.
+ public static string SceneAssetName(string environment)=>environment=="CountrysideStove"?"Match3DBoard":environment;
  public void Begin(string theme){
-  End();if(!zoom)zoom=GetComponent<BoardCameraZoom>();if(!zoom)zoom=gameObject.AddComponent<BoardCameraZoom>();zoom.BindPresentation(this);var prefab=Resources.Load<GameObject>("Match3D/Scenes/"+theme);if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
-  visual=Instantiate(prefab);visual.name=theme+" source visuals";
+  End();if(!zoom)zoom=GetComponent<BoardCameraZoom>();if(!zoom)zoom=gameObject.AddComponent<BoardCameraZoom>();zoom.BindPresentation(this);var prefab=Resources.Load<GameObject>("Match3D/Scenes/"+SceneAssetName(theme));if(!prefab)throw new System.InvalidOperationException("Missing scene visual "+theme);
+  visual=Instantiate(prefab);visual.name=SceneAssetName(theme);
   AddPanCollision(visual);
   pan=visual.transform.Find("Grab3D Frying Pan");
   if(!lighting)lighting=GetComponent<BoardLighting>();if(!lighting)lighting=gameObject.AddComponent<BoardLighting>();lighting.Begin();

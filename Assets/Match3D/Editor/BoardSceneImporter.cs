@@ -41,7 +41,7 @@ public static class BoardSceneImporter {
    if(!string.IsNullOrEmpty(n.mesh)){g.AddComponent<MeshFilter>().sharedMesh=meshes[n.mesh];var r=g.AddComponent<MeshRenderer>();r.sharedMaterials=n.materials.Select(k=>mats[k]).ToArray();r.enabled=n.enabled;r.shadowCastingMode=(ShadowCastingMode)n.castShadows;r.receiveShadows=n.receiveShadows;}
    if(!string.IsNullOrEmpty(n.sprite)){var r=g.AddComponent<SpriteRenderer>();r.sprite=sprites[n.sprite];r.color=n.color;r.sortingOrder=n.sortingOrder;r.enabled=n.enabled;r.shadowCastingMode=(ShadowCastingMode)n.castShadows;r.receiveShadows=n.receiveShadows;}
    g.SetActive(n.active);
-  }PrefabUtility.SaveAsPrefabAsset(nodes[0],"Assets/Match3D/Resources/Match3D/Scenes/"+scene.name+".prefab");UnityEngine.Object.DestroyImmediate(nodes[0]);}
+  }PrefabUtility.SaveAsPrefabAsset(nodes[0],"Assets/Match3D/Resources/Match3D/Scenes/"+Match3DThemePresentation.SceneAssetName(scene.name)+".prefab");UnityEngine.Object.DestroyImmediate(nodes[0]);}
   AssetDatabase.SaveAssets();Debug.Log("SOURCE_SCENES_IMPORTED "+data.scenes.Length);
  }
  static Texture2D Texture(string name)=>string.IsNullOrEmpty(name)?null:AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/"+name);

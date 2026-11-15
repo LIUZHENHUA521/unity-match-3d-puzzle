@@ -18,7 +18,7 @@ public static class Match3DUILayoutValidation {
                 var target=new RenderTexture(dimensions.x,dimensions.y,24);target.Create();camera.targetTexture=target;camera.aspect=(float)dimensions.x/dimensions.y;
                 canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
                 try{
-                    foreach(string name in new[]{"Home","GameHUD","PauseSettings","Result","Themes","Collection","ModelSize","PvpLobby"}){
+                    foreach(string name in new[]{"Home","GameHUD","PauseSettings","Collection","ModelSize"}){
                         var prefab=Resources.Load<Match3DUIView>("Match3D/UI/"+name);var root=(RectTransform)prefab.transform;
                         if(root.sizeDelta!=new Vector2(720,1560)||root.anchorMin!=root.anchorMax)throw new Exception("Invalid authoring canvas "+name);
                         var view=Match3DUIView.Load(name,page);

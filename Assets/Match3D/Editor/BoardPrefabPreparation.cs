@@ -15,8 +15,9 @@ public static class BoardPrefabPreparation {
         if(!plan)throw new InvalidOperationException("Missing SourceLevelCatalog");
         Directory.CreateDirectory(Materials);AssetDatabase.Refresh();ItemColliderGeometry.ClearCache();
         var visited=new HashSet<string>();int count=0;
-        var first=AssetDatabase.LoadAssetAtPath<LevelLayoutConfig>("Assets/Match3D/Resources/Match3D/FirstStageCatalog.asset");
-        foreach(var profile in plan.profiles.Concat(first?first.profiles:Array.Empty<LevelLayoutConfig.Profile>()))foreach(var prefab in profile.prefabs){
+        var themes=AssetDatabase.LoadAssetAtPath<Match3DModelThemes>("Assets/Match3D/Resources/Match3D/ModelThemes.asset");
+        // First stages are derived from these same current theme profiles.
+        foreach(var profile in plan.profiles.Concat(themes?themes.themes.Select(t=>t.profile):Enumerable.Empty<LevelLayoutConfig.Profile>()))foreach(var prefab in profile.prefabs){
             string path=AssetDatabase.GetAssetPath(prefab);
             if(string.IsNullOrEmpty(path))throw new InvalidOperationException("Missing prefab in "+profile.environment);
             if(!visited.Add(path))continue;

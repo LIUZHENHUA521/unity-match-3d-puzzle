@@ -10,7 +10,7 @@ public static class KitchenSceneBuilder {
     public static void Inspect() {
         var report=new StringBuilder();
         var paths=AssetDatabase.FindAssets("t:Model",new[]{Root+"/Art"}).Select(AssetDatabase.GUIDToAssetPath)
-            .Concat(new[]{"Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab"});
+            .Concat(new[]{"Assets/Match3D/Resources/Match3D/Scenes/Match3DBoard.prefab"});
         foreach(var path in paths){
             var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if(!prefab){report.AppendLine("MISSING "+path);continue;}

@@ -19,7 +19,7 @@ public static class ModalMotionValidation {
  static void Assert(bool ok,string reason){if(!ok)throw new Exception(reason);}
  static IEnumerator Run(){
   Time.timeScale=0;
-  foreach(string name in new[]{"PauseSettings","ReviveClear","ReviveTime","ResultSuccess","ResultFailure","Reward","RedPackets","UserProfile","Mailbox","InviteRewards","ModelSize","Result"}){
+  foreach(string name in new[]{"PauseSettings","ReviveClear","ReviveTime","ResultSuccess","ResultFailure","Reward","RedPackets","UserProfile","Mailbox","InviteRewards","ModelSize"}){
    var view=Match3DUIView.Load(name,null);Match3DModalMotion.Play(view.gameObject);var motion=view.GetComponent<Match3DModalMotion>();var group=view.GetComponentInChildren<CanvasGroup>();
    Assert(motion.Playing&&!group.interactable&&group.alpha==0,name+" initial state");
    yield return new WaitForSecondsRealtime(.1f);Assert(group.alpha>0,name+" paused fade");

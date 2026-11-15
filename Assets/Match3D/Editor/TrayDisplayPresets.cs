@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 public static class TrayDisplayPresets {
-    public static void ApplyCountrysideDefaults(bool overwrite=false){
+    public static void ApplyMatch3DDefaults(bool overwrite=false){
         var settings=TrayDisplayWindow.EnsureSettings();
         foreach(var prefab in LevelLayoutConfig.Get("CountrysideStove").prefabs){
             if(!overwrite&&settings.TryGet(prefab,out _))continue;

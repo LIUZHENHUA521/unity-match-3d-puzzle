@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 public static class PicnicBackdropBuilder {
-    const string Prefab = "Assets/Match3D/Resources/Match3D/Scenes/CountrysideStove.prefab";
+    const string Prefab = "Assets/Match3D/Resources/Match3D/Scenes/Match3DBoard.prefab";
     const string Image = "Assets/Match3D/Resources/Match3D/ThemeBackgrounds/foodie-party.jpg";
     public static void Build() {
         if (EditorApplication.isPlaying) throw new Exception("Stop play mode first");

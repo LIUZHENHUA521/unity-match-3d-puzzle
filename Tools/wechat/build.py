@@ -31,32 +31,20 @@ dependencies = json.loads(manifest.read_text())
 dependencies['dependencies'].pop('com.unitymcp.server', None)
 manifest.write_text(json.dumps(dependencies, indent=2) + '\n')
 
-# These sprites are looked up by name, including theme-specific names in YAML.
-# Keep every referenced name; the full reference collection stays in the source.
+# Extracted reference artwork and retired PVP pages must never return to releases.
+for retired in ('Assets/Match3D/Resources/GooseArt',
+                'Assets/Match3D/Resources/Match3D/UI/PvpLobby.prefab',
+                'Assets/Match3D/Resources/Match3D/UI/PvpGameHUD.prefab'):
+    if (stage / retired).exists():
+        raise SystemExit('Retired resource found: ' + retired)
 source = '\n'.join(p.read_text() for p in (ROOT / 'Assets/Match3D/Scripts').glob('*.cs'))
 names = set(re.findall(r'"([^"\n]+)"', source))
-themes = (ROOT / 'Assets/Match3D/Resources/Match3D/ThemeLibrary.asset').read_text()
-names.update(re.findall(r'^\s+gooseSprite: (.+)$', themes, re.M))
-# Prefab-based UI references sprites by GUID instead of Resources.Load names.
-# Retain those dependencies when trimming the reference art collection.
 referenced_guids = set()
 for asset in (stage / 'Assets').rglob('*'):
     if asset.suffix in {'.prefab', '.unity', '.asset', '.mat', '.spriteatlas'}:
         referenced_guids.update(re.findall(r'guid: ([0-9a-f]{32})', asset.read_text(errors='ignore')))
-sprites = stage / 'Assets/Match3D/Resources/GooseArt/Sprites'
 excluded = stage / 'BuildInputs/ReferenceSprites'
 excluded.mkdir(parents=True, exist_ok=True)
-kept, removed = [], []
-for sprite in sprites.glob('*.png'):
-    meta = sprite.with_suffix('.png.meta')
-    guid = re.search(r'^guid: ([0-9a-f]{32})', meta.read_text(), re.M) if meta.exists() else None
-    if sprite.stem in names or (guid and guid.group(1) in referenced_guids):
-        kept.append(sprite.name)
-        continue
-    removed.append(sprite.name)
-    for p in [sprite, sprite.with_suffix('.png.meta')]:
-        if p.exists(): shutil.move(str(p), str(excluded / p.name))
-(stage / 'BuildInputs/sprites.json').write_text(json.dumps({'kept':sorted(kept), 'excluded':sorted(removed)}, ensure_ascii=False, indent=2))
 # Keep source/reference exports out of Unity Resources. The WeChat exporter packs
 # Resources wholesale even when no runtime code loads these authoring assets.
 reference_dirs = [
@@ -90,14 +78,8 @@ for reference_file in replica_resources.glob('Source*'):
         'SourceLevelCatalog.asset',
         'SourceColliders.json',
         'SourceSizes.json',
-        # Runtime lookup tables.  SourceAudio.LoadCatalog dereferences the
-        # asset directly during layered item creation, so moving these makes
-        # the creation coroutine abort with a NullReferenceException.
-        'SourceAudioItems.json',
-        # Runtime second-stage material/selection/combine audio.  GameAudioCatalog
-        # loads these clips by Resources path (Match3D/SourceAudio/<name>) while
-        # creating and selecting layered items.  Treating the directory as
-        # authoring evidence leaves a valid-looking build with silent stage 2.
+        # Current selection, combine and reward clips; retired material/voice/tool
+        # audio and its source mapping table have been removed.
         'SourceAudio',
         'SourceFlightItems.json',
     }:
@@ -108,16 +90,16 @@ for reference_file in replica_resources.glob('Source*'):
         else: target.unlink()
     shutil.move(str(reference_file), str(target))
 
-# The imported theme prefabs under Resources/Match3D/Scenes reference the
-# generated materials, meshes and textures in SourceScenes.  That directory
-# is runtime data even though its contents originated as source-scene exports;
-# removing it leaves the theme object instantiable but visually untextured.
-source_scene_runtime = stage / 'Assets/Match3D/SourceScenes'
-if not source_scene_runtime.exists():
-    raise SystemExit('Missing runtime theme dependencies: Assets/Match3D/SourceScenes')
+# The current board owns its surviving dependencies; extracted scene exports
+# have been intentionally removed and must not be required for publishing.
+if not (replica_resources / 'Scenes/Match3DBoard.prefab').exists():
+    raise SystemExit('Missing current Match3DBoard prefab')
 runtime_audio = replica_resources / 'SourceAudio'
-if not runtime_audio.exists() or not any(runtime_audio.glob('*.wav')):
-    raise SystemExit('Missing runtime second-stage audio: Resources/Match3D/SourceAudio')
+required_audio = {'DM-CGS-32.wav', 'unfa_cartoon_pop.wav', 'PotRewardReceived.mp3'}
+if not required_audio.issubset({p.name for p in runtime_audio.glob('*')}):
+    raise SystemExit('Missing current selection/combine/reward audio')
+if any(runtime_audio.glob('S_*')) or (ROOT / 'Assets/Match3D/Resources/Match3D/SourceAudioItems.json').exists():
+    raise SystemExit('Retired material/voice/tool audio or source mapping has returned')
 # The source models carry authoring-quality 1K/2K textures.  The experience
 # build uses the same models but imports these at 256px with Unity's
 # platform compression, keeping the initial WeChat package under its limit.
@@ -162,14 +144,12 @@ for name in ('img_Blue_box1', 'img_GreyBlue_box', 'image_add_circle'):
 # release copy; preserve the source tracks, duration, channels and short effects.
 for relative in (
     'Assets/Match3D/Audio/Licensed/Carefree.mp3.meta',
-    'Assets/Match3D/Resources/GooseArt/Audio/BGM_MainScene.wav.meta',
-    'Assets/Match3D/Resources/GooseArt/Audio/BGM_PVP.wav.meta',
 ):
     meta = stage / relative
     text = meta.read_text()
     text = re.sub(r'(?m)^(    quality: ).+$', r'\g<1>0.15', text)
     meta.write_text(text)
-print(f'Staged {stage}; sprites kept={len(kept)}, excluded={len(removed)}', flush=True)
+print(f'Staged {stage}; retired reference art excluded', flush=True)
 if args.prepare_only:
     raise SystemExit(0)
 log = ROOT / 'Builds/wechat-build.log'

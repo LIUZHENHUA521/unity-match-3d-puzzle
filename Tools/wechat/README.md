@@ -1,3 +1,7 @@
+## 2026-11-15 资源清理
+
+已移除整个 `Resources/GooseArt`、PVP 页面与客户端传输模块、旧 Result/Themes 页面。单机弹窗使用现有皮肤，按钮点击复用当前点击音效；原胜负短音效已停用。历史 `pvpEndpoint` 配置仍供登录、奖励和回放共用，保持兼容。构建遇到旧素材目录或 PVP 页面会报错，防止重新打入包。以下发布记录为历史状态。
+
 # 微信小游戏发布配置
 
 ## Unity 发布菜单（macOS）
@@ -39,7 +43,7 @@ AppID：`wx74f2d8722c02a6f4`，由用户从 sandBlast 分配给当前 Unity 游�
 
 ```sh
 python3 Tools/wechat/build.py
-node Tools/wechat/test-transport.cjs
+python3 Tools/wechat/test-publish.py
 node Tools/wechat/upload.cjs --check
 ```
 
