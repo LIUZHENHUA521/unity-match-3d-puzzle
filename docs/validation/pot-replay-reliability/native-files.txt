@@ -1,0 +1,20 @@
+TAP version 13
+# Subtest: native replay bridge round trips binary chunks without wx base64 APIs
+ok 1 - native replay bridge round trips binary chunks without wx base64 APIs
+  ---
+  duration_ms: 11.539875
+  ...
+# Subtest: invalid base64 is rejected before a file write
+ok 2 - invalid base64 is rejected before a file write
+  ---
+  duration_ms: 0.706458
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 40.135583

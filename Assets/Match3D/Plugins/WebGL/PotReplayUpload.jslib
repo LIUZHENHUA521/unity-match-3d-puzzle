@@ -13,7 +13,7 @@ mergeInto(LibraryManager.library, {
       PotReplayNetwork.id=r.id;PotReplayNetwork.task=wx.request({url:r.ticket.url,method:'PUT',data:fs.readFileSync(path),timeout:180000,
         header:{'Content-Type':'application/octet-stream',Signature:r.ticket.authorization,Authorization:r.ticket.authorization,'x-cos-security-token':r.ticket.token,'x-cos-meta-fileid':r.ticket.cosFileId,key:encodeURIComponent(r.ticket.cloudPath)},
         success:function(res){done(res.statusCode>=200&&res.statusCode<300,'云存储返回 '+res.statusCode);},
-        fail:function(){done(false,'云存储上传中断，录像已保留');}
+        fail:function(error){done(false,error&&error.errMsg||'云存储上传中断，录像已保留');}
       });
     } catch(e) {done(false,String(e.message||e));}
   },

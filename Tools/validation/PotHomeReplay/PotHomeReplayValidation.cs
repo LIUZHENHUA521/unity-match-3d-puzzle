@@ -36,14 +36,24 @@ public static class PotHomeReplayValidation {
             service.GetType().GetField("endpoint",Private)?.SetValue(service,File.ReadAllText(Output+"/endpoint"));
         }
         var replay=PotReplayService.Instance;
-        Account(Owner);foreach(var tier in new[]{"bachelor","elite"})PlayerPrefs.DeleteKey("pot.home-replay.win."+Owner+"."+tier);
+        Account(Owner);PlayerPrefs.DeleteKey("pot.replay.state.v1."+Owner);PlayerPrefs.DeleteKey("pot.replay.state.v1."+Other);foreach(var tier in new[]{"bachelor","elite"})PlayerPrefs.DeleteKey("pot.home-replay.win."+Owner+"."+tier);
         Mode("pending");flow.Home();yield return new WaitForSecondsRealtime(1.2f);
         Check(!Caption("Bachelor").gameObject.activeSelf&&!Caption("Elite").gameObject.activeSelf,"unfinished tiers retain original reward artwork");
         foreach(var key in new[]{"Bachelor","Elite"})Check(Home().Get<Button>(key).GetComponentsInChildren<Image>().Count(x=>x.sprite&&x.sprite.name.StartsWith("PotHome"))==4,key+" background title packet and caption are separate sprites");
         Capture("pot-home-normal",720,1565);
         var win=new Match3DGameRecords.Record{stage=2,status="win",levelSeed=123,challengeTier="bachelor",levelDate=Match3DFlow.Today};
         PotHomeReplayState.MarkWin(Owner,win);flow.Home();yield return new WaitForSecondsRealtime(1.2f);
-        Check(Caption("Bachelor").text=="回放待同步"&&Caption("Bachelor").gameObject.activeSelf&&!Caption("Elite").gameObject.activeSelf,"win is pending while other tier stays unchanged: "+Caption("Bachelor").text+" active="+Caption("Bachelor").gameObject.activeSelf+" elite="+Caption("Elite").gameObject.activeSelf+" account="+Match3DInvitations.Instance.State.inviteCode+" won="+PotHomeReplayState.Won(Owner,Match3DFlow.Today,"bachelor")+" entryOwner="+typeof(PotHomeReplayEntry).GetField("owner",Private).GetValue(Object.FindObjectOfType<PotHomeReplayEntry>())+" entryDate="+typeof(PotHomeReplayEntry).GetField("date",Private).GetValue(Object.FindObjectOfType<PotHomeReplayEntry>())+" ready="+Match3DInvitations.Instance.Ready);
+        Check(Caption("Bachelor").text=="本局回放未保存","a win with no recording must not promise synchronization");
+        var localRecord=new Match3DGameRecords.Record{recordId=new string('c',32),status="win",stage=2};
+        PotReplayLocalState.Start(Owner,localRecord,new Match3DDailyLevel{date=Match3DFlow.Today,tier="bachelor"});
+        PotReplayLocalState.Set(Owner,localRecord.recordId,"queued",result:"win");yield return new WaitForSecondsRealtime(1.2f);
+        Check(Caption("Bachelor").text=="回放待同步","complete queued win shows pending");
+        PotReplayLocalState.Set(Owner,localRecord.recordId,"uploading");yield return new WaitForSecondsRealtime(1.2f);
+        Check(Caption("Bachelor").text=="回放同步中","in flight shows uploading");
+        PotReplayLocalState.Set(Owner,localRecord.recordId,"failed","memory");yield return new WaitForSecondsRealtime(1.2f);
+        Check(Caption("Bachelor").text=="本局回放未保存","terminal failure leaves pending state");
+        PotReplayLocalState.Set(Owner,localRecord.recordId,"queued");
+
         Check(!PotHomeReplayState.Won(Other,Match3DFlow.Today,"bachelor")&&!PotHomeReplayState.Won(Owner,"2000-01-01","bachelor"),"win markers isolate account and day");
         var row=new PotReplayService.Summary{id="a",status="win",stage=2,tier="bachelor",date=Match3DFlow.Today,resourceVersion=PotReplayData.Resources};
         Check(PotHomeReplayState.Matches(row,Match3DFlow.Today,"bachelor"),"uploaded matching win is accepted");
@@ -56,7 +66,13 @@ public static class PotHomeReplayValidation {
             yield return (IEnumerator)typeof(PotReplayService).GetMethod("UploadOne",Private).Invoke(replay,new object[]{Owner,path});
             Check(!PotReplayFiles.Exists(path),mode+" removes the completed queue entry");
         }
-        Check(notifications==2,"finalization retry and already-ready upload start both notify the home");
+        Mode("upload-fail");string offline=PotReplayService.PathFor(Owner,new string('f',32),".pending");PotReplayFiles.Write(offline,"{}");
+        yield return (IEnumerator)typeof(PotReplayService).GetMethod("UploadOne",Private).Invoke(replay,new object[]{Owner,offline});
+        Check(PotReplayFiles.Exists(offline)&&PotReplayLocalState.Get(Owner,new string('f',32)).state=="queued","server failure retains payload for retry");
+        var persisted=PotReplayLocalState.Get(Owner,new string('f',32));Check(persisted.attempts==1&&persisted.nextAttempt>PotReplayLocalState.Now,"retry delay is persisted");
+        Mode("finalized");yield return (IEnumerator)typeof(PotReplayService).GetMethod("UploadOne",Private).Invoke(replay,new object[]{Owner,offline});
+        Check(!PotReplayFiles.Exists(offline)&&PotReplayLocalState.Get(Owner,new string('f',32)).state=="synced","retry completes without reupload when server already has file");
+        Check(notifications==3,"finalization retry and already-ready upload start both notify the home");
         Mode("ready");string completed=PotReplayService.PathFor(Owner,new string('d',32),".pending");PotReplayFiles.Write(completed,"{}");
         typeof(PotReplayService).GetMethod("CompleteUpload",Private).Invoke(replay,new object[]{Owner,completed});
         yield return Wait(()=>IDs().All(x=>!string.IsNullOrEmpty(x)),"upload completion refresh finds wins beyond the first 20 records");

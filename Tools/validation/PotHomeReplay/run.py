@@ -22,24 +22,9 @@ args = parser.parse_args()
 payload = args.replay.read_bytes()
 recording = json.loads(gzip.decompress(payload))
 STAGE.mkdir(parents=True, exist_ok=True)
-# Shared checkout contains other in-flight tasks. Validate HEAD plus this feature only.
+# Include the full current source tree so new replay dependencies are compiled.
 for folder in ('Assets', 'Packages', 'ProjectSettings'):
-    if (STAGE / folder).exists(): shutil.rmtree(STAGE / folder)
-archive = subprocess.Popen(['git', 'archive', BASE, 'Assets', 'Packages', 'ProjectSettings'], cwd=ROOT, stdout=subprocess.PIPE)
-subprocess.run(['tar', '-xf', '-', '-C', str(STAGE)], stdin=archive.stdout, check=True)
-archive.stdout.close()
-if archive.wait(): raise SystemExit('Cannot export validation baseline')
-for name in ('PotHomeReplayState', 'PotHomeReplayButton', 'PotHomeReplayEntry', 'PotReplayService', 'PotReplayFlow', 'Match3DGameRecords'):
-    for suffix in ('.cs', '.cs.meta'):
-        relative = Path('Assets/Match3D/Scripts') / (name + suffix)
-        shutil.copy(ROOT / relative, STAGE / relative)
-relative = Path('Assets/Match3D/Scripts/Match3DHomeView.cs')
-home = subprocess.check_output(['git', 'show', BASE + ':' + str(relative)], cwd=ROOT).decode()
-home = home.replace('ui.Bind("Bachelor",()=>flow.BeginReward(0,"bachelor"));ui.Bind("Elite",()=>flow.BeginReward(0,"elite"));', 'home.gameObject.AddComponent<PotHomeReplayEntry>().Configure(ui);')
-(STAGE / relative).write_text(home)
-relative = Path('Assets/Match3D/Resources/Match3D/PotHomeReplaySkin')
-shutil.copytree(ROOT / relative, STAGE / relative, dirs_exist_ok=True)
-shutil.copy(ROOT / (str(relative) + '.meta'), STAGE / (str(relative) + '.meta'))
+    subprocess.run(['rsync', '-a', '--delete', str(ROOT / folder) + '/', str(STAGE / folder) + '/'], check=True)
 if not (STAGE / 'Library').exists():
     subprocess.run(['cp', '-cR', str(ROOT / 'Library'), str(STAGE / 'Library')], check=True)
 shutil.copy(Path(__file__).with_name('PotHomeReplayValidation.cs'), STAGE / 'Assets/Match3D/Editor/PotHomeReplayValidation.cs')

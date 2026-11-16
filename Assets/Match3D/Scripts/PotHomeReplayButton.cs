@@ -35,9 +35,9 @@ public sealed class PotHomeReplayButton {
         rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(0,1);rect.anchoredPosition=new Vector2(x,-y);rect.sizeDelta=sprite.rect.size;
         var image=rect.GetComponent<Image>();image.sprite=sprite;image.raycastTarget=false;return image;
     }
-    public void Render(bool won,string replayId){
+    public void Render(bool won,string replayId,string pending="回放待同步"){
         bool ready=!string.IsNullOrEmpty(replayId),normal=!won&&!ready;
         packet.gameObject.SetActive(normal);reward.gameObject.SetActive(normal);caption.gameObject.SetActive(!normal);
-        caption.text=ready?"查看回放":"回放待同步";
+        caption.text=ready?"查看回放":pending;
     }
 }

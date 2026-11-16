@@ -8,7 +8,7 @@ using UnityEngine;
 [DefaultExecutionOrder(10000)]
 public sealed class PotReplayRecorder : MonoBehaviour {
     public static PotReplayRecorder Instance {get;private set;}
-    PotReplayData data;long writtenBytes;string owner,journal;float elapsed,nextSample,lastCheckpoint;int journalEvents,frameCount;bool hidden,eventDirty;
+    PotReplayData data;long writtenBytes;string owner,journal,recordId;float elapsed,nextSample,lastCheckpoint;int journalEvents,frameCount;bool hidden,eventDirty;
     readonly StringBuilder pendingFrames=new StringBuilder();
     readonly Dictionary<int,GameObject> objects=new Dictionary<int,GameObject>();
     readonly Dictionary<int,Renderer[]> renderers=new Dictionary<int,Renderer[]>();
@@ -28,6 +28,8 @@ public sealed class PotReplayRecorder : MonoBehaviour {
     public void Begin(Match3DGameRecords.Record record,Match3DDailyLevel level){
         if(record==null||record.stage!=2||data!=null||level==null||Match3DFlow.Instance.LocalPreview||PotReplayPlayer.Active)return;
         var account=Match3DInvitations.Instance;if(!account||!account.Ready)return;
+        owner=account.State.inviteCode;recordId=record.recordId;journal=null;writtenBytes=0;
+        PotReplayLocalState.Start(owner,record,level);
         try{
             if(PotReplayFiles.List().Sum(x=>PotReplayFiles.Size(x))>128*1024*1024)throw new Exception("录像本地缓存已满，请联网同步");
             owner=account.State.inviteCode;pendingFrames.Clear();
@@ -47,7 +49,7 @@ public sealed class PotReplayRecorder : MonoBehaviour {
         elapsed+=Time.unscaledDeltaTime;
         if(elapsed>7200||frameCount>=72000){Abort(new Exception("录像超过时长或帧数上限"));return;}
         if(elapsed<nextSample&&!eventDirty)return;eventDirty=false;nextSample=elapsed+.1f;
-        try{Capture(elapsed-lastCheckpoint>=5);}catch(Exception e){Abort(e);}
+        try{Capture(elapsed-lastCheckpoint>=PotReplayEncoding.CheckpointSeconds);}catch(Exception e){Abort(e);}
     }
     void Capture(bool full){
         var camera=Camera.main;var input=InputController.Instance;
@@ -56,21 +58,22 @@ public sealed class PotReplayRecorder : MonoBehaviour {
             var obj=pair.Value;var old=previous.TryGetValue(pair.Key,out var cached)?cached:null;
             var pose=obj?new PotReplayPose{id=pair.Key,render=renderers[pair.Key].Select(r=>r&&r.enabled&&r.gameObject.activeInHierarchy).ToArray(),p=obj.transform.position,r=obj.transform.rotation,s=obj.transform.localScale,visible=obj.activeInHierarchy&&renderers[pair.Key].Any(r=>r&&r.enabled&&r.gameObject.activeInHierarchy),zone=input.objectsOnStack.Contains(obj)?1:BoardTools.IsStored(obj)?2:LevelGenerator.Instance.objectsOnScene.Contains(obj)?0:3}:new PotReplayPose{id=pair.Key,render=new bool[renderers[pair.Key].Length],p=old?.p??Vector3.zero,r=old?.r??Quaternion.identity,s=old?.s??Vector3.one,zone=3,visible=false};
             // Pooled objects remain allocated after being removed; disappearance is captured by visibility.
-            if(full||!pose.Same(old))frame.items.Add(pose);previous[pair.Key]=pose;
+            pose=PotReplayEncoding.Compact(pose,old);
+            if(full||PotReplayEncoding.Changed(pose,old)){frame.items.Add(pose);previous[pair.Key]=pose;}
         }
         frame.presentation=PotReplayPresentation.Capture();frame.events=data.events.Skip(journalEvents).ToArray();journalEvents=data.events.Count;
         frameCount++;
-        pendingFrames.AppendLine(JsonUtility.ToJson(frame));
+        pendingFrames.AppendLine(PotReplayEncoding.Frame(frame));
         if(full||pendingFrames.Length>=32768)Flush();if(full)lastCheckpoint=elapsed;
         if(writtenBytes+pendingFrames.Length>PotReplayService.MaxJsonBytes)throw new Exception("录像超过64MiB保存上限");
     }
     public void Finish(string status){
         if(data==null)return;
-        try{Event("finish");Capture(true);data.duration=elapsed;data.status=status;PotReplayJournal.Ready(journal,data,frameCount);PotReplayService.Instance.Queued();data=null;objects.Clear();renderers.Clear();previous.Clear();pendingFrames.Clear();}
+        try{Event("finish");Capture(true);data.duration=elapsed;data.status=status;PotReplayJournal.Ready(journal,data,frameCount);PotReplayLocalState.Set(owner,recordId,"queued",result:status);PotReplayService.Instance.Queued();data=null;objects.Clear();renderers.Clear();previous.Clear();pendingFrames.Clear();}
         catch(Exception e){Abort(e);}
     }
     void OnLowMemory(){if(data!=null)Abort(new Exception("设备内存紧张，已停止录制以保护对局"));}
-    void Abort(Exception error){Debug.LogWarning("Pot replay unavailable: "+error.Message);PotReplayService.Instance?.RecordingFailed(error.Message);data=null;objects.Clear();renderers.Clear();previous.Clear();pendingFrames.Clear();}
+    void Abort(Exception error){PotReplayLocalState.Set(owner,recordId,"failed",error.Message);Debug.LogWarning("Pot replay unavailable: "+error.Message);PotReplayService.Instance?.RecordingFailed(error.Message);data=null;objects.Clear();renderers.Clear();previous.Clear();pendingFrames.Clear();}
     void Flush(){if(pendingFrames.Length==0||string.IsNullOrEmpty(journal))return;string text=pendingFrames.ToString();PotReplayFiles.Append(journal,text);writtenBytes+=Encoding.UTF8.GetByteCount(text);pendingFrames.Clear();}
     void OnApplicationPause(bool paused){hidden=paused;if(paused&&data!=null)try{Flush();}catch(Exception e){Abort(e);}}
     void OnApplicationFocus(bool focus){OnApplicationPause(!focus);}

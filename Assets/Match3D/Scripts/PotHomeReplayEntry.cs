@@ -28,7 +28,7 @@ public sealed class PotHomeReplayEntry : MonoBehaviour {
                 yield return Match3DStartupRunner.Run(Refresh(version),e=>Debug.LogWarning("Pot home replay: "+e.Message));
                 querying=false;nextCheck=Time.realtimeSinceStartup+30;
             }
-            yield return new WaitForSecondsRealtime(1);
+            Render();yield return new WaitForSecondsRealtime(1);
         }
     }
     IEnumerator Refresh(int version){
@@ -48,7 +48,7 @@ public sealed class PotHomeReplayEntry : MonoBehaviour {
         if(!Current(version))yield break;
         for(int i=0;i<2;i++)ids[i]=found[i];Render();
     }
-    void Render(){for(int i=0;i<2;i++)buttons[i].Render(PotHomeReplayState.Won(owner,date,tiers[i]),ids[i]);}
+    void Render(){for(int i=0;i<2;i++)buttons[i].Render(PotHomeReplayState.Won(owner,date,tiers[i]),ids[i],PotReplayLocalState.Caption(owner,date,tiers[i]));}
     void Click(int index){
         if(opening)return;
         var flow=Match3DFlow.Instance;
@@ -57,7 +57,7 @@ public sealed class PotHomeReplayEntry : MonoBehaviour {
             opening=true;int version=generation;
             flow.OpenPotReplay(ids[index],()=>Current(version),error=>{opening=false;refresh=true;});return;
         }
-        if(PotHomeReplayState.Won(owner,date,tiers[index])){refresh=true;flow.Notice("已通关，回放尚未同步完成，请稍候…");return;}
+        if(PotHomeReplayState.Won(owner,date,tiers[index])){refresh=true;flow.Notice(PotReplayLocalState.Explanation(owner,date,tiers[index]));return;}
         flow.BeginReward(0,tiers[index]);
     }
 }

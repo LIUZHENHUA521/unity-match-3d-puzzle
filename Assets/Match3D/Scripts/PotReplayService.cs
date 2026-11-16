@@ -11,13 +11,13 @@ using UnityEngine.Networking;
 public sealed class PotReplayService : MonoBehaviour {
     [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion;public int stage;public float duration;public long createdAt;}
     [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public DownloadTicket download;public Summary[] list;public PotReplayData detail;}
-    [Serializable] class RequestBody {public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
+    [Serializable] class RequestBody {public string state,reason,result;public int attempts;public long occurredAt;public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
     [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,format;}
     [Serializable] public class DownloadTicket {public string url,format,sha256;}
     public const int MaxJsonBytes=64*1024*1024;
     public static PotReplayService Instance {get;private set;}
     public event Action<string> Uploaded;
-    string endpoint;int nextUpload;public string Status {get;private set;}="";
+    string endpoint;string queueOwner;float nextDiagnostic;string uploadError;public string Status {get;private set;}="";
     public static string DirectoryPath=>Path.Combine(Application.persistentDataPath,"pot-replays-v1");
     public static string PathFor(string owner,string id,string suffix){PotReplayFiles.Ensure();return Path.Combine(DirectoryPath,owner+"_"+id+suffix);}
     float memoryPauseUntil;UnityWebRequest activeUpload;
@@ -48,17 +48,34 @@ public sealed class PotReplayService : MonoBehaviour {
     bool Busy()=>Time.realtimeSinceStartup<memoryPauseUntil||PotReplayRecorder.Recording||PotReplayPlayer.Active||GameManager.Instance&&GameManager.Instance.GameIsPlaying();
     public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');StartCoroutine(InitializeQueue());}
     public void Queued(){Status="录像已保存，等待空闲时同步";}
-    IEnumerator InitializeQueue(){
-        yield return Match3DStartupRunner.Run(Recover(),e=>{Status="录像本地恢复暂不可用";Debug.LogWarning(e.Message);});
-        yield return Upload();
-    }
-    IEnumerator Recover(){
+    IEnumerator InitializeQueue(){yield return Upload();}
+    IEnumerator Recover(string owner){
         PotReplayFiles.Ensure();
-        foreach(var path in PotReplayFiles.List("*.recording")){
+        foreach(var temporary in PotReplayFiles.List(owner+"_*.upload"))try{PotReplayFiles.Delete(temporary);}catch(Exception error){Debug.LogWarning(error.Message);}
+        PotReplayQueue.RestoreRejected(owner);
+        foreach(var path in PotReplayFiles.List(owner+"_*.recording")){
             while(Busy())yield return new WaitForSecondsRealtime(3);
             if(PotReplayFiles.Exists(Path.ChangeExtension(path,".ready"))||PotReplayFiles.Exists(Path.ChangeExtension(path,".ready.rejected"))||PotReplayFiles.Exists(Path.ChangeExtension(path,".pending")))continue;
-            yield return Match3DStartupRunner.Run(PotReplayJournal.Recover(path),e=>Debug.LogWarning("Pot replay recovery: "+e.Message));
+            var id=PotReplayQueue.Id(owner,path);var state=PotReplayLocalState.Get(owner,id);
+            if(state?.state=="synced"){try{PotReplayFiles.Delete(path);}catch(Exception error){Debug.LogWarning(error.Message);}continue;}
+            if(state?.state=="failed")continue;
+            if(PotReplayFiles.Size(path)>MaxJsonBytes){
+                if(state==null)PotReplayLocalState.Put(owner,new PotReplayLocalState.Entry{recordId=id});
+                PotReplayLocalState.Set(owner,id,"failed","旧版录像超过64MiB上限");continue;
+            }
+            // A truncated recording cannot become a winning replay. Keep the known failure visible.
+            Exception failure=null;
+            yield return Match3DStartupRunner.Run(PotReplayJournal.Recover(path),e=>failure=e);
+            var ready=Path.ChangeExtension(path,".ready");
+            if(PotReplayFiles.Exists(ready)){
+                if(state==null)PotReplayQueue.Import(owner,ready);
+                PotReplayLocalState.Set(owner,id,"queued","恢复了部分录像",result:"incomplete");
+            }else{
+                if(state==null)PotReplayLocalState.Put(owner,new PotReplayLocalState.Entry{recordId=id});
+                PotReplayLocalState.Set(owner,id,"failed",failure?.Message??"录像未完整保存");
+            }
         }
+        PotReplayQueue.Reconcile(owner);
     }
     [UnityEngine.Scripting.Preserve] public void OnPotReplayUpload(string json){var reply=JsonUtility.FromJson<NativeReply>(json);if(reply!=null&&reply.id==nativeId)nativeReply=reply;}
     IEnumerator UploadFile(UploadTicket ticket,string path,Action<bool> done){
@@ -68,36 +85,55 @@ public sealed class PotReplayService : MonoBehaviour {
         float deadline=Time.realtimeSinceStartup+185;
         while(nativeReply==null&&Time.realtimeSinceStartup<deadline)yield return null;
         if(nativeReply==null)PotReplayUploadCancel();
-        done(nativeReply!=null&&nativeReply.ok);nativeId=null;nativeReply=null;
+        uploadError=nativeReply?.error??"录像上传超时";done(nativeReply!=null&&nativeReply.ok);nativeId=null;nativeReply=null;
 #else
         using(var request=new UnityWebRequest(ticket.url,"PUT")){
             request.uploadHandler=new UploadHandlerFile(path);request.downloadHandler=new DownloadHandlerBuffer();request.timeout=180;
             request.SetRequestHeader("Content-Type","application/octet-stream");request.SetRequestHeader("Signature",ticket.authorization);request.SetRequestHeader("Authorization",ticket.authorization);
             request.SetRequestHeader("x-cos-security-token",ticket.token);request.SetRequestHeader("x-cos-meta-fileid",ticket.cosFileId);request.SetRequestHeader("key",Uri.EscapeDataString(ticket.cloudPath));
-            activeUpload=request;try{yield return request.SendWebRequest();done(request.result==UnityWebRequest.Result.Success);}finally{activeUpload=null;}
+            activeUpload=request;try{yield return request.SendWebRequest();uploadError=request.error;done(request.result==UnityWebRequest.Result.Success);}finally{activeUpload=null;}
         }
 #endif
     }
     IEnumerator Upload(){
         while(true){
-            yield return new WaitForSecondsRealtime(3);
+            yield return new WaitForSecondsRealtime(1);
             var account=Match3DInvitations.Instance;if(!account||!account.Ready||Busy())continue;
             string owner=account.State.inviteCode;
-            string[] files;try{files=PotReplayFiles.List(owner+"_*.ready").Concat(PotReplayFiles.List(owner+"_*.pending")).ToArray();}catch{Status="录像本地保存暂不可用";continue;}if(files.Length==0)continue;
-            string path=files[nextUpload++%files.Length];
-            yield return Match3DStartupRunner.Run(UploadOne(owner,path),e=>{Status="录像同步失败，已保留文件等待重试";Debug.LogWarning("Pot replay upload: "+e.Message);});
-            yield return new WaitForSecondsRealtime(15);
+            if(queueOwner!=owner){
+                bool recovered=true;yield return Match3DStartupRunner.Run(Recover(owner),e=>{recovered=false;Status="录像本地恢复暂不可用";Debug.LogWarning(e.Message);});
+                if(!recovered){yield return new WaitForSecondsRealtime(15);continue;}queueOwner=owner;
+            }
+            string path=null;try{path=PotReplayQueue.Next(owner);}catch(Exception e){Status="录像本地保存暂不可用";Debug.LogWarning(e.Message);}if(path==null){if(Time.realtimeSinceStartup>=nextDiagnostic){yield return ReportDiagnostic(owner);nextDiagnostic=Time.realtimeSinceStartup+30;}continue;}
+            string id=PotReplayQueue.Id(owner,path);
+            yield return Match3DStartupRunner.Run(UploadOne(owner,path),e=>{Status="录像同步失败，已保留文件等待重试";PotReplayLocalState.Retry(owner,id,e.Message);Debug.LogWarning("Pot replay upload: "+e.Message);});
         }
     }
+    IEnumerator ReportDiagnostic(string owner){
+        var entry=PotReplayLocalState.All(owner).Where(e=>!e.reported&&e.state!="recording").OrderBy(e=>e.updatedAt).FirstOrDefault();if(entry==null)yield break;
+        Reply reply=null;long code=0;long revision=entry.updatedAt;
+        yield return Send("diagnostic",new RequestBody{recordId=entry.recordId,state=entry.state,reason=entry.reason,result=entry.result,attempts=entry.attempts,occurredAt=entry.updatedAt},r=>reply=r,c=>code=c,owner);
+        if(reply?.ok==true||code==400){var current=PotReplayLocalState.Get(owner,entry.recordId);if(current!=null&&current.updatedAt==revision){current.reported=true;PotReplayLocalState.Put(owner,current);}}
+    }
+    static bool PermanentPackFailure(Exception error){
+        string message=error.Message;
+        return message.Contains("超过64MiB")||message.Contains("超过16MiB")||message.Contains("录像索引")||message.Contains("录像帧不完整")||message.Contains("录像初盘缺失");
+    }
+    void FailedUpload(string owner,string path,string reason,bool terminal){
+        var id=PotReplayQueue.Id(owner,path);Status=reason;
+        if(terminal){var rejected=PotReplayLocalState.Get(owner,id);if(rejected!=null){rejected.repairVersion=1;PotReplayLocalState.Put(owner,rejected);}PotReplayLocalState.Set(owner,id,"failed",reason);if(!PotReplayFiles.Exists(path+".rejected"))PotReplayFiles.Move(path,path+".rejected");}
+        else PotReplayLocalState.Retry(owner,id,reason);
+    }
     IEnumerator UploadOne(string owner,string path){
-        var recordId=Path.GetFileNameWithoutExtension(path).Substring(owner.Length+1);
+        var recordId=PotReplayQueue.Id(owner,path);
+            PotReplayQueue.Import(owner,path);PotReplayLocalState.Set(owner,recordId,"uploading");
             Reply reply=null;long code=0;
             yield return Send("upload-complete",new RequestBody{recordId=recordId},r=>reply=r,c=>code=c,owner);
             if(reply!=null&&reply.ok){CompleteUpload(owner,path);yield break;}
             // A previous PUT may already be complete. Retry finalization first, without re-uploading.
-            if(code!=404&&code!=410){Status=reply?.error??"录像同步稍后重试";if(code==400||code==413){PotReplayFiles.Move(path,path+".rejected");RecordingFailed(Status);}yield return new WaitForSecondsRealtime(30);yield break;}
+            if(code!=404&&code!=410){FailedUpload(owner,path,reply?.error??"录像同步稍后重试",code==400||code==413);yield break;}
             yield return Send("upload-start",new RequestBody{recordId=recordId},r=>reply=r,c=>code=c,owner);
-            if(reply==null||!reply.ok){Status=reply?.error??"录像同步稍后重试";if(code==400||code==413)PotReplayFiles.Move(path,path+".rejected");yield return new WaitForSecondsRealtime(30);yield break;}
+            if(reply==null||!reply.ok){FailedUpload(owner,path,reply?.error??"录像同步稍后重试",code==400||code==413);yield break;}
             if(reply.ready){CompleteUpload(owner,path);yield break;}
             var ticket=reply.upload;
             if(ticket==null||ticket.format!="gzip-v1"||!Uri.TryCreate(ticket.url,UriKind.Absolute,out var uri)||uri.Scheme!="https")throw new IOException("录像上传地址无效");
@@ -105,20 +141,19 @@ public sealed class PotReplayService : MonoBehaviour {
             try{
                 Exception failure=null;Status="正在分段压缩录像";
                 yield return Match3DStartupRunner.Run(PotReplayTransfer.PackFile(path,packed,Busy),e=>failure=e);
-                if(failure!=null){Status=failure.Message;yield return new WaitForSecondsRealtime(30);yield break;}
-                if(Busy())yield break;
+                if(failure!=null){FailedUpload(owner,path,failure.Message,PermanentPackFailure(failure));yield break;}
+                if(Busy()){PotReplayLocalState.Retry(owner,recordId,"录像将在空闲时继续同步");yield break;}
                 Status="录像正在上传云存储";
                 yield return UploadFile(ticket,packed,ok=>uploaded=ok);
-                if(!uploaded)Status="云存储上传失败，已保留录像等待重试";
+                if(!uploaded)FailedUpload(owner,path,uploadError??"云存储上传失败，已保留录像等待重试",false);
             }finally{if(PotReplayFiles.Exists(packed))PotReplayFiles.Delete(packed);}
             if(uploaded){yield return Send("upload-complete",new RequestBody{recordId=recordId},r=>reply=r,c=>code=c,owner);
                 if(reply!=null&&reply.ok){CompleteUpload(owner,path);}
-                else {Status=reply?.error??"录像等待校验重试";if(code==400||code==413){PotReplayFiles.Move(path,path+".rejected");RecordingFailed(Status);}}
+                else FailedUpload(owner,path,reply?.error??"录像等待校验重试",code==400||code==413);
             }
-            yield return new WaitForSecondsRealtime(30);
     }
     void CompleteUpload(string owner,string path){
-        PotReplayJournal.DeleteCompleted(path);Status="录像已同步";Uploaded?.Invoke(owner);
+        PotReplayLocalState.Set(owner,PotReplayQueue.Id(owner,path),"synced");try{PotReplayJournal.DeleteCompleted(path);}catch(Exception error){Debug.LogWarning("Pot synced replay cleanup: "+error.Message);}Status="录像已同步";Uploaded?.Invoke(owner);
     }
     public IEnumerator List(bool masters,int skip,Match3DDailyLevel level,Action<Reply> done,string tier="bachelor"){
         if(masters){

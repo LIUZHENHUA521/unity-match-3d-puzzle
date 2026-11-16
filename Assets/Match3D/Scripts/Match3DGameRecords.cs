@@ -110,7 +110,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         if(PotReplayPlayer.Active||active==null)return;
         if(PotReplayRecorder.Instance)PotReplayRecorder.Instance.Finish(status);
         if(!started){active=null;return;}
-        active.status=status;active.endReason=reason;active.endedAt=Math.Max(active.startedAt,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());active.activeDurationMs=Math.Min((long)(activeSeconds*1000),active.endedAt-active.startedAt);
+        active.status=status;PotReplayLocalState.Outcome(owner,active);active.endReason=reason;active.endedAt=Math.Max(active.startedAt,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());active.activeDurationMs=Math.Min((long)(activeSeconds*1000),active.endedAt-active.startedAt);
         active.clearedCount=cleared;active.remainingSeconds=Mathf.Max(0,GameManager.Instance.currentLevelTime);active.timeReviveUsed=Match3DFlow.Instance&&Match3DFlow.Instance.TimeReviveUsed;
         active.acquisitionVersion=1;active.reviveUsage=Match3DFlow.Instance?Match3DFlow.Instance.ReviveUsage:new ReviveUse();
         for(int i=0;i<BoardTools.ToolCount;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=BoardTools.FreeUses(i);active.toolUsage[i].share=BoardTools.ShareUses(i);active.toolUsage[i].ad=BoardTools.AdUses(i);active.toolUsage[i].rewarded=active.toolUsage[i].ad+active.toolUsage[i].share;active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].free-active.toolUsage[i].rewarded-active.toolUsage[i].test);}

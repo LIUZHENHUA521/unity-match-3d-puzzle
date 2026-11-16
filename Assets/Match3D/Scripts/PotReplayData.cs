@@ -14,7 +14,14 @@ using UnityEngine;
 }
 [Serializable] public sealed class PotReplayPose {
     public bool[] render;public int id,zone;public Vector3 p,s;public Quaternion r;public bool visible;
-    public bool Same(PotReplayPose other)=>other!=null&&zone==other.zone&&visible==other.visible&&(render??new bool[0]).SequenceEqual(other.render??new bool[0])&&(p-other.p).sqrMagnitude<.000001f&&(s-other.s).sqrMagnitude<.000001f&&Quaternion.Angle(r,other.r)<.1f;
+    static bool SameRotation(Quaternion a,Quaternion b){
+        // Float Quaternion.Angle can report motion for an identical rounded quaternion.
+        double dot=(double)a.x*b.x+(double)a.y*b.y+(double)a.z*b.z+(double)a.w*b.w;
+        double aa=(double)a.x*a.x+(double)a.y*a.y+(double)a.z*a.z+(double)a.w*a.w;
+        double bb=(double)b.x*b.x+(double)b.y*b.y+(double)b.z*b.z+(double)b.w*b.w;
+        return aa>0&&bb>0&&Math.Abs(dot)/Math.Sqrt(aa*bb)>Math.Cos(.05*Math.PI/360);
+    }
+    public bool Same(PotReplayPose other)=>other!=null&&zone==other.zone&&visible==other.visible&&(render??new bool[0]).SequenceEqual(other.render??new bool[0])&&(p-other.p).sqrMagnitude<.000001f&&(s-other.s).sqrMagnitude<.000001f&&SameRotation(r,other.r);
 }
 [Serializable] public sealed class PotReplayFrame {
     public float t,remaining,fov,cameraSize;public bool full,orthographic;public Vector3 cameraPosition;public Quaternion cameraRotation;

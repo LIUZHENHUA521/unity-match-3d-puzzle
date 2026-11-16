@@ -1,0 +1,41 @@
+PASS startup completes
+PASS unfinished tiers retain original reward artwork
+PASS Bachelor background title packet and caption are separate sprites
+PASS Elite background title packet and caption are separate sprites
+PASS a win with no recording must not promise synchronization
+PASS complete queued win shows pending
+PASS in flight shows uploading
+PASS terminal failure leaves pending state
+PASS win markers isolate account and day
+PASS uploaded matching win is accepted
+PASS failed replay is excluded
+PASS recovered incomplete replay is excluded
+PASS other date or tier is excluded
+PASS unsupported replay resources are excluded
+PASS finalized removes the completed queue entry
+PASS already-ready removes the completed queue entry
+PASS server failure retains payload for retry
+PASS retry delay is persisted
+PASS retry completes without reupload when server already has file
+PASS finalization retry and already-ready upload start both notify the home
+PASS upload completion refresh finds wins beyond the first 20 records
+PASS both completed tiers show view replay
+PASS each tier retains its own replay id
+PASS ready state removes red packet artwork from caption row
+PASS home failure path keeps loading tip visible while HTTP response is pending beyond 1.5 seconds
+PASS home download failure closes persistent tip
+PASS download failure preserves home and permits retry
+PASS account switch clears prior replay and win state
+PASS in-flight results from previous account cannot expose its replay
+PASS ready state restores from cloud after reopening home
+PASS home click starts the shared persistent loading tip
+PASS leaving home during download clears loading tip
+PASS cancelled home download cannot open a replay later
+PASS replay can be retried after cancelling download
+PASS actual home button keeps tip visible through slow download authorization
+PASS home tip remains visible through file download and scene preparation
+PASS home entry downloads and opens the existing replay player
+PASS home loading tip is dismissed after first frame is ready
+PASS replay exit returns cleanly to home
+COMPLETE
+
