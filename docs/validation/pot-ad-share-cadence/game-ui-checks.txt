@@ -1,0 +1,15 @@
+PASS scene startup complete
+PASS first tool offers ad and pauses
+PASS duplicate clicks start one ad: ads=1, shares=0, status=, ready=False, screen=game, modal=ReviveClear(Clone) (UnityEngine.RectTransform), view=ReviveClear(Clone) (UnityEngine.RectTransform)
+PASS failed ad preserves state
+PASS completed ad grants once
+PASS revival is ad
+PASS revive contributes to shared counter once
+PASS third ad unlocks share
+PASS pending share never replaces revival ad
+PASS revival preserves share opportunity
+PASS next tool offers share
+PASS failed share keeps opportunity
+PASS share consumes opportunity once
+PASS stale callback cannot grant on new board
+ALL PASSED

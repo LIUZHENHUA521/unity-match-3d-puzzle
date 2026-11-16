@@ -1,0 +1,10 @@
+2026-11-16 final verification
+Unity: master b23aa5e2 pushed; no WeChat build/upload performed.
+Admin: tasks 26a41ad pushed; index-BqVdl99s.js and entry/CSS/JSZip hashes match hosting.
+Cloud function: adminGooseRecords Active; deployed entry includes potAcquisitionConfig.
+Configuration: pot_acquisition_config/current adsBeforeShare=3; saved and refreshed through authenticated UI.
+Service: server 2f9b117 pushed; goose-3d-pvp-056 normal, FlowRatio=100, HasTraffic=true, IsReleasing=false.
+Image: goose-3d-pvp-055-20261116205433, sha256:58221052f8f6a9f2219e50ef0458fd984255874fb63fb7076341f218252637b0.
+Version 056 environment values equal original active 054 values; no credentials stored in this report.
+GET https://9nanimal.cn/invites/health: {"ready":true,"database":true,"loginConfigured":true}
+Failed version 055 was stopped at 0 traffic; successful 056 reuses its tested image with restored environment.
