@@ -61,6 +61,11 @@ public static class WechatReleaseAssets {
         var roots = scene.GetRootGameObjects();
         if (!roots.Any(x=>x.GetComponentInChildren<Match3DFlow>(true)))
             throw new InvalidOperationException("Legacy resource exclusion requires the Pot game flow");
+        foreach (var legacy in roots.SelectMany(x=>x.GetComponentsInChildren<FoodPileShake>(true))) {
+            if (legacy.button) legacy.button.gameObject.SetActive(false);
+            if (legacy.remainingText) legacy.remainingText.gameObject.SetActive(false);
+            UnityEngine.Object.DestroyImmediate(legacy);
+        }
         foreach (var generator in roots.SelectMany(x=>x.GetComponentsInChildren<LevelGenerator>(true))) {
             generator.foodPile = null;
             EditorUtility.SetDirty(generator);
