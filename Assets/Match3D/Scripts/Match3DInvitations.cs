@@ -68,16 +68,25 @@ public sealed partial class Match3DInvitations : MonoBehaviour {
     }
     void Apply(Reply reply){if(State==null||State.inviteCode!=reply.inviteCode)ClearSignIn();State=reply;SetStatus("");}
     IEnumerator Request(string route,string body,Action<Reply> callback,bool retry=true){
+        string failure="连接账号服务失败，请稍后重试";
         for(int attempt=0;attempt<(retry?2:1);attempt++){
             using(var req=new UnityWebRequest(endpoint+"/invites/"+route,"POST")){
-                req.uploadHandler=new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));req.downloadHandler=new DownloadHandlerBuffer();req.timeout=8;
+                req.uploadHandler=new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));req.downloadHandler=new DownloadHandlerBuffer();req.timeout=route=="login"?20:8;
                 req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("X-Goose-Tool-Count",BoardTools.ToolCount.ToString());if(!string.IsNullOrEmpty(token))req.SetRequestHeader("Authorization","Bearer "+token);
                 yield return req.SendWebRequest();
                 if(req.result==UnityWebRequest.Result.Success){Reply result=null;try{result=JsonUtility.FromJson<Reply>(req.downloadHandler.text);}catch{}if(result!=null&&result.inventory!=null&&(result.inventory.Length==3||result.inventory.Length==BoardTools.ToolCount)){callback(result);yield break;}}
+                failure=PotRequestFailure(req.result,req.responseCode,req.error);
+                Debug.LogWarning("[PotAccount] route="+route+" status="+req.responseCode+" result="+req.result+" error="+req.error);
                 if(req.responseCode>=400&&req.responseCode<500){if(req.responseCode==401){token=null;State=null;ClearSignIn();Mails.Clear();MailLoaded=false;MailAttention=false;MailChanged?.Invoke();}string error=null;if(route.StartsWith("sign-in/")){try{error=JsonUtility.FromJson<Reply>(req.downloadHandler.text)?.error;}catch{}}SetStatus(!string.IsNullOrEmpty(error)?error:req.responseCode==401?"登录已失效，请刷新重新登录":req.responseCode==410?"邮件已过期":req.responseCode==409?"道具不足或请求已失效，请刷新后重试":"请求失败，请稍后重试");yield break;}
             }
         }
-        SetStatus("网络暂不可用，请稍后重试");
+        SetStatus(failure);
+    }
+    internal static string PotRequestFailure(UnityWebRequest.Result result,long status,string error){
+        if(status>=500)return "账号服务暂时繁忙，请稍后重试";
+        if(result==UnityWebRequest.Result.Success||result==UnityWebRequest.Result.DataProcessingError)return "账号服务返回异常，请稍后重试";
+        if(!string.IsNullOrEmpty(error)&&error.IndexOf("timeout",StringComparison.OrdinalIgnoreCase)>=0)return "连接账号服务超时，请重试";
+        return "连接账号服务失败，请稍后重试";
     }
     // An interrupted debit is settled before permitting another debit, including after restart.
     IEnumerator Recover(){var raw=PlayerPrefs.GetString(PendingKey,"");if(string.IsNullOrEmpty(raw))yield break;

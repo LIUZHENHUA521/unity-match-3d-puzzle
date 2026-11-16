@@ -1,0 +1,2436 @@
+{
+  "observedVersion": 51,
+  "probe": [
+    {
+      "time": "2026-11-16 00:25:48",
+      "event": "pot_database_probe",
+      "id": "f5236497-4d29-4058-a4a9-cd19fa722311",
+      "endpoint": "public",
+      "sample": 2,
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 103.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.start",
+          "ms": 170.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 103.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 201.1,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 27.1,
+          "totalMs": 27.3
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 97.4,
+          "totalMs": 97.6
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 100.3,
+          "totalMs": 100.4
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 199.7,
+          "totalMs": 199.8
+        }
+      ],
+      "ok": true,
+      "durationMs": 578.1
+    },
+    {
+      "time": "2026-11-16 00:25:47",
+      "event": "pot_database_probe",
+      "id": "bc32b81d-860b-475b-9f22-78e301027ccc",
+      "endpoint": "default",
+      "sample": 2,
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 41.9,
+          "ok": true
+        },
+        {
+          "phase": "transaction.start",
+          "ms": 50.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 73.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 27.6,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 0.3,
+          "connectMs": 4.3,
+          "ttfbMs": 40.4,
+          "totalMs": 40.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 28.4,
+          "totalMs": 28.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 71.8,
+          "totalMs": 71.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 26,
+          "totalMs": 26.2
+        }
+      ],
+      "ok": true,
+      "durationMs": 193.2
+    },
+    {
+      "time": "2026-11-16 00:25:47",
+      "event": "pot_database_probe",
+      "id": "e6fdf53f-3f1b-4eab-808a-d26091f7d9e8",
+      "endpoint": "public",
+      "sample": 1,
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 33.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.start",
+          "ms": 25.7,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 34.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 30,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 31.4,
+          "totalMs": 31.6
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 24.4,
+          "totalMs": 24.6
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 32.8,
+          "totalMs": 32.9
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 28.5,
+          "totalMs": 28.7
+        }
+      ],
+      "ok": true,
+      "durationMs": 123.3
+    },
+    {
+      "time": "2026-11-16 00:25:47",
+      "event": "pot_database_probe",
+      "id": "d2684e2d-6ccb-4401-8f4e-bb79c162b16b",
+      "endpoint": "default",
+      "sample": 1,
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 61.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.start",
+          "ms": 36.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 30.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 27.5,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 0.9,
+          "connectMs": 4.3,
+          "ttfbMs": 59.5,
+          "totalMs": 59.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 34.9,
+          "totalMs": 35.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 28.6,
+          "totalMs": 28.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 26.2,
+          "totalMs": 26.3
+        }
+      ],
+      "ok": true,
+      "durationMs": 155.3
+    },
+    {
+      "time": "2026-11-16 00:25:47",
+      "event": "pot_database_probe",
+      "id": "5d260c7a-669a-4333-9cf3-f4a7dc63c2fe",
+      "endpoint": "public",
+      "sample": 0,
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 69.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.start",
+          "ms": 30.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 33.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 31,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-public",
+          "reused": false,
+          "dnsMs": 11.5,
+          "connectMs": 17.7,
+          "ttfbMs": 65.4,
+          "totalMs": 65.7
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 28.2,
+          "totalMs": 28.3
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 29.7,
+          "totalMs": 30
+        },
+        {
+          "destination": "cloudbase-public",
+          "reused": true,
+          "ttfbMs": 29.3,
+          "totalMs": 29.5
+        }
+      ],
+      "ok": true,
+      "durationMs": 163.7
+    },
+    {
+      "time": "2026-11-16 00:25:46",
+      "event": "pot_database_probe",
+      "id": "166d5ed1-ac0f-480c-b644-ae1fe59508c2",
+      "endpoint": "default",
+      "sample": 0,
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 302.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.start",
+          "ms": 34.7,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 29,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 23.9,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 1.7,
+          "connectMs": 95.1,
+          "ttfbMs": 185.7,
+          "totalMs": 186.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 31.3,
+          "totalMs": 31.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 27,
+          "totalMs": 27.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 22.2,
+          "totalMs": 22.4
+        }
+      ],
+      "ok": true,
+      "durationMs": 390.7
+    }
+  ],
+  "requests": [
+    {
+      "time": "2026-11-16 00:26:59",
+      "event": "pot_request_timing",
+      "id": "11f35031-fb7a-4a02-a019-6e86433921f8",
+      "path": "/invites/mail/list",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 1396.9,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_catalog",
+          "ms": 1399,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_receipts",
+          "ms": 3095,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1393.8,
+          "totalMs": 1394
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1396.3,
+          "totalMs": 1396.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 6.4,
+          "connectMs": 1492.4,
+          "ttfbMs": 3092.3,
+          "totalMs": 3092.4
+        }
+      ],
+      "status": 200,
+      "durationMs": 3095.4
+    },
+    {
+      "time": "2026-11-16 00:26:57",
+      "event": "pot_request_timing",
+      "id": "470488f2-1762-4260-837a-6f44d6fc1708",
+      "path": "/invites/mail/list",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 1399.2,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_catalog",
+          "ms": 1401.6,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_receipts",
+          "ms": 1493.7,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1307,
+          "totalMs": 1307.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1309.7,
+          "totalMs": 1309.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1401.7,
+          "totalMs": 1401.8
+        }
+      ],
+      "status": 200,
+      "durationMs": 1494.4
+    },
+    {
+      "time": "2026-11-16 00:26:57",
+      "event": "pot_request_timing",
+      "id": "b2663800-1f71-4e92-92b7-58b23b79ba02",
+      "path": "/invites/sign-in/state",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 893.1,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 892.3,
+          "totalMs": 892.3
+        }
+      ],
+      "status": 200,
+      "durationMs": 893.4
+    },
+    {
+      "time": "2026-11-16 00:26:56",
+      "event": "pot_request_timing",
+      "id": "67cc512b-e2f1-48da-87fb-e929d5f98045",
+      "path": "/invites/ab",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 612.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 407.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 381.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 395.8,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 611.1,
+          "totalMs": 611.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 406.8,
+          "totalMs": 406.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 303.4,
+          "totalMs": 303.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 393.2,
+          "totalMs": 393.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1207.8,
+          "totalMs": 1207.9
+        }
+      ],
+      "status": 200,
+      "durationMs": 3006.6
+    },
+    {
+      "time": "2026-11-16 00:26:56",
+      "event": "pot_request_timing",
+      "id": "ffcabb1c-38b7-4974-9283-a053c7d772e0",
+      "path": "/invites/sign-in/state",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 1401.4,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1399.5,
+          "totalMs": 1399.5
+        }
+      ],
+      "status": 200,
+      "durationMs": 1401.8
+    },
+    {
+      "time": "2026-11-16 00:26:55",
+      "event": "pot_request_timing",
+      "id": "99fa9a2c-5c0c-4c19-a12c-02b2170365c1",
+      "path": "/invites/ab",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 604.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 493.8,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 495.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 613.9,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 603.3,
+          "totalMs": 603.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 492.9,
+          "totalMs": 493
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 494.1,
+          "totalMs": 494.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 613.3,
+          "totalMs": 613.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 816.6,
+          "totalMs": 816.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 3108.3
+    },
+    {
+      "time": "2026-11-16 00:26:54",
+      "event": "pot_request_timing",
+      "id": "e765a82e-2e85-4017-ad9c-acef69ba2cfd",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 89.7,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 494.9,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 696.8,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 500.1,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 88.9,
+          "totalMs": 89
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 492.7,
+          "totalMs": 492.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 696.1,
+          "totalMs": 696.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 499.5,
+          "totalMs": 499.5
+        }
+      ],
+      "status": 200,
+      "durationMs": 2788.2
+    },
+    {
+      "time": "2026-11-16 00:26:54",
+      "event": "pot_request_timing",
+      "id": "c60afacd-858e-4e4f-b08d-ddbec580ceba",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 85.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 401,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 602.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 602.6,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 84.5,
+          "totalMs": 84.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 400.1,
+          "totalMs": 400.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 601.8,
+          "totalMs": 601.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 601.6,
+          "totalMs": 601.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 2786.2
+    },
+    {
+      "time": "2026-11-16 00:26:54",
+      "event": "pot_request_timing",
+      "id": "d7b6f286-f5a1-4a94-9890-5f055b74690c",
+      "path": "/invites/sign-in/state",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 1201,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1200,
+          "totalMs": 1200.1
+        }
+      ],
+      "status": 200,
+      "durationMs": 1201.4
+    },
+    {
+      "time": "2026-11-16 00:26:54",
+      "event": "pot_request_timing",
+      "id": "94176012-92f8-4d3f-9b08-bf68fc0953ca",
+      "path": "/invites/mail/list",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 2090.1,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_receipts",
+          "ms": 2092.2,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_catalog",
+          "ms": 2092.4,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 4,
+          "connectMs": 1088.9,
+          "ttfbMs": 2087.8,
+          "totalMs": 2087.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 4,
+          "connectMs": 1088.9,
+          "ttfbMs": 2090.2,
+          "totalMs": 2090.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 4,
+          "connectMs": 1088.9,
+          "ttfbMs": 2090,
+          "totalMs": 2090
+        }
+      ],
+      "status": 200,
+      "durationMs": 2092.7
+    },
+    {
+      "time": "2026-11-16 00:26:53",
+      "event": "pot_request_timing",
+      "id": "b7403d32-ad45-4187-b569-08c588b6c933",
+      "path": "/invites/mail/list",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 1393.3,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_catalog",
+          "ms": 1393.5,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_receipts",
+          "ms": 2207.4,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1391.5,
+          "totalMs": 1391.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1391.8,
+          "totalMs": 1391.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 1.6,
+          "connectMs": 1395,
+          "ttfbMs": 2205.7,
+          "totalMs": 2205.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 2207.8
+    },
+    {
+      "time": "2026-11-16 00:26:52",
+      "event": "pot_request_timing",
+      "id": "f46394fd-fde0-4a67-bcb0-daf7e271db49",
+      "path": "/invites/mail/list",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 1300.6,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_catalog",
+          "ms": 1301.8,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_receipts",
+          "ms": 1908.4,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1298.4,
+          "totalMs": 1298.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1299.7,
+          "totalMs": 1299.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 1.5,
+          "connectMs": 1307.5,
+          "ttfbMs": 1906.3,
+          "totalMs": 1906.3
+        }
+      ],
+      "status": 200,
+      "durationMs": 1909
+    },
+    {
+      "time": "2026-11-16 00:26:52",
+      "event": "pot_request_timing",
+      "id": "02186593-dc43-4ecf-8a54-c2f53830ed7a",
+      "path": "/invites/ab",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 906.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 698.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 302.8,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 102.6,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 905.7,
+          "totalMs": 905.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 697.7,
+          "totalMs": 697.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 302,
+          "totalMs": 302
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 102,
+          "totalMs": 102
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1298.1,
+          "totalMs": 1298.1
+        }
+      ],
+      "status": 200,
+      "durationMs": 3310.1
+    },
+    {
+      "time": "2026-11-16 00:26:50",
+      "event": "pot_request_timing",
+      "id": "5d5dce21-f771-495c-bf70-0f2fe0bafcfc",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 909.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 698.8,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 302.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 102.9,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 908,
+          "totalMs": 908
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 698,
+          "totalMs": 698.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 301.8,
+          "totalMs": 301.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 102.3,
+          "totalMs": 102.3
+        }
+      ],
+      "status": 200,
+      "durationMs": 3404.5
+    },
+    {
+      "time": "2026-11-16 00:26:50",
+      "event": "pot_request_timing",
+      "id": "efd68992-ce33-4ee3-b16b-ff4579ceced5",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 487.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 605.8,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 701.9,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 302.4,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 486.6,
+          "totalMs": 486.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 604.3,
+          "totalMs": 604.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 701.1,
+          "totalMs": 701.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 301.8,
+          "totalMs": 301.9
+        }
+      ],
+      "status": 200,
+      "durationMs": 4199.9
+    },
+    {
+      "time": "2026-11-16 00:26:49",
+      "event": "pot_request_timing",
+      "id": "78d3aaae-e7ee-419c-b167-65bb8f32a17b",
+      "path": "/invites/refund",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 105.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 694.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.uses",
+          "ms": 212.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 185.3,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 104.8,
+          "totalMs": 104.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 693,
+          "totalMs": 693.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 211.1,
+          "totalMs": 211.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 184.6,
+          "totalMs": 184.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 1198.2
+    },
+    {
+      "time": "2026-11-16 00:26:49",
+      "event": "pot_request_timing",
+      "id": "9ea4d966-65fd-47e1-b17c-4d9b0d154fa1",
+      "path": "/invites/sign-in/state",
+      "db": [],
+      "network": [],
+      "status": 401,
+      "durationMs": 0.4
+    },
+    {
+      "time": "2026-11-16 00:26:49",
+      "event": "pot_request_timing",
+      "id": "ab9d9527-1651-462e-8e56-04dd97d57fd5",
+      "path": "/rewards/runs",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 207.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 194.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_runs",
+          "ms": 711.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_config",
+          "ms": 996.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_claims",
+          "ms": 691.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_config",
+          "ms": 298.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 1101.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.daily_levels",
+          "ms": 1500.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.reward_runs",
+          "ms": 509.7,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 701.1,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 206.1,
+          "totalMs": 206.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 193.4,
+          "totalMs": 193.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 710.7,
+          "totalMs": 710.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 995.7,
+          "totalMs": 995.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 690.8,
+          "totalMs": 690.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 297.3,
+          "totalMs": 297.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1100.2,
+          "totalMs": 1100.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 812.6,
+          "totalMs": 900.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 408.5,
+          "totalMs": 408.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 700.4,
+          "totalMs": 700.5
+        }
+      ],
+      "status": 200,
+      "durationMs": 6914
+    },
+    {
+      "time": "2026-11-16 00:26:48",
+      "event": "pot_request_timing",
+      "id": "e8425beb-3b18-4bf8-ab34-afc665c09177",
+      "path": "/rewards/runs",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 200.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 197.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_runs",
+          "ms": 709.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_config",
+          "ms": 895.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_claims",
+          "ms": 296.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_config",
+          "ms": 614.7,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 1283.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.daily_levels",
+          "ms": 805.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.reward_runs",
+          "ms": 993.7,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 109,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 199.2,
+          "totalMs": 199.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 196.5,
+          "totalMs": 196.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 708.7,
+          "totalMs": 708.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 894.5,
+          "totalMs": 894.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 295.6,
+          "totalMs": 295.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 613.9,
+          "totalMs": 613.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1282.6,
+          "totalMs": 1282.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 515.3,
+          "totalMs": 596.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 983.7,
+          "totalMs": 983.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 108.3,
+          "totalMs": 108.4
+        }
+      ],
+      "status": 200,
+      "durationMs": 6107.1
+    },
+    {
+      "time": "2026-11-16 00:26:48",
+      "event": "pot_request_timing",
+      "id": "44e08ae6-763b-420d-b48b-4b242328e196",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 92.7,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 816,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 1281.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 109.6,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 91.8,
+          "totalMs": 91.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 815.1,
+          "totalMs": 815.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1280.4,
+          "totalMs": 1280.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 108.5,
+          "totalMs": 108.6
+        }
+      ],
+      "status": 200,
+      "durationMs": 3909.7
+    },
+    {
+      "time": "2026-11-16 00:26:48",
+      "event": "pot_request_timing",
+      "id": "d88c7a45-47af-488f-abac-c81541a498f8",
+      "path": "/rewards/runs",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 790.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 291.8,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_runs",
+          "ms": 499.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_config",
+          "ms": 199,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_claims",
+          "ms": 907.8,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_config",
+          "ms": 296.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 714.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.daily_levels",
+          "ms": 1197.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.reward_runs",
+          "ms": 603.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 1281.4,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 789.6,
+          "totalMs": 789.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 290.6,
+          "totalMs": 290.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 498.2,
+          "totalMs": 498.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 197.7,
+          "totalMs": 197.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 906.6,
+          "totalMs": 906.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 295.5,
+          "totalMs": 295.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 713.7,
+          "totalMs": 713.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 983.9,
+          "totalMs": 988.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 516.9,
+          "totalMs": 517
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1280.8,
+          "totalMs": 1280.9
+        }
+      ],
+      "status": 200,
+      "durationMs": 6782.9
+    },
+    {
+      "time": "2026-11-16 00:26:48",
+      "event": "pot_request_timing",
+      "id": "a38a9cf9-e4eb-47bc-b8b9-0aaaec7d51ed",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 1007.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 995.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 1195.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 1497.9,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1006,
+          "totalMs": 1006.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 915.1,
+          "totalMs": 915.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1193.6,
+          "totalMs": 1193.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1496.6,
+          "totalMs": 1496.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 5500
+    },
+    {
+      "time": "2026-11-16 00:26:47",
+      "event": "pot_request_timing",
+      "id": "7caf2e98-18a6-41a5-829e-21d1e2221ecf",
+      "path": "/invites/sign-in/state",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 903.1,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 902.2,
+          "totalMs": 902.3
+        }
+      ],
+      "status": 200,
+      "durationMs": 903.3
+    },
+    {
+      "time": "2026-11-16 00:26:47",
+      "event": "pot_request_timing",
+      "id": "233550f9-1149-4fda-82b1-4b5d2afdea92",
+      "path": "/invites/sign-in/state",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 900.9,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 900.1,
+          "totalMs": 900.1
+        }
+      ],
+      "status": 200,
+      "durationMs": 901.1
+    },
+    {
+      "time": "2026-11-16 00:26:47",
+      "event": "pot_request_timing",
+      "id": "70a53414-56c0-42ff-a77e-787f2356acf1",
+      "path": "/invites/ab",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 696.7,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 290.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 196.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 719.6,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 695.1,
+          "totalMs": 695.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 289.1,
+          "totalMs": 289.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 195.5,
+          "totalMs": 195.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 717.6,
+          "totalMs": 717.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 785,
+          "connectMs": 1797.1,
+          "ttfbMs": 3590.5,
+          "totalMs": 3590.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 5494.9
+    },
+    {
+      "time": "2026-11-16 00:26:44",
+      "event": "pot_request_timing",
+      "id": "e628fd2e-6679-4163-b971-a93c2d4373c9",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 488.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 115.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 992.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 296.6,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 404.9,
+          "totalMs": 405
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 114,
+          "totalMs": 114.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 907.7,
+          "totalMs": 907.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 295.9,
+          "totalMs": 296
+        }
+      ],
+      "status": 200,
+      "durationMs": 2903
+    },
+    {
+      "time": "2026-11-16 00:26:44",
+      "event": "pot_request_timing",
+      "id": "6af6d1c9-bdf3-4311-8ebd-739541ced09d",
+      "path": "/rewards/runs",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 2702.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 199.9,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_runs",
+          "ms": 105.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_config",
+          "ms": 100.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_claims",
+          "ms": 609.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.reward_config",
+          "ms": 796.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 887.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.daily_levels",
+          "ms": 721,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.reward_runs",
+          "ms": 289.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 991.7,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 2701.8,
+          "totalMs": 2701.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 199.1,
+          "totalMs": 199.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 104.5,
+          "totalMs": 104.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 99.5,
+          "totalMs": 99.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 608.9,
+          "totalMs": 608.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 795.3,
+          "totalMs": 795.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 886.2,
+          "totalMs": 886.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 202.8,
+          "totalMs": 513.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 198.3,
+          "totalMs": 198.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 990.8,
+          "totalMs": 990.8
+        }
+      ],
+      "status": 200,
+      "durationMs": 7405
+    },
+    {
+      "time": "2026-11-16 00:26:44",
+      "event": "pot_request_timing",
+      "id": "58eb587c-2da0-48fb-ba56-0203ad795bb8",
+      "path": "/invites/ab",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 699.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 895.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 705.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 291.2,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 698.8,
+          "totalMs": 698.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 894.2,
+          "totalMs": 894.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 704.6,
+          "totalMs": 704.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 290.5,
+          "totalMs": 290.6
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1692.1,
+          "totalMs": 1692.2
+        }
+      ],
+      "status": 200,
+      "durationMs": 4284.7
+    },
+    {
+      "time": "2026-11-16 00:26:43",
+      "event": "pot_request_timing",
+      "id": "38402ed0-cc27-4445-aef1-008640883edd",
+      "path": "/invites/sign-in/state",
+      "db": [],
+      "network": [],
+      "status": 401,
+      "durationMs": 0.4
+    },
+    {
+      "time": "2026-11-16 00:26:43",
+      "event": "pot_request_timing",
+      "id": "0b69ecf9-6f06-455b-9b1a-f0adce013bff",
+      "path": "/invites/mail/list",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 1086.3,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_catalog",
+          "ms": 1589.6,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_receipts",
+          "ms": 1688.9,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1006.7,
+          "totalMs": 1006.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 617.1,
+          "connectMs": 1014.5,
+          "ttfbMs": 1510.2,
+          "totalMs": 1510.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 617.2,
+          "connectMs": 1014.6,
+          "ttfbMs": 1602.9,
+          "totalMs": 1603
+        }
+      ],
+      "status": 200,
+      "durationMs": 1689.5
+    },
+    {
+      "time": "2026-11-16 00:26:43",
+      "event": "pot_request_timing",
+      "id": "101648e3-2bf1-413e-93dc-5095669ba014",
+      "path": "/invites/sign-in/state",
+      "db": [],
+      "network": [],
+      "status": 401,
+      "durationMs": 0.4
+    },
+    {
+      "time": "2026-11-16 00:26:42",
+      "event": "pot_request_timing",
+      "id": "0be723f4-efa0-4ed1-b111-aaa209907245",
+      "path": "/invites/mail/list",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 791.2,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_catalog",
+          "ms": 985.9,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_receipts",
+          "ms": 986.1,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 789.4,
+          "totalMs": 789.5
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 984.3,
+          "totalMs": 984.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 984.6,
+          "totalMs": 984.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 986.5
+    },
+    {
+      "time": "2026-11-16 00:26:41",
+      "event": "pot_request_timing",
+      "id": "757b370c-109b-4bda-bd3f-b0f95ffc581f",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 94.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 100.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 609,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 890.2,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 93.9,
+          "totalMs": 94
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 99.4,
+          "totalMs": 99.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 608.2,
+          "totalMs": 608.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 889.4,
+          "totalMs": 889.6
+        }
+      ],
+      "status": 200,
+      "durationMs": 1904.5
+    },
+    {
+      "time": "2026-11-16 00:26:40",
+      "event": "pot_request_timing",
+      "id": "ef9913a0-c5b1-4a5a-bdb4-22457b27bebf",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 901,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 100.6,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 97.4,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 96,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 900.1,
+          "totalMs": 900.2
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 99.8,
+          "totalMs": 99.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 96.6,
+          "totalMs": 96.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 95.4,
+          "totalMs": 95.4
+        }
+      ],
+      "status": 200,
+      "durationMs": 3804.4
+    },
+    {
+      "time": "2026-11-16 00:26:40",
+      "event": "pot_request_timing",
+      "id": "f2548895-cb69-4057-a897-40beae33c635",
+      "path": "/invites/sign-in/state",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 104.6,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 103.6,
+          "totalMs": 103.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 105
+    },
+    {
+      "time": "2026-11-16 00:26:40",
+      "event": "pot_request_timing",
+      "id": "6d6e628e-5bcc-4afe-bde0-411c39f4dd40",
+      "path": "/invites/login",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 1595.3,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 593.5,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 800.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 106.2,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 1594.6,
+          "totalMs": 1594.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 589.7,
+          "totalMs": 589.9
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 797.3,
+          "totalMs": 797.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 105.4,
+          "totalMs": 105.5
+        }
+      ],
+      "status": 200,
+      "durationMs": 5005.4
+    },
+    {
+      "time": "2026-11-16 00:26:40",
+      "event": "pot_request_timing",
+      "id": "d3d3ca82-6198-4818-8a39-c90e6906e3b4",
+      "path": "/invites/sign-in/state",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 2901,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 1.9,
+          "connectMs": 2708.3,
+          "ttfbMs": 2899.9,
+          "totalMs": 2900
+        }
+      ],
+      "status": 200,
+      "durationMs": 2901.3
+    },
+    {
+      "time": "2026-11-16 00:26:39",
+      "event": "pot_request_timing",
+      "id": "9653311f-90c9-4492-89ec-e5ddc8d200a4",
+      "path": "/invites/mail/list",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 2595.4,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_receipts",
+          "ms": 2521.5,
+          "ok": true
+        },
+        {
+          "phase": "read.mail_catalog",
+          "ms": 2521.7,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 2518.1,
+          "totalMs": 2518.1
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 2519.3,
+          "totalMs": 2519.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 2519.1,
+          "totalMs": 2519.1
+        }
+      ],
+      "status": 200,
+      "durationMs": 2597.1
+    },
+    {
+      "time": "2026-11-16 00:26:37",
+      "event": "pot_request_timing",
+      "id": "57218335-2570-446e-ac37-597974897aa1",
+      "path": "/invites/sign-in/state",
+      "db": [
+        {
+          "phase": "read.users",
+          "ms": 99.4,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 97.8,
+          "totalMs": 97.9
+        }
+      ],
+      "status": 200,
+      "durationMs": 99.9
+    },
+    {
+      "time": "2026-11-16 00:26:37",
+      "event": "pot_request_timing",
+      "id": "ed406af8-ddcd-4c9d-8a8d-e53d9b0d0f23",
+      "path": "/invites/ab",
+      "db": [
+        {
+          "phase": "transaction.start",
+          "ms": 2601.1,
+          "ok": true
+        },
+        {
+          "phase": "transaction.get.users",
+          "ms": 801.2,
+          "ok": true
+        },
+        {
+          "phase": "transaction.set.users",
+          "ms": 101.8,
+          "ok": true
+        },
+        {
+          "phase": "transaction.commit",
+          "ms": 396.3,
+          "ok": true
+        }
+      ],
+      "network": [
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 1.4,
+          "connectMs": 2299.7,
+          "ttfbMs": 2600.3,
+          "totalMs": 2600.4
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 799.7,
+          "totalMs": 799.8
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 100.2,
+          "totalMs": 100.3
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": true,
+          "ttfbMs": 395.6,
+          "totalMs": 395.7
+        },
+        {
+          "destination": "cloudbase-internal",
+          "reused": false,
+          "dnsMs": 603.9,
+          "connectMs": 2398.8,
+          "ttfbMs": 4193.5,
+          "totalMs": 4193.7
+        }
+      ],
+      "status": 200,
+      "durationMs": 8095.5
+    }
+  ],
+  "notes": [
+    "Readiness probes at startup are not representative of later live traffic.",
+    "Network timings include local scheduling delay; cannot attribute all TTFB to remote DB.",
+    "CPU metric units/aggregation are not verified; do not interpret as CPU percentage."
+  ]
+}
