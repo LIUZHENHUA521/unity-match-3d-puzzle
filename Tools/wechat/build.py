@@ -76,6 +76,28 @@ for reference_file in [stage / 'Assets/Match3D/OriginalModels/models.json',
     if reference_file.exists():
         shutil.move(str(reference_file), str(excluded / reference_file.name))
 replica_resources = stage / 'Assets/Match3D/Resources/Match3D'
+# Authoring notes are not runtime assets. Keep licenses and all source originals.
+for note in list(replica_resources.rglob('README.md')) + [
+    replica_resources / 'GameplaySkin/layout-source.json',
+    replica_resources / 'PotCertificate/pot-sources.json',
+]:
+    if note.exists():
+        note.unlink()
+        note.with_name(note.name + '.meta').unlink(missing_ok=True)
+
+# Quantize only these two requested UI skins in the disposable release copy.
+# Keep original dimensions, alpha, sprite metadata and editable source artwork.
+# pngquant rejects images below the quality floor instead of degrading them.
+pngquant = shutil.which('pngquant')
+if not pngquant:
+    raise SystemExit('pngquant is required for release UI optimization (brew install pngquant)')
+for skin in ('MailSkinPS', 'ProfileSkinPS'):
+    for texture in sorted((replica_resources / skin).glob('*.png')):
+        result = subprocess.run([pngquant, '--force', '--skip-if-larger', '--quality=90-100',
+                                 '--speed=1', '--ext=.png', str(texture)], capture_output=True, text=True)
+        if result.returncode not in (0, 98, 99):
+            raise SystemExit('UI texture optimization failed: ' + str(texture) + '\n' + result.stderr)
+
 # The procedural container must never regain a dependency on exported wall data.
 if any((replica_resources / 'Environments').glob('*.json')):
     raise SystemExit('Legacy container JSON found in runtime Resources; archive it outside Assets')

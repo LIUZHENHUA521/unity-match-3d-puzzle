@@ -18,6 +18,20 @@ public static class WechatReleaseAssets {
         // Keep the editable source art intact; the WeChat main package only needs JPEG.
         EncodeCover(Match3DStartupBuilder.CoverPath,StartupCoverPath);
         EncodeCover(Match3DStartupBuilder.ShortCoverPath,StartupShortCoverPath);
+        // These skins are referenced by prefab GUIDs, never loaded by Resources
+        // paths. Outside Resources, the build can omit standalone textures and
+        // use only their high-quality atlas, at the original sprite resolution.
+        const string releaseUI = "Assets/Match3D/PotReleaseUI";
+        if (!AssetDatabase.IsValidFolder(releaseUI)) AssetDatabase.CreateFolder("Assets/Match3D", "PotReleaseUI");
+        foreach (var skin in new[]{"MailSkinPS", "ProfileSkinPS"}) {
+            string destination = releaseUI + "/" + skin;
+            if (AssetDatabase.IsValidFolder(root + skin)) {
+                string error = AssetDatabase.MoveAsset(root + skin, destination);
+                if (!string.IsNullOrEmpty(error)) throw new InvalidOperationException(error);
+            }
+            Atlas("PotWechat" + skin, AssetDatabase.FindAssets("t:Texture2D", new[]{destination})
+                .Select(AssetDatabase.GUIDToAssetPath).ToArray());
+        }
         Atlas("WechatInvite", AssetDatabase.FindAssets("t:Texture2D", new[]{root+"InviteSkinPS"})
             .Select(AssetDatabase.GUIDToAssetPath).ToArray());
         // Home already synchronously replaces this sprite from the original JPEG
