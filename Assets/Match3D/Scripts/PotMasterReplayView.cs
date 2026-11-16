@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public sealed class PotMasterReplayView : MonoBehaviour {
+    const float RowHeight=112,RowGap=12,RowStride=RowHeight+RowGap,ViewportHeight=856;
     public RectTransform content;public Text status;public Button retry,close;
     Match3DFlow flow;Action dismiss;string owner,date;PotReplayService.Reply list;
     readonly PotMasterReplayAccess access=new PotMasterReplayAccess();
@@ -31,8 +32,8 @@ public sealed class PotMasterReplayView : MonoBehaviour {
         var view=root.gameObject.AddComponent<PotMasterReplayView>();
         Art(design,"Panel","pot-panel",65,35,592,1200);
         var close=Art(design,"Close","pot-close",581,117,81,81);close.raycastTarget=true;view.close=close.gameObject.AddComponent<Button>();view.close.targetGraphic=close;
-        var viewport=Rect(design,"Viewport",81,281,558,874);viewport.gameObject.AddComponent<Image>().color=Color.clear;viewport.gameObject.AddComponent<RectMask2D>();
-        view.content=Rect(viewport,"Rows",0,0,558,1000);var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=view.content;scroll.horizontal=false;scroll.movementType=ScrollRect.MovementType.Clamped;
+        var viewport=Rect(design,"Viewport",81,295,558,ViewportHeight);viewport.gameObject.AddComponent<Image>().color=Color.clear;viewport.gameObject.AddComponent<RectMask2D>();
+        view.content=Rect(viewport,"Rows",0,0,558,ViewportHeight);var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=view.content;scroll.horizontal=false;scroll.movementType=ScrollRect.MovementType.Clamped;
         view.status=Label(design,"Status","正在加载…",100,1162,520,48,22);
         view.retry=MakeButton(design,"Retry","重试",270,670,180,72);view.retry.gameObject.SetActive(false);
         return view;
@@ -59,10 +60,10 @@ public sealed class PotMasterReplayView : MonoBehaviour {
     public void Render(PotReplayService.Reply reply){
         if(list!=null&&list.levelVersion!=reply.levelVersion)access.Cancel();
         list=reply;foreach(Transform child in content)Destroy(child.gameObject);
-        if(!PotMasterReplayAccess.Visible(reply,date)){status.text="当前关卡通关回放不足 6 个";content.sizeDelta=new Vector2(558,874);return;}
+        if(!PotMasterReplayAccess.Visible(reply,date)){status.text="当前关卡通关回放不足 6 个";content.sizeDelta=new Vector2(558,ViewportHeight);return;}
         int index=0;foreach(var item in reply.list){
             if(index>=10)break;var selected=item;
-            var row=Art(content,"Pot replay row "+(index+1),"pot-row",0,index*100,558,112);
+            var row=Art(content,"Pot replay row "+(index+1),"pot-row",0,index*RowStride,558,RowHeight);
             Label(row.transform,"Rank",(++index).ToString(),14,28,40,50,30);
             var avatar=Rect(row.transform,"Avatar",61,19,74,74).gameObject.AddComponent<PotAvatarGraphic>();avatar.color=new Color32(193,235,250,255);avatar.raycastTarget=false;
             avatar.gameObject.AddComponent<PotMasterReplayAvatar>().Load(selected.avatarUrl);
@@ -70,7 +71,7 @@ public sealed class PotMasterReplayView : MonoBehaviour {
             int seconds=Mathf.Max(0,Mathf.FloorToInt(item.duration));Label(row.transform,"Duration",$"{seconds/60:00}:{seconds%60:00}",322,29,96,50,24);
             MakeButton(row.transform,"Watch","回放",437,30,105,64,25).onClick.AddListener(()=>Watch(selected));
         }
-        content.sizeDelta=new Vector2(558,Mathf.Max(874,index*100+12));status.text="观看完整视频后播放所选回放";
+        content.sizeDelta=new Vector2(558,Mathf.Max(ViewportHeight,index*RowStride-RowGap));status.text="观看完整视频后播放所选回放";
     }
     void Watch(PotReplayService.Summary row){
         if(!Current()||loading||list==null)return;
