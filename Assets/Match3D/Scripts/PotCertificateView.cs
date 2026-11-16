@@ -33,7 +33,7 @@ public sealed class PotCertificateView : MonoBehaviour {
     }
     public void Apply(PotCertificateData data){
         title.text="一锅消不完 · 通关奖状";mode.text=data.rewardTier=="elite"?"清北局毕业荣誉":"本科局毕业荣誉";
-        long seconds=Math.Max(0,data.activeDurationMs/1000);duration.text="通关用时  "+seconds/60+"分"+seconds%60+"秒";
+        long seconds=Math.Max(0,data.activeDurationMs/1000);duration.text=seconds/60+"分"+seconds%60+"秒";
         nickname.text=string.IsNullOrWhiteSpace(data.nickName)?"微信玩家":data.nickName;
         date.text=(data.dateKey??"").Replace('-','.');number.text=string.IsNullOrEmpty(data.certificateNo)?"待同步":data.certificateNo;
     }
