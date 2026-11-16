@@ -66,8 +66,14 @@ public static class PotCertificateBuilder {
         v.bachelorStamps=new Sprite[6];v.eliteStamps=new Sprite[6];for(int i=0;i<6;i++){v.bachelorStamps[i]=Sprite("yz_"+(i+1).ToString("00"));v.eliteStamps[i]=Sprite("icon_yinzhang_"+(i+1).ToString("00"));}
         v.actions=Rect("Actions",fit,0,-300,600,250);v.actionsGroup=v.actions.gameObject.AddComponent<CanvasGroup>();
         v.status=Label("Status",v.actions,0,65,590,64,22);v.status.color=Color.white;
-        var button=Pic("Claim","button",v.actions,0,-15,240,87);button.raycastTarget=true;v.claim=button.gameObject.AddComponent<Button>();v.claim.targetGraphic=button;
-        v.buttonLabel=CertificateLabel("Claim label",button.transform,0,0,220,65,28,new Color32(255,255,255,255),true,"领取红包");
+        // Reuse this game's reward button, including its blue artwork, typography and stroke.
+        var rewardPrefab=AssetDatabase.LoadAssetAtPath<GameObject>(Root+"UI/RewardReceived.prefab");
+        if(!rewardPrefab)throw new InvalidOperationException("Missing game reward popup prefab");
+        var rewardButton=rewardPrefab.GetComponent<Match3DRewardPopup>().confirm;
+        var button=UnityEngine.Object.Instantiate(rewardButton.gameObject,v.actions,false);button.name="Claim";
+        ((RectTransform)button.transform).anchoredPosition=new Vector2(0,-15);
+        v.claim=button.GetComponent<Button>();v.buttonLabel=button.GetComponentInChildren<Text>();
+        v.buttonLabel.text="领取红包";
         var homeRect=Rect("Home",fit,0,-465,250,60);var graphic=homeRect.gameObject.AddComponent<Image>();graphic.color=Color.clear;v.home=homeRect.gameObject.AddComponent<Button>();v.home.targetGraphic=graphic;Label("Home label",homeRect,0,0,250,60,22,"返回首页").color=new Color(1,1,1,.85f);
         PrefabUtility.SaveAsPrefabAsset(root.gameObject,Root+"UI/PotCertificate.prefab");UnityEngine.Object.DestroyImmediate(root.gameObject);AssetDatabase.SaveAssets();
     }
