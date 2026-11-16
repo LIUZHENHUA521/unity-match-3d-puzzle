@@ -374,11 +374,8 @@ public static class ComboProbeValidation {
         Capture("second-stage-empty", 720, 1565);
         Check(boardTransforms.SequenceEqual(LevelGenerator.Instance.objectsOnScene.Select(o => o.transform.position)), "camera layout never changes board world coordinates");
         GameManager.Instance.currentLevelTime=0;flow.HandleResult(false);
-        Check(flow.RevivePending,"timeout opens actual revival offer even with empty tray");
-        yield return new WaitForSecondsRealtime(.6f);Capture("time-revival-offer",720,1565);
-        Object.FindObjectOfType<Match3DReviveView>().revive.onClick.Invoke();
-        Check(flow.TimeReviveUsed&&GameManager.Instance.currentLevelTime==300&&!input.ReturningToBowl&&BoardTools.StoredCount==0,"empty-tray time revival grants five minutes without creating storage or return flights");
-        yield return new WaitForSecondsRealtime(1.9f);Check(!BoardTools.Busy,"empty-tray time revival leaves gameplay ready");
+        Check(!flow.RevivePending&&!flow.TimeReviveUsed&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL,"empty-tray timeout directly fails without revival");
+        Start(2);yield return null;
         var targetOnBoard = LevelGenerator.Instance.objectsOnScene[0]; var tokenOnBoard = targetOnBoard.GetComponent<ComboProbeTarget>().Token;
         owner.State.Add(tokenOnBoard); view.Refresh();
         Start(); yield return null;

@@ -17,7 +17,8 @@ public static class Match3DReviveValidation {
     static IEnumerator Guard(){var steps=Check();while(true){object current;try{if(!steps.MoveNext())break;current=steps.Current;}catch(Exception e){File.AppendAllText(Output+"/validation.txt","FAIL "+e);Debug.LogException(e);(steps as IDisposable)?.Dispose();SessionState.SetBool("revive-validation",false);EditorApplication.Exit(1);yield break;}yield return current;}SessionState.SetBool("revive-validation",false);EditorApplication.Exit(0);}
     static IEnumerator Check(){
         Match3DRewardAcquisition.Configure(new Match3DRewardAcquisition.Configuration{sharesEnabled=false});
-        yield return null;var flow=Match3DFlow.Instance;var records=Match3DGameRecords.Instance;
+        yield return new WaitUntil(()=>Match3DFlow.Instance&&Match3DGameRecords.Instance&&Match3DInvitations.Instance&&UnityEngine.Object.FindObjectOfType<Match3DHomeView>());
+        var flow=Match3DFlow.Instance;var records=Match3DGameRecords.Instance;
         records.StopAllCoroutines();Match3DInvitations.Instance.StopAllCoroutines();
         string[] keys={"goose.result.date","goose.result.attempts","goose.records.queue.v1","goose.result.best."+flow.library.themes[0].id+".2"};
         string date=PlayerPrefs.GetString(keys[0],"");int attempts=PlayerPrefs.GetInt(keys[1],0);string queue=PlayerPrefs.GetString(keys[2],"");float best=PlayerPrefs.GetFloat(keys[3],0);
@@ -27,6 +28,8 @@ public static class Match3DReviveValidation {
             var input=InputController.Instance;var board=LevelGenerator.Instance.objectsOnScene;
             var record=Field(records,"active");int attempt=PlayerPrefs.GetInt(keys[1]);
             var seven=board.GroupBy(x=>x.name).SelectMany(g=>g.Take(2)).Take(7).ToArray();Assert(seven.Length==7,"fixture has seven nonmatching objects");
+            GameManager.Instance.currentLevelTime=100;
+            Assert(BoardTools.RunPaid(3,()=>BoardTools.AddTime())&&GameManager.Instance.currentLevelTime==280,"independent add-time tool still grants 180 seconds");
             GameManager.Instance.currentLevelTime=123;
             foreach(var obj in seven)input.AddObjectOnStack(obj,false);
             Assert(flow.RevivePending&&flow.BlocksGameplay&&Time.timeScale==0,"full tray opens revive and pauses gameplay");
@@ -49,12 +52,11 @@ public static class Match3DReviveValidation {
             string kind=seven[0].name;var triple=board.Where(x=>x.name==kind).Take(3).ToArray();int before=board.Count;
             foreach(var obj in triple)input.AddObjectOnStack(obj,false);yield return new WaitForSeconds(1);
             Assert(board.Count==before-3,"stored objects can be picked and matched after revival");
-            GameManager.Instance.currentLevelTime=0;flow.HandleResult(false);Assert(flow.RevivePending,"time revive remains available after clear revive");yield return new WaitForSecondsRealtime(.6f);Capture("time");
-            popup=UnityEngine.Object.FindObjectOfType<Match3DReviveView>();popup.revive.onClick.Invoke();popup.revive.onClick.Invoke();
-            Assert(flow.TimeReviveUsed&&GameManager.Instance.currentLevelTime==300&&GameManager.Instance.GameIsPlaying(),"time revive adds exactly five minutes once");
             GameManager.Instance.currentLevelTime=0;flow.HandleResult(false);
-            Assert(!flow.RevivePending&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL&&UnityEngine.Object.FindObjectOfType<Match3DResultView>(),"second timeout finishes in failure screen");Assert(Field(records,"active")==null,"terminal failure finishes record");
-            UnityEngine.Object.FindObjectOfType<Match3DResultView>().secondary.onClick.Invoke();BoardCreationTestSupport.FinishPending(flow);yield return null;
+            Assert(!flow.RevivePending&&!flow.TimeReviveUsed&&GameManager.Instance.currentLevelTime==0&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL&&UnityEngine.Object.FindObjectOfType<Match3DResultView>(),"timeout after clear revival directly fails without adding time");
+            Assert(Field(records,"active")==null,"terminal timeout finishes record");
+            Assert(flow.ReviveUsage.time.ad==0&&flow.ReviveUsage.time.share==0&&flow.ReviveUsage.time.free==0,"legacy time revival counters remain zero");
+            UnityEngine.Object.FindObjectOfType<Match3DResultView>().primary.onClick.Invoke();BoardCreationTestSupport.FinishPending(flow);yield return null;
             Assert(!flow.ClearReviveUsed&&!flow.TimeReviveUsed,"retry resets both revive allowances");
             board=LevelGenerator.Instance.objectsOnScene;
             foreach(var obj in board.GroupBy(x=>x.name).SelectMany(g=>g.Take(2)).Take(7).ToArray())input.AddObjectOnStack(obj,false);
@@ -62,9 +64,27 @@ public static class Match3DReviveValidation {
             foreach(var obj in board.Where(x=>!BoardTools.IsStored(x)).GroupBy(x=>x.name).SelectMany(g=>g.Take(2)).Take(7).ToArray())input.AddObjectOnStack(obj,false);
             Assert(!flow.RevivePending&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL,"second full tray cannot reuse clear revival");
             flow.RestartStage();BoardCreationTestSupport.FinishPending(flow);yield return null;
-            GameManager.Instance.currentLevelTime=0;flow.HandleResult(false);yield return new WaitForSecondsRealtime(.5f);
+            foreach(var obj in LevelGenerator.Instance.objectsOnScene.GroupBy(x=>x.name).SelectMany(g=>g.Take(2)).Take(7).ToArray())input.AddObjectOnStack(obj,false);
+            yield return new WaitForSecondsRealtime(.5f);
             popup=UnityEngine.Object.FindObjectOfType<Match3DReviveView>();popup.close.onClick.Invoke();
             Assert(!flow.RevivePending&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL&&Field(records,"active")==null,"closing revive settles failure without restart");
+            flow.RestartStage();BoardCreationTestSupport.FinishPending(flow);yield return null;
+            GameManager.Instance.currentLevelTime=0;
+            foreach(var obj in LevelGenerator.Instance.objectsOnScene.GroupBy(x=>x.name).SelectMany(g=>g.Take(2)).Take(7).ToArray())input.AddObjectOnStack(obj,false);
+            flow.HandleResult(false);
+            Assert(!flow.RevivePending&&!flow.ClearReviveUsed&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL,"simultaneous timeout and full tray cannot offer revival");
+            flow.RestartStage();BoardCreationTestSupport.FinishPending(flow);yield return null;
+            foreach(var obj in LevelGenerator.Instance.objectsOnScene.GroupBy(x=>x.name).SelectMany(g=>g.Take(2)).Take(7).ToArray())input.AddObjectOnStack(obj,false);
+            yield return new WaitForSecondsRealtime(.5f);
+            Match3DRewardedVideo.EditorShowOverride=done=>adReply=done;
+            UnityEngine.Object.FindObjectOfType<Match3DReviveView>().revive.onClick.Invoke();
+            flow.RestartStage();BoardCreationTestSupport.FinishPending(flow);yield return null;
+            adReply(true,null);
+            Assert(!flow.RevivePending&&!flow.ClearReviveUsed&&flow.ReviveUsage.clear.ad==0,"stale revival callback cannot revive or consume allowance on restarted board");
+            var timeoutRecord=(Match3DGameRecords.Record)Field(records,"active");
+            GameManager.Instance.currentLevelTime=0;flow.HandleResult(false);
+            Assert(!flow.RevivePending&&!flow.TimeReviveUsed&&GameManager.Instance.currentLevelTime==0&&GameManager.Instance.gameStatus==GameManager.GameStatus.FAIL,"empty tray timeout directly fails");
+            Assert(timeoutRecord!=null&&timeoutRecord.status=="fail"&&timeoutRecord.endReason=="timeout"&&!timeoutRecord.timeReviveUsed,"timeout record contains no time revival");
         }finally{Match3DRewardedVideo.EditorShowOverride=null;Match3DRewardAcquisition.Configure(null);flow.Home();PlayerPrefs.SetString(keys[0],date);PlayerPrefs.SetInt(keys[1],attempts);PlayerPrefs.SetString(keys[2],queue);PlayerPrefs.SetFloat(keys[3],best);PlayerPrefs.Save();}
     }
     static void Capture(string name){

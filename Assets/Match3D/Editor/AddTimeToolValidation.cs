@@ -67,12 +67,12 @@ public static class AddTimeToolValidation {
         // A repeated click must be rejected locally without another debit or advertisement.
         before=game.currentLevelTime;Button().onClick.Invoke();deadline=Time.realtimeSinceStartup+8;while(service.Busy&&Time.realtimeSinceStartup<deadline)yield return null;
         Check(!service.Busy&&!service.HasPending&&BoardTools.UsedCount(3)==1&&game.currentLevelTime<=before&&ads==0,"repeat click grants no time and leaves no pending request");
-        game.currentLevelTime=0;f.HandleResult(false);yield return new WaitForSecondsRealtime(.6f);Match3DRewardedVideo.EditorShowOverride=done=>done(true,null);
-        UnityEngine.Object.FindObjectOfType<Match3DReviveView>().revive.onClick.Invoke();Check(f.TimeReviveUsed&&game.currentLevelTime==300,"timeout revival independently grants original 300 seconds");
-        Check(!BoardTools.RunPaid(3,()=>BoardTools.AddTime())&&game.currentLevelTime==300,"revival does not reset add-time quota");
         var records=Match3DGameRecords.Instance;
         var record=(Match3DGameRecords.Record)typeof(Match3DGameRecords).GetField("active",Flags).GetValue(records);
-        f.Home();Check(record!=null&&record.timeReviveUsed&&record.remainingSeconds==300&&record.toolUsage.Length==4&&record.toolUsage[3].inventory==1,"quit records keep extended time, fourth tool and revival before reset");
+        game.currentLevelTime=0;f.HandleResult(false);yield return new WaitForSecondsRealtime(.6f);
+        Check(!f.RevivePending&&!f.TimeReviveUsed&&game.currentLevelTime==0&&game.gameStatus==GameManager.GameStatus.FAIL,"timeout directly fails after using independent add-time tool");
+        Check(!BoardTools.RunPaid(3,()=>BoardTools.AddTime())&&game.currentLevelTime==0,"finished board cannot use add-time again");
+        Check(record!=null&&!record.timeReviveUsed&&record.status=="fail"&&record.endReason=="timeout"&&record.remainingSeconds==0&&record.toolUsage.Length==4&&record.toolUsage[3].inventory==1,"timeout record preserves add-time tool use without time revival");
         Setup();yield return null;
         game.gameStatus=GameManager.GameStatus.FAIL;Check(!BoardTools.RunPaid(3,()=>BoardTools.AddTime()),"finished board rejects add-time");
         f.Home();f.Begin(0);BoardCreationTestSupport.FinishPending(f);game.gameStatus=GameManager.GameStatus.PLAY;

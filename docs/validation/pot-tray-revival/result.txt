@@ -1,0 +1,23 @@
+PASS fixture has seven nonmatching objects
+PASS independent add-time tool still grants 180 seconds
+PASS full tray opens revive and pauses gameplay
+PASS offer does not finish the active game record
+PASS duplicate failure does not create duplicate popup
+PASS ad pending blocks duplicate clicks and grants nothing
+PASS early close preserves allowance and allows retry
+PASS ad failure grants nothing and allows retry
+PASS clear revival resumes same board once
+PASS all seven objects remain collectible in storage
+PASS clear revival does not spend move tool or change timer
+PASS revival preserves record and challenge count
+PASS stored objects can be picked and matched after revival
+PASS timeout after clear revival directly fails without adding time
+PASS terminal timeout finishes record
+PASS legacy time revival counters remain zero
+PASS retry resets both revive allowances
+PASS second full tray cannot reuse clear revival
+PASS closing revive settles failure without restart
+PASS simultaneous timeout and full tray cannot offer revival
+PASS stale revival callback cannot revive or consume allowance on restarted board
+PASS empty tray timeout directly fails
+PASS timeout record contains no time revival
