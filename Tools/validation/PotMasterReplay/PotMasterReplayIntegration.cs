@@ -41,6 +41,9 @@ public static class PotMasterReplayIntegration {
   var button=(Button)Get(entry,"button");Check(!button.gameObject.activeSelf,"five replays hide entry");
   Mode("ready");Set(entry,"next",0f);yield return Wait(()=>button.gameObject.activeSelf,"six or more show entry");yield return new WaitForSecondsRealtime(.8f);
   var result=entry.GetComponent<Match3DResultView>();var entryRect=(RectTransform)button.transform;var retryRect=(RectTransform)result.primary.transform;
+  Check(entryRect.sizeDelta==retryRect.sizeDelta&&entryRect.localScale==retryRect.localScale&&entryRect.anchorMin==retryRect.anchorMin&&entryRect.anchorMax==retryRect.anchorMax&&entryRect.pivot==retryRect.pivot,"entry preserves retry button layout");
+  Check(button.transition==result.primary.transition&&button.colors.Equals(result.primary.colors)&&button.navigation.Equals(result.primary.navigation),"entry preserves retry interaction styling");
+  Check(button.GetComponentsInChildren<Outline>(true).Length==result.primary.GetComponentsInChildren<Outline>(true).Length,"entry adds no offset text shadow");
   Check(entryRect.anchoredPosition.y-entryRect.rect.height*.5f>retryRect.anchoredPosition.y+retryRect.rect.height*.5f,"entry is above retry without overlap");Capture("failure",720,1564);Capture("failure-short",720,1280);
   button.onClick.Invoke();yield return Wait(()=>View()&&View().content.childCount==10,"server list renders top ten");yield return new WaitForSecondsRealtime(.5f);
   Capture("list-long",720,1564);Capture("list-short",720,1280);Capture("list-tablet",768,1024);
