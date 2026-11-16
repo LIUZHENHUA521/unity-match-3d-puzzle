@@ -1,0 +1,1337 @@
+{
+  "version": "0.1.90",
+  "commit": "ac87bac4020a65b157ace1acc1a06ecd491bbd34",
+  "runtimeFiles": [
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/IkConstraint.cs",
+      "sha256": "339ddf1ab0719c25ba8aa71601c397d4ee8a62f1ce38a1cc7027ae4025d5f682"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Skeleton.cs",
+      "sha256": "df19613a22b7575ad3bf4a19b1b189c5f1c2bd3d393c50774c0d2ddf4a3dc3d1"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/IkConstraintData.cs",
+      "sha256": "a9190050ceff6b82033f8fe2739c9c81ee7857fb6dcd945cb30e35a8f19783b8"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Triangulator.cs",
+      "sha256": "df235e9065f63e1415929ff5e76602a2869083adb6f6b45cfa6af54f42909447"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/SkeletonJson.cs",
+      "sha256": "02eef3f454a6b54ee75ddb8c6041cc6a707429a943b300c403271d6ada474ca0"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Slot.cs",
+      "sha256": "ceb69bea9cea4642800958ba43c6a46b7a9f1d5a387b9550236c6826cbb41a09"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/BoneData.cs",
+      "sha256": "37e3eb7c0a302c3c0dc8739ea742fbe3df5bd1b3c0b8215770c378c1970f3e28"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/SkeletonData.cs",
+      "sha256": "d8aceeb19f1cb68a7e34b411d4bd8c9b915c371d2a84e760f8c0fbe14f856db6"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/PathConstraintData.cs",
+      "sha256": "b0e104ba2c08ecf2d8411ee305a71e8e14854228f8db41cb5856e3d5e1119c87"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/AnimationStateData.cs",
+      "sha256": "151a64e6c3d5da6dab8c38bcbf730842452157474243402744cc4a908e3ef0d2"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/AnimationState.cs",
+      "sha256": "8d4bef275cbc4ab11af69199b4a91abdbdb1f4a05fc23cbf2be48fcd9784bb64"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Event.cs",
+      "sha256": "f40a21ed42e0b6c5aa4254398a28fd27232fea45d61c73e19128800afa7b8a09"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/TransformConstraintData.cs",
+      "sha256": "afa00e86c01ea7b3a9ac4a6811b758f7da993b451f601331df78081966ecddba"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/EventData.cs",
+      "sha256": "935414b139493caaa9d0228e61211d5a68562fe6e2a339d6dc4b8daedde4527e"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/SkeletonBounds.cs",
+      "sha256": "e6fbf8867f5a9c4c2e9a96ae3812c3933c534fde0cd8f0f9add55208172eee95"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/PathConstraint.cs",
+      "sha256": "bd4dbd2d09fb37e612cef8fb2f9d02a4ccb982f2323a3dc23750f5ba1e699484"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/IUpdatable.cs",
+      "sha256": "318ce6d09466fe9e83e4e3294be0d82fc4e90d211312bda0beeaa59c73a08648"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Atlas.cs",
+      "sha256": "808e872add2f730e5b10d012004122d53ff81ab724c76c429e328fe9c8839796"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/BlendMode.cs",
+      "sha256": "08011ca0b75c7be74ded203ede18c9795ca313174fb10500f0c4d82f0622beea"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/ExposedList.cs",
+      "sha256": "b33596d3798940ff282757d4122e930b70328e04cff33e793a636839746ad2d4"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/SkeletonBinary.cs",
+      "sha256": "ca1985368e2c44a39571c22281f5d9b82f9e23314d6c2eea889d6587d3ba6f85"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/TransformConstraint.cs",
+      "sha256": "ff016f70eeb5994db92939c53fbc21d61474d72be115470e34b700ca1dea9e0c"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Json.cs",
+      "sha256": "577d5fd1fd5362e7774314b274a0429dc6f5b05e44421a2cf8d6518d1568dfae"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Bone.cs",
+      "sha256": "5e9c78fbd54b711d4231676c04c8e0ca3a7aedf598248041f88225f599a6ebf8"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/MathUtils.cs",
+      "sha256": "3191fef5a63e59e8831713353035b2fbfe0fcaa0133606cd25fcb35b395130b3"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Skin.cs",
+      "sha256": "f32f80f59cc4db03e4f4f429c00de091935cd9c04752343985f3b8b95c506abe"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Animation.cs",
+      "sha256": "b085458d7511f495fca93bd607ddd6b595da7409cf9aca0267660182c3bd2d5d"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/SkeletonClipping.cs",
+      "sha256": "d7dadcf0d58bd84c8e34eb282b67d38c86e9b43ef14fd6d43ba5018cca50648f"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/ConstraintData.cs",
+      "sha256": "1436994bceb67cc043abf7bb8bc0c92e446142e5f1fbfe2412b109d9fe522196"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/SlotData.cs",
+      "sha256": "0797eab131de0093bec0f8786a432125843ee6986e7b8b225b0e1072aa3ce352"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/AtlasAttachmentLoader.cs",
+      "sha256": "ea2d75ec5f822f879de5917fb6bfeaa7aad49e96273ff4c421897204668aecc0"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/VertexAttachment.cs",
+      "sha256": "c3b815d5f3bf1d8e524709c7dcefb27825765fe35f384a4db6cb952d8644f496"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/BoundingBoxAttachment.cs",
+      "sha256": "05b3495aa670af1687ce3691ac790ce7497e0c81dccc6b0f7da58cf920875f6d"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/PathAttachment.cs",
+      "sha256": "bfca0fb75fecdfec7edaaba9b024266c801f57fe28799be95c4ef573164bc186"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/AttachmentLoader.cs",
+      "sha256": "47428be5bbe2a7ad5dacf1bd8c70a564d5abbc617dceb427ce67d67b39caac5b"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/RegionAttachment.cs",
+      "sha256": "66b59c3d5d3b7d5ec808f2d9c62ddef752297ae3c61ea99647b0f6c755b74ae4"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/MeshAttachment.cs",
+      "sha256": "531a62e634a5ab454e66beefaa19d7bee6b0e657d4c13c419889a858162d3e6f"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/ClippingAttachment.cs",
+      "sha256": "dccc15e09248413cd3f9dc375d221bbfa6835d1e7bfbe0ccb052b06843248888"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/PointAttachment.cs",
+      "sha256": "eb54f85692fe691b2d33336c5460e872bb08131ea5baf1d982db7003604c6c8b"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/AttachmentType.cs",
+      "sha256": "f720741f6956873ed595cecda272385150a2f8cfe5ac9e7b2896678b72890f03"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Attachments/Attachment.cs",
+      "sha256": "577c48a78f4f592e6c82f774ca5f8b0df945795bed589621b10969051640ae46"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-csharp/Collections/OrderedDictionary.cs",
+      "sha256": "b1dbc0dfbaa1d8ba8bca330afaaa4fbaa32edf27ba224823f81a37e1d8b84288"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/SpineAttributes.cs",
+      "sha256": "4ba44394d200cf09e6b996250b5b097d17b36ea3ab6000b5c28a1c5aaffc95e3"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/ISkeletonAnimation.cs",
+      "sha256": "3e1c5aed6bef880acc6c5c4c4fbb84d530f9c33ef59bca4ca85cdffdf8786942"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Mesh Generation/MeshGenerator.cs",
+      "sha256": "d3efe3a4d1537780b29aa26b50ca8d8068f62d6b55199ac2187e8ac9bed52767"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Mesh Generation/SpineMesh.cs",
+      "sha256": "e42fe45c560309807e156e4469a4ff6583433421419c50a2b56a0cb884be0431"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Mesh Generation/SkeletonRendererInstruction.cs",
+      "sha256": "2d3a265a12c14face20f1c6448053034b3768a1cbf9a5d47ccc1ba8825615f3a"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Mesh Generation/DoubleBuffered.cs",
+      "sha256": "c3b894798dbe03101c2edfad40f90a76a7d94bd66e86a39607abe38d1a074459"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Mesh Generation/MeshRendererBuffers.cs",
+      "sha256": "1e4f6f174425ce8113c39991cf2df555de67f66e3337ddcd68bf90eee3d23d33"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/SpineSpriteAtlasAsset.cs",
+      "sha256": "363f30af076c6fda7d1d533c48ef1abbc22fae59e0122aec297f62af7f6232c7"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/SkeletonDataModifierAsset.cs",
+      "sha256": "d6efed85f121ef11ec1f12bd04db18a62586cb8da35d563095da6a2855bc4934"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/RegionlessAttachmentLoader.cs",
+      "sha256": "5ad54b6ad73e15366200d1d83ae0bd542fcd459f3dc83c4957973c593d10c6ed"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/AnimationReferenceAsset.cs",
+      "sha256": "ea2a6d3b8ff33984e9df8d5c58b08340b2c81d6ef44b0b77c9fc7a4baf8cbb42"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/AtlasAssetBase.cs",
+      "sha256": "b767893c6e95d33028e23d39284292faf8ca3e6113c5b6a2eed3cef276cb5e25"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/EventDataReferenceAsset.cs",
+      "sha256": "485af17d4270dc58812e3fd66b54f120955632b50ca70036ab1739f589f167f0"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/SkeletonDataAsset.cs",
+      "sha256": "7b18cc2dbecf55c6620209bd3b23d60b6ac5a8efa580047820bb049caaeee10a"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/SpineAtlasAsset.cs",
+      "sha256": "51f0ab6edbce01561f755d91219f8d3aed955aba75ccc23eace371e477ac9066"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/BlendModeMaterials.cs",
+      "sha256": "203555b1b4bbcdaee86551e23e2a73ad5c0e46ca5f45f7450dec63bd538dae97"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Asset Types/SkeletonDataCompatibility.cs",
+      "sha256": "eab9cdd2ccea2e79aa5fae2175ef7e7ffd18c1188166f1c09c6d72dfef87a371"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonRenderer.cs",
+      "sha256": "718b8593aeb03ed6283b569f8d5d26a16b038545621e9576b8a1aae62f8a4697"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonMecanim.cs",
+      "sha256": "4584f61e4297436570b56cc8d4d5e6c1a6cae84268a2e714fe9578aff8f46242"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonAnimation.cs",
+      "sha256": "98e2efdbe1700003c32240113c8e85fd6a78be1c3b70e51e56931c10543db05e"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonGraphic.cs",
+      "sha256": "54b5b4694effc6074d0165d3c916666ced2378b18687954d245da10801ae4a98"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/RootMotion/SkeletonRootMotion.cs",
+      "sha256": "90dad2a661dd1a52a8e7c4d74357d89602be795ec7324f5f01c8d6e50670590f"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/RootMotion/SkeletonRootMotionBase.cs",
+      "sha256": "42ff91e398a3af3567d6dacbed3a2543fcf6e16dbb0fa017d3cfc1304c8e48ac"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/RootMotion/SkeletonMecanimRootMotion.cs",
+      "sha256": "16c4481b31f07e971a796ba34f65646abbcdd108c94da5d20c224bbaee028bf8"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonUtility/SkeletonUtility.cs",
+      "sha256": "c90c7a04bf643904f3cca2377b8886404f9f7a7ec109926d4c19da1e4b8a1c87"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonUtility/SkeletonUtilityBone.cs",
+      "sha256": "0b25d3de395e8a193364a9baab7c35d5520c5c00b96d754ca47e6567c0f12e1a"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonUtility/FollowSkeletonUtilityRootRotation.cs",
+      "sha256": "fdc7da89413ad83801497af9e6403975485021ee94a47753f9bd4bda9f02aefd"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonUtility/FollowLocationRigidbody.cs",
+      "sha256": "ee52f5835d5e65bc0642125dd4d80e98683dabf454b0aa315e4cd31d42cbc92b"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonUtility/SkeletonUtilityConstraint.cs",
+      "sha256": "ac33251ae3097a4accba10fb70f8b7f72f910b11fe1f908a5f63c3c74ae933b6"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonUtility/FollowLocationRigidbody2D.cs",
+      "sha256": "9cb37a9322236ee17cf37a4139817e8815336920f00c1840c08e23f0bbc30f34"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonUtility/ActivateBasedOnFlipDirection.cs",
+      "sha256": "094e24e19be5fcaa9ff64e64b653546c1a49876efde62b9d9814e6f942d9e7c8"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonRendererCustomMaterials/SkeletonGraphicCustomMaterials.cs",
+      "sha256": "24ec6602502b211ab5934939c4bc54fbfab8592831e642c6f1eb6ae362624f3e"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonRendererCustomMaterials/SkeletonRendererCustomMaterials.cs",
+      "sha256": "454613e188a14b67e241759853c640420e724710d3e5783418e876d60ae6814f"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/Following/PointFollower.cs",
+      "sha256": "7ffdf0cb6bc31c401f1ccb882641462ae28e8e1aedd685bd522dd987d4e621b8"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/Following/BoundingBoxFollowerGraphic.cs",
+      "sha256": "50e81e0fa41788973b80ea348d24dc18c3a05a500fa64ac5b3ef1bcb616c9285"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/Following/BoneFollowerGraphic.cs",
+      "sha256": "2883863e121ca57d501894e3ee238262c9955998ff29e12e3f9f185ddfe10fda"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/Following/BoneFollower.cs",
+      "sha256": "72e77081390a27fcce0b35aad43f4769ea986126048fa3dda3465a6410db0f56"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/Following/BoundingBoxFollower.cs",
+      "sha256": "54e4a30f16fc72e91928e66f12a5ab878e042f81d9a1330febf0f8acaf5b2e99"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonRenderSeparator/SkeletonPartsRenderer.cs",
+      "sha256": "35e6101423f04189bf3ae0c6503f8be880407da87353a603a545066b8fe202a5"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Components/SkeletonRenderSeparator/SkeletonRenderSeparator.cs",
+      "sha256": "220a12b60c5b2f901faece520b4952fd9d2dccc450d9fab811221c936dd9bfca"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/SkeletonDataModifierAssets/BlendModeMaterials/BlendModeMaterialsAsset.cs",
+      "sha256": "d9585a574b0cb163f43fb94517d436419026383b2531d32682d6b1d61df2044a"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Modules/TK2D/SpriteCollectionAttachmentLoader.cs",
+      "sha256": "e84995d682ee6be3b1cc51745d11949465c55d027a3a58ba15aa25aa038345ff"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/AtlasUtilities.cs",
+      "sha256": "d3dca9623997f009da8863e98be2456a8a108babf760bd5c3356d65199697e1f"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/AttachmentRegionExtensions.cs",
+      "sha256": "246da2d017f11a05ec715af4dcbfd293cec67a8602b4cde6201d421fc755a1ae"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/SkinUtilities.cs",
+      "sha256": "f2616ca31d0be736d4a092246ac176a69ebc9899f7ebd9a927861a038c84bc41"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/SkeletonExtensions.cs",
+      "sha256": "8f366eb8d74f2b7d60d4891c606c39e856fe167fcaf785ee44fa2fba6ddae865"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/AttachmentCloneExtensions.cs",
+      "sha256": "3443a61ae9d8854755dacd8b977c7a06a3a86e974fb344dce466a27a46103f2f"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/MaterialChecks.cs",
+      "sha256": "bff57f018acdeceaec6290ed8d102bfa59df9a822f25f887aab2e726caa982a8"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/TimelineExtensions.cs",
+      "sha256": "74b8f7b78a171b2781dd8069333a35a4b91ff91fe48e42bd65e0b4df87451ef2"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/YieldInstructions/WaitForSpineEvent.cs",
+      "sha256": "4b128119b2d88daf570079ae43d8022a37726305cdfec2dc6defca54160dc4d7"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/YieldInstructions/WaitForSpineAnimationEnd.cs",
+      "sha256": "f124dbdf1fb70e0c695d741e050abd3ef67eaf9318257944431ba98265a38de9"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/YieldInstructions/WaitForSpineAnimation.cs",
+      "sha256": "8a7d26d418648548975f95e28acd89616fdaa358d50c7016b351dffcaeab20ed"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/YieldInstructions/WaitForSpineTrackEntryEnd.cs",
+      "sha256": "f8ba55684f208f2335e67f6fc958f5f5ed9b9192bece0ca7228b0ca6450819d5"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Utility/YieldInstructions/WaitForSpineAnimationComplete.cs",
+      "sha256": "a102bffa83ce5aa1f32e66f712ff1580a4b134b0a4b450ce37500d462d331efa"
+    },
+    {
+      "path": "Assets/Spine/Runtime/spine-unity/Deprecated/SlotBlendModes/SlotBlendModes.cs",
+      "sha256": "b0d1d4f4d32bc90a1cf9cf7246d134c0b4b3bd71e0a8551fc5e531041f321799"
+    },
+    {
+      "path": "Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleAudio.cs",
+      "sha256": "239e21f5d912807dfd42335239e764ea74d63d083076f4121846466b71856d0e"
+    },
+    {
+      "path": "Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModulePhysics.cs",
+      "sha256": "8de933bc4bf954bea14f8afd6e864a941d433053fa333c00d49a8a1cdb58f132"
+    },
+    {
+      "path": "Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleUnityVersion.cs",
+      "sha256": "811e90e2c5fbc7a75c330661b330be5b24830176b76b8af9e986c54bb79fdd77"
+    },
+    {
+      "path": "Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModulePhysics2D.cs",
+      "sha256": "2beac3c6dc7b039abd2170a829ad7a3ec832e08835117608f9040249c782f882"
+    },
+    {
+      "path": "Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleUtils.cs",
+      "sha256": "906053f5a7371f43326a99c39c122c66cd7c210b34e1c5ea65ced4904478dcc1"
+    },
+    {
+      "path": "Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleEPOOutline.cs",
+      "sha256": "60f582971ea38e7dc172039325686984f28070ea697b199e7612169bbdcbaece"
+    },
+    {
+      "path": "Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleUI.cs",
+      "sha256": "02a8232f2345eb1773f4a65bfb5cf9a99e5d9bea99e1112267dd49fe6f638984"
+    },
+    {
+      "path": "Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleSprite.cs",
+      "sha256": "3d875eebb20770f5b57e9e63f57b4a80eaabbd8df34329380c534ef646665cb4"
+    },
+    {
+      "path": "Assets/Scripts/Game/CameraFitter.cs",
+      "sha256": "245fa6119f5fbcfa7555811fe4b84ecd46e8083a04fa09aa0f63ddf7751c7803"
+    },
+    {
+      "path": "Assets/Scripts/Game/LevelGenerator.cs",
+      "sha256": "6396e11045d3f70692433cbcde5bfa96996928246a52b2effbcc13cff8392395"
+    },
+    {
+      "path": "Assets/Scripts/Game/FrostEffect.cs",
+      "sha256": "fe2ad0e910063f46502e9373da0b22f2954ead3563b462cf78353b957d4b8f98"
+    },
+    {
+      "path": "Assets/Scripts/Game/UIManager.cs",
+      "sha256": "7de27f643d4f1bd6e9caa82f443b1a70bc4dbb7c1d6a83ee382cda2f2335a96d"
+    },
+    {
+      "path": "Assets/Scripts/Game/GameManager.cs",
+      "sha256": "d824525bfd21ec0f8b01207871def496a90af1d60f361e8f10c7a234f78b5111"
+    },
+    {
+      "path": "Assets/Scripts/Game/BoosterManager.cs",
+      "sha256": "1f8d845b02f606032d60ab88f04097fd9c2025b5eaa53aab2777b9e79b921bd5"
+    },
+    {
+      "path": "Assets/Scripts/Game/InputController.cs",
+      "sha256": "5846217f685512c22138eaff3d9b7b32d90597a68ec217299c7bab927b218e3f"
+    },
+    {
+      "path": "Assets/Scripts/FoodPile/FoodPileShake.cs",
+      "sha256": "34e00eefeaa102313bed8078063ffdb44f2b0edd99f864901698dfac8c2484a0"
+    },
+    {
+      "path": "Assets/Scripts/FoodPile/FoodPileSettings.cs",
+      "sha256": "21ba7694822cb7ba5f01156111a43b56650368db09ef27c850930be0dc8281fd"
+    },
+    {
+      "path": "Assets/Scripts/Scriptable/CollectableObject.cs",
+      "sha256": "7be20a660473c2ee66e3a6468d3937fd0bad015aa24a406232f2492f14337530"
+    },
+    {
+      "path": "Assets/Scripts/Scriptable/LevelInfo.cs",
+      "sha256": "1fef116116ba669697254c0780d8b4058a6bac376c76f6c724f0867395c6093a"
+    },
+    {
+      "path": "Assets/Scripts/Utility/FileUtils.cs",
+      "sha256": "718748507c8541b29a84df607d05c7bcbb17003af8316e3adf62aab5ecadf930"
+    },
+    {
+      "path": "Assets/Scripts/Utility/ApplicationSettings.cs",
+      "sha256": "f32f3442e7dc0b3b7c05a7567815ef9d4db16527dd8dc3b15230127831a56843"
+    },
+    {
+      "path": "Assets/Scripts/Utility/Singleton.cs",
+      "sha256": "9d40acbcd55b9913a81784bd95e985c0e8806116685176bdef774ee4f6e963ff"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotGameCommunity.jslib",
+      "sha256": "11a80493a5e9470ac50d9a48a324cd19a7e632d041c4f1f1503659b2cdc6711a"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotReplayUpload.jslib",
+      "sha256": "0f79ba80d99d322278dc46dbb73b65cc0443e46314948697b0fd396d771a4f94"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotShareCard.jslib",
+      "sha256": "fd0c6e326e17b3838972a035224822e64ef9d215926ee0d68676f2bdc676890c"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotProfile.jslib",
+      "sha256": "98de284fa5559b46bd0224251cc6ac230efcafd62386d004c4a2f3bcf30f93e2"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotDefaultFont.jslib",
+      "sha256": "6e5b8cb0dccb1333db84d9f2cfd69aba72f1843762ca59919c52fecd0a16eff3"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotDiagnostics.jslib",
+      "sha256": "6c2219c4bdd81cea6f8efd3a7a14cf4dbddb981dd5db3336e0e102b91b094a8c"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotAdTelemetry.jslib",
+      "sha256": "7985de1c29cf1cd85211daafa78621c2084b5541389d0049205bfca7de25c4f9"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotMerchantAuthorization.jslib",
+      "sha256": "3b022033647a23530a78ea5b59c59ace8e88c97d1af3d6987df3c83c970dcdaf"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotReplayFiles.jslib",
+      "sha256": "32297973beabafc7b3b571fdf2b1a26dd012c114a5691659b4c590d6f55ca528"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotReviveAds.jslib",
+      "sha256": "b0462929a7b19daf7be6b72ceab66fbee1ac808b107596234c1159e1a63a5bed"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotSameGames.jslib",
+      "sha256": "fca22b963e9fca69fc0fc988b64f37944f107d5547cab919b17bc5a7441bd081"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotRewardShare.jslib",
+      "sha256": "2353eadac843e1b6c65399805ff07b16fe6f9c573e17817f3e10d5b22b524f91"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/DailyPreview.jslib",
+      "sha256": "23945d7434d97268446c8bf2b8d3ae10b48e2a3dd56de6fd71157f3e70f6c561"
+    },
+    {
+      "path": "Assets/Match3D/Plugins/WebGL/PotInvites.jslib",
+      "sha256": "a86877350d32296bb167cd675f31ddf121b17b25a4307b8c9b78946cca12d390"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DHomeView.cs",
+      "sha256": "6604992a4fa2a363370890c50bab8239bb85644fd85c7c301e7a6aac5a96f714"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DFlow.Revival.cs",
+      "sha256": "dba067ee6c4062094335077aac669d0f275f04264b3b2542c97e1f5f7ef1adf4"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DInvitations.cs",
+      "sha256": "58d129744e918c41d08338b725fe61671b14de5e197bba4de32f92b87ad2736f"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardItemIdentity.cs",
+      "sha256": "81dacc01e2e33be97e1431117823a19cfc3cf45bf4c4b51615838901f490dcb2"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotHomeReplayEntry.cs",
+      "sha256": "135338e29bc5c8c2157946b8b801b781faa2d346fc46b7ee69be0ac918effab3"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeChanceFeedback.cs",
+      "sha256": "fd956188ce7441670306db1eda8692e291d11a35a0477d405783dbcf80411656"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayTransfer.cs",
+      "sha256": "2cc10d4226215e117397b8efa4462ab49bafcf9f91089a241dc534b320315b86"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DSignInBadge.cs",
+      "sha256": "ff8f6ec1b990b077385690f39201fe24f8c747671b8ec5fcd36bfea7b8693ab3"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DResultView.cs",
+      "sha256": "314a318c79ee017e1ba39e66e051a1721aada15f37626a17b92cf1df3465c9a4"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DHomeMenu.cs",
+      "sha256": "d88bbdec6fc71fa58795b068dd06438b52f7df614c804f20988f5bea7b050970"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayService.cs",
+      "sha256": "f68178ac5995c976b85078c4d2bc51578624f02a0fd9eae6b0627f01a3870d7e"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardPhysicsSettings.cs",
+      "sha256": "c39e08cab3a646da36abe9481f245297bdebd41426d940762b0394a9e809ea3c"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DInviteView.cs",
+      "sha256": "beb444a09abeb7853b748f6aa01bee8cebc73c02cbd3f823c8b67f9f90a23eb4"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeRewardFeedback.cs",
+      "sha256": "9e4c2ddc705f7870d5a81d1f77c095ea7ecda5df5ffb1ef343932954937c2e6d"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotEditorBetaLevels.cs",
+      "sha256": "633c1a29dee2bd70310c2b80bcb040a6a239dc4debe8a0cfc603b78bd3014e5d"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardItemPool.cs",
+      "sha256": "1bc68f679413dc1611a115658f124c7aaf73554dfd48f2c7e7028a69bab301a5"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ProbeLiftContact.cs",
+      "sha256": "a80a1b651e1cff72bc629d83eb332bbee88fa9610c16933526b143b14ec52185"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayJournal.cs",
+      "sha256": "867ac06cd35a4cc24d004912a13817f69428f5cb29f46c45cb135642164a8001"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayGestures.cs",
+      "sha256": "78b50c147d0df8a75ad91ef822f66540d8466c0d46161c7ba39801347b4d8857"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DFlow.TestThemes.cs",
+      "sha256": "4f939c065d3e4bfeb0fac2479f0b711f5b557b911a5454630b065fa82cc5a747"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DFlow.ReceivedRewards.cs",
+      "sha256": "d0fece2f8b2c6125896cab9d9989e8ccc9e021c9eb4238c043cce3851e8501ae"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/GameAudioCatalog.cs",
+      "sha256": "b5a77aa7570e0417fd8562dfce5926b233b86a874f62169ab6c1615e3392ce52"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeState.cs",
+      "sha256": "8ec00881dec503980065e6074781669419c4b90cd7577913ae05356d81728772"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DReviveView.cs",
+      "sha256": "53477da8bc051b4e988eff907dcb0c176e1ee4f3a3eb0aa2ebbd8a91837e964c"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DDailyLevel.cs",
+      "sha256": "768b90b19e572700f9a02f0d33bfe4b5aa7b5aab9cae70d9476e865b8e078e0f"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DStagePreloader.cs",
+      "sha256": "43cc4dd3bcd6b761acb58c848a1efc32a4f08da5fd677a8c6293d65528a95cbe"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DSelectionFeedback.cs",
+      "sha256": "1de5ac59b37835a7d99b1dcd24ba3023e3641e13b0022222d2943871621cc245"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DUIFitContent.cs",
+      "sha256": "f0bf80b096ab3bea142d37f2ce8205c424487a0705d2f1ee80ff9ab889baa73b"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayAudio.cs",
+      "sha256": "5b3898932eb5fb4351f693a95f9b9c5d6744a777c2a2665790abadad6af549aa"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardCameraZoom.cs",
+      "sha256": "37c0ab2a04bffbd45fcf17fb03765fd1acbdb85c6e05b7afd5e4e32dcc0f755e"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DGameCommunity.cs",
+      "sha256": "d329de46b87bd01177f3f3b15d82f79f246651cee4353443bdf1adc0f06cd9d4"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeArcGraphic.cs",
+      "sha256": "cfb8988208f8b512b4149728881a4f43dfd13301f4d1b04aac1422a98396b26e"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/FirstStageContainer.cs",
+      "sha256": "5f8c875b35c7b9878fedee42f45b91a78e0b6ce81a9f5d5fcb81b9549d504c99"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DInvitations.SignIn.cs",
+      "sha256": "0be50c60202132986fb18bdc4a5ba71bb103e50e18871e5a28c6fdef86d02f4a"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DDefaultFont.cs",
+      "sha256": "443f270a8b6d8e3468f25d54738f6fb0d2183cb56ffb71e54a83432a098e6bf0"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DRewardPresenter.cs",
+      "sha256": "b8a3da703a66dbd1ea236e9e8e6477e5862dd0c59e9cb669997366c111d8d8bd"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/GameplayBoardLayout.cs",
+      "sha256": "0dffb7a828c869fe68cc690cd9f6560c2dd025ba7b7fd62a616956a5de59744e"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardToolVisual.cs",
+      "sha256": "bd23ea69b38caa65fe7a187f22a6e437c9e256d160a073fe8ddd0477f8b7a100"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeSlot.cs",
+      "sha256": "d6b2669e6250fa32ce31a79cade558254563e55d4313c265a934ca2e230f787b"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DABExperiments.cs",
+      "sha256": "03a0f98409f42181502ed1885f0ad05c4b45b0c74f3a8a0cdc54643cc410c988"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DCommonDialog.cs",
+      "sha256": "1c9a46cb4a32f6a7b882758bd9ad4e182caa3b88128e1b087d4a00c0c8cfcf97"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DModelThemes.cs",
+      "sha256": "3b00472146fc4dd36289f610b10ccbbe7c0189cd8612e66c99e5b7cd2e69494e"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DCustomerService.cs",
+      "sha256": "0f9549605d3345378728ae28049e7f97ba87fefa0cc25e34f41986527a76f4b4"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayFlow.cs",
+      "sha256": "009caca6c82f2cb1d5c107c7b44ba740535bc0d68449f5bf6fbcfccf9dbe8986"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DFlow.Progress.cs",
+      "sha256": "47bcef3325c5448271568fa48fe43569a1a082da116124a00af19dd53e9e6a33"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ItemCatalog.cs",
+      "sha256": "b72c961a2e4032ec0ca255dd4d7301f1bc86f4162d4b915c60332c400be15e14"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotHomeReplayState.cs",
+      "sha256": "edc1df5dfe278e4cd2ded66092234f5d8b3689edf99a9fb4cdd2acb9d32a0610"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DAdTelemetry.cs",
+      "sha256": "14d3bd913fafc15f3d9e6a6e608cf557c8d0b5eb1bdf2e6dad2eff5bda16a3ef"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotSpawnMotion.cs",
+      "sha256": "390ef3630b754171a6ea319236e3ddb7dbac4338abb13da4dabbe0d98b75addf"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayProgress.cs",
+      "sha256": "0317ffa4f0b45f51e947f22f922ce0050574d8cbe0d918c748bca9dd9b27e6b8"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DFlow.SignIn.cs",
+      "sha256": "de282f3ee4fb68473079bbac2f36077289178cda9a99032213fa3659bb44584d"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DMailboxView.cs",
+      "sha256": "cbe757fb749647a6f27f6805d43ab3cc1f7f629d5367e88a68b8c107da6e8f6c"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardValidationDriver.cs",
+      "sha256": "0948c59841b02fe28df070d19eba357c6d8e9ae4ddc9b3d0b8ef003f477b88a6"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DStartupView.cs",
+      "sha256": "ea105af4836e509502b5b41221256445afb4d0cdac1154324a2f200151d15327"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DTips.cs",
+      "sha256": "1d455401844fbaba5c9b261c9cc272a4bcdad171e6fca3aa557b84e797d7873d"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotProbeExposure.cs",
+      "sha256": "b0fa829df1ba95786bcb5ad87eaccfda934594806b69edff289cb216c1e92527"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DGameplayHUD.cs",
+      "sha256": "8244ecbad56a9175b684463a2393153148492453d26df911f4e2c6994f1b3672"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DSignInView.cs",
+      "sha256": "e747195b929bdac26bc10db873ebcd3cba8761551470c4b507a8dc05db1618da"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DRewardAcquisition.cs",
+      "sha256": "d7e709caf5c1fb8f9c1eb79fced49d2f631f0d914a1d8bc1ff5f5d450981fcbe"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DDailySnapshot.cs",
+      "sha256": "2950865650cce0c9b36ebc06c51c0911d9d3ed5f840d95117785809ee3aeaa69"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DModalMotion.cs",
+      "sha256": "94c87ddbb63da1c712e2469030085af52b8f08ed967f588c125ef428f58a7cac"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardRenderWarmup.cs",
+      "sha256": "5193a5de2b8915082c52dff42bedf680998d3f2b72386f44eaa082b0a75aaef2"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DUIView.cs",
+      "sha256": "7f9fe80c23f1313edc276f034e61f5a673fe068cbd3ea4ea76579fcf48e088f7"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DHomeButtonMotion.cs",
+      "sha256": "90e6d2fa1810dcd15af7a188b7cacf1efceba8a160cb5f0e4d92115bacbcb305"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DFlow.ToolOffer.cs",
+      "sha256": "b814a1ae3b34ac84dd6dad4b89456154320954707f64c492ffb68ce376d32701"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DMerchantAuthorization.cs",
+      "sha256": "92b9cfc7935699853fd805b0dc66a3834eb26f1b9f3c62160d05c475e95dac78"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DFlow.cs",
+      "sha256": "0f92afa9c1f14977a2f77a16912fd043098980383b2e5ef98394c5fb78fededb"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotProbeActivation.cs",
+      "sha256": "85cbf9444d7e098b852e554b8b2bf696470c74bdd938b20309e4b946f18293ea"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DTrayDisplaySettings.cs",
+      "sha256": "35708f6855bff8b33c923e5581e8fdfa7410bb4667024954cd6da6ad0bb14ead"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardCameraZoomControls.cs",
+      "sha256": "83ad854467a1f35494484f569eca989e04e279b05a023300d30bd3139e630149"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DMailBadge.cs",
+      "sha256": "86d91dc4c1e75b4c5cd1281164ecb56242de18732bac4f0fe239438211e29949"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeIcons.cs",
+      "sha256": "bf0e2a3e57ded377fef7c5723e490d437c5f2ee3e5d0d5e381167c9373069936"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardTools.cs",
+      "sha256": "43866f8792c8aa5940a28d9c660a255530dff345de37c7829d4894f89d4ef1f3"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ItemPhysicsController.cs",
+      "sha256": "fbfde1a886544331ca81d6865b94ef6f18105c5c162e89efe112ec7a132b531d"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DSignInState.cs",
+      "sha256": "82e20df05c28099ed149fc54033d6362fc3ae634fa4087936a10dab34eea7d3f"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ItemMeshPicking.cs",
+      "sha256": "9ae238d064b47f2f34e2cb680c2b0431da9e2d7d44f85515c767aaf2bf342b23"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DThemePresentation.cs",
+      "sha256": "34875507beb70d400ec26a74fdb2cdfae51b3575b9e452d26e8b9af43265d914"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DFlow.MerchantAuthorization.cs",
+      "sha256": "9882bdea8d645a6e392a5e7ccc28b15c4a241837b0e777692247e7c2e3ef7042"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/LayeredItemPile.cs",
+      "sha256": "882bc4774301b209ef0b3830b8ff3c3c7dad7c9507733521cc3807ad20264ea3"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotCapacityPlan.cs",
+      "sha256": "174ecefdd240ee8beb6ef1146868945762ad5ad56a041cb103aa9c8af4ab05e5"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DRewardsView.cs",
+      "sha256": "ef428213dfbf8ba1e7d5ec643039e36ada628beca24aa244d121d920a39889ca"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/DailyWebPreview.cs",
+      "sha256": "d19f1e9a74ab92a5a26edec3c798b8846e589df0f6e96b14cca478f9ec9b60e9"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/SoftTransitionContainer.cs",
+      "sha256": "99636848863894936f9612cfb3075764d277387d1fa9d466038aff02df0c2a20"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayPresentation.cs",
+      "sha256": "e44093aba0014bb304c4b45f47fc24f4cd418492f442bd3502816d206a53abe5"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DCircleGraphic.cs",
+      "sha256": "3fd29cb196d5527d00f8fbf50eb109ebfc8c85ee740a76af9721f10fc1e405bd"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardReplayRandom.cs",
+      "sha256": "621ab9b59cd18907708313d87baf2e4edcf4735b6e92deb58d4fafb44fe87f2d"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayPlayer.cs",
+      "sha256": "1edc8990f4d55f0691696866ec1783f536d65006c1787082612f8f2e1d5355c6"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardEnvironment.cs",
+      "sha256": "4d5985282513de6a2863b8703e37bc5e0d12144428c3d8ae2c857525d2823522"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeView.cs",
+      "sha256": "2654b1e5b50203e47fbd6d5d9d0a5e422d56422695eca834acd3641ecc90e174"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbePreview.cs",
+      "sha256": "ed88a4a6603195ebe6ee88257706072b71be8e18d958f744dfe476133c35ba45"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DCameraBackdrop.cs",
+      "sha256": "286af029e76f3905cc2ea3d7218edf738ce65f6b0b76c95630a98eeb3926ffc2"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DStartupRunner.cs",
+      "sha256": "7f7265e2f05ec86b59571f4d689d53a8779bf30275383b29f631ad9d92dca0a4"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ItemHighlight.cs",
+      "sha256": "95a337c7c3c94af7c11c7d1ced069014386105f3271ddf75e1d1938a79d32f8b"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/SpecialItemAnimation.cs",
+      "sha256": "a03714366fae040bdea38351e355bed0f48f13cfe83a5f3ed603f5d4b1c9a6bc"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeController.cs",
+      "sha256": "c332b9e56730b79ea6e6bb01b912ca17aafbf878dc76f007d0350ec4027c8c41"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardLayoutSettings.cs",
+      "sha256": "f61339c3c6c274f370637ebbf48c69fc4cc07fb0443f2db70e24de6f3b613a56"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayRecorder.cs",
+      "sha256": "5db97f36c6409dbbec69bf4618bbb23b9fe844994b4a65bcd304fd6a2ec51f03"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayUI.cs",
+      "sha256": "ceaddf3aa0ba09dd79faf4b07f72b7d566073fb3496c9fa0a4380dd68e023391"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ChallengePlan.cs",
+      "sha256": "be514349a1d054183d3bb4f211a801e55088dc94a9daa8d8d3bf5ce3d4483aa7"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/BoardLighting.cs",
+      "sha256": "740caadf1d365a080654fcee871b71f9507078479b7b6d8e7219d477bd54548a"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeAssets.cs",
+      "sha256": "6334a631cf37764adf3cac0677a61ce581941d3af3da68b88f8f0911411755d4"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DSettingsSkin.cs",
+      "sha256": "591338bb21bdcbe12f2f7f04b5e268b495693d26989a3a17b2cf7654ed6845be"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ItemFlightMotion.cs",
+      "sha256": "ea347196ace1e79fbcadc61d01e3c2745c50ae8bf07b6b8dd7aafeaeb51a27fc"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DTraySkin.cs",
+      "sha256": "01e52b641a1ce7a4da320caa585a924722826381505de042abc740914fc4cc21"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ComboProbeTarget.cs",
+      "sha256": "bf0f4543e63cb810a7e9c0288bcc520d2c738ee7c7019e2fd5d75fb2bf8ef636"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotSameGames.cs",
+      "sha256": "82e289ab924b0ad8ded7810cd016456cd22e286bdfed47c6acd76a417c94227e"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/LevelLayoutConfig.cs",
+      "sha256": "ef61443b685f5d451f9fa05692a58dd667cf6e921bb167e2a015adbd023ddc77"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DTrayDisplayBinding.cs",
+      "sha256": "39e50068163dfd760244c8f236deacbf41878c79574a271e613ebea28d35ce5c"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DRewardedVideo.cs",
+      "sha256": "cc51b39a4151373631afa5928d0c84c7ce495fedb075f370d98c99669681f1e8"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DRewardPopup.cs",
+      "sha256": "7bb833bf79a6775b392c6a98572737103ebbab2c7146f245f5a52137fa4c7663"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DUserProfileView.cs",
+      "sha256": "85d29e5d5a412fb84d2492dd94678aa6f9801294b753c8b3a9097a8fb3ca96ca"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayData.cs",
+      "sha256": "dc7b3f456ee2d8c4c4ea9194d20d2d0bfb509955f4fe45c7b909f7ded0fa6d56"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DTray.cs",
+      "sha256": "54bf65300bfc4ce0b0fb32453dd68a9644189df114f1ba9a785b16833c1ee3c4"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotAvatarGraphic.cs",
+      "sha256": "fa9af7d36dba246fbed789fe67d79b1bc8d07e650dac403b403d4b3f6fff95b1"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DRewards.cs",
+      "sha256": "d90cddd57fa177a45911d1cc8badbf6c6ce6727847f53a7ee1dd56bae1790134"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotHomeReplayButton.cs",
+      "sha256": "e52d94152b271b492dba51f5bc5f942a23c89e8611d584ddeb9d20ab83ac8008"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DRewardItem.cs",
+      "sha256": "d52735334fbb221c8f9a410187027cd1fcfa457643fb62dc5505eac77d565f4d"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotReplayFiles.cs",
+      "sha256": "63622edefecaabf72c6b3e098f4c9c7f72beb95095585b68d47cf0ab2786410e"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DTextStroke.cs",
+      "sha256": "0d7c355d36db6cd40357c0fcb0a1efc4be983a7cd7d9524ff24a855ca74f4507"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DTestPrivileges.cs",
+      "sha256": "32c5905b9d3a576db9411ba66ff1b5e093a9104523cfa5a31f97c4b0db7ad72c"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DMail.cs",
+      "sha256": "c7322142ef8ae6880d421b6c43816996aa7281a202b97c72668bb4934770376f"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DGameRecords.cs",
+      "sha256": "9ac98630769fe6ed228d810a86daaaa4b348e9d0faf2889a85ac5181e5e08393"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/ItemColliderGeometry.cs",
+      "sha256": "bd2878f2306a4bc0756dca0cc78fe0875a1565d4e502afc3feb39a3e2f3d08c6"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DTheme.cs",
+      "sha256": "7e0a166912deb097cf13d0e11ce9e5a4b220f477a619552f0977d493156a5780"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DProgressDisplay.cs",
+      "sha256": "7c7973dcefa3181a407fe0db0ab974cb9af652f7b8ba1c704cff611859ece991"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DRewardItemView.cs",
+      "sha256": "9a6e653f84666ea7d89caa58bf890448487187aa63046ce914464e27c1c85f8f"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotPanFloor.cs",
+      "sha256": "7797f9f8b21077b79cd31d55bf07f08e94e40b9f9dc508c627151d6c25992ecb"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/PotComboPraise.cs",
+      "sha256": "b1b6e2419a6da05177a4f6a52f460389831bf8f9874debc62d677b8c978cdc35"
+    },
+    {
+      "path": "Assets/Match3D/Scripts/Match3DDiagnostics.cs",
+      "sha256": "76a3e73a819411f16d62bac29cf83ac424b18dbfda1e6235f840889beb594e5e"
+    },
+    {
+      "path": "Tools/wechat/release.config.json",
+      "sha256": "105b1650e9614848bca84e7e9588cec8438122f6d182696fb0f3f22c118088c1"
+    }
+  ],
+  "mismatches": [],
+  "packageFiles": [
+    {
+      "path": "check-version.js",
+      "sha256": "770187f9ced78f09287f502490bf43041f81fa536aa60184a3d0970b6b1075b4"
+    },
+    {
+      "path": "data-package/a2f1dfe36049d1e1.webgl.data.unityweb.bin.br",
+      "sha256": "cff8d51a3e88e20ca00b965ffe85c2ccad28dd8256bfc7256ac7006906730564"
+    },
+    {
+      "path": "data-package/game.js",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "events.js",
+      "sha256": "0e8d53bd4cd51e8833018558abf50a27e28c6294faf16da100142e7b27a41681"
+    },
+    {
+      "path": "game.js",
+      "sha256": "39741b9aec46b6f1575f30a0802299948286b8177a090c0cd462e4dd6e007f4f"
+    },
+    {
+      "path": "game.json",
+      "sha256": "8d55c5a26c9d6302d20bbe792e2614871c95be66426dd70f08b13390c1b1d531"
+    },
+    {
+      "path": "images/WechatCover.jpg",
+      "sha256": "5503b3e288de98c27dbe598b4ebafdb869fcb1be2912a356d41598672d25a941"
+    },
+    {
+      "path": "images/WechatCoverShort.jpg",
+      "sha256": "73027d96e29f47afe84de1cbae97f986b71ccc8d6bc209ac9ae6302b7c40c8da"
+    },
+    {
+      "path": "images/unity_logo.png",
+      "sha256": "34799ce1b7a341e39c6c6ea7fa439f170989f3ecc5d0cd3681573569b4b6d239"
+    },
+    {
+      "path": "plugin-config.js",
+      "sha256": "00fc1c1d6765f328b5cea31de6aa093e493a78bb6c70fc1ff4f20f2f5b47d658"
+    },
+    {
+      "path": "project.config.json",
+      "sha256": "892b1b4d9d95f3341bb0c6ddd2213b26d916500338ffd78a8b188abf735c1720"
+    },
+    {
+      "path": "texture-config.js",
+      "sha256": "7f7726142203ab208fd7a062af4bb04951ab8296d634b28dff7a63a65688e515"
+    },
+    {
+      "path": "unity-namespace.js",
+      "sha256": "325fcaf52fa35a95d029f580ae3ac4ddeb2af385c54dbff4c99445d241e37566"
+    },
+    {
+      "path": "unity-sdk/TCPSocket/index.js",
+      "sha256": "03616ad9e25e19aede3e7256e894e5b12c6847aec2fc2002b93bf44c8e439852"
+    },
+    {
+      "path": "unity-sdk/UDPSocket/index.js",
+      "sha256": "681a1bfdabbdc65ef8c4e8ef389b2844fd3f9a457ea1876c9c19a0b18620fae3"
+    },
+    {
+      "path": "unity-sdk/ad.js",
+      "sha256": "1dafdbe346ef838cd421f3ff887612bcb6c9a7d2f44c1cce26cf3e6e2f005ecd"
+    },
+    {
+      "path": "unity-sdk/audio/common.js",
+      "sha256": "daebe0c943184912dbbdfb9abd32fe58cfdfc2fc502a9df869e44b5cf617dc10"
+    },
+    {
+      "path": "unity-sdk/audio/const.js",
+      "sha256": "31a941dae51b6e28bd78520284ce896dae4307f91e1c70ea2311826e4fcf79b9"
+    },
+    {
+      "path": "unity-sdk/audio/index.js",
+      "sha256": "596885e8def00ca4cbc47421b94d4a9e1d9d8f666c0444733ada04a33f0b27b1"
+    },
+    {
+      "path": "unity-sdk/audio/inner-audio.js",
+      "sha256": "41657bb73852f50f7e996d663ce1184fea4b4c5819fec459680db52152588425"
+    },
+    {
+      "path": "unity-sdk/audio/store.js",
+      "sha256": "d52bb7e2ed9de12b8182d48341e15fddd9c36e2f42484c878401206e90624dc7"
+    },
+    {
+      "path": "unity-sdk/audio/unity-audio.js",
+      "sha256": "a3a17656bcf86a851287e60f3cbe52119b9c413c94ece1ee11ad052540fcf648"
+    },
+    {
+      "path": "unity-sdk/audio/utils.js",
+      "sha256": "45d4cc6d39e17301bacf4b00cc8f79491cf5eb6e3a5997493324870e5a66ad98"
+    },
+    {
+      "path": "unity-sdk/authorize.js",
+      "sha256": "36f6acce3576ef206fbd7ab7e41adc3613522c987bab8bd16344cef99ad25656"
+    },
+    {
+      "path": "unity-sdk/bluetooth/index.js",
+      "sha256": "1f664af1d27a75db3a306a1297508584cf4080fc9000d5fb5db67d4195dea09f"
+    },
+    {
+      "path": "unity-sdk/camera.js",
+      "sha256": "d745f848ef62da3a0a0052c518647301375437493b4e6e56422f570dd76ef09f"
+    },
+    {
+      "path": "unity-sdk/canvas-context.js",
+      "sha256": "dfdc1d383529c529afd74d61eb3555ebce0303eae5dddf585c611b27fb783334"
+    },
+    {
+      "path": "unity-sdk/canvas.js",
+      "sha256": "8e4a0fd95e0ab4c4935f58a6201e23468a8ec74c9e3efaeef36329397aef8af5"
+    },
+    {
+      "path": "unity-sdk/chat.js",
+      "sha256": "8cc33a6475217e9fe9fca8ca8a7078b235258defd0e1dd03bb05dbb25365f496"
+    },
+    {
+      "path": "unity-sdk/cloud.js",
+      "sha256": "7fa5ff8c105a7b45efbc97a288eb7c82470d8c8f255bff46ae956dfc313d7d52"
+    },
+    {
+      "path": "unity-sdk/conf.js",
+      "sha256": "b1dd63338c3f2689ae3077902a39f3720d45e40db163e4f1979cde4f10f03d36"
+    },
+    {
+      "path": "unity-sdk/file-info.js",
+      "sha256": "f0db1cc7c28a00bf1647325d2ade29f9175c3889d97e58a9f4cf5762b2162c4d"
+    },
+    {
+      "path": "unity-sdk/fix.js",
+      "sha256": "221fbd407c603fed4592ca6df54a4b696ce05eaff97c515caf78bb38fa60aadb"
+    },
+    {
+      "path": "unity-sdk/font/fix-cmap.js",
+      "sha256": "c56997b41d07c3c09dd1fb222314533c42a3b1fe3878346adb0b1b378bf280bd"
+    },
+    {
+      "path": "unity-sdk/font/index.js",
+      "sha256": "4178754426ceca61fe8de39f4097ec88fe6737094214ae10222fbb72cb9631f0"
+    },
+    {
+      "path": "unity-sdk/font/read-metrics.js",
+      "sha256": "1d6e8c0adcda57d1dbca8c2cec56914dc166141ef669d96a8d182b0501d079b7"
+    },
+    {
+      "path": "unity-sdk/font/split-sc.js",
+      "sha256": "33f2ae12164e594d13558b28be20a37d148bc591ba05fa6a9e7943bb935be8a1"
+    },
+    {
+      "path": "unity-sdk/font/util.js",
+      "sha256": "e49657878099a688efaea330fb913a1d174c4523a8a25ab67d4206ee7aba0baa"
+    },
+    {
+      "path": "unity-sdk/fs.js",
+      "sha256": "d28ff7791372fcdf6ab40c1390131d57b256625e7b7288ca5aa7e3bbc6e95d08"
+    },
+    {
+      "path": "unity-sdk/game-club.js",
+      "sha256": "67c3a4032fe27b02e515455858c9cab59d1c2a8142bd7c060d45f135cda16c90"
+    },
+    {
+      "path": "unity-sdk/game-recorder.js",
+      "sha256": "7ae459dd5ac89586b8c595b50b1d525312cba0381297132eff0ed821cc9cb8ba"
+    },
+    {
+      "path": "unity-sdk/gyroscope/index.js",
+      "sha256": "a335e1885729ecd6ee5a4aee1fac32822dc23f8c03c40aab5bb89fcbd7f92d12"
+    },
+    {
+      "path": "unity-sdk/index.js",
+      "sha256": "2f27aa77441d71d1c54ecad906cdfa2aa160e9c897bb79f043aad2800dcaef5a"
+    },
+    {
+      "path": "unity-sdk/logger.js",
+      "sha256": "7d765a2c857a05424d08fc4cca83ba32393558f79fbc46c653a98bf440b03013"
+    },
+    {
+      "path": "unity-sdk/mobileKeyboard/index.js",
+      "sha256": "fff32a092621032170bd2ef8f92bf95d0a2607a239634e659e6b9bee6f01be0b"
+    },
+    {
+      "path": "unity-sdk/module-helper.js",
+      "sha256": "5be6623e72561c69479b279dbb423b09e70041c914a465d9ff2837d03cb8e913"
+    },
+    {
+      "path": "unity-sdk/open-data.js",
+      "sha256": "40848eeddcfaa064c65c269640a438e86ffa244411806a55d7d6311d8cf2b8a9"
+    },
+    {
+      "path": "unity-sdk/recorder.js",
+      "sha256": "eaba87090f60fb22bb59bf1e82dd16a5aae134b2e9dc08c403f79c61652b51cf"
+    },
+    {
+      "path": "unity-sdk/resType.js",
+      "sha256": "e2135586c03404792b961ea032e53d7000f552a4b61cb066896d149b13b6d2cf"
+    },
+    {
+      "path": "unity-sdk/resTypeOther.js",
+      "sha256": "af5e7538fad8f6640239322cdfc7a6c5181995551cd7a6772b8311b2df55b247"
+    },
+    {
+      "path": "unity-sdk/response.js",
+      "sha256": "9bf4b44ef758ec8917aac3a1827de70f27bacc881849bf985cafaab313216304"
+    },
+    {
+      "path": "unity-sdk/sdk.js",
+      "sha256": "8377aca08a51213a937cd6fe0b49837dccaa607e1d73dd1c955d7181324811f1"
+    },
+    {
+      "path": "unity-sdk/share.js",
+      "sha256": "d97cc99e4cb4d86a2b55c0a0bcc0f4a331cd64a582c24b11c61161843dbf16c4"
+    },
+    {
+      "path": "unity-sdk/storage.js",
+      "sha256": "a4f1f2948c06d1adbd6911af4a372b1280a7e3cf5a3e039fbcd47325e1e5d6a0"
+    },
+    {
+      "path": "unity-sdk/texture.js",
+      "sha256": "ddd6e3b1643139ddcce819e6a8d4e6dcfd1a64bfb714d368e3bddbf917c176f7"
+    },
+    {
+      "path": "unity-sdk/touch/index.js",
+      "sha256": "a5917a61534de7bc2f5224a9c9402863a264cf6bd2106d5536eb6018299de53f"
+    },
+    {
+      "path": "unity-sdk/upload-file.js",
+      "sha256": "3dbfd0ea7257b5c9e7191fd27f9783d86ecfec4e7d9220ebc4c9cf8d6ec4c3d4"
+    },
+    {
+      "path": "unity-sdk/userinfo.js",
+      "sha256": "8c9373e5f77ee9b64b08e643e81bc45344d2b57e3aa78c582d2c0c53e099f06c"
+    },
+    {
+      "path": "unity-sdk/util.js",
+      "sha256": "a54a33bb6894e642d3cd36f79c506c8a827c51bbdd56f61f0e230aaf1523f24f"
+    },
+    {
+      "path": "unity-sdk/utils.js",
+      "sha256": "96bfd23dbd18b840fad664c3e1c5263cb11674c4e0cadc7511637ae166a61c32"
+    },
+    {
+      "path": "unity-sdk/video/index.js",
+      "sha256": "de109cc788e8b94020aaa9bc48a8fe38565570962a70791f622e2cc9b2381ff8"
+    },
+    {
+      "path": "unity-sdk/video.js",
+      "sha256": "b2d156cb1b437508d55bf8a32a9096f6d370ddf196f63bf5113d9c4597e2e128"
+    },
+    {
+      "path": "wasmcode/7ffebd5c0bd29115.webgl.wasm.code.unityweb.wasm.br",
+      "sha256": "e224efac76a579a1a06f52933a2387147966510f40df775c26260ce598a16034"
+    },
+    {
+      "path": "wasmcode/game.js",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "weapp-adapter.js",
+      "sha256": "2823cce28ea12bcdc8739eb174bfc85ca85007d540c275630913b2c3a8931a45"
+    },
+    {
+      "path": "webgl.wasm.framework.unityweb.js",
+      "sha256": "dae05b5e729e5aaae38da96b6d92154387e16eec7f97e7c4af4dcda3a81bebcc"
+    },
+    {
+      "path": "webgl.wasm.symbols.unityweb",
+      "sha256": "bb66bad48371ebeee12f392ec42e6436ced0fe753938dd0e81462b5a4fdbfb05"
+    },
+    {
+      "path": "webgl.wasm.symbols.unityweb.br",
+      "sha256": "56635ec8ac4c43e87c58033dca3011883cf3d093ff978e745ceb6c19bb08926c"
+    },
+    {
+      "path": "workers/response/index.js",
+      "sha256": "095fe2b7d7252ccd9bd5da0de81143f730a50aea25b1ceb32d796eca1ef1f028"
+    }
+  ]
+}
