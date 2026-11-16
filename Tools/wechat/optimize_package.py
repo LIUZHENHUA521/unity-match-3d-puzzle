@@ -16,6 +16,29 @@ def digest(path):
     return h.hexdigest()
 
 
+def optimize_cover_jpegs(output):
+    """Recode JPEG entropy/progressive scans without changing image coefficients."""
+    jpegtran = shutil.which('jpegtran')
+    if not jpegtran:
+        bundled = Path('/opt/homebrew/opt/jpeg-turbo/bin/jpegtran')
+        if bundled.is_file():
+            jpegtran = str(bundled)
+    if not jpegtran:
+        raise RuntimeError('jpegtran is required for lossless cover compression (brew install jpeg-turbo)')
+    results = []
+    for source in sorted((Path(output) / 'images').glob('WechatCover*.jpg')):
+        with tempfile.TemporaryDirectory(prefix='pot-cover-') as temp:
+            encoded = Path(temp) / source.name
+            subprocess.run([jpegtran, '-copy', 'all', '-optimize', '-progressive',
+                            '-outfile', str(encoded), str(source)], check=True)
+            before = source.stat().st_size
+            if encoded.stat().st_size < before:
+                shutil.copyfile(encoded, source)
+            results.append({'file': str(source.relative_to(output)), 'before': before,
+                            'after': source.stat().st_size})
+    return results
+
+
 def optimize_package(output):
     brotli = shutil.which('brotli')
     if not brotli:

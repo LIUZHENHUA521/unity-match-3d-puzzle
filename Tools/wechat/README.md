@@ -1,6 +1,8 @@
 ## 界面发布图片优化
 
-构建依赖 `pngquant`（`brew install pngquant`）。只在发布副本中对 `MailSkinPS`、`ProfileSkinPS`、`PotGlorySkin`、`SignInSkinPS`、`InviteSkinPS` 做质量下限 90 的颜色量化，保留原始分辨率；未达到质量下限的图片保留原图。五组素材通过 GUID 保持预制体引用，并移出发布副本的 Resources 后打入 DXT5 图集，避免重复携带独立贴图。源工程图片不变；未来若增加按 Resources 路径加载这五组素材的代码，须同步调整该发布转换。
+构建依赖 `pngquant` 和 `jpeg-turbo`（`brew install pngquant jpeg-turbo`）。只在发布副本中对 `MailSkinPS`、`ProfileSkinPS`、`PotGlorySkin`、`SignInSkinPS`、`InviteSkinPS` 做质量下限 90 的颜色量化，保留原始分辨率；未达到质量下限的图片保留原图。五组素材通过 GUID 保持预制体引用，并移出发布副本的 Resources 后打入 DXT5 图集，避免重复携带独立贴图。源工程图片不变；未来若增加按 Resources 路径加载这五组素材的代码，须同步调整该发布转换。
+
+加载封面使用 jpegtran 无损重排 JPEG 扫描与编码表，不改变分辨率或解码像素。
 
 ## 2026-11-15 资源清理
 

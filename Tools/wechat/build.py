@@ -195,8 +195,9 @@ if result.returncode:
             print('\n'.join(errors[-5:]), flush=True)
     raise SystemExit(f'Unity build failed ({result.returncode}); see {log}')
 output = stage / 'Builds/Wechat/minigame'
-from optimize_package import optimize_package
+from optimize_package import optimize_package, optimize_cover_jpegs
 print('Lossless package compression: ' + json.dumps(optimize_package(output)), flush=True)
+print('Lossless cover compression: ' + json.dumps(optimize_cover_jpegs(output)), flush=True)
 entry = (output / 'game.js').read_text()
 if 'loadDataPackageFromSubpackage: true' not in entry:
     raise SystemExit('Resources fell back to CDN; refusing to publish an incomplete package')
