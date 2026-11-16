@@ -38,6 +38,10 @@ public static class PotGloryValidation {
   Check(Rows()[0].tier.text=="清北局"&&Rows()[1].tier.text=="本科局","both tier cards mapped");Check(Rows()[0].duration.text=="03:28","duration formatted");
   Check(Rows()[0].badge.activeSelf,"newly acquired badge visible");Check(Rows()[2].replayState.transform.parent.gameObject.activeSelf,"pending replay remains visible");
   Check(view.more.gameObject.activeSelf,"pagination offered");
+  var thumb=Rows()[0].transform.Find("Certificate thumbnail");
+  var labels=thumb.GetComponentsInChildren<Text>();
+  Check(Array.Exists(labels,t=>t.text=="POT-fixture0")&&Array.Exists(labels,t=>t.text=="清北局毕业荣誉")&&Array.Exists(labels,t=>t.text=="3分28秒"),"thumbnail contains issued certificate fields");
+  Check(thumb.Find("Stamp").GetComponent<Image>().sprite!=null,"thumbnail includes issued seal");
   Check(view.count.GetComponentsInChildren<Image>().Length==4,"count uses original prefix, two digits and suffix artwork");
   view.count.SetCount(int.MaxValue);Check(((RectTransform)view.count.transform).rect.width*view.count.transform.localScale.x<=390.01f,"large counts fit without overlapping decorations");view.count.SetCount(12);
   var design=view.GetComponent<Match3DUIFitContent>().content;var glow=design.Find("Trophy rays");Check(glow&&glow.GetSiblingIndex()<design.Find("Panel and original title").GetSiblingIndex(),"original transparent rays behind trophy");
@@ -45,14 +49,14 @@ public static class PotGloryValidation {
   view.more.onClick.Invoke();break;
  case 2:
   Check(Rows().Length==12&&!view.more.gameObject.activeSelf,"pagination appends without duplicates");
-  Rows()[0].certificate.onClick.Invoke();break;
+  CheckClickSound(()=>Rows()[0].certificate.onClick.Invoke(),"certificate button plays click audio");break;
  case 3:
   var certificate=((RectTransform)Get(flow,"modal")).GetComponent<PotCertificateView>();
   Check(certificate&&certificate.number.text=="POT-fixture0","row opens matching issued certificate");Check(certificate.buttonLabel.text=="返回我的荣耀","history has no claim action");
   certificate.Skip();certificate.claim.onClick.Invoke();break;
  case 4:
   view=Current();Check(Rows().Length==10,"certificate returns to collection");Check(!Rows()[0].badge.activeSelf,"viewed newest certificate marked seen");
-  Rows()[0].replay.onClick.Invoke();Rows()[0].replay.onClick.Invoke();break;
+  CheckClickSound(()=>Rows()[0].replay.onClick.Invoke(),"replay button plays click audio");Rows()[0].replay.onClick.Invoke();break;
  case 5:
   Check(!(bool)Get(view,"opening"),"failed download releases repeated-click guard");
   File.WriteAllText(Out+"mode","error");
@@ -76,6 +80,11 @@ public static class PotGloryValidation {
  }
  due=EditorApplication.timeSinceStartup+2;
  }catch(Exception e){Finish(e);}}
+ static void CheckClickSound(Action click,string message){
+  var audio=(AudioSource)Get(flow,"effects");bool had=PlayerPrefs.HasKey("goose.effects");int old=PlayerPrefs.GetInt("goose.effects",1);
+  try{PlayerPrefs.SetInt("goose.effects",1);audio.Stop();click();Check(audio.isPlaying,message);}
+  finally{if(had)PlayerPrefs.SetInt("goose.effects",old);else PlayerPrefs.DeleteKey("goose.effects");}
+ }
  static void Capture(string name,int w,int h){
   var canvas=(Canvas)Get(flow,"canvas");var camera=new GameObject("Capture").AddComponent<Camera>();camera.transform.position=new Vector3(0,0,-10);camera.clearFlags=CameraClearFlags.SolidColor;
   var rt=new RenderTexture(w,h,24);rt.Create();camera.targetTexture=rt;var old=RenderTexture.active;var mode=canvas.renderMode;

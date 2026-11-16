@@ -30,9 +30,6 @@ public sealed class PotCertificateView : MonoBehaviour {
         cardPos=card.anchoredPosition;bannerPos=banner.anchoredPosition;stampPos=stamp.anchoredPosition;
         footerPos=footer.anchoredPosition;actionsPos=actions.anchoredPosition;
         Apply(data);status.text="通关记录同步中…";
-        var pool=data.rewardTier=="elite"?eliteStamps:bachelorStamps;
-        uint seed=0;foreach(char c in data.recordId??"")seed=unchecked(seed*31+c);
-        stampImage.sprite=pool[seed%(uint)pool.Length];stampImage.preserveAspect=true;
         claim.onClick.AddListener(()=>{
             if(Playing){Skip();return;}if(Confirmed)return;
             if(Match3DFlow.Instance)Match3DFlow.Instance.HomeClick();
@@ -42,6 +39,10 @@ public sealed class PotCertificateView : MonoBehaviour {
         StartCoroutine(Enter());
     }
     public void Apply(PotCertificateData data){
+        var pool=data.rewardTier=="elite"?eliteStamps:bachelorStamps;
+        uint seed=0;foreach(char c in data.recordId??"")seed=unchecked(seed*31+c);
+        stampImage.sprite=pool[seed%(uint)pool.Length];stampImage.preserveAspect=true;
+
         title.text="一锅消不完 · 通关奖状";mode.text=data.rewardTier=="elite"?"清北局毕业荣誉":"本科局毕业荣誉";
         long seconds=Math.Max(0,data.activeDurationMs/1000);duration.text=seconds/60+"分"+seconds%60+"秒";
         nickname.text=string.IsNullOrWhiteSpace(data.nickName)?"微信玩家":data.nickName;
