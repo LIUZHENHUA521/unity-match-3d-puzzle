@@ -27,7 +27,7 @@ public static class PotGloryBuilder {
         AssetDatabase.Refresh();
         foreach(var guid in AssetDatabase.FindAssets("t:Texture2D",new[]{Root+"PotGlorySkin"})){
             var imp=(TextureImporter)AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(guid));imp.textureType=TextureImporterType.Sprite;imp.spriteImportMode=SpriteImportMode.Single;
-            imp.mipmapEnabled=false;imp.alphaIsTransparency=true;imp.maxTextureSize=2048;imp.textureCompression=TextureImporterCompression.CompressedHQ;imp.SaveAndReimport();
+            imp.mipmapEnabled=false;imp.alphaIsTransparency=true;imp.maxTextureSize=2048;imp.textureCompression=imp.assetPath.Contains("pot-digit-")||imp.assetPath.Contains("pot-count-")||imp.assetPath.Contains("pot-glow")?TextureImporterCompression.Uncompressed:TextureImporterCompression.CompressedHQ;imp.SaveAndReimport();
         }
         var root=Rect(null,"PotGlory",0,0,720,1564);root.pivot=new Vector2(.5f,.5f);
         try{
@@ -36,8 +36,14 @@ public static class PotGloryBuilder {
             var design=Rect(root,"Content - PSD coordinates",0,0,720,1564);design.anchorMin=design.anchorMax=design.pivot=new Vector2(.5f,.5f);
             root.gameObject.AddComponent<Match3DUIFitContent>().content=design;
             var view=root.gameObject.AddComponent<PotGloryView>();
+            Art(design,"Trophy rays","pot-glow",181,66,354,356);
             Art(design,"Panel and original title","pot-panel",13,115,694,1363);
-            view.count=Text(design,"Glory count","已收获 <color=#F65300><size=46>0</size></color> 次通关荣耀",166,449,390,64,33,"75361B");view.count.alignment=TextAnchor.MiddleCenter;
+            var countRoot=Rect(design,"Glory count - original PSD glyphs",360,459,370,60);countRoot.pivot=new Vector2(.5f,1);
+            view.count=countRoot.gameObject.AddComponent<PotGloryCount>();
+            view.count.prefix=Art(countRoot,"Prefix","pot-count-prefix",0,8,105,34);
+            view.count.suffix=Art(countRoot,"Suffix","pot-count-suffix",0,7,181,36);
+            view.count.digits=new Sprite[10];for(int i=0;i<10;i++)view.count.digits[i]=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"PotGlorySkin/pot-digit-"+i+".png");
+            view.count.SetCount(0);
             view.close=Button(Art(design,"Close","pot-close",627,244,81,81));
             var viewport=Rect(design,"List viewport",44,520,633,850);viewport.gameObject.AddComponent<Image>().color=Color.clear;viewport.gameObject.AddComponent<RectMask2D>();
             var content=Rect(viewport,"Rows",0,0,633,850);view.content=content;

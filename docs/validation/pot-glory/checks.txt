@@ -1,4 +1,5 @@
 PASS home entry is serialized
+PASS menu glory entry hidden; homepage retained
 PASS first page fetched through real HTTP transport
 PASS total count uses server total
 PASS both tier cards mapped
@@ -6,7 +7,9 @@ PASS duration formatted
 PASS newly acquired badge visible
 PASS pending replay remains visible
 PASS pagination offered
-PASS visible row text produces glyphs: Label
+PASS count uses original prefix, two digits and suffix artwork
+PASS large counts fit without overlapping decorations
+PASS original transparent rays behind trophy
 PASS visible row text produces glyphs: Tier
 PASS visible row text produces glyphs: Date
 PASS visible row text produces glyphs: Duration
@@ -26,28 +29,6 @@ PASS visible row text produces glyphs: Duration
 PASS visible row text produces glyphs: Tier
 PASS visible row text produces glyphs: Date
 PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Label
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
 PASS visible row text produces glyphs: Pending text
 PASS visible row text produces glyphs: Tier
 PASS visible row text produces glyphs: Date
@@ -58,56 +39,14 @@ PASS visible row text produces glyphs: Duration
 PASS visible row text produces glyphs: Tier
 PASS visible row text produces glyphs: Date
 PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Label
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
 PASS visible row text produces glyphs: Pending text
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
-PASS visible row text produces glyphs: Tier
-PASS visible row text produces glyphs: Date
-PASS visible row text produces glyphs: Duration
 PASS pagination appends without duplicates
 PASS row opens matching issued certificate
 PASS history has no claim action
 PASS certificate returns to collection
 PASS viewed newest certificate marked seen
 PASS failed download releases repeated-click guard
+PASS close button plays game click audio
 PASS API failure has retry and no fabricated certificates
 PASS empty collection state
 PASS account switch dismisses collection and ignores late response

@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public sealed class PotGloryView : MonoBehaviour {
-    public Text count,status;
+    public PotGloryCount count;
+    public Text status;
     public RectTransform content;
     public ScrollRect scroll;
     public PotGloryRow gold,blue;
@@ -17,7 +18,7 @@ public sealed class PotGloryView : MonoBehaviour {
     bool Current()=>this&&isActiveAndEnabled&&Account()==owner;
     public void Connect(Match3DFlow f,Action onClose){
         flow=f;dismiss=onClose;owner=Account();service=PotReplayService.Instance;
-        close.onClick.AddListener(()=>{MarkSeen();dismiss();});
+        close.onClick.AddListener(()=>{flow.HomeClick();MarkSeen();dismiss();});
         more.onClick.AddListener(()=>Fetch(false));retry.onClick.AddListener(()=>Fetch(cursor==0));
         if(service)service.Uploaded+=Uploaded;
         Fetch(true);
@@ -40,7 +41,7 @@ public sealed class PotGloryView : MonoBehaviour {
         }),error=>{if(!Current())return;loading=false;status.text="加载失败，请重试";retry.gameObject.SetActive(true);Debug.LogWarning(error.Message);}));
     }
     public void Render(PotReplayService.Reply reply){
-        count.text="已收获 <color=#F65300><size=46>"+reply.total+"</size></color> 次通关荣耀";
+        count.SetCount(reply.total);
         var honors=reply.honors??new PotReplayService.Honor[0];
         foreach(var honor in honors){
             if(honor?.certificate==null)continue;
