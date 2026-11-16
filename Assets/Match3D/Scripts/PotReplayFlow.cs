@@ -11,10 +11,10 @@ public partial class Match3DFlow {
         potReplayOverlay=PotReplayUI.Rect(page,"Pot replay overlay",Vector2.zero,new Vector2(720,full?1280:190));
         potReplayOverlay.gameObject.AddComponent<Image>().color=new Color(.96f,.97f,.92f,.97f);return potReplayOverlay;
     }
-    public void ShowPotReplays(){
+    public void ShowPotReplays(bool masters=false){
         if(PotReplayPlayer.Active)return;
         StopBoard();Clear();ScreenName="pot-replays";BlocksGameplay=true;
-        DrawPotReplayList(false,0);
+        DrawPotReplayList(masters,0);
     }
     void DrawPotReplayList(bool masters,int skip){
         CancelPotReplayDownloadTip();
@@ -22,7 +22,7 @@ public partial class Match3DFlow {
         PotReplayUI.Label(root,"每日挑战回放",new Vector2(0,-60),new Vector2(650,70));
         PotReplayUI.Button(root,"我的回放",new Vector2(-190,-150),()=>DrawPotReplayList(false,0));
         PotReplayUI.Button(root,"高手回放",new Vector2(0,-150),()=>DrawPotReplayList(true,0));
-        PotReplayUI.Button(root,"返回",new Vector2(190,-150),Home);
+        PotReplayUI.Button(root,"返回",new Vector2(190,-150),()=>{Home();ShowPotGlory();});
         if(masters){PotReplayUI.Button(root,"本科局",new Vector2(-100,-230),()=>{potReplayTier="bachelor";DrawPotReplayList(true,0);});PotReplayUI.Button(root,"清北局",new Vector2(100,-230),()=>{potReplayTier="elite";DrawPotReplayList(true,0);});}
         var label=PotReplayUI.Label(root,"正在加载…",new Vector2(0,masters?-290:-230),new Vector2(650,100));
         if(!PotReplayService.Instance){label.text="回放服务未连接";return;}
@@ -108,6 +108,6 @@ public partial class Match3DFlow {
     }
     public RectTransform PotReplayToolTarget(int type)=>gameplayHUD?gameplayHUD.ReplayToolTarget(type):null;
     public void EndPotReplay(){
-        if(potReplayOverlay)Destroy(potReplayOverlay.gameObject);LocalPreview=false;Home();
+        if(potReplayOverlay)Destroy(potReplayOverlay.gameObject);LocalPreview=false;bool glory=potReplayReturnToGlory;potReplayReturnToGlory=false;Home();if(glory)ShowPotGlory();
     }
 }

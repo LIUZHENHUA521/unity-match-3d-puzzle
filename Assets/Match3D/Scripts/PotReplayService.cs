@@ -9,8 +9,9 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public sealed class PotReplayService : MonoBehaviour {
+    [Serializable] public class Honor {public PotCertificateData certificate;public string replayId;public long earnedAt;}
     [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion;public int stage;public float duration;public long createdAt;}
-    [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public DownloadTicket download;public Summary[] list;public PotReplayData detail;}
+    [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public DownloadTicket download;public Summary[] list;public Honor[] honors;public PotReplayData detail;}
     [Serializable] class RequestBody {public string state,reason,result;public int attempts;public long occurredAt;public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
     [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,format;}
     [Serializable] public class DownloadTicket {public string url,format,sha256;}
@@ -163,6 +164,7 @@ public sealed class PotReplayService : MonoBehaviour {
         }
         yield return Send("list",new RequestBody{kind=masters?"masters":"mine",skip=skip,date=level?.date,tier=level?.tier,levelVersion=level?.version},done);
     }
+    public IEnumerator Honors(int skip,Action<Reply> done){yield return Send("honors",new RequestBody{skip=skip},done);}
     public void RecordingFailed(string reason){Status="回放保存失败："+reason;Debug.LogWarning(Status);}
     public IEnumerator Detail(string id,Action<Reply> done){
         var account=Match3DInvitations.Instance;

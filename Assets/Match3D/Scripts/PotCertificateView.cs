@@ -15,6 +15,13 @@ public sealed class PotCertificateView : MonoBehaviour {
     public bool Confirmed {get;private set;}
     Vector2 cardPos,bannerPos,stampPos,footerPos,actionsPos;
     Action confirm;
+    string collectionOwner;Action leaveCollection;
+    public void GuardCollection(string owner,Action leave){collectionOwner=owner;leaveCollection=leave;}
+    void Update(){
+        if(string.IsNullOrEmpty(collectionOwner))return;
+        var account=Match3DInvitations.Instance;
+        if(!account||!account.Ready||account.State.inviteCode!=collectionOwner){collectionOwner=null;leaveCollection?.Invoke();}
+    }
     public void Configure(PotCertificateData data,Action onConfirm,Action onHome){
         confirm=onConfirm;Confirmed=false;
         cardPos=card.anchoredPosition;bannerPos=banner.anchoredPosition;stampPos=stamp.anchoredPosition;

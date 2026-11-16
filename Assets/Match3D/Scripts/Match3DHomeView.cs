@@ -5,7 +5,7 @@ using UnityEngine;
 public sealed class Match3DHomeView : MonoBehaviour {
     public const string BachelorReward="2", EliteReward="10";
     public enum Tab { Home, Collection, Pets }
-    public UnityEngine.UI.Button signIn, invite, community, sameGames;
+    public UnityEngine.UI.Button signIn, invite, community, sameGames, glory;
     public RectTransform artwork;
     Match3DUIView view;
     Rect lastSafe;Vector2 lastSize;Vector2Int lastScreen;
@@ -44,6 +44,7 @@ public sealed class Match3DHomeView : MonoBehaviour {
         if(home.signIn){home.signIn.gameObject.SetActive(true);home.signIn.onClick.AddListener(()=>{flow.HomeClick();flow.ShowSignIn();});home.signIn.gameObject.AddComponent<Match3DSignInBadge>();}
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});
         if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();Match3DGameCommunity.Open();});
+        if(tab==Tab.Home && home.glory)home.glory.onClick.AddListener(()=>{flow.HomeClick();flow.ShowPotGlory();});
         if(tab==Tab.Home && home.sameGames)home.sameGames.onClick.AddListener(()=>{flow.HomeClick();flow.ShowPotSameGames();});
         if(!home.artwork)home.Layout();
         if(tab==Tab.Home){
