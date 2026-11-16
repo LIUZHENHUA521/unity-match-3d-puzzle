@@ -76,9 +76,6 @@ public static class PotCertificateBuilder {
         ((RectTransform)button.transform).anchoredPosition=new Vector2(0,-15);
         v.claim=button.GetComponent<Button>();v.buttonLabel=button.GetComponentInChildren<Text>();
         v.buttonLabel.text="领取红包";
-        var homeRect=Rect("Close",root,320,480,56,56);layout.close=homeRect;
-        var graphic=homeRect.gameObject.AddComponent<Image>();graphic.sprite=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"PotGlorySkin/pot-close.png");
-        v.home=homeRect.gameObject.AddComponent<Button>();v.home.targetGraphic=graphic;
         v.stampSound=AssetDatabase.LoadAssetAtPath<AudioClip>(Root+"PotCertificateAudio/pot-stamp.mp3");
         var library=AssetDatabase.LoadAssetAtPath<Match3DTheme>(Root+"ThemeLibrary.asset");
         library.winSound=AssetDatabase.LoadAssetAtPath<AudioClip>(Root+"PotCertificateAudio/pot-victory.mp3");EditorUtility.SetDirty(library);

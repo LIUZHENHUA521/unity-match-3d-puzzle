@@ -8,7 +8,7 @@ public sealed class PotCertificateView : MonoBehaviour {
     public RectTransform card,banner,stamp,footer,actions;
     public CanvasGroup mainGroup,bannerGroup,stampGroup,footerGroup,actionsGroup;
     public Text title,mode,duration,nickname,date,number,status,buttonLabel;
-    public Button claim,home;
+    public Button claim;
     public Image stampImage,shade;
     public Sprite[] bachelorStamps,eliteStamps;
     public AudioClip stampSound;
@@ -25,7 +25,7 @@ public sealed class PotCertificateView : MonoBehaviour {
         var account=Match3DInvitations.Instance;
         if(!account||!account.Ready||account.State.inviteCode!=collectionOwner){collectionOwner=null;leaveCollection?.Invoke();}
     }
-    public void Configure(PotCertificateData data,Action onConfirm,Action onHome){
+    public void Configure(PotCertificateData data,Action onConfirm){
         confirm=onConfirm;Confirmed=false;stampPlayed=false;StampSoundCount=0;
         cardPos=card.anchoredPosition;bannerPos=banner.anchoredPosition;stampPos=stamp.anchoredPosition;
         footerPos=footer.anchoredPosition;actionsPos=actions.anchoredPosition;
@@ -35,7 +35,6 @@ public sealed class PotCertificateView : MonoBehaviour {
             if(Match3DFlow.Instance)Match3DFlow.Instance.HomeClick();
             Confirmed=true;claim.interactable=false;buttonLabel.text="正在确认…";confirm?.Invoke();
         });
-        home.onClick.AddListener(()=>{if(Match3DFlow.Instance)Match3DFlow.Instance.HomeClick();onHome?.Invoke();});
         StartCoroutine(Enter());
     }
     public void Apply(PotCertificateData data){

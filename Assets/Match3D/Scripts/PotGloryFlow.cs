@@ -12,7 +12,7 @@ public partial class Match3DFlow {
         CancelPotReplayDownloadTip();BlocksGameplay=true;
         // A collection preview is separate from the settlement state/claim callbacks.
         var view=OpenModal("PotCertificate").GetComponent<PotCertificateView>();
-        view.Configure(data,ShowPotGlory,ShowPotGlory);
+        view.Configure(data,ShowPotGlory);
         view.GuardCollection(Match3DInvitations.Instance.State.inviteCode,()=>{CloseModal();Notice("账号已变化，请重新打开我的荣耀");});
         view.status.text="已珍藏的通关奖状";view.buttonLabel.text="返回我的荣耀";
     }

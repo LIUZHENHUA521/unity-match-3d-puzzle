@@ -18,7 +18,7 @@ public partial class Match3DFlow {
         potCertificate=OpenModal("PotCertificate").GetComponent<PotCertificateView>();
         var data=new PotCertificateData{runId=record.runId,recordId=record.recordId,rewardTier=potCertificatePreview?dailyLevel.tier:record.rewardTier,
             dateKey=DateTimeOffset.FromUnixTimeMilliseconds(record.endedAt).ToOffset(TimeSpan.FromHours(8)).ToString("yyyy-MM-dd"),activeDurationMs=record.activeDurationMs};
-        potCertificate.Configure(data,ContinuePotCertificate,Home);
+        potCertificate.Configure(data,ContinuePotCertificate);
         if(potCertificatePreview){potCertificate.title.text="一锅消不完 · 奖状预览";potCertificate.number.text="预览";potCertificate.Message("编辑器预览，不发放红包",true);}
         return true;
     }
