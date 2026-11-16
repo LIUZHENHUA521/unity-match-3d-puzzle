@@ -37,6 +37,7 @@ public static class WechatReleaseBuild {
             // Keep the SDK cover until its second-frame handoff to the matching Unity loader.
             config.ProjectConf.HideAfterCallMain=false;
             config.ProjectConf.Appid=release.appid;
+            config.ProjectConf.needCheckUpdate=true;
             config.ProjectConf.projectName=release.projectName;
             config.ProjectConf.relativeDST=Path.GetDirectoryName(release.output).Replace('\\','/');
             config.ProjectConf.DST=Path.GetFullPath(config.ProjectConf.relativeDST);

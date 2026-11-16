@@ -8058,8 +8058,8 @@
                                     "y": 0.0,
                                     "z": 0.0
                                 },
-                                "radius": 0.19189688563346864,
-                                "height": 0.5305023193359375,
+                                "radius": 0.22034186124801637,
+                                "height": 0.4724379777908325,
                                 "direction": 1,
                                 "material": {
                                     "m_Name": "",
@@ -8805,8 +8805,8 @@
                                     "y": 0.0,
                                     "z": 0.0
                                 },
-                                "radius": 0.13869594037532807,
-                                "height": 0.5760596394538879,
+                                "radius": 0.15922190248966218,
+                                "height": 0.5092190504074097,
                                 "direction": 1,
                                 "material": {
                                     "m_Name": "",
@@ -19412,9 +19412,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.46773168444633486,
-                                    "y": 0.266650527715683,
-                                    "z": 0.06563378870487213
+                                    "x": 0.43160003423690798,
+                                    "y": 0.06404569000005722,
+                                    "z": 0.3045329749584198
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -19718,9 +19718,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.22410069406032563,
-                                    "y": 0.05208620801568031,
-                                    "z": 0.4300000071525574
+                                    "x": 0.4300000071525574,
+                                    "y": 0.13847175240516663,
+                                    "z": 0.37024760246276858
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -19744,7 +19744,7 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "CapsuleCollider",
+                                "type": "BoxCollider",
                                 "enabled": true,
                                 "trigger": false,
                                 "hasMaterial": false,
@@ -19754,12 +19754,12 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
+                                    "x": 0.25045648217201235,
+                                    "y": 0.13301829993724824,
+                                    "z": 0.12408117949962616
                                 },
-                                "radius": 0.031146714463829995,
-                                "height": 0.09139309078454972,
+                                "radius": 0.0,
+                                "height": 0.0,
                                 "direction": 0,
                                 "material": {
                                     "m_Name": "",
@@ -19790,9 +19790,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.09699617326259613,
-                                    "y": 0.04785335436463356,
-                                    "z": 0.07189135253429413
+                                    "x": 0.24452775716781617,
+                                    "y": 0.10918708145618439,
+                                    "z": 0.05610814318060875
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -19826,9 +19826,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.19413921236991883,
-                                    "y": 0.07218493521213532,
-                                    "z": 0.048984188586473468
+                                    "x": 0.21933159232139588,
+                                    "y": 0.12979722023010255,
+                                    "z": 0.1125934049487114
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -19862,9 +19862,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.12541230022907258,
-                                    "y": 0.05029897391796112,
-                                    "z": 0.2155884951353073
+                                    "x": 0.17479485273361207,
+                                    "y": 0.12733140587806703,
+                                    "z": 0.1720902919769287
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -19898,9 +19898,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.07477524876594544,
-                                    "y": 0.04621151462197304,
-                                    "z": 0.03501812741160393
+                                    "x": 0.10549309849739075,
+                                    "y": 0.11353425681591034,
+                                    "z": 0.15644453465938569
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -19934,81 +19934,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.0180691909044981,
-                                    "y": 0.007096883840858936,
-                                    "z": 0.008843566291034222
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            6
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.07574759423732758,
-                                    "y": 0.04892275109887123,
-                                    "z": 0.06801187992095947
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            7
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.1451469510793686,
-                                    "y": 0.08503809571266175,
-                                    "z": 0.04916251823306084
+                                    "x": 0.17454490065574647,
+                                    "y": 0.11794929206371308,
+                                    "z": 0.10549309104681015
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -20105,9 +20033,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.4668038785457611,
-                                    "y": 0.27559924125671389,
-                                    "z": 0.07122786343097687
+                                    "x": 0.4300000071525574,
+                                    "y": 0.06962765008211136,
+                                    "z": 0.32340478897094729
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -20546,9 +20474,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.4300000071525574,
-                                    "y": 0.03753283619880676,
-                                    "z": 0.21835972368717194
+                                    "x": 0.429999977350235,
+                                    "y": 0.0639985203742981,
+                                    "z": 0.2787654995918274
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -20572,7 +20500,7 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "CapsuleCollider",
+                                "type": "BoxCollider",
                                 "enabled": true,
                                 "trigger": false,
                                 "hasMaterial": false,
@@ -20582,12 +20510,12 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
+                                    "x": 0.24294842779636384,
+                                    "y": 0.1559181958436966,
+                                    "z": 0.06588586419820786
                                 },
-                                "radius": 0.012567907571792603,
-                                "height": 0.16437877714633943,
+                                "radius": 0.0,
+                                "height": 0.0,
                                 "direction": 0,
                                 "material": {
                                     "m_Name": "",
@@ -20608,114 +20536,6 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.10327956080436707,
-                                    "y": 0.03913283720612526,
-                                    "z": 0.10327114164829254
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            2
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.12477956712245941,
-                                    "y": 0.03913283720612526,
-                                    "z": 0.10327112674713135
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            3
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.032495979219675067,
-                                    "y": 0.03599056974053383,
-                                    "z": 0.07776337116956711
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            4
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
                                 "type": "CapsuleCollider",
                                 "enabled": true,
                                 "trigger": false,
@@ -20730,8 +20550,8 @@
                                     "y": 0.0,
                                     "z": 0.0
                                 },
-                                "radius": 0.012488562613725663,
-                                "height": 0.1491721272468567,
+                                "radius": 0.020806055516004564,
+                                "height": 0.25967827439308169,
                                 "direction": 0,
                                 "material": {
                                     "m_Name": "",
@@ -20789,9 +20609,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.42837777733802798,
-                                    "y": 0.35801345109939577,
-                                    "z": 0.4300000071525574
+                                    "x": 0.4300000071525574,
+                                    "y": 0.41524407267570498,
+                                    "z": 0.4031880497932434
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -20815,7 +20635,7 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "BoxCollider",
+                                "type": "CapsuleCollider",
                                 "enabled": true,
                                 "trigger": false,
                                 "hasMaterial": false,
@@ -20825,121 +20645,13 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.19730207324028016,
-                                    "y": 0.10900405049324036,
-                                    "z": 0.19531306624412538
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            1
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
                                     "x": 0.0,
                                     "y": 0.0,
                                     "z": 0.0
                                 },
-                                "size": {
-                                    "x": 0.42997777462005618,
-                                    "y": 0.17702658474445344,
-                                    "z": 0.43160000443458559
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            2
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.3531336188316345,
-                                    "y": 0.024154847487807275,
-                                    "z": 0.3477453291416168
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            3
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.23105864226818086,
-                                    "y": 0.054227981716394427,
-                                    "z": 0.21087253093719483
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
+                                "radius": 0.22159922122955323,
+                                "height": 0.47737953066825869,
+                                "direction": 1,
                                 "material": {
                                     "m_Name": "",
                                     "dynamicFriction": 0.0,
@@ -21342,8 +21054,8 @@
                                     "y": 0.0,
                                     "z": 0.0
                                 },
-                                "radius": 0.1844906359910965,
-                                "height": 0.5661797523498535,
+                                "radius": 0.2118331789970398,
+                                "height": 0.49750372767448428,
                                 "direction": 0,
                                 "material": {
                                     "m_Name": "",
@@ -22265,9 +21977,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.4110366404056549,
-                                    "y": 0.3789565861225128,
-                                    "z": 0.13824976980686189
+                                    "x": 0.43160000443458559,
+                                    "y": 0.18333125114440919,
+                                    "z": 0.4123847186565399
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -24505,7 +24217,7 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "CapsuleCollider",
+                                "type": "BoxCollider",
                                 "enabled": true,
                                 "trigger": false,
                                 "hasMaterial": false,
@@ -24515,13 +24227,13 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
+                                    "x": 0.2819672226905823,
+                                    "y": 0.4300000071525574,
+                                    "z": 0.26816675066947939
                                 },
-                                "radius": 0.14192460477352143,
-                                "height": 0.6054549217224121,
-                                "direction": 1,
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
                                 "material": {
                                     "m_Name": "",
                                     "dynamicFriction": 0.0,
@@ -29419,7 +29131,7 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "BoxCollider",
+                                "type": "CapsuleCollider",
                                 "enabled": true,
                                 "trigger": false,
                                 "hasMaterial": false,
@@ -29429,13 +29141,13 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.4393356740474701,
-                                    "y": 0.42836233973503115,
-                                    "z": 0.2112804353237152
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
                                 },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
+                                "radius": 0.2239604890346527,
+                                "height": 0.4674961566925049,
+                                "direction": 2,
                                 "material": {
                                     "m_Name": "",
                                     "dynamicFriction": 0.0,
@@ -30625,7 +30337,7 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "CapsuleCollider",
+                                "type": "BoxCollider",
                                 "enabled": true,
                                 "trigger": false,
                                 "hasMaterial": false,
@@ -30635,13 +30347,13 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
+                                    "x": 0.4276132583618164,
+                                    "y": 0.42472273111343386,
+                                    "z": 0.4300000071525574
                                 },
-                                "radius": 0.23221784830093385,
-                                "height": 0.5172291398048401,
-                                "direction": 1,
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
                                 "material": {
                                     "m_Name": "",
                                     "dynamicFriction": 0.0,
@@ -32034,8 +31746,8 @@
                                     "y": 0.0,
                                     "z": 0.0
                                 },
-                                "radius": 0.13994765281677247,
-                                "height": 0.5181931853294373,
+                                "radius": 0.16065993905067445,
+                                "height": 0.4774259030818939,
                                 "direction": 1,
                                 "material": {
                                     "m_Name": "",
@@ -33740,9 +33452,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.39968425035476687,
-                                    "y": 0.16143092513084413,
-                                    "z": 0.4300000071525574
+                                    "x": 0.4300000071525574,
+                                    "y": 0.25656571984291079,
+                                    "z": 0.3945354223251343
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -33766,42 +33478,6 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.10162624716758728,
-                                    "y": 0.05002928152680397,
-                                    "z": 0.1655019223690033
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            1
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
                                 "type": "CapsuleCollider",
                                 "enabled": true,
                                 "trigger": false,
@@ -33816,224 +33492,8 @@
                                     "y": 0.0,
                                     "z": 0.0
                                 },
-                                "radius": 0.044932447373867038,
-                                "height": 0.1789945513010025,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            2
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "CapsuleCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "radius": 0.04589059576392174,
-                                "height": 0.17247264087200166,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            3
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.13763360679149629,
-                                    "y": 0.11460164189338684,
-                                    "z": 0.2110457420349121
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            4
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "CapsuleCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "radius": 0.04633118584752083,
-                                "height": 0.17267054319381715,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            5
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.0636368989944458,
-                                    "y": 0.05926090106368065,
-                                    "z": 0.02365283854305744
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            6
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "CapsuleCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "radius": 0.044932443648576739,
-                                "height": 0.1789945662021637,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            7
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.031237425282597543,
-                                    "y": 0.06367470324039459,
-                                    "z": 0.06466296315193176
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
+                                "radius": 0.1373155117034912,
+                                "height": 0.5503370761871338,
                                 "direction": 0,
                                 "material": {
                                     "m_Name": "",
@@ -34091,8 +33551,8 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.1351512372493744,
-                                    "y": 0.046643104404211047,
+                                    "x": 0.046909090131521228,
+                                    "y": 0.04690909385681152,
                                     "z": 0.4300000071525574
                                 },
                                 "radius": 0.0,
@@ -34117,114 +33577,6 @@
                         "layer": 10,
                         "colliders": [
                             {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.04215571656823158,
-                                    "y": 0.04824310913681984,
-                                    "z": 0.21393491327762605
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            1
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.047984566539525989,
-                                    "y": 0.04824310913681984,
-                                    "z": 0.04215571656823158
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            2
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.047984566539525989,
-                                    "y": 0.04824310541152954,
-                                    "z": 0.04935320466756821
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            3
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
                                 "type": "CapsuleCollider",
                                 "enabled": true,
                                 "trigger": false,
@@ -34239,153 +33591,9 @@
                                     "y": 0.0,
                                     "z": 0.0
                                 },
-                                "radius": 0.027536705136299135,
-                                "height": 0.24078576266765595,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            4
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "CapsuleCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "radius": 0.02414487674832344,
-                                "height": 0.2280881106853485,
+                                "radius": 0.024278003722429277,
+                                "height": 0.4764575660228729,
                                 "direction": 2,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            5
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.04824310168623924,
-                                    "y": 0.04824310913681984,
-                                    "z": 0.06341453641653061
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            6
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.07201987504959107,
-                                    "y": 0.045665301382541659,
-                                    "z": 0.04254632070660591
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            7
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.06917565315961838,
-                                    "y": 0.04824310913681984,
-                                    "z": 0.19138097763061524
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
                                 "material": {
                                     "m_Name": "",
                                     "dynamicFriction": 0.0,
@@ -35819,9 +35027,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.4300000071525574,
-                                    "y": 0.15441447496414185,
-                                    "z": 0.31402701139450076
+                                    "x": 0.3489650785923004,
+                                    "y": 0.21540218591690064,
+                                    "z": 0.4300000071525574
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,
@@ -35855,189 +35063,9 @@
                                     "z": 0.0
                                 },
                                 "size": {
-                                    "x": 0.21321570873260499,
-                                    "y": 0.15601447224617005,
-                                    "z": 0.13544923067092896
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            1
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.18773788213729859,
-                                    "y": 0.146982342004776,
-                                    "z": 0.060664091259241107
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            2
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.15382197499275208,
-                                    "y": 0.12052792310714722,
-                                    "z": 0.05065131559967995
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            3
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.22429858148097993,
-                                    "y": 0.11718124896287918,
-                                    "z": 0.09045262634754181
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            4
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.1602499783039093,
-                                    "y": 0.17880752682685853,
-                                    "z": 0.0921938344836235
-                                },
-                                "radius": 0.0,
-                                "height": 0.0,
-                                "direction": 0,
-                                "material": {
-                                    "m_Name": "",
-                                    "dynamicFriction": 0.0,
-                                    "staticFriction": 0.0,
-                                    "bounciness": 0.0,
-                                    "frictionCombine": 0,
-                                    "bounceCombine": 0
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "indices": [
-                            2,
-                            5
-                        ],
-                        "layer": 10,
-                        "colliders": [
-                            {
-                                "type": "BoxCollider",
-                                "enabled": true,
-                                "trigger": false,
-                                "hasMaterial": false,
-                                "center": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "size": {
-                                    "x": 0.1730537712574005,
-                                    "y": 0.15601444244384767,
-                                    "z": 0.12010294198989868
+                                    "x": 0.3845372200012207,
+                                    "y": 0.2170022428035736,
+                                    "z": 0.21700221300125123
                                 },
                                 "radius": 0.0,
                                 "height": 0.0,

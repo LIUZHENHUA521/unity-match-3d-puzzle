@@ -361,6 +361,135 @@ MonoBehaviour:
   - prefab: {fileID: 0}
     adapterId: Pot_meat_Meatballs
     multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_MeatOnBone
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_MeatSkewer
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_PorkChop
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Prosciutto
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_RawSteak
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_RoastChicken
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Salami
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_SalamiSlices
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_SalmonFillet
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Sausages
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_SwissCheese
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_TBoneSteak
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_Baguette
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_BreadLoaf
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_Butter
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_CerealBox
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_ChipsBag
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_ChocolateBar
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_CoffeeBag
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_CookiesPack
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_EggCarton
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_FlourBag
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_HoneyJar
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_JuiceCarton
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_KetchupBottle
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_MilkCarton
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_MustardBottle
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_OliveOilBottle
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_fruit_PapayaHalf
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_fruit_PassionFruitHalf
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_fruit_Starfruit
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_fruit_WatermelonSlice
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Eclair
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Donut
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_GummyBear
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Licorice
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_MarshmallowStick
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Popsicle
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Pudding
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_SwirlLollipop
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Waffle
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_WrappedCandy
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_JellyBeans
+    multiplier: 1
   entries:
   - prefab: {fileID: 0}
     adapterId: ToyBear
@@ -819,31 +948,7 @@ MonoBehaviour:
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_meat_MeatOnBone
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_MeatSkewer
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_meat_Mortadella
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_PorkChop
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_Prosciutto
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
@@ -855,157 +960,13 @@ MonoBehaviour:
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_meat_RawSteak
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_RoastChicken
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_Salami
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_SalamiSlices
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_SalmonFillet
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_Sausages
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_SwissCheese
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_TBoneSteak
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_Baguette
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_BreadLoaf
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_Butter
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_CerealBox
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_ChipsBag
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_ChocolateBar
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_CoffeeBag
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_grocery_CoffeeJar
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_grocery_CookiesPack
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_EggCarton
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_FlourBag
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_HoneyJar
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_grocery_JamJar
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_JuiceCarton
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_KetchupBottle
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_MilkCarton
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_MustardBottle
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_grocery_OliveOilBottle
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
@@ -1059,18 +1020,6 @@ MonoBehaviour:
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_fruit_PapayaHalf
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_fruit_PassionFruitHalf
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_fruit_Peach
     pose:
       rotation: {x: -20, y: 25, z: 0}
@@ -1107,12 +1056,6 @@ MonoBehaviour:
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_fruit_Starfruit
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_fruit_Strawberry
     pose:
       rotation: {x: -20, y: 25, z: 0}
@@ -1120,12 +1063,6 @@ MonoBehaviour:
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
     adapterId: Pot_fruit_Tangerine
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_fruit_WatermelonSlice
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
@@ -1185,25 +1122,7 @@ MonoBehaviour:
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_sweets_Donut
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_sweets_Eclair
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_sweets_GumballMachine
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_sweets_GummyBear
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
@@ -1215,25 +1134,7 @@ MonoBehaviour:
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_sweets_JellyBeans
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_sweets_Licorice
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_sweets_Macarons
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_sweets_MarshmallowStick
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
@@ -1245,43 +1146,13 @@ MonoBehaviour:
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_sweets_Popsicle
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_sweets_Pudding
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_sweets_SandwichCookies
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
-    adapterId: Pot_sweets_SwirlLollipop
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
     adapterId: Pot_sweets_SwissRoll
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_sweets_Waffle
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_sweets_WrappedCandy
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
@@ -1590,5 +1461,263 @@ MonoBehaviour:
     adapterId: Pot_meat_Meatballs
     pose:
       rotation: {x: -72.65646, y: 29.54471, z: -31.741577}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_MeatOnBone
+    pose:
+      rotation: {x: 42.082043, y: 112.309814, z: 122.70755}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_MeatSkewer
+    pose:
+      rotation: {x: 53.963825, y: 85.580215, z: 74.26161}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_PorkChop
+    pose:
+      rotation: {x: -59.344177, y: 54.95571, z: -53.89789}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Prosciutto
+    pose:
+      rotation: {x: 18.181059, y: 88.71955, z: -94.54678}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_RawSteak
+    pose:
+      rotation: {x: -70.006775, y: 83.37753, z: -82.856384}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_RoastChicken
+    pose:
+      rotation: {x: -72.21124, y: 51.313587, z: -50.300507}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Salami
+    pose:
+      rotation: {x: -75.62097, y: 40.19406, z: -48.24344}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_SalamiSlices
+    pose:
+      rotation: {x: -68.778534, y: 93.01739, z: -84.71713}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_SalmonFillet
+    pose:
+      rotation: {x: -74.4234, y: 68.61136, z: -69.37546}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Sausages
+    pose:
+      rotation: {x: -70.20975, y: 94.87822, z: -95.18979}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_SwissCheese
+    pose:
+      rotation: {x: -48.486237, y: 16.427437, z: 5.831235}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_TBoneSteak
+    pose:
+      rotation: {x: -67.323364, y: 74.677315, z: -70.6355}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_Baguette
+    pose:
+      rotation: {x: -64.11127, y: 17.934498, z: -15.3585205}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_BreadLoaf
+    pose:
+      rotation: {x: -36.6727, y: 5.450094, z: -9.770355}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_Butter
+    pose:
+      rotation: {x: -49.904602, y: 41.33102, z: -17.76062}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_CerealBox
+    pose:
+      rotation: {x: -14.035522, y: 58.39384, z: 10.313129}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_ChipsBag
+    pose:
+      rotation: {x: -11.593842, y: 57.884693, z: 9.595043}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_ChocolateBar
+    pose:
+      rotation: {x: -61.894043, y: 19.35855, z: -16.716064}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_CoffeeBag
+    pose:
+      rotation: {x: -1.4317017, y: 70.59506, z: 16.320683}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_CookiesPack
+    pose:
+      rotation: {x: -68.80975, y: 93.03544, z: -99.42169}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_EggCarton
+    pose:
+      rotation: {x: -18.450531, y: -18.742249, z: 1.6826193}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_FlourBag
+    pose:
+      rotation: {x: -22.8031, y: -76.769745, z: -3.3237915}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_HoneyJar
+    pose:
+      rotation: {x: -11.723907, y: 13.132279, z: 1.6630515}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_JuiceCarton
+    pose:
+      rotation: {x: -16.080963, y: 58.566975, z: 5.8721185}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_KetchupBottle
+    pose:
+      rotation: {x: -4.7280273, y: -87.158264, z: 3.3408697}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_MilkCarton
+    pose:
+      rotation: {x: -14.648102, y: -50.19232, z: -1.5792236}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_MustardBottle
+    pose:
+      rotation: {x: -7.1316833, y: -77.55252, z: 6.2152753}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_grocery_OliveOilBottle
+    pose:
+      rotation: {x: -6.826782, y: -89.90973, z: -1.6585999}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_fruit_PapayaHalf
+    pose:
+      rotation: {x: -76.25461, y: 75.6383, z: -87.88562}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_fruit_PassionFruitHalf
+    pose:
+      rotation: {x: -60.532562, y: 25.690407, z: -23.557129}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_fruit_Starfruit
+    pose:
+      rotation: {x: 3.0293963, y: 52.66042, z: 45.175686}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_fruit_WatermelonSlice
+    pose:
+      rotation: {x: -19.510803, y: 84.94166, z: 6.2881393}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Eclair
+    pose:
+      rotation: {x: -58.066467, y: 88.312386, z: -65.72772}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Donut
+    pose:
+      rotation: {x: -73.04001, y: 75.32469, z: -74.67352}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_GummyBear
+    pose:
+      rotation: {x: -19.123688, y: -76.9848, z: -3.4470825}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Licorice
+    pose:
+      rotation: {x: -68.22223, y: 19.644787, z: -25.263977}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_MarshmallowStick
+    pose:
+      rotation: {x: -69.139435, y: 72.15655, z: -62.850098}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Popsicle
+    pose:
+      rotation: {x: -9.238953, y: 88.8092, z: 7.8062925}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Pudding
+    pose:
+      rotation: {x: -58.611084, y: 25.7924, z: -20.445923}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_SwirlLollipop
+    pose:
+      rotation: {x: -18.937988, y: 76.31725, z: 6.080232}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_Waffle
+    pose:
+      rotation: {x: -69.677246, y: 35.1158, z: -35.999603}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_WrappedCandy
+    pose:
+      rotation: {x: -52.06183, y: 51.76131, z: -35.151703}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_sweets_JellyBeans
+    pose:
+      rotation: {x: -78.86127, y: 73.7491, z: -91.53958}
       scale: 1
       offset: {x: 0, y: 0, z: 0}

@@ -17,13 +17,18 @@ public static class ItemBodyColliderBake {
     // Explicit migration only: ordinary reimport never overwrites authored bodies.
     [MenuItem("Tools/Match 3D/Rebuild Adapter Body Colliders")]
     public static void BakeAll() {
+        BakeSelected(null);
+    }
+    public static void BakeSelected(string[] ids) {
         if (EditorApplication.isPlaying) throw new InvalidOperationException("Stop Play before rebuilding body assets.");
         Directory.CreateDirectory(Output);
         var data = JsonUtility.FromJson<ItemCatalog.Data>(File.ReadAllText(ModelAdapterService.CatalogPath));
-        var paths = data.items.SelectMany(item => new[] { item.prefabPath, Path.GetDirectoryName(item.prefabPath) + "/report.json" })
+        var selected = ids == null ? data.items : data.items.Where(item => ids.Contains(item.id)).ToArray();
+        if (ids != null && ids.Distinct().Count() != selected.Length) throw new InvalidOperationException("Unknown adapter ID in body rebuild selection");
+        var paths = selected.SelectMany(item => new[] { item.prefabPath, Path.GetDirectoryName(item.prefabPath) + "/report.json" })
             .Concat(new[] { ModelAdapterService.CatalogPath }).Where(File.Exists).Distinct().ToArray();
         var originals = paths.ToDictionary(path => path, File.ReadAllBytes);
-        try { Bake(data); }
+        try { Bake(data, selected); }
         catch {
             // A later bad mesh must not leave earlier prefabs paired with the old
             // catalog. Restore the complete asset set if any part of baking fails.
@@ -31,8 +36,8 @@ public static class ItemBodyColliderBake {
             AssetDatabase.Refresh(); ItemColliderGeometry.ClearCache(); throw;
         }
     }
-    static void Bake(ItemCatalog.Data data) {
-        foreach (var item in data.items) {
+    static void Bake(ItemCatalog.Data data, ItemCatalog.Item[] selected) {
+        foreach (var item in selected) {
             var obj = PrefabUtility.LoadPrefabContents(item.prefabPath);
             try {
                 var visual = obj.transform.GetChild(0); var body = visual.Find("Body"); var geometry = visual.Find("Geometry");

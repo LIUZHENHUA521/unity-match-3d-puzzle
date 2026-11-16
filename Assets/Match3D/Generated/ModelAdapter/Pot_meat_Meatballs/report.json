@@ -1,20 +1,20 @@
 {
-    "requestId": "d8fe52dd823846e9859e64838120bb3f",
+    "requestId": "2041c6217e4a441ba5e275b8decaef97",
     "inputPath": "Assets/Match3D/IncomingModels/PotFoodPacks/Prefabs/Pot_meat_Meatballs.prefab",
     "logicalId": "Pot_meat_Meatballs",
     "displayName": "肉丸",
     "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Pot_meat_Meatballs/Pot_meat_Meatballs.prefab",
     "previewPath": "Assets/Match3D/Generated/ModelAdapter/Pot_meat_Meatballs/index.html",
     "status": "Generated",
-    "normalizedScale": 2.2780044078826906,
+    "normalizedScale": 4.829525947570801,
     "visualSize": {
-        "x": 0.1880495846271515,
-        "y": 0.15716099739074708,
-        "z": 0.18876171112060548
+        "x": 0.08903565257787705,
+        "y": 0.08598029613494873,
+        "z": 0.0834839791059494
     },
     "visualCenter": {
         "x": 0.0,
-        "y": 0.07858049869537354,
+        "y": 0.042990148067474368,
         "z": 0.0
     },
     "bottom": {
@@ -22,7 +22,7 @@
         "y": 0.0,
         "z": 0.0
     },
-    "longestSide": 0.18876171112060548,
+    "longestSide": 0.08903565257787705,
     "resourceOptions": {
         "optimizeTextures": false,
         "maxTextureSize": 512,
@@ -30,10 +30,10 @@
         "triangleWarning": 3000
     },
     "sourceResources": {
-        "triangles": 210,
+        "triangles": 42,
         "meshCount": 1,
         "materialCount": 1,
-        "sourceFileBytes": 1017085,
+        "sourceFileBytes": 1000483,
         "textureMemoryBytes": 1398800,
         "textures": [
             {
@@ -48,10 +48,10 @@
         ]
     },
     "generatedResources": {
-        "triangles": 210,
+        "triangles": 42,
         "meshCount": 1,
         "materialCount": 1,
-        "sourceFileBytes": 1029925,
+        "sourceFileBytes": 1008751,
         "textureMemoryBytes": 1398800,
         "textures": [
             {
@@ -68,7 +68,7 @@
     "hasRigidbody": false,
     "hasPickCollider": true,
     "hasBodyCollider": true,
-    "colliderCount": 5,
+    "colliderCount": 2,
     "issues": [
         {
             "severity": 0,
@@ -97,7 +97,7 @@
         {
             "severity": 0,
             "code": "RESOURCE_STATS",
-            "message": "210 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "message": "42 三角面 / 1 网格 / 1 材质 / 1 贴图",
             "path": ""
         },
         {
@@ -115,7 +115,7 @@
         {
             "severity": 0,
             "code": "GENERATED_RESOURCES",
-            "message": "生成后：210 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
+            "message": "生成后：42 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
             "path": ""
         }
     ]

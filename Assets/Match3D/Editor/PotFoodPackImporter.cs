@@ -81,6 +81,40 @@ public static class PotFoodPackImporter {
         EditorUtility.CopySerialized(value, old); EditorUtility.SetDirty(old); UnityEngine.Object.DestroyImmediate(value); return old;
     }
 
+    // Rebuild only these corrected meshes; keep prefab GUIDs, theme indices and authored tray poses.
+    [MenuItem("Pot/Rebuild Single Meat Items")]
+    public static void RebuildSingleMeatItems() {
+        RebuildSingleItems("meat", new[] { "ChickenWings", "LambChops", "Meatballs" }, new[] { 48, 107, 38 });
+    }
+
+    [MenuItem("Pot/Rebuild Single Sweet Items")]
+    public static void RebuildSingleSweetItems() {
+        RebuildSingleItems("sweets", new[] { "SwissRoll", "Licorice", "JellyBeans" }, new[] { 78, 126, 40 });
+    }
+
+    static void RebuildSingleItems(string packName, string[] names, int[] expectedVertices) {
+        if (EditorApplication.isPlaying) throw new InvalidOperationException("Stop Play before rebuilding items");
+        Directory.CreateDirectory("work/pot-food-packs");
+        var pack = JsonUtility.FromJson<Pack>(File.ReadAllText(Root + "/Editor/pot-" + packName + ".json"));
+        for (int i = 0; i < names.Length; i++) {
+            string name = names[i];
+            var model = pack.models.Single(m => m.name == name);
+            if (model.vertices.Length != expectedVertices[i]) throw new Exception("Prepare single-item mesh first: " + name);
+            string id = "Pot_" + packName + "_" + name;
+            var mesh = new Mesh { name = id, vertices = model.vertices, normals = model.normals, uv = model.uv, triangles = model.triangles };
+            mesh.RecalculateBounds(); mesh.RecalculateTangents();
+            Save(mesh, Root + "/Meshes/" + id + ".asset");
+            var report = ModelAdapterService.Generate(Root + "/Prefabs/" + id + ".prefab", id, model.label, true, true,
+                new ModelAdapterResourceOptions { optimizeTextures = false });
+            if (report.HasErrors || report.status != "Generated") throw new Exception(JsonUtility.ToJson(report, true));
+        }
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        // Generate replaces prefab files while preserving GUIDs; reload the theme's cached references.
+        AssetDatabase.ImportAsset("Assets/Match3D/Resources/Match3D/ModelThemes.asset", ImportAssetOptions.ForceUpdate);
+        ValidateAssets();
+    }
+
     public static void ValidateAssets() {
         var catalog = Resources.Load<Match3DModelThemes>("Match3D/ModelThemes");
         var data = JsonUtility.FromJson<ItemCatalog.Data>(File.ReadAllText(ModelAdapterService.CatalogPath));

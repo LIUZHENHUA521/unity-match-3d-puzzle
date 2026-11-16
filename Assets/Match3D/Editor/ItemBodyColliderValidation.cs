@@ -52,14 +52,23 @@ public static class ItemBodyColliderValidation {
         }
     }
     public static void Verify() {
+        VerifySelected(null);
+    }
+    public static void VerifySelected(string[] ids, float dropSeconds = 12) {
         try {
             results.Clear(); EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single); Physics.simulationMode = SimulationMode.Script; ItemColliderGeometry.ConfigureLayers(); BoardPhysicsSettings.Begin();
-            ValidateAssets(Catalog()); Drops(Catalog()); Pile(Catalog(), "after");
+            Directory.CreateDirectory(ItemBodyColliderBake.Output);
+            var data = Catalog();
+            if (ids != null) {
+                data.items = data.items.Where(item => ids.Contains(item.id)).ToArray();
+                if (data.items.Length != ids.Distinct().Count()) throw new Exception("Unknown adapter ID in body validation selection");
+            }
+            ValidateAssets(data, ids != null); Drops(data, dropSeconds); Pile(data, "after");
             File.WriteAllLines(ItemBodyColliderBake.Output + "/verification.txt", results);
             BoardPhysicsSettings.End(); EditorApplication.Exit(0);
         } catch (Exception e) { File.WriteAllText(ItemBodyColliderBake.Output + "/verification.txt", string.Join("\n", results) + "\nFAIL " + e); Debug.LogException(e); BoardPhysicsSettings.End(); EditorApplication.Exit(1); }
     }
-    static void ValidateAssets(ItemCatalog.Data data) {
+    static void ValidateAssets(ItemCatalog.Data data, bool regenerateAll = false) {
         int total = 0;
         var poolObject = new GameObject("Validation pool"); var pool = poolObject.AddComponent<BoardItemPool>();
         typeof(BoardItemPool).GetMethod("Awake", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(pool, null);
@@ -94,10 +103,12 @@ public static class ItemBodyColliderValidation {
                     var center = bodyRoot.TransformPoint(bounds.center);
                     Check(colliders.All(c => (c.ClosestPoint(center) - center).sqrMagnitude > .0001f), "donut physical hole remains open");
                 }
-                if (item.id == "ToyBear" || item.id == "ToyBasketBall" || item.id == "ToyPlane") {
+                if (regenerateAll || item.id == "ToyBear" || item.id == "ToyBasketBall" || item.id == "ToyPlane") {
                     var rebuilt = new GameObject("Regenerated body"); rebuilt.transform.SetParent(obj.transform.GetChild(0), false); rebuilt.name = "Body reimport probe";
                     var generated = ItemBodyFitter.Generate(obj.transform.GetChild(0).Find("Geometry"), rebuilt.transform);
                     Check(generated.Count == colliders.Length && generated.Select((c, i) => c.GetType() == colliders[i].GetType() && c.transform.localPosition == colliders[i].transform.localPosition && Quaternion.Angle(c.transform.localRotation, colliders[i].transform.localRotation) < .01f).All(v => v), item.id + " regeneration reproduces baked primitive types/poses");
+                    Physics.SyncTransforms();
+                    Check(generated.All(c => Mathf.Max(c.bounds.size.x, Mathf.Max(c.bounds.size.y, c.bounds.size.z)) <= ModelAdapterRules.SourceLongestSide * 1.2f), item.id + " regenerated bodies respect size limit");
                     UnityEngine.Object.DestroyImmediate(rebuilt);
                 }
                 var pooled = BoardItemPool.Get(prefab, item.id);
@@ -125,7 +136,7 @@ public static class ItemBodyColliderValidation {
         var o = new GameObject("Validation boundary"); SceneManager.MoveGameObjectToScene(o, scene); o.layer = ItemColliderGeometry.WallLayer;
         o.transform.position = position; o.AddComponent<BoxCollider>().size = size;
     }
-    static void Drops(ItemCatalog.Data data) {
+    static void Drops(ItemCatalog.Data data, float simulationSeconds = 12) {
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         var objects = new List<GameObject>();
         try {
@@ -136,12 +147,13 @@ public static class ItemBodyColliderValidation {
                 objects.Add(Spawn(item, scene, p, Quaternion.Euler(rotation * 83, rotation * 47, rotation * 31))); index++;
             }
             Physics.SyncTransforms(); var physics = scene.GetPhysicsScene();
-            for (int i = 0; i < 600; i++) physics.Simulate(.02f);
+            // Callers investigating rolling shapes may explicitly request a longer settling window.
+            for (int i = 0; i < Mathf.CeilToInt(simulationSeconds / .02f); i++) physics.Simulate(.02f);
             foreach (var obj in objects) {
                 var rb = obj.GetComponent<Rigidbody>();
-                Check(ModelAdapterRules.IsFinite(obj.transform.position) && obj.transform.position.y > -1 && obj.transform.position.y < 4 && rb.velocity.magnitude < .3f, obj.name + " rotated drop stable above floor");
+                Check(ModelAdapterRules.IsFinite(obj.transform.position) && obj.transform.position.y > -1 && obj.transform.position.y < 4 && rb.velocity.magnitude < .3f, obj.name + " rotated drop stable above floor (position=" + obj.transform.position + ", speed=" + rb.velocity.magnitude + ")");
             }
-            results.Add("INFO " + objects.Count + " drops, 12 simulated seconds each");
+            results.Add("INFO " + objects.Count + " drops, " + simulationSeconds + " simulated seconds each");
         } finally { foreach (var root in scene.GetRootGameObjects()) UnityEngine.Object.DestroyImmediate(root); }
     }
     static void Pile(ItemCatalog.Data data, string label) {

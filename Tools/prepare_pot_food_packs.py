@@ -22,6 +22,67 @@ LABELS = [
 ]
 # Keep the source order stable: indices are persisted in opening layouts/replays.
 
+def single_food_item(model):
+    """Extract one intact item from the reviewed multi-item food meshes.
+
+    Weld positions only for connectivity; keep original UV/normal seam vertices.
+    Lamb meat and its bone are separate islands, so retain both positive-X islands.
+    Original purchased GLBs remain untouched.
+    """
+    expected = {'ChickenWings': [48, 48, 48], 'LambChops': [41, 41, 66, 66],
+                'Meatballs': [38, 38, 38, 38, 38], 'SwissRoll': [65, 78],
+                'Licorice': [126, 126], 'JellyBeans': [40] * 6}
+    if model['name'] not in expected:
+        return model
+    vertices = model['vertices']
+    parents = list(range(len(vertices)))
+
+    def root(i):
+        while parents[i] != i:
+            parents[i] = parents[parents[i]]
+            i = parents[i]
+        return i
+
+    def join(a, b):
+        parents[root(a)] = root(b)
+
+    positions = {}
+    for i, vertex in enumerate(vertices):
+        key = tuple(round(vertex[axis], 5) for axis in 'xyz')
+        if key in positions:
+            join(i, positions[key])
+        positions[key] = i
+    triangles = model['triangles']
+    for i in range(0, len(triangles), 3):
+        join(triangles[i], triangles[i + 1])
+        join(triangles[i], triangles[i + 2])
+    islands = {}
+    for i in range(len(vertices)):
+        islands.setdefault(root(i), []).append(i)
+    groups = list(islands.values())
+    if sorted(map(len, groups)) != expected[model['name']]:
+        raise ValueError('Source geometry changed; review single-item selection: ' + model['name'])
+    if model['name'] == 'LambChops':
+        selected = [g for g in groups if sum(vertices[i]['x'] for i in g) > 0]
+        assert sorted(map(len, selected)) == [41, 66], 'Keep one complete chop with its bone'
+    elif model['name'] == 'SwissRoll':
+        selected = [max(groups, key=len)]  # Whole roll, without the loose slice.
+    elif model['name'] == 'Licorice':
+        selected = [min(groups, key=lambda g: sum(vertices[i]['x'] for i in g) / len(g))]
+    else:
+        selected = [min(groups, key=lambda g: sum(vertices[i]['z'] for i in g) / len(g))]
+    indices = sorted(i for group in selected for i in group)
+    remap = {old: new for new, old in enumerate(indices)}
+    offset = {a: (min(vertices[i][a] for i in indices) + max(vertices[i][a] for i in indices)) / 2
+              for a in 'xyz'}
+    offset['y'] = min(vertices[i]['y'] for i in indices)
+    return {**model,
+            'vertices': [{a: vertices[i][a] - offset[a] for a in 'xyz'} for i in indices],
+            'normals': [model['normals'][i] for i in indices],
+            'uv': [model['uv'][i] for i in indices],
+            'triangles': [remap[j] for k in range(0, len(triangles), 3)
+                          if triangles[k] in remap for j in triangles[k:k + 3]]}
+
 def prepare(source):
     root = ROOT / 'Assets/Match3D/IncomingModels/PotFoodPacks'
     (root / 'Editor').mkdir(parents=True, exist_ok=True)
@@ -86,6 +147,8 @@ def prepare(source):
                 'uv': [dict(x=u, y=1-v) for u, v in uv],
                 'triangles': [j for i in range(0, len(indices), 3) for j in (indices[i], indices[i+2], indices[i+1])]})
         assert len(models) == 26
+        if pack in ('meat', 'sweets'):
+            models = [single_food_item(model) for model in models]
         payload = {'id': 'pot-' + pack, 'pack': pack, 'title': title, 'materials': mats, 'models': models}
         (root / 'Editor' / f'pot-{pack}.json').write_text(json.dumps(payload, ensure_ascii=False, separators=(',', ':')))
         manifests.append({'file': path.name, 'sha256': hashlib.sha256(blob).hexdigest(), 'theme': payload['id'], 'title': title,

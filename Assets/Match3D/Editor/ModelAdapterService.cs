@@ -138,6 +138,13 @@ public static class ModelAdapterService {
             ModelAdapterResources.Optimize(sourceInstance, staging + "/Optimized", scan.report.resourceOptions, scan.report);
             string prefabPath = staging + "/" + scan.report.logicalId + ".prefab";
             Directory.CreateDirectory(ToAbsolute(staging));
+            // Seed updates with the existing hierarchy so Unity preserves matching local file IDs.
+            // Keeping only the GUID breaks theme/scene references to the prefab's root object.
+            string existingPrefab = finalDir + "/" + scan.report.logicalId + ".prefab";
+            if (updateExisting && File.Exists(ToAbsolute(existingPrefab))) {
+                File.Copy(ToAbsolute(existingPrefab), ToAbsolute(prefabPath));
+                AssetDatabase.ImportAsset(prefabPath, ImportAssetOptions.ForceSynchronousImport);
+            }
             PrefabUtility.SaveAsPrefabAsset(wrapper, prefabPath);
             UnityEngine.Object.DestroyImmediate(wrapper);
             scan.report.generatedPrefabPath = prefabPath;

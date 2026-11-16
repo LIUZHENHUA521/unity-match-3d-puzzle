@@ -1,16 +1,16 @@
 {
-    "requestId": "76df1991aacb4c7cb41fdbfa1d9db661",
+    "requestId": "aa1fc972deec446eaee686774f9a8f4d",
     "inputPath": "Assets/Match3D/IncomingModels/PotFoodPacks/Prefabs/Pot_sweets_Licorice.prefab",
     "logicalId": "Pot_sweets_Licorice",
     "displayName": "甘草糖",
     "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Pot_sweets_Licorice/Pot_sweets_Licorice.prefab",
     "previewPath": "Assets/Match3D/Generated/ModelAdapter/Pot_sweets_Licorice/index.html",
     "status": "Generated",
-    "normalizedScale": 1.9434627294540406,
+    "normalizedScale": 1.954545497894287,
     "visualSize": {
-        "x": 0.06954146176576615,
+        "x": 0.023999998345971109,
         "y": 0.024000000208616258,
-        "z": 0.22125457227230073
+        "z": 0.2199999988079071
     },
     "visualCenter": {
         "x": 0.0,
@@ -22,7 +22,7 @@
         "y": 0.0,
         "z": 0.0
     },
-    "longestSide": 0.22125457227230073,
+    "longestSide": 0.2199999988079071,
     "resourceOptions": {
         "optimizeTextures": false,
         "maxTextureSize": 512,
@@ -30,7 +30,7 @@
         "triangleWarning": 3000
     },
     "sourceResources": {
-        "triangles": 288,
+        "triangles": 144,
         "meshCount": 1,
         "materialCount": 1,
         "sourceFileBytes": 1060274,
@@ -48,10 +48,10 @@
         ]
     },
     "generatedResources": {
-        "triangles": 288,
+        "triangles": 144,
         "meshCount": 1,
         "materialCount": 1,
-        "sourceFileBytes": 1079482,
+        "sourceFileBytes": 1068487,
         "textureMemoryBytes": 1398800,
         "textures": [
             {
@@ -68,7 +68,7 @@
     "hasRigidbody": false,
     "hasPickCollider": true,
     "hasBodyCollider": true,
-    "colliderCount": 9,
+    "colliderCount": 2,
     "issues": [
         {
             "severity": 0,
@@ -97,7 +97,7 @@
         {
             "severity": 0,
             "code": "RESOURCE_STATS",
-            "message": "288 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "message": "144 三角面 / 1 网格 / 1 材质 / 1 贴图",
             "path": ""
         },
         {
@@ -115,7 +115,7 @@
         {
             "severity": 0,
             "code": "GENERATED_RESOURCES",
-            "message": "生成后：288 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
+            "message": "生成后：144 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
             "path": ""
         }
     ]

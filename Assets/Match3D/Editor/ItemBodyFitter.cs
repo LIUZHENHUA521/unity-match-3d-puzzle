@@ -91,6 +91,17 @@ public static class ItemBodyFitter {
             bool opensHole = regions.Any(r => r.shape.Contains(bounds.center)) && radial.All(r => !r.shape.Contains(bounds.center)) && volume <= initialVolume * 1.15f;
             if (betterVolume || opensHole) regions = radial;
         }
+        // Minimum volume alone can prefer a long capsule or rotated box whose
+        // corners/end caps extend far beyond the visible item. Refit only those
+        // regions, retaining coverage and the existing decomposition budget.
+        var sourceBounds = new Bounds(triangles[0].a, Vector3.zero);
+        foreach (var t in triangles) { sourceBounds.Encapsulate(t.a); sourceBounds.Encapsulate(t.b); sourceBounds.Encapsulate(t.c); }
+        float maxSide = Mathf.Max(sourceBounds.size.x, Mathf.Max(sourceBounds.size.y, sourceBounds.size.z)) * 1.2f - Padding;
+        foreach (var region in regions) {
+            if (BoundsLongestSide(region.shape) <= maxSide) continue;
+            var points = region.triangles.SelectMany(t => new[] { t.a, t.b, t.c }).Distinct().ToArray();
+            region.shape = FitPrimitive(points, maxSide);
+        }
         foreach (var region in regions) foreach (var t in region.triangles)
             if (!region.shape.Contains(t.a) || !region.shape.Contains(t.b) || !region.shape.Contains(t.c)) throw new InvalidOperationException("Primitive does not cover its clipped triangle");
         double sourceArea = triangles.Sum(t => (double)Vector3.Cross(t.b - t.a, t.c - t.a).magnitude);
@@ -171,17 +182,33 @@ public static class ItemBodyFitter {
         foreach (var t in triangles) { points.Add(t.a); points.Add(t.b); points.Add(t.c); }
         return new Region { triangles = triangles, shape = FitPrimitive(points.ToArray()) };
     }
-    static Shape FitPrimitive(Vector3[] points) {
+    static float BoundsLongestSide(Shape shape) {
+        Vector3 size;
+        if (shape.type == "SphereCollider") size = Vector3.one * (2 * shape.radius);
+        else if (shape.type == "CapsuleCollider") {
+            var axis = Vector3.zero; axis[shape.direction] = 1;
+            axis = shape.rotation * axis;
+            size = new Vector3(Mathf.Abs(axis.x), Mathf.Abs(axis.y), Mathf.Abs(axis.z)) * Mathf.Max(0, shape.height - 2 * shape.radius) + Vector3.one * (2 * shape.radius);
+        } else {
+            var x = shape.rotation * Vector3.right * shape.size.x;
+            var y = shape.rotation * Vector3.up * shape.size.y;
+            var z = shape.rotation * Vector3.forward * shape.size.z;
+            size = new Vector3(Mathf.Abs(x.x) + Mathf.Abs(y.x) + Mathf.Abs(z.x), Mathf.Abs(x.y) + Mathf.Abs(y.y) + Mathf.Abs(z.y), Mathf.Abs(x.z) + Mathf.Abs(y.z) + Mathf.Abs(z.z));
+        }
+        return Mathf.Max(size.x, Mathf.Max(size.y, size.z));
+    }
+    static Shape FitPrimitive(Vector3[] points, float maxSide = float.PositiveInfinity) {
         Shape best = null;
+        void Consider(Shape candidate) { if (BoundsLongestSide(candidate) <= maxSide) Choose(ref best, candidate); }
         foreach (var rotation in new[] { Quaternion.identity, PrincipalRotation(points) }) {
             var inverse = Quaternion.Inverse(rotation);
             var local = points.Select(p => inverse * p).ToArray();
             var bounds = new Bounds(local[0], Vector3.zero); foreach (var p in local) bounds.Encapsulate(p);
             var center = bounds.center;
             var size = Vector3.Max(bounds.size + Vector3.one * Padding * 2, Vector3.one * .002f);
-            Choose(ref best, new Shape { type = "BoxCollider", center = rotation * center, rotation = rotation, size = size, volume = size.x * size.y * size.z });
+            Consider(new Shape { type = "BoxCollider", center = rotation * center, rotation = rotation, size = size, volume = size.x * size.y * size.z });
             float radius = Mathf.Sqrt(local.Max(p => (p - center).sqrMagnitude)) + Padding;
-            Choose(ref best, new Shape { type = "SphereCollider", center = rotation * center, radius = radius, volume = 4f / 3f * Mathf.PI * radius * radius * radius });
+            Consider(new Shape { type = "SphereCollider", center = rotation * center, radius = radius, volume = 4f / 3f * Mathf.PI * radius * radius * radius });
             for (int axis = 0; axis < 3; axis++) {
                 float radial = 0;
                 foreach (var p0 in local) { var p = p0 - center; p[axis] = 0; radial = Mathf.Max(radial, p.sqrMagnitude); }
@@ -195,11 +222,12 @@ public static class ItemBodyFitter {
                     }
                     float length = Mathf.Max(0, end - start); var c = center; c[axis] += (start + end) * .5f;
                     r += Padding;
-                    Choose(ref best, new Shape { type = "CapsuleCollider", center = rotation * c, rotation = rotation, direction = axis,
+                    Consider(new Shape { type = "CapsuleCollider", center = rotation * c, rotation = rotation, direction = axis,
                         radius = r, height = length + 2 * r, volume = Mathf.PI * r * r * (length + 4f / 3f * r) });
                 }
             }
         }
+        if (best == null) throw new InvalidOperationException("No covering primitive satisfies the body size limit");
         return best;
     }
     static void Choose(ref Shape best, Shape candidate) { if (best == null || candidate.volume < best.volume * .999f) best = candidate; }
