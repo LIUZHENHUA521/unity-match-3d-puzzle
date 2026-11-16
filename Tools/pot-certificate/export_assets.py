@@ -5,7 +5,7 @@ root=pathlib.Path('/Users/liuzhenhua/Desktop/code/crazyCombo/client/assets/resou
 out=pathlib.Path(__file__).resolve().parents[2]/'Assets/Match3D/Resources/Match3D/PotCertificate'
 out.mkdir(parents=True,exist_ok=True)
 manifest=[]
-for atlas,names in [('newSpriteAsset/newCertificate',['bg_diploma_02','Certificatetitle_02','CertificateIcon_wings','CertificateIcon_03','CertificateIcon_07']),('images/Certificate',[f'icon_yinzhang_{i:02}' for i in range(1,7)]),('images/0314',[f'yz_{i:02}' for i in range(1,7)]),('newSpriteAsset/newhomeIcons',[])]:
+for atlas,names in [('newSpriteAsset/newCertificate',['bg_diploma_02','Certificatetitle_02','CertificateIcon_wings','CertificateIcon_03','CertificateIcon_05','CertificateIcon_07']),('images/Certificate',[f'icon_yinzhang_{i:02}' for i in range(1,7)]),('images/0314',[f'yz_{i:02}' for i in range(1,7)]),('newSpriteAsset/newhomeIcons',[])]:
  meta=json.loads((root/(atlas+'.plist.meta')).read_text())
  if not names:names=[meta['subMetas']['994b4']['name']]
  frames=plistlib.loads((root/(atlas+'.plist')).read_bytes())['frames'];im=Image.open(root/(atlas+'.png')).convert('RGBA')
