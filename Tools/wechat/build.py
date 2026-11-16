@@ -85,13 +85,13 @@ for note in list(replica_resources.rglob('README.md')) + [
         note.unlink()
         note.with_name(note.name + '.meta').unlink(missing_ok=True)
 
-# Quantize only these two requested UI skins in the disposable release copy.
+# Quantize only the approved UI skins in the disposable release copy.
 # Keep original dimensions, alpha, sprite metadata and editable source artwork.
 # pngquant rejects images below the quality floor instead of degrading them.
 pngquant = shutil.which('pngquant')
 if not pngquant:
     raise SystemExit('pngquant is required for release UI optimization (brew install pngquant)')
-for skin in ('MailSkinPS', 'ProfileSkinPS'):
+for skin in ('MailSkinPS', 'ProfileSkinPS', 'PotGlorySkin', 'SignInSkinPS', 'InviteSkinPS'):
     for texture in sorted((replica_resources / skin).glob('*.png')):
         result = subprocess.run([pngquant, '--force', '--skip-if-larger', '--quality=90-100',
                                  '--speed=1', '--ext=.png', str(texture)], capture_output=True, text=True)

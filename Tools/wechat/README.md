@@ -1,3 +1,7 @@
+## 界面发布图片优化
+
+构建依赖 `pngquant`（`brew install pngquant`）。只在发布副本中对 `MailSkinPS`、`ProfileSkinPS`、`PotGlorySkin`、`SignInSkinPS`、`InviteSkinPS` 做质量下限 90 的颜色量化，保留原始分辨率；未达到质量下限的图片保留原图。五组素材通过 GUID 保持预制体引用，并移出发布副本的 Resources 后打入 DXT5 图集，避免重复携带独立贴图。源工程图片不变；未来若增加按 Resources 路径加载这五组素材的代码，须同步调整该发布转换。
+
 ## 2026-11-15 资源清理
 
 已移除整个 `Resources/GooseArt`、PVP 页面与客户端传输模块、旧 Result/Themes 页面。单机弹窗使用现有皮肤，按钮点击复用当前点击音效；原胜负短音效已停用。历史 `pvpEndpoint` 配置仍供登录、奖励和回放共用，保持兼容。构建遇到旧素材目录或 PVP 页面会报错，防止重新打入包。以下发布记录为历史状态。

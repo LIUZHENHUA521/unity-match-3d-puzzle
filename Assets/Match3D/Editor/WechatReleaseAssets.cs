@@ -23,7 +23,7 @@ public static class WechatReleaseAssets {
         // use only their high-quality atlas, at the original sprite resolution.
         const string releaseUI = "Assets/Match3D/PotReleaseUI";
         if (!AssetDatabase.IsValidFolder(releaseUI)) AssetDatabase.CreateFolder("Assets/Match3D", "PotReleaseUI");
-        foreach (var skin in new[]{"MailSkinPS", "ProfileSkinPS"}) {
+        foreach (var skin in new[]{"MailSkinPS", "ProfileSkinPS", "PotGlorySkin", "SignInSkinPS", "InviteSkinPS"}) {
             string destination = releaseUI + "/" + skin;
             if (AssetDatabase.IsValidFolder(root + skin)) {
                 string error = AssetDatabase.MoveAsset(root + skin, destination);
@@ -32,8 +32,6 @@ public static class WechatReleaseAssets {
             Atlas("PotWechat" + skin, AssetDatabase.FindAssets("t:Texture2D", new[]{destination})
                 .Select(AssetDatabase.GUIDToAssetPath).ToArray());
         }
-        Atlas("WechatInvite", AssetDatabase.FindAssets("t:Texture2D", new[]{root+"InviteSkinPS"})
-            .Select(AssetDatabase.GUIDToAssetPath).ToArray());
         // Home already synchronously replaces this sprite from the original JPEG
         // before its first frame. Keep only a tiny named placeholder in its atlas.
         if(!File.Exists(root+"HomeBackgroundOriginal.bytes"))throw new InvalidOperationException("Missing full-resolution home background");
