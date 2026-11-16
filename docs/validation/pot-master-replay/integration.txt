@@ -1,7 +1,10 @@
 PASS startup
-PASS home master entry exists
+PASS home has no master replay entry
+PASS elite failure has no master replay entry
+PASS bachelor failure master entry exists
 PASS five replays hide entry
 PASS six or more show entry
+PASS entry is above retry without overlap
 PASS server list renders top ten
 PASS duplicate click starts one ad
 PASS cancelled ad does not play
@@ -12,6 +15,7 @@ PASS same replay retries without another ad
 PASS second download failure releases guard
 PASS different replay requires ad
 PASS closed modal ignores late ad success
+PASS closing list restores original failure dialog
 PASS reopen list
 PASS closed modal ignores late download
 PASS account guard list

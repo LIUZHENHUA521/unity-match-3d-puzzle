@@ -539,6 +539,7 @@ public partial class Match3DFlow : MonoBehaviour {
             if(!(win&&Stage==2&&ShowPotCertificate())){
             var result=OpenModal(win?"ResultSuccess":"ResultFailure").GetComponent<Match3DResultView>();
             result.Configure(PlayerPrefs.GetInt("goose.result.attempts",1),progress,best,win?(Action)Home:RestartStage,Home,ShareResult);
+            if(!win&&Stage==2&&dailyLevel!=null&&dailyLevel.tier=="bachelor"&&!LocalPreview)result.gameObject.AddComponent<PotMasterReplayEntry>().Configure(result);
             }
         }
         var clip=win?library.winSound:library.loseSound;if(SettingsEffects&&clip)effects.PlayOneShot(clip);

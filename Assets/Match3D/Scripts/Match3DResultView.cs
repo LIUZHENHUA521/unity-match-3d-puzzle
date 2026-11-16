@@ -10,6 +10,13 @@ public sealed class Match3DResultView : MonoBehaviour {
     public Image shade,fill;
     public Text attempts,best;
     public Button primary,secondary,share;
+    float masterReplayOffset;
+    public void SetMasterReplayVisible(bool visible){
+        float offset=visible?90:0,delta=offset-masterReplayOffset;masterReplayOffset=offset;
+        foreach(string name in new[]{"Progress track","Progress fill","Progress marker"}){
+            var rect=animatedContent.Find(name) as RectTransform;if(rect)rect.anchoredPosition+=new Vector2(0,delta);
+        }
+    }
     public void Configure(int count,float progress,float record,Action main,Action other,Action onShare){
         attempts.text="今日已挑战"+count+"次";
         best.text=Mathf.RoundToInt(record*100)+"%";
@@ -25,11 +32,11 @@ public sealed class Match3DResultView : MonoBehaviour {
         while(elapsed<.75f){
             elapsed+=Time.unscaledDeltaTime;
             float p=target*(1-Mathf.Pow(1-Mathf.Clamp01((elapsed-.16f)/.59f),3));
-            fill.fillAmount=p;marker.anchoredPosition=new Vector2(Mathf.Lerp(-290,290,p),-140);
+            fill.fillAmount=p;marker.anchoredPosition=new Vector2(Mathf.Lerp(-290,290,p),-140+masterReplayOffset);
             yield return null;
         }
         fill.fillAmount=target;
-        marker.anchoredPosition=new Vector2(Mathf.Lerp(-290,290,target),-140);
+        marker.anchoredPosition=new Vector2(Mathf.Lerp(-290,290,target),-140+masterReplayOffset);
 
     }
 }
