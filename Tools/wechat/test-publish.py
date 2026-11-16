@@ -43,6 +43,8 @@ class PublishTests(unittest.TestCase):
 
     def test_upload_uses_validated_isolated_snapshot_and_literal_description(self):
         def action(argv, **kwargs):
+            if argv[0] != str(self.cli):
+                self.assertEqual(argv[argv.index("--version") + 1], self.args.version)
             if argv[0] == str(self.cli):
                 snapshot = Path(argv[argv.index('--project') + 1])
                 self.assertNotEqual(snapshot, self.output)

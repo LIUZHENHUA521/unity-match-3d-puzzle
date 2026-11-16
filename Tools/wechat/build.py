@@ -11,7 +11,10 @@ ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
 parser.add_argument('--stage', type=Path, default=ROOT / 'Builds/WechatProject')
 parser.add_argument('--prepare-only', action='store_true')
+parser.add_argument('--version', help='Release version stamped into the staged Unity player')
 args = parser.parse_args()
+if args.version and not re.fullmatch(r'\d+\.\d+\.\d+', args.version):
+    raise SystemExit('Invalid release version')
 stage = args.stage.resolve()
 if stage == ROOT or ROOT.is_relative_to(stage):
     raise SystemExit('Build staging directory must not contain the source project')
@@ -24,6 +27,12 @@ for name in ['Assets', 'Packages', 'ProjectSettings']:
     if (stage / name).exists(): shutil.rmtree(stage / name)
     shutil.copytree(ROOT / name, stage / name, dirs_exist_ok=True,
                     ignore=lambda directory, names: ['com.unitymcp.server'] if Path(directory).name == 'Packages' else [])
+if args.version:
+    settings = stage / 'ProjectSettings/ProjectSettings.asset'
+    content, count = re.subn(r'(?m)^  bundleVersion:.*$', '  bundleVersion: ' + args.version, settings.read_text())
+    if count != 1:
+        raise SystemExit('Unity bundleVersion not found exactly once')
+    settings.write_text(content)
 (stage / 'Tools/wechat').mkdir(parents=True, exist_ok=True)
 shutil.copy2(ROOT / 'Tools/wechat/release.config.json', stage / 'Tools/wechat/release.config.json')
 manifest = stage / 'Packages/manifest.json'

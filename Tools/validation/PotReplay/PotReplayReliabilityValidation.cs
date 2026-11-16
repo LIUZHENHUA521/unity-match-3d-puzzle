@@ -60,6 +60,22 @@ public static class PotReplayReliabilityValidation {
         long packedBytes=new FileInfo(packed).Length;Check(packedBytes<PotReplayTransfer.MaxFileBytes,"30min gzip under16MiB");
         var decodedData=JsonUtility.FromJson<PotReplayData>(PotReplayTransfer.Unpack(File.ReadAllBytes(packed)));
         foreach(float time in new[]{0f,899.9f,901f,1500f,1800f}){int index;var state=PotReplayState.At(decodedData,time,out index);Check(state.Count==330,"seek full object state");Check(state[0].visible==(decodedData.frames[index].t<=900),"seek visibility transition");var expected=new Vector3(5,0,Mathf.Sin(decodedData.frames[index].t*.4f+5)*2);Check(Vector3.Distance(state[5].p,expected)<.002f,"seek moving pose");}
+        // Cancellation never commits a partial gzip or removes its original journal.
+        Exception cancelled=null;var interrupted=Match3DStartupRunner.Run(PotReplayCache.Prepare(ready,()=>true),e=>cancelled=e);while(interrupted.MoveNext()){}
+        Check(cancelled is OperationCanceledException&&File.Exists(journal)&&!File.Exists(PotReplayCache.Packed(ready))&&!File.Exists(Path.ChangeExtension(ready,".packing")),"cancelled compression retains original, discards partial output");
+        // Commit gzip before deleting journal. A repeated prepare reuses the committed bytes.
+        var prepare=PotReplayCache.Prepare(ready,()=>false);while(prepare.MoveNext()){if(prepare.Current is System.Collections.IEnumerator child)while(child.MoveNext()){} }
+        string durable=PotReplayCache.Packed(ready);Check(File.Exists(durable)&&!File.Exists(journal),"gzip commit frees raw journal");
+        var committed=File.ReadAllBytes(durable);prepare=PotReplayCache.Prepare(ready,()=>false);while(prepare.MoveNext()){}
+        Check(committed.SequenceEqual(File.ReadAllBytes(durable)),"retry reuses committed gzip without source");
+        // Simulate crash after rename before cleanup; resume safely removes only redundant source.
+        File.WriteAllText(journal,"redundant source");prepare=PotReplayCache.Prepare(ready,()=>false);while(prepare.MoveNext()){}
+        Check(!File.Exists(journal)&&File.Exists(durable),"crash after rename preserves committed payload");
+        File.WriteAllText(journal,"retained quarantine fixture");
+        var memory=new PotReplayMemoryPolicy();Check(!memory.Stop(0)&&memory.SampleInterval==.5f,"first pressure degrades sampling");Check(memory.Stop(2),"repeated pressure stops");
+        Check(new PotReplayMemoryPolicy().Stop(0,15),"critical pressure stops immediately");
+        PotReplayLocalState.Phase(owner,id,"put",403);entry=PotReplayLocalState.Get(owner,id);Check(entry.phase=="put"&&entry.httpStatus==403&&entry.replayVersion==PotReplayData.Version,"structured upload failure persisted");
+        entry.diagnosticAttempt=PotReplayLocalState.Now;PotReplayLocalState.Put(owner,entry);Check(PotReplayLocalState.NextDiagnostic(owner).recordId!=id,"diagnostics rotate beyond failing record");
         // Legacy rejected complete recordings get one repair retry, then stay retained.
         PotReplayFiles.Move(ready,ready+".rejected");PotReplayLocalState.Set(owner,id,"failed","old validation");PotReplayQueue.RestoreRejected(owner);Check(File.Exists(ready),"legacy repair queued");
         PotReplayFiles.Move(ready,ready+".rejected");PotReplayLocalState.Set(owner,id,"failed","validation");PotReplayQueue.RestoreRejected(owner);Check(File.Exists(ready+".rejected")&&!File.Exists(ready),"repair attempted once");
@@ -70,6 +86,12 @@ public static class PotReplayReliabilityValidation {
         string staleRaw=PotReplayService.PathFor(owner,staleId,".recording");File.WriteAllText(staleRaw,"interrupted");PotReplayQueue.Reconcile(owner);Check(!File.Exists(staleRaw)&&PotReplayLocalState.Get(owner,staleId).state=="failed","only aged incomplete payload cleaned, reason remains");
         string legacyId=new string('9',32);data.recordId=legacyId;string legacyPath=PotReplayService.PathFor(owner,legacyId,".pending");File.WriteAllText(legacyPath,JsonUtility.ToJson(data));
         var imported=PotReplayQueue.Import(owner,legacyPath);Check(imported.result=="win"&&imported.tier=="bachelor","legacy JSON metadata recovered for home and win priority");
+        // Pressure reclaims only known failed, incomplete journals in the same account.
+        string pressureId=new string('6',32),otherRaw=PotReplayService.PathFor("other-pressure-owner",pressureId,".recording"),failedRaw=PotReplayService.PathFor(owner,pressureId,".recording");
+        PotReplayLocalState.Put(owner,new PotReplayLocalState.Entry{recordId=pressureId,state="failed",updatedAt=PotReplayLocalState.Now});
+        File.WriteAllText(failedRaw,"abandoned partial");using(var sparse=File.Create(otherRaw))sparse.SetLength(97L*1024*1024);
+        try{PotReplayQueue.Reconcile(owner);Check(!File.Exists(failedRaw)&&File.Exists(otherRaw)&&File.Exists(durable),"pressure cleanup preserves other owner and complete winning payload");}finally{File.Delete(otherRaw);}
+        PotReplayLocalState.Set(owner,id,"synced");PotReplayQueue.Reconcile(owner);Check(!PotReplayFiles.Exists(durable)&&!PotReplayFiles.Exists(journal)&&!PotReplayFiles.Exists(ready+".rejected"),"server-confirmed leftovers cleaned on restart");
         foreach(var path in PotReplayFiles.List(owner+"_*"))PotReplayFiles.Delete(path);PlayerPrefs.DeleteKey("pot.replay.state.v1."+owner);
         Debug.Log("POT_REPLAY_RELIABILITY_OK seconds=1800 objects=330 samples=18001 json="+jsonBytes+" gzip="+packedBytes+" emitted="+emitted);EditorApplication.Exit(0);
     }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}

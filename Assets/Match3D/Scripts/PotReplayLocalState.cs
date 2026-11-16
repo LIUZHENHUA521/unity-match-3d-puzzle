@@ -6,7 +6,7 @@ using UnityEngine;
 // A small durable ledger survives missing payloads, process exit and failed disk writes.
 public static class PotReplayLocalState {
     [Serializable] public sealed class Entry {
-        public string recordId,date,tier,result,state,reason;
+        public string recordId,date,tier,result,state,reason,phase,clientVersion,replayVersion;public long httpStatus,diagnosticAttempt;
         public long updatedAt,nextAttempt;public int attempts,repairVersion;public bool reported;
     }
     [Serializable] sealed class Ledger {public List<Entry> entries=new List<Entry>();}
@@ -32,8 +32,10 @@ public static class PotReplayLocalState {
     public static void Start(string owner,Match3DGameRecords.Record record,Match3DDailyLevel level){Put(owner,new Entry{recordId=record.recordId,date=level.date,tier=level.tier,state="recording",updatedAt=Now});}
     public static void Set(string owner,string id,string state,string reason="",string result=null){
         var e=Get(owner,id);if(e==null)return;e.state=state;e.reason=(reason??"").Substring(0,Math.Min(240,(reason??"").Length));if(result!=null)e.result=result;
-        e.updatedAt=Now;e.reported=false;if(state=="synced"){e.attempts=0;e.nextAttempt=0;}Put(owner,e);
+        e.updatedAt=Math.Max(Now,e.updatedAt+1);e.reported=false;if(state=="synced"){e.attempts=0;e.nextAttempt=0;}Put(owner,e);
     }
+    public static void Phase(string owner,string id,string phase,long httpStatus=0){var e=Get(owner,id);if(e==null)return;e.phase=phase;e.httpStatus=Math.Max(0,Math.Min(599,httpStatus));e.clientVersion=PotReplayBuild.Version;e.replayVersion=PotReplayData.Version;e.updatedAt=Math.Max(Now,e.updatedAt+1);e.reported=false;Put(owner,e);}
+    public static Entry NextDiagnostic(string owner)=>All(owner).Where(e=>!e.reported&&e.state!="recording").OrderBy(e=>e.diagnosticAttempt).ThenBy(e=>e.updatedAt).FirstOrDefault();
     public static void Retry(string owner,string id,string reason){var e=Get(owner,id);if(e==null)return;e.attempts=Math.Min(e.attempts+1,20);e.nextAttempt=Now+(long)Math.Min(300,5*Math.Pow(2,e.attempts-1))*1000;Put(owner,e);Set(owner,id,"queued",reason);}
     public static void Outcome(string owner,Match3DGameRecords.Record record){var e=Get(owner,record.recordId);if(e!=null){e.result=record.status;e.reported=false;Put(owner,e);}}
     public static string Caption(string owner,string date,string tier){

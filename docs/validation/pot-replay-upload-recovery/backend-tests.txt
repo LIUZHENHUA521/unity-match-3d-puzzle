@@ -1,0 +1,942 @@
+TAP version 13
+# Subtest: verified identity proof is stored as a digest; only assignments leave gateway
+ok 1 - verified identity proof is stored as a digest; only assignments leave gateway
+  ---
+  duration_ms: 14.026292
+  ...
+# Subtest: invalid login, wrong app and missing WeChat profile never call AB service
+ok 2 - invalid login, wrong app and missing WeChat profile never call AB service
+  ---
+  duration_ms: 2.130709
+  ...
+# Subtest: concurrent pulls coalesce and service errors are sanitized
+ok 3 - concurrent pulls coalesce and service errors are sanitized
+  ---
+  duration_ms: 15.975667
+  ...
+# {"event":"pot_request_timing","id":"d6e27d94-37eb-4567-820b-c9dc7a0eae87","path":"/invites/ab","db":[],"network":[],"status":401,"durationMs":5}
+# {"event":"pot_request_timing","id":"b5fbcd84-dfc2-4438-89f3-878566733f8c","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":0.4}
+# {"event":"pot_request_timing","id":"f63d109f-3b58-43a9-a6db-f03021cb5b4b","path":"/invites/ab","db":[],"network":[],"status":200,"durationMs":0.2}
+# Subtest: HTTP requires login and ignores forged user, test selection and group
+ok 4 - HTTP requires login and ignores forged user, test selection and group
+  ---
+  duration_ms: 35.681208
+  ...
+# Subtest: capability comes from current request and concurrent old/new requests serialize proofs
+ok 5 - capability comes from current request and concurrent old/new requests serialize proofs
+  ---
+  duration_ms: 36.467125
+  ...
+# Subtest: concurrent native completions and lost-ACK retries persist once without a start record
+ok 6 - concurrent native completions and lost-ACK retries persist once without a start record
+  ---
+  duration_ms: 8.647541
+  ...
+# Subtest: every immutable field conflicts; owner isolation cannot rewrite an event
+ok 7 - every immutable field conflicts; owner isolation cannot rewrite an event
+  ---
+  duration_ms: 2.031791
+  ...
+# Subtest: auth, enums, identifiers, bounds and single-event validation
+ok 8 - auth, enums, identifiers, bounds and single-event validation
+  ---
+  duration_ms: 0.686542
+  ...
+# Subtest: old offline completion retains occurredAt and a delayed-upload diagnostic
+ok 9 - old offline completion retains occurredAt and a delayed-upload diagnostic
+  ---
+  duration_ms: 0.283709
+  ...
+# {"event":"pot_request_timing","id":"3a179fd3-f029-4ce0-98c5-68477f70fa9d","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":0.6}
+# {"event":"pot_rate_limited","group":"player","path":"/ads/events"}
+# {"event":"pot_rate_limited","group":"player","path":"/ads/events"}
+# {"event":"pot_rate_limited","group":"player","path":"/ads/events"}
+# {"event":"pot_rate_limited","group":"player","path":"/ads/events"}
+# {"event":"pot_rate_limited","group":"player","path":"/ads/events"}
+# Subtest: HTTP auth, method, payload size, malformed input, unavailable persistence and rate limiting
+ok 10 - HTTP auth, method, payload size, malformed input, unavailable persistence and rate limiting
+  ---
+  duration_ms: 395.91025
+  ...
+# Subtest: new record capability survives start/finish ordering; old records stay unmarked
+ok 11 - new record capability survives start/finish ordering; old records stay unmarked
+  ---
+  duration_ms: 1.177584
+  ...
+# Subtest: same deck, ready and load handshake
+ok 12 - same deck, ready and load handshake
+  ---
+  duration_ms: 3.335792
+  ...
+# Subtest: duplicate and forged picks cannot advance progress
+ok 13 - duplicate and forged picks cannot advance progress
+  ---
+  duration_ms: 0.307584
+  ...
+# Subtest: triple removes exactly three and chronological undo
+ok 14 - triple removes exactly three and chronological undo
+  ---
+  duration_ms: 0.295041
+  ...
+# Subtest: seven distinct types lose; forged winner ignored
+ok 15 - seven distinct types lose; forged winner ignored
+  ---
+  duration_ms: 0.173542
+  ...
+# Subtest: clear wins and ends once
+ok 16 - clear wins and ends once
+  ---
+  duration_ms: 1.910042
+  ...
+# Subtest: queue cancellation, duplicate queue, private room full
+ok 17 - queue cancellation, duplicate queue, private room full
+  ---
+  duration_ms: 0.161959
+  ...
+# Subtest: disconnect forfeits and timeout ties clean up
+ok 18 - disconnect forfeits and timeout ties clean up
+  ---
+  duration_ms: 0.285375
+  ...
+# Subtest: load deadline cancels; lobby expires
+ok 19 - load deadline cancels; lobby expires
+  ---
+  duration_ms: 0.166584
+  ...
+# Subtest: contact ticket requires authenticated game owner and carries no raw identity
+ok 20 - contact ticket requires authenticated game owner and carries no raw identity
+  ---
+  duration_ms: 5.978583
+  ...
+# Subtest: invalid source account or unsigned contact config fail closed
+ok 21 - invalid source account or unsigned contact config fail closed
+  ---
+  duration_ms: 0.500292
+  ...
+# {"event":"pot_request_timing","id":"68a2fb7c-8994-439a-a4ea-244b804c3f1b","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":0.7}
+# Subtest: HTTP contact endpoint ignores client-supplied owner and rejects missing auth
+ok 22 - HTTP contact endpoint ignores client-supplied owner and rejects missing auth
+  ---
+  duration_ms: 59.181667
+  ...
+# Subtest: documented older signed contact route remains accepted
+ok 23 - documented older signed contact route remains accepted
+  ---
+  duration_ms: 33.119083
+  ...
+# Subtest: daily practice endpoint requires login and ignores client-supplied dates/seeds
+ok 24 - daily practice endpoint requires login and ignores client-supplied dates/seeds
+  ---
+  duration_ms: 17.64075
+  ...
+# Subtest: missing published document and unsupported generator fail closed; source fallback never selects future dates
+ok 25 - missing published document and unsupported generator fail closed; source fallback never selects future dates
+  ---
+  duration_ms: 0.630875
+  ...
+# {"event":"pot_request_timing","id":"eb946a63-9569-487c-b8cd-849707f5757c","path":"/levels/daily","db":[],"network":[],"status":401,"durationMs":4.3}
+# {"event":"pot_request_timing","id":"76354243-2c0c-46a9-af35-03a1602d6297","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":0.5}
+# {"event":"pot_request_timing","id":"cd5ee281-ba94-4ade-a63b-e29c27ebc827","path":"/levels/daily","db":[],"network":[],"status":200,"durationMs":0.5}
+# {"event":"pot_request_timing","id":"bfbc1efd-30aa-4fef-949b-26467e859192","path":"/levels/daily","db":[],"network":[],"status":200,"durationMs":0.8}
+# {"event":"pot_request_timing","id":"b074c213-dc0d-4bc4-8927-7ef6924b2b4d","path":"/levels/daily","db":[],"network":[],"status":200,"durationMs":0.9}
+# {"event":"pot_request_timing","id":"2cf41489-5eb6-46a5-ba1e-1ffd37625960","path":"/levels/daily","db":[],"network":[],"status":200,"durationMs":0.3}
+# Subtest: real HTTP daily endpoint routes through shared login and returns pinned configs without rewards
+ok 26 - real HTTP daily endpoint routes through shared login and returns pinned configs without rewards
+  ---
+  duration_ms: 142.911958
+  ...
+# Subtest: model themes are validated, pinned per player, and protected from old clients
+ok 27 - model themes are validated, pinned per player, and protected from old clients
+  ---
+  duration_ms: 0.906292
+  ...
+# Subtest: shared daily board is identical for concurrent players and remains frozen across schedule changes and retries
+ok 28 - shared daily board is identical for concurrent players and remains frozen across schedule changes and retries
+  ---
+  duration_ms: 144.68425
+  ...
+# Subtest: shared protocol/resource rejection rolls back day creation, while protocol 3 serves exact opening
+ok 29 - shared protocol/resource rejection rolls back day creation, while protocol 3 serves exact opening
+  ---
+  duration_ms: 6.705708
+  ...
+# Subtest: beta ignores old standalone config and follows each tier daily publication
+ok 30 - beta ignores old standalone config and follows each tier daily publication
+  ---
+  duration_ms: 0.639166
+  ...
+# Subtest: new friend grants all four once; existing accounts and self invitation never grant
+ok 31 - new friend grants all four once; existing accounts and self invitation never grant
+  ---
+  duration_ms: 9.358292
+  ...
+# Subtest: cancel/no login grants nothing; malformed inviter ignored; forged auth rejected
+ok 32 - cancel/no login grants nothing; malformed inviter ignored; forged auth rejected
+  ---
+  duration_ms: 0.825292
+  ...
+# Subtest: debit response loss retry, concurrent debit, refund retry and refunded replay are idempotent
+ok 33 - debit response loss retry, concurrent debit, refund retry and refunded replay are idempotent
+  ---
+  duration_ms: 0.808666
+  ...
+# Subtest: persistent records survive service restart and credentials cannot access another wallet receipt
+ok 34 - persistent records survive service restart and credentials cannot access another wallet receipt
+  ---
+  duration_ms: 0.588917
+  ...
+# Subtest: cancel before a delayed debit creates terminal receipt without crediting inventory
+ok 35 - cancel before a delayed debit creates terminal receipt without crediting inventory
+  ---
+  duration_ms: 0.350916
+  ...
+# {"event":"pot_request_timing","id":"6bcb126f-2632-4ab5-990c-a282a48261ab","path":"/invites/health","db":[],"network":[],"status":503,"durationMs":6.2}
+# {"event":"pot_request_timing","id":"3cbe45cc-ac2d-4d71-874a-b26e2236ad7f","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":0.6}
+# {"event":"pot_request_timing","id":"ed9c646b-4ff0-4c17-a6bf-9eb835202d8b","path":"/invites/state","db":[],"network":[],"status":401,"durationMs":0.3}
+# {"event":"pot_request_timing","id":"7ca2aff0-7a14-45ef-99ea-b8f75b939192","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":1.1}
+# {"event":"pot_request_timing","id":"36ac2362-3f8d-4a13-a6ca-243066b2525e","path":"/invites/state","db":[],"network":[],"status":200,"durationMs":0.3}
+# {"event":"pot_request_timing","id":"5ba2c5c2-56ad-441d-9ba6-5bc5621114fb","path":"/invites/consume","db":[],"network":[],"status":200,"durationMs":0.6}
+# Subtest: HTTP routes use server identity and require bearer token; legacy PVP stays available
+ok 36 - HTTP routes use server identity and require bearer token; legacy PVP stays available
+  ---
+  duration_ms: 131.323958
+  ...
+# Subtest: installed database SDK uses collection-based transactions and preserves callback results
+ok 37 - installed database SDK uses collection-based transactions and preserves callback results
+  ---
+  duration_ms: 41.912125
+  ...
+# Subtest: profile exposes stable server registration time on login and inventory refresh
+ok 38 - profile exposes stable server registration time on login and inventory refresh
+  ---
+  duration_ms: 0.532166
+  ...
+# Subtest: test assist is server owned, defaults off, and survives profile refresh
+ok 39 - test assist is server owned, defaults off, and survives profile refresh
+  ---
+  duration_ms: 0.608375
+  ...
+# Subtest: legacy wallets default add-time to zero; consume and refund are atomic and idempotent
+ok 40 - legacy wallets default add-time to zero; consume and refund are atomic and idempotent
+  ---
+  duration_ms: 1.423584
+  ...
+# {"event":"pot_request_timing","id":"a77d94f4-dade-4ea1-a34b-ccbb792266c8","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":0.4}
+# {"event":"pot_request_timing","id":"668c4643-791d-400e-a644-1bdca6f41d87","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":0.5}
+# {"event":"pot_request_timing","id":"a7dca006-2676-4694-851e-c7b260387449","path":"/invites/state","db":[],"network":[],"status":200,"durationMs":0.2}
+# {"event":"pot_request_timing","id":"dc8d5057-cbb6-41ac-858b-968f05b0d6ea","path":"/invites/state","db":[],"network":[],"status":200,"durationMs":0.1}
+# {"event":"pot_request_timing","id":"b6f8ef58-414d-4b81-8040-1ab32cca5708","path":"/invites/state","db":[],"network":[],"status":200,"durationMs":0.2}
+# {"event":"pot_request_timing","id":"d70c52db-f29b-4c03-922d-8ed86307e436","path":"/invites/mail/list","db":[],"network":[],"status":200,"durationMs":0.3}
+# {"event":"pot_request_timing","id":"36a81612-9de4-49e8-973b-d089dbc48b3e","path":"/invites/refund","db":[],"network":[],"status":200,"durationMs":1.1}
+# {"event":"pot_request_timing","id":"b3538007-d91f-4b50-af0b-d67a7ea48549","path":"/invites/state","db":[],"network":[],"status":200,"durationMs":0.5}
+# {"event":"pot_request_timing","id":"2ca326d5-6d00-442b-970d-c21905c0cafd","path":"/invites/mail/list","db":[],"network":[],"status":200,"durationMs":0.2}
+# {"event":"pot_request_timing","id":"b48711bd-0e3e-473a-a997-1034f122ee9c","path":"/invites/refund","db":[],"network":[],"status":200,"durationMs":0.3}
+# Subtest: HTTP negotiates four inventory fields on every inventory route and keeps legacy clients readable
+ok 41 - HTTP negotiates four inventory fields on every inventory route and keeps legacy clients readable
+  ---
+  duration_ms: 36.469083
+  ...
+# Subtest: new invitations upgrade legacy wallets and add time exactly once per new friend
+ok 42 - new invitations upgrade legacy wallets and add time exactly once per new friend
+  ---
+  duration_ms: 0.822
+  ...
+# Subtest: announcement read changes no inventory; reward only claim and retry/concurrency grant once
+ok 43 - announcement read changes no inventory; reward only claim and retry/concurrency grant once
+  ---
+  duration_ms: 13.640667
+  ...
+# Subtest: target isolation, invalid user/token, immutable idempotent send and admin credentials
+ok 44 - target isolation, invalid user/token, immutable idempotent send and admin credentials
+  ---
+  duration_ms: 2.690208
+  ...
+# Subtest: full-server excludes future registrations, expired claim rejected, receipt survives restart
+ok 45 - full-server excludes future registrations, expired claim rejected, receipt survives restart
+  ---
+  duration_ms: 0.90625
+  ...
+# Subtest: pagination and attention include mails beyond first page; suspicious ids safe
+ok 46 - pagination and attention include mails beyond first page; suspicious ids safe
+  ---
+  duration_ms: 28.02775
+  ...
+# Subtest: mail claims serialize with inventory consume; no lost updates
+ok 47 - mail claims serialize with inventory consume; no lost updates
+  ---
+  duration_ms: 0.775875
+  ...
+# {"event":"pot_request_timing","id":"ad3a96c2-83ed-453b-8984-892120ed0b7d","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":4.3}
+# {"event":"pot_request_timing","id":"57892649-b0b2-4459-b671-6feec4ed5263","path":"/invites/mail/list","db":[],"network":[],"status":200,"durationMs":0.9}
+# {"event":"pot_request_timing","id":"83241920-a31c-4cfc-aa76-3d777dea95d4","path":"/invites/mail/list","db":[],"network":[],"status":401,"durationMs":0.2}
+# {"event":"pot_request_timing","id":"e588e696-cdc1-4a90-8468-03cd7d125885","path":"/invites/mail/claim","db":[],"network":[],"status":200,"durationMs":1.1}
+# Subtest: HTTP mail uses same login token and send rejects normal players
+ok 48 - HTTP mail uses same login token and send rejects normal players
+  ---
+  duration_ms: 60.43425
+  ...
+# Subtest: four-item mail grants add-time once and legacy mail preserves existing add-time
+ok 49 - four-item mail grants add-time once and legacy mail preserves existing add-time
+  ---
+  duration_ms: 0.952875
+  ...
+# Subtest: status verifies the provider state, exposes a whitelist and never applies
+ok 50 - status verifies the provider state, exposes a whitelist and never applies
+  ---
+  duration_ms: 6.129292
+  ...
+# Subtest: prepare queries then applies using verified game identity and active merchant default
+ok 51 - prepare queries then applies using verified game identity and active merchant default
+  ---
+  duration_ms: 0.30775
+  ...
+# Subtest: already authorized prepare does not create another authorization
+ok 52 - already authorized prepare does not create another authorization
+  ---
+  duration_ms: 0.143375
+  ...
+# Subtest: invalid tokens, unverified profiles and wrong AppIDs cannot query or apply
+ok 53 - invalid tokens, unverified profiles and wrong AppIDs cannot query or apply
+  ---
+  duration_ms: 0.521833
+  ...
+# Subtest: provider errors, mismatched identity and malformed responses fail closed without leaking data
+ok 54 - provider errors, mismatched identity and malformed responses fail closed without leaking data
+  ---
+  duration_ms: 4.572541
+  ...
+# Subtest: concurrent requests share one application and per-account retry limits apply
+ok 55 - concurrent requests share one application and per-account retry limits apply
+  ---
+  duration_ms: 67.363208
+  ...
+# {"event":"pot_request_timing","id":"a6abe0fc-e22a-4331-8cb0-3dc65e2d7e9b","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":1.7}
+# Subtest: HTTP ignores forged routing, recipient, authorization number and payment parameters
+ok 56 - HTTP ignores forged routing, recipient, authorization number and payment parameters
+  ---
+  duration_ms: 68.345834
+  ...
+# Subtest: inventory and sign-in states directly read fresh user documents without transactions
+ok 57 - inventory and sign-in states directly read fresh user documents without transactions
+  ---
+  duration_ms: 41.46725
+  ...
+# Subtest: mail list direct reads overlap, display data never authorizes a later claim
+ok 58 - mail list direct reads overlap, display data never authorizes a later claim
+  ---
+  duration_ms: 27.788292
+  ...
+# Subtest: overlapping tool retries share one atomic debit; later retries read current inventory
+ok 59 - overlapping tool retries share one atomic debit; later retries read current inventory
+  ---
+  duration_ms: 31.89825
+  ...
+# Subtest: tool failures roll back and clear pending; changed types, owners and refund do not share results
+ok 60 - tool failures roll back and clear pending; changed types, owners and refund do not share results
+  ---
+  duration_ms: 42.063917
+  ...
+# Subtest: timing records transaction phases without payloads or document IDs
+ok 61 - timing records transaction phases without payloads or document IDs
+  ---
+  duration_ms: 11.8585
+  ...
+# Subtest: network diagnostics captures the SDK node HTTP transport and omits headers/path/body
+ok 62 - network diagnostics captures the SDK node HTTP transport and omits headers/path/body
+  ---
+  duration_ms: 10.15725
+  ...
+# Subtest: kernel CPU counters distinguish v1 nanoseconds and v2 microseconds; missing counters stay unknown
+ok 63 - kernel CPU counters distinguish v1 nanoseconds and v2 microseconds; missing counters stay unknown
+  ---
+  duration_ms: 0.238375
+  ...
+# Subtest: dedicated store, default, dynamic updates and last-good fallback
+ok 64 - dedicated store, default, dynamic updates and last-good fallback
+  ---
+  duration_ms: 1.461542
+  ...
+# Subtest: configuration timeout is bounded
+ok 65 - configuration timeout is bounded
+  ---
+  duration_ms: 1201.279083
+  ...
+# Subtest: login includes policy, refresh sees updates, config failure never blocks identity
+ok 66 - login includes policy, refresh sees updates, config failure never blocks identity
+  ---
+  duration_ms: 1.9135
+  ...
+# Subtest: pot capability separates concurrent clients while retaining progress capability
+ok 67 - pot capability separates concurrent clients while retaining progress capability
+  ---
+  duration_ms: 31.163625
+  ...
+# {"event":"pot_request_timing","id":"48981407-ea5a-4bb3-b73c-cf41a5ce819a","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":15.4}
+# {"event":"pot_request_timing","id":"8cf9b775-12ce-44c1-ae9c-d9715a0bc836","path":"/invites/ab","db":[],"network":[],"status":200,"durationMs":0.8}
+# {"event":"pot_request_timing","id":"5e4e3a24-5599-4980-8db8-27366244bc03","path":"/invites/ab","db":[],"network":[],"status":200,"durationMs":0.4}
+# {"event":"pot_request_timing","id":"1a5c1db0-b027-477e-8a70-fa7c462de09f","path":"/invites/ab","db":[],"network":[],"status":200,"durationMs":0.3}
+# Subtest: pot HTTP capability comes from new header, never request body
+ok 68 - pot HTTP capability comes from new header, never request body
+  ---
+  duration_ms: 58.981209
+  ...
+# Subtest: pot selection has exact 72-hour boundary, no client time or stacking, no second board in payload
+ok 69 - pot selection has exact 72-hour boundary, no client time or stacking, no second board in payload
+  ---
+  duration_ms: 0.763667
+  ...
+# Subtest: pot entry selects the same shared variant across players and tiers, and expires without replacing shared pair
+ok 70 - pot entry selects the same shared variant across players and tiers, and expires without replacing shared pair
+  ---
+  duration_ms: 10.491125
+  ...
+# Subtest: beta accounts bypass shared daily boost without beta config; only the server boolean flag exempts
+ok 71 - beta accounts bypass shared daily boost without beta config; only the server boolean flag exempts
+  ---
+  duration_ms: 0.546
+  ...
+# Subtest: beta account wins do not start or renew boost even on ordinary daily boards
+ok 72 - beta account wins do not start or renew boost even on ordinary daily boards
+  ---
+  duration_ms: 0.308333
+  ...
+# Subtest: pot renewal is monotonic, ignores first-stage/beta/fail and preserves user data
+ok 73 - pot renewal is monotonic, ignores first-stage/beta/fail and preserves user data
+  ---
+  duration_ms: 0.365291
+  ...
+# Subtest: beta reduction always overrides boost, including expiry; response contains only selected opening
+ok 74 - beta reduction always overrides boost, including expiry; response contains only selected opening
+  ---
+  duration_ms: 6.594208
+  ...
+# Subtest: pinned reduced run cannot renew boost after beta flag removed
+ok 75 - pinned reduced run cannot renew boost after beta flag removed
+  ---
+  duration_ms: 0.103916
+  ...
+# {"event":"pot_request_timing","id":"2e3a4897-9a03-44b1-a540-2160211a7a96","path":"/levels/daily","db":[],"network":[],"status":401,"durationMs":0.9}
+# Subtest: editor preview reads latest beta config without creating identities, progress or rewards
+ok 76 - editor preview reads latest beta config without creating identities, progress or rewards
+  ---
+  duration_ms: 62.832084
+  ...
+# Subtest: honors are account/app/game scoped; page and total independent of replay availability
+ok 77 - honors are account/app/game scoped; page and total independent of replay availability
+  ---
+  duration_ms: 2.873208
+  ...
+# Subtest: honors reject unauthenticated requests and invalid cursors
+ok 78 - honors reject unauthenticated requests and invalid cursors
+  ---
+  duration_ms: 0.699292
+  ...
+# Subtest: full 10000-session cache accepts new logins and keeps recently active players signed in
+ok 79 - full 10000-session cache accepts new logins and keeps recently active players signed in
+  ---
+  duration_ms: 25.407375
+  ...
+# Subtest: expired sessions are removed before live ones and authentication never extends expiry
+ok 80 - expired sessions are removed before live ones and authentication never extends expiry
+  ---
+  duration_ms: 4.84775
+  ...
+# Subtest: failed authentication cannot evict existing sessions
+ok 81 - failed authentication cannot evict existing sessions
+  ---
+  duration_ms: 3.67025
+  ...
+# Subtest: concurrent logins at capacity all succeed and return distinct valid tokens
+ok 82 - concurrent logins at capacity all succeed and return distinct valid tokens
+  ---
+  duration_ms: 33.333708
+  ...
+# Subtest: proxy trust is explicit; public peers and spoofed chain prefixes cannot choose another bucket
+ok 83 - proxy trust is explicit; public peers and spoofed chain prefixes cannot choose another bucket
+  ---
+  duration_ms: 5.255208
+  ...
+# Subtest: bounded windows recover exactly at expiry and new keys cannot poison existing buckets
+ok 84 - bounded windows recover exactly at expiry and new keys cannot poison existing buckets
+  ---
+  duration_ms: 0.404917
+  ...
+# {"event":"pot_rate_limited","group":"login","path":"/invites/login"}
+# Subtest: 500 clients behind one gateway can log in; abusive client stays limited and health remains available
+ok 85 - 500 clients behind one gateway can log in; abusive client stays limited and health remains available
+  ---
+  duration_ms: 108.96225
+  ...
+# {"event":"pot_rate_limited","group":"player","path":"/invites/state"}
+# {"event":"pot_rate_limited","group":"player","path":"/invites/state"}
+# {"event":"pot_rate_limited","group":"anonymous","path":"/invites/state"}
+# Subtest: same-WiFi accounts and login/replay budgets are independent; re-login or fake tokens do not bypass limits
+ok 86 - same-WiFi accounts and login/replay budgets are independent; re-login or fake tokens do not bypass limits
+  ---
+  duration_ms: 59.080416
+  ...
+# Subtest: finalization reads origin bytes and distinguishes missing file from permission/outage
+ok 87 - finalization reads origin bytes and distinguishes missing file from permission/outage
+  ---
+  duration_ms: 19.814875
+  ...
+# Subtest: oversized incoming file rejected with and without content length
+ok 88 - oversized incoming file rejected with and without content length
+  ---
+  duration_ms: 1.576125
+  ...
+# Subtest: complete, idempotent upload and private ownership; explicit published masters
+ok 89 - complete, idempotent upload and private ownership; explicit published masters
+  ---
+  duration_ms: 11.073125
+  ...
+# Subtest: reject invalid identity, oversized chunk, forged record and malformed states
+ok 90 - reject invalid identity, oversized chunk, forged record and malformed states
+  ---
+  duration_ms: 2.097209
+  ...
+# Subtest: crash recovery remains incomplete, never a publicly eligible win
+ok 91 - crash recovery remains incomplete, never a publicly eligible win
+  ---
+  duration_ms: 0.152834
+  ...
+# Subtest: v2 round trip preserves probe columns, simultaneous effects and rejects invalid bindings
+ok 92 - v2 round trip preserves probe columns, simultaneous effects and rejects invalid bindings
+  ---
+  duration_ms: 1.09225
+  ...
+# Subtest: old clients never receive v2 masters; updated clients explicitly select v2
+ok 93 - old clients never receive v2 masters; updated clients explicitly select v2
+  ---
+  duration_ms: 3.496333
+  ...
+# Pot replay finalized {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","format":"legacy-cbc","elapsedMs":3}
+# Pot replay finalization failed {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","phase":"expand","status":400,"error":"录像文件损坏或展开大小超过64MiB","elapsedMs":0}
+# Subtest: cloud upload bypasses DB chunks; retries finalize, isolates owners and rejects first stage
+ok 94 - cloud upload bypasses DB chunks; retries finalize, isolates owners and rejects first stage
+  ---
+  duration_ms: 4.415458
+  ...
+# Pot replay finalization failed {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","phase":"validate","status":400,"error":"录像与每日对局不匹配","elapsedMs":4}
+# Pot replay finalized {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","format":"legacy-cbc","elapsedMs":3}
+# Subtest: legacy upload rejects damaged files but renews expired authorization without losing the object
+ok 95 - legacy upload rejects damaged files but renews expired authorization without losing the object
+  ---
+  duration_ms: 7.66
+  ...
+# Pot replay finalized {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","format":"legacy-cbc","elapsedMs":445}
+# Subtest: cloud storage accepts a valid replay larger than the previous 16MiB limit
+ok 96 - cloud storage accepts a valid replay larger than the previous 16MiB limit
+  ---
+  duration_ms: 712.126666
+  ...
+# Subtest: pot boosted replay validates actual counts once and preserves server-owned variant with tall stacks
+ok 97 - pot boosted replay validates actual counts once and preserves server-owned variant with tall stacks
+  ---
+  duration_ms: 7.468417
+  ...
+# Pot replay finalized {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","format":"gzip-v1","elapsedMs":1}
+# Subtest: gzip upload has no encryption keys, survives renewal and round trips through index/list/download
+ok 98 - gzip upload has no encryption keys, survives renewal and round trips through index/list/download
+  ---
+  duration_ms: 1.963041
+  ...
+# Pot replay finalization failed {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","phase":"save","status":503,"error":"Error","elapsedMs":0}
+# Pot replay finalized {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","format":"gzip-v1","elapsedMs":1}
+# Subtest: gzip finalization retries a failed DB write without losing the uploaded recording
+ok 99 - gzip finalization retries a failed DB write without losing the uploaded recording
+  ---
+  duration_ms: 1.349958
+  ...
+# Pot replay finalization failed {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","phase":"expand","status":400,"error":"录像文件损坏或展开大小超过64MiB","elapsedMs":1}
+# Pot replay finalization failed {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","phase":"validate","status":400,"error":"录像与每日对局不匹配","elapsedMs":0}
+# Pot replay finalization failed {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","phase":"expand","status":400,"error":"录像文件损坏或展开大小超过64MiB","elapsedMs":45}
+# Pot replay finalization failed {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","phase":"download","status":413,"error":"large","elapsedMs":0}
+# Subtest: old and new client upload sessions cannot overwrite each other; corrupted gzip stays unindexed
+ok 100 - old and new client upload sessions cannot overwrite each other; corrupted gzip stays unindexed
+  ---
+  duration_ms: 175.651917
+  ...
+# Subtest: previously indexed AES-GCM recordings still play through the unchanged download API
+ok 101 - previously indexed AES-GCM recordings still play through the unchanged download API
+  ---
+  duration_ms: 0.972417
+  ...
+# Pot replay finalized {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","format":"gzip-v1","elapsedMs":0}
+# Subtest: current client exposure events and dismissal animation survive upload and download
+ok 102 - current client exposure events and dismissal animation survive upload and download
+  ---
+  duration_ms: 2.2145
+  ...
+# Subtest: reduced replay retains server reduction metadata without applying reduction twice
+ok 103 - reduced replay retains server reduction metadata without applying reduction twice
+  ---
+  duration_ms: 0.142291
+  ...
+# Subtest: direct download signs only authorized indexed gzip, without reading file contents
+ok 104 - direct download signs only authorized indexed gzip, without reading file contents
+  ---
+  duration_ms: 1.153625
+  ...
+# Subtest: direct download fails closed when storage signing fails or returns insecure URL
+ok 105 - direct download fails closed when storage signing fails or returns insecure URL
+  ---
+  duration_ms: 0.185333
+  ...
+# Subtest: diagnostics are bounded, owner-scoped and never change settlement
+ok 106 - diagnostics are bounded, owner-scoped and never change settlement
+  ---
+  duration_ms: 0.418291
+  ...
+# Subtest: 30-second checkpoints accepted while missing checkpoints stay invalid
+ok 107 - 30-second checkpoints accepted while missing checkpoints stay invalid
+  ---
+  duration_ms: 0.199291
+  ...
+# Subtest: legacy invisible falling bodies normalize without accepting visible invalid positions
+ok 108 - legacy invisible falling bodies normalize without accepting visible invalid positions
+  ---
+  duration_ms: 0.338125
+  ...
+# Subtest: pot masters returns accurate eligible total, fastest ten, safe profile and stable ties
+ok 109 - pot masters returns accurate eligible total, fastest ten, safe profile and stable ties
+  ---
+  duration_ms: 1.89525
+  ...
+# Subtest: replay diagnostic phase and real build are bounded and retained
+ok 110 - replay diagnostic phase and real build are bounded and retained
+  ---
+  duration_ms: 0.361416
+  ...
+# Pot replay finalized {"id":"ebdedd963c609cb2801b2485bcde516698994a6768976a32fe67008ce8a61007","format":"gzip-v1","elapsedMs":1}
+# Subtest: missing staging object returns 404, records phase, renews credentials and completes
+ok 111 - missing staging object returns 404, records phase, renews credentials and completes
+  ---
+  duration_ms: 1.003542
+  ...
+# Subtest: maps trusted identity, retains completion time and separates same playback IDs across apps/users
+ok 112 - maps trusted identity, retains completion time and separates same playback IDs across apps/users
+  ---
+  duration_ms: 2.262667
+  ...
+# Subtest: durable local completion retries public forwarding after failure, with unchanged event and no early ACK
+ok 113 - durable local completion retries public forwarding after failure, with unchanged event and no early ACK
+  ---
+  duration_ms: 0.660459
+  ...
+# Subtest: missing configuration and mismatched ACK remain retryable; signed delivery accepts matching ACK
+ok 114 - missing configuration and mismatched ACK remain retryable; signed delivery accepts matching ACK
+  ---
+  duration_ms: 0.674833
+  ...
+# Subtest: master replay completion uses its own placement and a supported shared attribution group
+ok 115 - master replay completion uses its own placement and a supported shared attribution group
+  ---
+  duration_ms: 0.145625
+  ...
+# Subtest: concurrent starts/finishes deduplicate and late start preserves terminal
+ok 116 - concurrent starts/finishes deduplicate and late start preserves terminal
+  ---
+  duration_ms: 3.818542
+  ...
+# Subtest: finish first, identity isolation, immutable metadata
+ok 117 - finish first, identity isolation, immutable metadata
+  ---
+  duration_ms: 0.417
+  ...
+# Subtest: reject auth expiry and malformed data
+ok 118 - reject auth expiry and malformed data
+  ---
+  duration_ms: 0.725125
+  ...
+# {"event":"pot_request_timing","id":"f832c079-8bb1-4567-ac26-f0737d9d3ad7","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":1.2}
+# Subtest: HTTP shares login identity and persistence failures are not acknowledged
+ok 119 - HTTP shares login identity and persistence failures are not acknowledged
+  ---
+  duration_ms: 59.870834
+  ...
+# Subtest: add-time records retain actual remaining seconds, rewarded uses and independent revival
+ok 120 - add-time records retain actual remaining seconds, rewarded uses and independent revival
+  ---
+  duration_ms: 2.717333
+  ...
+# Subtest: separate channels survive concurrent finish retries and late starts without duplicate records
+ok 121 - separate channels survive concurrent finish retries and late starts without duplicate records
+  ---
+  duration_ms: 3.843709
+  ...
+# Subtest: new channel telemetry rejects malformed, partial, inconsistent or impossible counts
+ok 122 - new channel telemetry rejects malformed, partial, inconsistent or impossible counts
+  ---
+  duration_ms: 0.338959
+  ...
+# Subtest: legacy retries stay unchanged; explicit channel zeroes remain distinct from unknown
+ok 123 - legacy retries stay unchanged; explicit channel zeroes remain distinct from unknown
+  ---
+  duration_ms: 0.253333
+  ...
+# Subtest: second-stage wins issue exactly one voucher regardless of first-stage telemetry
+ok 124 - second-stage wins issue exactly one voucher regardless of first-stage telemetry
+  ---
+  duration_ms: 19.903375
+  ...
+# Subtest: legacy first-stage rejection can be retried unchanged and cannot issue twice
+ok 125 - legacy first-stage rejection can be retried unchanged and cannot issue twice
+  ---
+  duration_ms: 2.163708
+  ...
+# Subtest: legacy first-stage rejection retries retain expiry, quota and receipt checks
+ok 126 - legacy first-stage rejection retries retain expiry, quota and receipt checks
+  ---
+  duration_ms: 1.05725
+  ...
+# Subtest: failed second-stage records and unrelated legacy rejections are not rehabilitated
+ok 127 - failed second-stage records and unrelated legacy rejections are not rehabilitated
+  ---
+  duration_ms: 1.546167
+  ...
+# Subtest: reward settlement preserves split channels and retries issue one voucher
+ok 128 - reward settlement preserves split channels and retries issue one voucher
+  ---
+  duration_ms: 2.549375
+  ...
+# Subtest: qualification defaults off, authentic source identity and immutable retry
+ok 129 - qualification defaults off, authentic source identity and immutable retry
+  ---
+  duration_ms: 0.432541
+  ...
+# Subtest: two stages, concurrency, original voucher retry, quotas isolated by tier
+ok 130 - two stages, concurrency, original voucher retry, quotas isolated by tier
+  ---
+  duration_ms: 1.753708
+  ...
+# Subtest: tier forgery, foreign/expired qualification and mismatched level remain rejected
+ok 131 - tier forgery, foreign/expired qualification and mismatched level remain rejected
+  ---
+  duration_ms: 0.314584
+  ...
+# Subtest: inventory receipts must be valid and become non-refundable when settled
+ok 132 - inventory receipts must be valid and become non-refundable when settled
+  ---
+  duration_ms: 0.880167
+  ...
+# Subtest: legacy qualifications retain test-account isolation
+ok 133 - legacy qualifications retain test-account isolation
+  ---
+  duration_ms: 0.631458
+  ...
+# Subtest: disabling unlimited magnet cannot rehabilitate an earlier reward run
+ok 134 - disabling unlimited magnet cannot rehabilitate an earlier reward run
+  ---
+  duration_ms: 0.559083
+  ...
+# Subtest: hourly release uses Beijing time, ceiling rounding, carryover and daily cap
+ok 135 - hourly release uses Beijing time, ceiling rounding, carryover and daily cap
+  ---
+  duration_ms: 0.28175
+  ...
+# Subtest: entry does not reserve; concurrent winners share the last released slot and retries do not debit
+ok 136 - entry does not reserve; concurrent winners share the last released slot and retries do not debit
+  ---
+  duration_ms: 1.369584
+  ...
+# Subtest: daily exhaustion, zero quota, missing quota and close during gameplay fail closed
+ok 137 - daily exhaustion, zero quota, missing quota and close during gameplay fail closed
+  ---
+  duration_ms: 2.05575
+  ...
+# Subtest: cross-midnight awards count on issuance day and old runs cannot bypass personal daily limit
+ok 138 - cross-midnight awards count on issuance day and old runs cannot bypass personal daily limit
+  ---
+  duration_ms: 3.574708
+  ...
+# Subtest: daily snapshots distinguish tiers, pin one player/day/tier and bind reward records
+ok 139 - daily snapshots distinguish tiers, pin one player/day/tier and bind reward records
+  ---
+  duration_ms: 2.264292
+  ...
+# Subtest: published config is snapshotted and later edits or midnight never change an existing run
+ok 140 - published config is snapshotted and later edits or midnight never change an existing run
+  ---
+  duration_ms: 0.631125
+  ...
+# Subtest: already-issued legacy runs still settle against their original fixed snapshot
+ok 141 - already-issued legacy runs still settle against their original fixed snapshot
+  ---
+  duration_ms: 0.440542
+  ...
+# Subtest: explicit model themes require protocol 2 before creating reward eligibility
+ok 142 - explicit model themes require protocol 2 before creating reward eligibility
+  ---
+  duration_ms: 0.259709
+  ...
+# Subtest: add-time receipts are checked, cannot be refunded after settlement, and cannot be omitted
+ok 143 - add-time receipts are checked, cannot be refunded after settlement, and cannot be omitted
+  ---
+  duration_ms: 0.534875
+  ...
+# Subtest: shared opening rejects incompatible clients without issuing a run; supported clients finish both stages normally
+ok 144 - shared opening rejects incompatible clients without issuing a run; supported clients finish both stages normally
+  ---
+  duration_ms: 11.301625
+  ...
+# Subtest: test accounts earn real vouchers for both tiers with all test tools and idempotent retries
+ok 145 - test accounts earn real vouchers for both tiers with all test tools and idempotent retries
+  ---
+  duration_ms: 1.397125
+  ...
+# Subtest: test tool permission comes from the immutable run, not request data or later account changes
+ok 146 - test tool permission comes from the immutable run, not request data or later account changes
+  ---
+  duration_ms: 0.493583
+  ...
+# Subtest: test accounts still need inventory receipts and available quota
+ok 147 - test accounts still need inventory receipts and available quota
+  ---
+  duration_ms: 0.42075
+  ...
+# Subtest: new qualifications cannot settle legacy practice versions or unknown practice runs
+ok 148 - new qualifications cannot settle legacy practice versions or unknown practice runs
+  ---
+  duration_ms: 0.223417
+  ...
+# Subtest: bachelor: last slot is atomic, entry does not reserve, retries do not debit twice
+ok 149 - bachelor: last slot is atomic, entry does not reserve, retries do not debit twice
+  ---
+  duration_ms: 0.67425
+  ...
+# Subtest: bachelor: missing, invalid or zero quota denies entry; live edits and closing apply to existing runs
+ok 150 - bachelor: missing, invalid or zero quota denies entry; live edits and closing apply to existing runs
+  ---
+  duration_ms: 0.50575
+  ...
+# Subtest: bachelor: crossing midnight charges issuance date, personal limit and old awarded runs stay idempotent
+ok 151 - bachelor: crossing midnight charges issuance date, personal limit and old awarded runs stay idempotent
+  ---
+  duration_ms: 7.6945
+  ...
+# Subtest: elite: last slot is atomic, entry does not reserve, retries do not debit twice
+ok 152 - elite: last slot is atomic, entry does not reserve, retries do not debit twice
+  ---
+  duration_ms: 0.692625
+  ...
+# Subtest: elite: missing, invalid or zero quota denies entry; live edits and closing apply to existing runs
+ok 153 - elite: missing, invalid or zero quota denies entry; live edits and closing apply to existing runs
+  ---
+  duration_ms: 0.525167
+  ...
+# Subtest: elite: crossing midnight charges issuance date, personal limit and old awarded runs stay idempotent
+ok 154 - elite: crossing midnight charges issuance date, personal limit and old awarded runs stay idempotent
+  ---
+  duration_ms: 0.594041
+  ...
+# Subtest: elite quota is fully available at midnight and never refills hourly; bachelor keeps hourly release
+ok 155 - elite quota is fully available at midnight and never refills hourly; bachelor keeps hourly release
+  ---
+  duration_ms: 0.54975
+  ...
+# Subtest: beta changes apply only to new qualifications; ordinary clients cannot opt into beta
+ok 156 - beta changes apply only to new qualifications; ordinary clients cannot opt into beta
+  ---
+  duration_ms: 0.897042
+  ...
+# Subtest: pot valid wins renew even when rewards run out; duplicate and invalid finishes cannot renew
+ok 157 - pot valid wins renew even when rewards run out; duplicate and invalid finishes cannot renew
+  ---
+  duration_ms: 0.365166
+  ...
+# Subtest: beta account ordinary-board wins retain reward settlement without renewing difficulty
+ok 158 - beta account ordinary-board wins retain reward settlement without renewing difficulty
+  ---
+  duration_ms: 0.222084
+  ...
+# Subtest: pot renewal and terminal record commit atomically and retry recovers a failed write
+ok 159 - pot renewal and terminal record commit atomically and retry recovers a failed write
+  ---
+  duration_ms: 0.365583
+  ...
+# Subtest: pot certificates are unique, isolated and replayed unchanged for both tiers
+ok 160 - pot certificates are unique, isolated and replayed unchanged for both tiers
+  ---
+  duration_ms: 1.229
+  ...
+# Subtest: pot certificate survives exhausted rewards but invalid, failed and first stages never issue
+ok 161 - pot certificate survives exhausted rewards but invalid, failed and first stages never issue
+  ---
+  duration_ms: 2.2785
+  ...
+# Subtest: pot certificate write failure rolls back settlement and retry recovers once
+ok 162 - pot certificate write failure rolls back settlement and retry recovers once
+  ---
+  duration_ms: 0.402625
+  ...
+# Subtest: seven day table grants real tools; day seven stays completed until next day then repeats
+ok 163 - seven day table grants real tools; day seven stays completed until next day then repeats
+  ---
+  duration_ms: 6.265083
+  ...
+# Subtest: missed days retain progress and cannot claim missed calendar days
+ok 164 - missed days retain progress and cannot claim missed calendar days
+  ---
+  duration_ms: 0.787333
+  ...
+# Subtest: server Beijing midnight refreshes and a response-lost retry crossing midnight does not claim next day
+ok 165 - server Beijing midnight refreshes and a response-lost retry crossing midnight does not claim next day
+  ---
+  duration_ms: 1.541375
+  ...
+# Subtest: concurrent devices and retries credit exactly one reward and state is read only
+ok 166 - concurrent devices and retries credit exactly one reward and state is read only
+  ---
+  duration_ms: 1.113875
+  ...
+# Subtest: untrusted input, stale dates, skipped days, cycles and forged amounts never grant
+ok 167 - untrusted input, stale dates, skipped days, cycles and forged amounts never grant
+  ---
+  duration_ms: 0.410542
+  ...
+# Subtest: wrong snapshots cannot advance progress; extra reward fields ignored
+ok 168 - wrong snapshots cannot advance progress; extra reward fields ignored
+  ---
+  duration_ms: 4.503541
+  ...
+# Subtest: account isolation, service restart, old three-tool inventory and actual consumption
+ok 169 - account isolation, service restart, old three-tool inventory and actual consumption
+  ---
+  duration_ms: 0.864208
+  ...
+# Subtest: full inventory and failed commits roll back progress together with reward
+ok 170 - full inventory and failed commits roll back progress together with reward
+  ---
+  duration_ms: 0.488292
+  ...
+# Subtest: a backwards clock cannot award another reward
+ok 171 - a backwards clock cannot award another reward
+  ---
+  duration_ms: 0.305792
+  ...
+# {"event":"pot_request_timing","id":"21d08be9-5501-4eaf-bb91-d08701b903dc","path":"/invites/sign-in/state","db":[],"network":[],"status":401,"durationMs":3.1}
+# {"event":"pot_request_timing","id":"261b7140-ee4e-4a7f-b153-19dfba219113","path":"/invites/login","db":[],"network":[],"status":200,"durationMs":0.3}
+# {"event":"pot_request_timing","id":"b6483cd6-ecbe-4b09-896a-308fe2fa1b03","path":"/invites/sign-in/state","db":[],"network":[],"status":200,"durationMs":0.2}
+# {"event":"pot_request_timing","id":"977ad9e6-9c7d-4b9d-9528-3bdbf6b6f7cb","path":"/invites/sign-in/claim","db":[],"network":[],"status":200,"durationMs":0.3}
+# {"event":"pot_request_timing","id":"c70ee17c-129a-4ad6-b218-a79ee2fd88cf","path":"/invites/sign-in/claim","db":[],"network":[],"status":200,"durationMs":0.8}
+# {"event":"pot_request_timing","id":"4d4425d0-f73b-4706-b573-3eb64ccd9caa","path":"/invites/sign-in/claim","db":[],"network":[],"status":400,"durationMs":1.2}
+# Subtest: HTTP integration authenticates, grants and negotiates old/new inventory shape
+ok 172 - HTTP integration authenticates, grants and negotiates old/new inventory shape
+  ---
+  duration_ms: 55.038125
+  ...
+# Subtest: two actual WebSocket clients create, ready, pick and disconnect
+ok 173 - two actual WebSocket clients create, ready, pick and disconnect
+  ---
+  duration_ms: 172.644417
+  ...
+1..173
+# tests 173
+# suites 0
+# pass 173
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1318.246375

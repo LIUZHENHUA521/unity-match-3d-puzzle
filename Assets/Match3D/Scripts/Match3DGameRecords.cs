@@ -74,7 +74,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         LastFinished=null;LastFinishedOwner=null;
         if(string.IsNullOrEmpty(runId))NewRun();
         toolReceipts.Clear();
-        active=new Record{rewardTier=rewardTier,ruleVersion=ruleVersion,recordId=Guid.NewGuid().ToString("N"),runId=runId,themeId=theme,stage=stage,levelDate=date,initialCount=count,timeLimitSeconds=seconds,clientVersion=Application.version,platform=Application.platform.ToString()};
+        active=new Record{rewardTier=rewardTier,ruleVersion=ruleVersion,recordId=Guid.NewGuid().ToString("N"),runId=runId,themeId=theme,stage=stage,levelDate=date,initialCount=count,timeLimitSeconds=seconds,clientVersion=PotReplayBuild.Version,platform=Application.platform.ToString()};
         if(dailyLevel!=null){active.levelVersion=dailyLevel.version;active.levelSeed=dailyLevel.seed;active.levelGeneratorVersion=dailyLevel.generatorVersion;active.challengeTier=dailyLevel.tier;}
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         try{active.platform=WeChatWASM.WX.GetSystemInfoSync().platform;}catch{}

@@ -32,7 +32,7 @@ public static class PotReplayQueue {
     }
     public static string Next(string owner){
         var candidates=PotReplayFiles.List(owner+"_*.ready").Concat(PotReplayFiles.List(owner+"_*.pending"));
-        return candidates.Select(path=>new{path,entry=SafeImport(owner,path)}).Where(x=>x.entry!=null&&x.entry.nextAttempt<=PotReplayLocalState.Now&&x.entry.state!="failed")
+        return candidates.Select(path=>new{path,entry=SafeImport(owner,path)}).Where(x=>x.entry!=null&&x.entry.nextAttempt<=PotReplayLocalState.Now&&x.entry.state!="failed"&&x.entry.state!="synced")
             .OrderBy(x=>x.entry.result=="win"?0:1).ThenBy(x=>x.entry.updatedAt).Select(x=>x.path).FirstOrDefault();
     }
     static PotReplayLocalState.Entry SafeImport(string owner,string path){
@@ -49,13 +49,15 @@ public static class PotReplayQueue {
         }catch(Exception error){Debug.LogWarning("Pot legacy replay: "+error.Message);}
     }
     public static void Reconcile(string owner){
+        bool pressure=PotReplayFiles.List().Sum(p=>PotReplayFiles.Size(p))>96L*1024*1024;
         foreach(var e in PotReplayLocalState.All(owner)){
+            if(e.state=="synced"){PotReplayCache.DeleteSynced(owner,e.recordId);continue;}
             string ready=PotReplayService.PathFor(owner,e.recordId,".ready"),pending=PotReplayService.PathFor(owner,e.recordId,".pending");
             bool complete=PotReplayFiles.Exists(ready)||PotReplayFiles.Exists(pending);
             if(complete&&(e.state=="recording"||e.state=="uploading"))PotReplayLocalState.Set(owner,e.recordId,"queued","中断后继续同步");
             else if(!complete&&(e.state=="recording"||e.state=="queued"||e.state=="uploading"))PotReplayLocalState.Set(owner,e.recordId,"failed","未找到完整录像文件");
             // Never remove complete payloads, even if permanently rejected by validation.
-            if(e.state=="failed"&&PotReplayLocalState.Now-e.updatedAt>7L*86400000&&!complete&&!PotReplayFiles.Exists(ready+".rejected")&&!PotReplayFiles.Exists(pending+".rejected")){
+            if(e.state=="failed"&&(pressure||PotReplayLocalState.Now-e.updatedAt>7L*86400000)&&!complete&&!PotReplayFiles.Exists(ready+".rejected")&&!PotReplayFiles.Exists(pending+".rejected")&&!PotReplayFiles.Exists(PotReplayCache.Packed(ready))){
                 string raw=PotReplayService.PathFor(owner,e.recordId,".recording");if(PotReplayFiles.Exists(raw))PotReplayFiles.Delete(raw);
             }
         }

@@ -1,9 +1,13 @@
 mergeInto(LibraryManager.library, {
+  PotReplayClientVersion: function() {
+    var version='';try{version=wx.getAccountInfoSync().miniProgram.version||'';}catch(_){}
+    var size=lengthBytesUTF8(version)+1,p=_malloc(size);stringToUTF8(version,p,size);return p;
+  },
   $PotReplayNetwork: {task:null,id:null},
   PotReplayUpload__deps: ['$PotReplayNetwork'],
   PotReplayUpload: function(json) {
     var r=JSON.parse(UTF8ToString(json)),finished=false;
-    function done(ok,error) {if(finished)return;finished=true;if(PotReplayNetwork.id===r.id){PotReplayNetwork.task=null;PotReplayNetwork.id=null;}Module.SendMessage(r.receiver,'OnPotReplayUpload',JSON.stringify({id:r.id,ok:ok,error:error||''}));}
+    function done(ok,error,status) {if(finished)return;finished=true;if(PotReplayNetwork.id===r.id){PotReplayNetwork.task=null;PotReplayNetwork.id=null;}Module.SendMessage(r.receiver,'OnPotReplayUpload',JSON.stringify({id:r.id,ok:ok,error:error||'',status:status||0}));}
     try {
       var name=(r.path||'').split('/').pop();if(!/^[a-zA-Z0-9_.-]+$/.test(name))throw new Error('invalid replay upload filename');
       if(!/^https:\/\//.test(r.ticket.url))throw new Error('invalid replay upload URL');
@@ -12,7 +16,7 @@ mergeInto(LibraryManager.library, {
       // Only the gzip file enters wx.request. Raw replay JSON never crosses WASM/JS.
       PotReplayNetwork.id=r.id;PotReplayNetwork.task=wx.request({url:r.ticket.url,method:'PUT',data:fs.readFileSync(path),timeout:180000,
         header:{'Content-Type':'application/octet-stream',Signature:r.ticket.authorization,Authorization:r.ticket.authorization,'x-cos-security-token':r.ticket.token,'x-cos-meta-fileid':r.ticket.cosFileId,key:encodeURIComponent(r.ticket.cloudPath)},
-        success:function(res){done(res.statusCode>=200&&res.statusCode<300,'云存储返回 '+res.statusCode);},
+        success:function(res){var code=typeof res.data==='string'&&res.data.match(/<Code>([A-Za-z0-9_-]+)<\/Code>/);done(res.statusCode>=200&&res.statusCode<300&&!code,'云存储返回 '+res.statusCode+(code?' '+code[1]:''),res.statusCode);},
         fail:function(error){done(false,error&&error.errMsg||'云存储上传中断，录像已保留');}
       });
     } catch(e) {done(false,String(e.message||e));}
