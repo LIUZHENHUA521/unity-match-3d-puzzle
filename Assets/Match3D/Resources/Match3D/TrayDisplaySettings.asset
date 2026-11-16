@@ -325,6 +325,42 @@ MonoBehaviour:
   - prefab: {fileID: 0}
     adapterId: Pot_vegetable_Zucchini
     multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Bacon
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_BbqRibs
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_BurgerPatty
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_CheeseWheel
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_ChickenBreast
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_ChickenDrumstick
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_ChickenWings
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_GrilledSteak
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Ham
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_HamSlices
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_LambChops
+    multiplier: 1
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Meatballs
+    multiplier: 1
   entries:
   - prefab: {fileID: 0}
     adapterId: ToyBear
@@ -778,78 +814,6 @@ MonoBehaviour:
       offset: {x: 0, y: 0, z: 0}
   - prefab: {fileID: 0}
     adapterId: Pot_vegetable_Pumpkin
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_Bacon
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_BbqRibs
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_BurgerPatty
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_CheeseWheel
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_ChickenBreast
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_ChickenDrumstick
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_ChickenWings
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_GrilledSteak
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_Ham
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_HamSlices
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_LambChops
-    pose:
-      rotation: {x: -20, y: 25, z: 0}
-      scale: 1
-      offset: {x: 0, y: 0, z: 0}
-  - prefab: {fileID: 0}
-    adapterId: Pot_meat_Meatballs
     pose:
       rotation: {x: -20, y: 25, z: 0}
       scale: 1
@@ -1554,5 +1518,77 @@ MonoBehaviour:
     adapterId: Pot_vegetable_Zucchini
     pose:
       rotation: {x: -75.70526, y: 109.91781, z: -105.92984}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Bacon
+    pose:
+      rotation: {x: -55.716705, y: 24.739138, z: -18.96936}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_BbqRibs
+    pose:
+      rotation: {x: -75.00464, y: 52.45408, z: -53.96454}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_BurgerPatty
+    pose:
+      rotation: {x: -56.89914, y: 23.644125, z: -19.344421}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_CheeseWheel
+    pose:
+      rotation: {x: -56.546326, y: 22.009937, z: -18.101349}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_ChickenBreast
+    pose:
+      rotation: {x: -75.28702, y: 69.53114, z: -59.46591}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_ChickenDrumstick
+    pose:
+      rotation: {x: -66.24133, y: -98.29413, z: 61.289974}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_ChickenWings
+    pose:
+      rotation: {x: -60.063354, y: 15.87665, z: -14.99115}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_GrilledSteak
+    pose:
+      rotation: {x: -82.464355, y: 65.979774, z: -66.51221}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Ham
+    pose:
+      rotation: {x: 14.642908, y: 92.34377, z: -115.564026}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_HamSlices
+    pose:
+      rotation: {x: -64.143555, y: 28.248016, z: -26.000153}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_LambChops
+    pose:
+      rotation: {x: -70.09323, y: 86.12076, z: -86.58655}
+      scale: 1
+      offset: {x: 0, y: 0, z: 0}
+  - prefab: {fileID: 0}
+    adapterId: Pot_meat_Meatballs
+    pose:
+      rotation: {x: -72.65646, y: 29.54471, z: -31.741577}
       scale: 1
       offset: {x: 0, y: 0, z: 0}
