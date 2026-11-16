@@ -1,0 +1,27 @@
+PASS startup
+PASS home master entry exists
+PASS five replays hide entry
+PASS six or more show entry
+PASS server list renders top ten
+PASS duplicate click starts one ad
+PASS cancelled ad does not play
+PASS cancel permits new ad
+PASS download failure releases guard
+PASS download failure retains paid selection
+PASS same replay retries without another ad
+PASS second download failure releases guard
+PASS different replay requires ad
+PASS closed modal ignores late ad success
+PASS reopen list
+PASS closed modal ignores late download
+PASS account guard list
+PASS account switch ignores ad callback
+PASS playable fixture list
+PASS paid replay actually starts
+PASS replay screen active
+PASS exit returns to masters list
+PASS watch again requires new ad
+PASS daily version changed during ad cannot play stale replay
+PASS version change clears retry qualification
+PASS network error exposes retry
+COMPLETE

@@ -37,6 +37,15 @@ public sealed class Match3DAdTelemetry : MonoBehaviour {
         context.impressionId=request;context.adUnitId=adUnit;context.placement=placement;
         return JsonUtility.ToJson(context);
     }
+    public string CapturePotMasterReplay(string request,string adUnit){
+        SyncSession();if(string.IsNullOrEmpty(lastOwner)||string.IsNullOrEmpty(lastToken))return null;
+        string platform=Application.platform==RuntimePlatform.IPhonePlayer?"ios":Application.platform==RuntimePlatform.Android?"android":"mac";
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
+        try{platform=WeChatWASM.WX.GetSystemInfoSync().platform;}catch{return null;}
+#endif
+        // A browsing session is independent of any live or recorded player's run.
+        return JsonUtility.ToJson(new Context{owner=lastOwner,impressionId=request,recordId=request,runId=request,stage=2,placement="pot_master_replay",adUnitId=adUnit,clientVersion=Application.version,platform=platform});
+    }
     [UnityEngine.Scripting.Preserve] public void OnAdTelemetryAuthExpired(string owner){
         var account=Match3DInvitations.Instance;
         if(account&&account.Ready&&account.State.inviteCode==owner){account.RefreshRecordLogin();bound=false;SyncSession();}

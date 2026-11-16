@@ -40,6 +40,7 @@ public sealed class Match3DHomeView : MonoBehaviour {
         if(tab==Tab.Home){
             ui.Bind("Settings",()=>{var existing=home.GetComponentInChildren<Match3DHomeMenu>();if(existing){Destroy(existing.gameObject);return;}var menu=Match3DUIView.Load("HomeMenu",home.transform);var controller=menu.GetComponent<Match3DHomeMenu>();controller.FollowArtwork(home.artwork);controller.Connect(flow);});ui.Bind("Rewards",()=>{if(home.artwork)flow.ShowHomeFeatureNotice("月底抽 iPad 活动尚未接入");else flow.ShowRewardInfo();});
             home.gameObject.AddComponent<PotHomeReplayEntry>().Configure(ui);
+            home.gameObject.AddComponent<PotMasterReplayEntry>().Configure(ui);
         }
         if(home.signIn){home.signIn.gameObject.SetActive(true);home.signIn.onClick.AddListener(()=>{flow.HomeClick();flow.ShowSignIn();});home.signIn.gameObject.AddComponent<Match3DSignInBadge>();}
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});

@@ -10,9 +10,9 @@ using UnityEngine.Networking;
 
 public sealed class PotReplayService : MonoBehaviour {
     [Serializable] public class Honor {public PotCertificateData certificate;public string replayId;public long earnedAt;}
-    [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion;public int stage;public float duration;public long createdAt;}
-    [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content;public int total;public bool ready;public UploadTicket upload;public DownloadTicket download;public Summary[] list;public Honor[] honors;public PotReplayData detail;}
-    [Serializable] class RequestBody {public string state,reason,result;public int attempts;public long occurredAt;public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
+    [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion,nickName,avatarUrl;public int stage;public float duration;public long createdAt;}
+    [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content,date,levelVersion;public int total;public bool ready;public UploadTicket upload;public DownloadTicket download;public Summary[] list;public Honor[] honors;public PotReplayData detail;}
+    [Serializable] class RequestBody {public string state,reason,result,nickName,avatarUrl;public int attempts;public long occurredAt;public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
     [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,format;}
     [Serializable] public class DownloadTicket {public string url,format,sha256;}
     public const int MaxJsonBytes=64*1024*1024;
@@ -163,6 +163,18 @@ public sealed class PotReplayService : MonoBehaviour {
             if(daily==null||!daily.ok||daily.level==null){done(new Reply{error=daily?.error??"每日关卡暂不可用"});yield break;}level=daily.level;
         }
         yield return Send("list",new RequestBody{kind=masters?"masters":"mine",skip=skip,date=level?.date,tier=level?.tier,levelVersion=level?.version},done);
+    }
+    public void SyncPublicProfile(string owner,string name,string avatar){
+        StartCoroutine(Send("profile",new RequestBody{nickName=name,avatarUrl=Match3DUserProfileView.AllowedAvatar(avatar)?avatar:""},reply=>{},expectedOwner:owner));
+    }
+    public IEnumerator Masters(Action<Reply> done){
+        var account=Match3DInvitations.Instance;
+        string owner=account&&account.Ready?account.State.inviteCode:null;
+        if(string.IsNullOrEmpty(owner)||!Match3DRewards.Instance){done(new Reply{error="请先登录"});yield break;}
+        Match3DRewards.Reply daily=null;
+        yield return Match3DRewards.Instance.Request("daily","{\"themeId\":\"daily\",\"tier\":\"bachelor\",\"levelProtocol\":3,\"openingVersion\":\""+Match3DDailySnapshot.ResourceVersion+"\"}",r=>daily=r,true);
+        if(daily==null||!daily.ok||daily.level==null){done(new Reply{error=daily?.error??"每日关卡暂不可用"});yield break;}
+        yield return Send("list",new RequestBody{kind="pot-masters",date=daily.level.date,tier="bachelor",levelVersion=daily.level.version},done,expectedOwner:owner);
     }
     public IEnumerator Honors(int skip,Action<Reply> done){yield return Send("honors",new RequestBody{skip=skip},done);}
     public void RecordingFailed(string reason){Status="回放保存失败："+reason;Debug.LogWarning(Status);}

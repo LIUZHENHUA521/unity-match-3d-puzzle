@@ -13,6 +13,7 @@ public partial class Match3DFlow {
     }
     public void ShowPotReplays(bool masters=false){
         if(PotReplayPlayer.Active)return;
+        if(masters){ShowPotMasterReplays();return;}
         StopBoard();Clear();ScreenName="pot-replays";BlocksGameplay=true;
         DrawPotReplayList(masters,0);
     }
@@ -21,7 +22,7 @@ public partial class Match3DFlow {
         int version=++potReplayListVersion;var root=PotReplayOverlay(true);
         PotReplayUI.Label(root,"每日挑战回放",new Vector2(0,-60),new Vector2(650,70));
         PotReplayUI.Button(root,"我的回放",new Vector2(-190,-150),()=>DrawPotReplayList(false,0));
-        PotReplayUI.Button(root,"高手回放",new Vector2(0,-150),()=>DrawPotReplayList(true,0));
+        PotReplayUI.Button(root,"高手回放",new Vector2(0,-150),()=>ShowPotMasterReplays());
         PotReplayUI.Button(root,"返回",new Vector2(190,-150),()=>{Home();ShowPotGlory();});
         if(masters){PotReplayUI.Button(root,"本科局",new Vector2(-100,-230),()=>{potReplayTier="bachelor";DrawPotReplayList(true,0);});PotReplayUI.Button(root,"清北局",new Vector2(100,-230),()=>{potReplayTier="elite";DrawPotReplayList(true,0);});}
         var label=PotReplayUI.Label(root,"正在加载…",new Vector2(0,masters?-290:-230),new Vector2(650,100));
@@ -61,7 +62,7 @@ public partial class Match3DFlow {
         OpenPotReplay(id,()=>listVersion==potReplayListVersion&&ScreenName=="pot-replays"&&label,error=>{if(label)label.text=error;});
     }
     // Both the home tier buttons and the replay list use this loading lifetime.
-    public void OpenPotReplay(string id,System.Func<bool> current,System.Action<string> failed){
+    public void OpenPotReplay(string id,System.Func<bool> current,System.Action<string> failed,System.Action started=null,System.Func<PotReplayData,bool> validate=null){
         if(potReplayDownloading)return;
         if(!PotReplayService.Instance){failed?.Invoke("回放服务未连接");Notice("回放服务未连接");return;}
         int request=++potReplayDownloadVersion;potReplayDownloading=true;
@@ -76,7 +77,8 @@ public partial class Match3DFlow {
             if(request!=potReplayDownloadVersion)return;
             if(!current()){CancelPotReplayDownloadTip();return;}
             if(reply==null||!reply.ok){Failed(reply?.error);return;}
-            try{StartupService<PotReplayPlayer>().Load(reply.detail);}
+            if(validate!=null&&!validate(reply.detail)){Failed("关卡或录像已变化，请重新打开列表");return;}
+            try{StartupService<PotReplayPlayer>().Load(reply.detail);started?.Invoke();}
             catch(System.Exception error){CancelPotReplayDownloadTip();failed?.Invoke(error.Message);Notice("回放加载失败："+error.Message);}
         }),error=>Failed(error.Message)));
     }
@@ -108,6 +110,6 @@ public partial class Match3DFlow {
     }
     public RectTransform PotReplayToolTarget(int type)=>gameplayHUD?gameplayHUD.ReplayToolTarget(type):null;
     public void EndPotReplay(){
-        if(potReplayOverlay)Destroy(potReplayOverlay.gameObject);LocalPreview=false;bool glory=potReplayReturnToGlory;potReplayReturnToGlory=false;Home();if(glory)ShowPotGlory();
+        if(potReplayOverlay)Destroy(potReplayOverlay.gameObject);LocalPreview=false;bool glory=potReplayReturnToGlory;potReplayReturnToGlory=false;bool masters=potReplayReturnToMasters;potReplayReturnToMasters=false;Home();if(masters)ShowPotMasterReplays();else if(glory)ShowPotGlory();
     }
 }

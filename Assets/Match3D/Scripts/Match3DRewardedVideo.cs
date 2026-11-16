@@ -45,7 +45,8 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
     }
     public void Show(bool timeout,Action<bool,string> done){ShowVideo(timeout,false,done);}
     public void ShowTool(Action<bool,string> done){ShowVideo(false,true,done);}
-    void ShowVideo(bool timeout,bool tool,Action<bool,string> done,int toolType=0){
+    public void ShowPotMasterReplay(Action<bool,string> done){ShowVideo(false,true,done,0,true);}
+    void ShowVideo(bool timeout,bool tool,Action<bool,string> done,int toolType=0,bool masterReplay=false){
         if(callback!=null){done(false,"广告正在播放，请稍候");return;}
         requestId=Guid.NewGuid().ToString("N");callback=done;
 #if UNITY_EDITOR
@@ -60,9 +61,9 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
         if(string.IsNullOrWhiteSpace(id)||!id.StartsWith("adunit-",StringComparison.Ordinal)){Complete(requestId,false,"激励广告尚未配置，请稍后再试");return;}
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         if(tool&&(toolType<0||toolType>3)){Complete(requestId,false,"广告用途无效，请重试");return;}
-        string placement=tool?new[]{"tool_remove","tool_magnet","tool_shuffle","tool_time"}[toolType]:timeout?"revive_time":"revive_clear";
+        string placement=masterReplay?"pot_master_replay":tool?new[]{"tool_remove","tool_magnet","tool_shuffle","tool_time"}[toolType]:timeout?"revive_time":"revive_clear";
         var telemetry=Match3DAdTelemetry.Instance;
-        string context=telemetry?telemetry.Capture(requestId,id,placement):null;
+        string context=telemetry?masterReplay?telemetry.CapturePotMasterReplay(requestId,id):telemetry.Capture(requestId,id,placement):null;
         if(string.IsNullOrEmpty(context)){Complete(requestId,false,"账号或关卡尚未准备好，请稍后重试");return;}
         GooseReviveAdShow(gameObject.name,id,requestId,context);
 #else

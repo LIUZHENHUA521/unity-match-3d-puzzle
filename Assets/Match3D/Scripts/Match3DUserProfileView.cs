@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-// WeChat profile is display-only and stays in memory for this popup. Account identity stays server-owned.
+// Authorized nickname/avatar also label public replays. Account identity stays server-owned.
 public sealed class Match3DUserProfileView : MonoBehaviour {
  [Serializable] public class WechatData {public string state,message,nickName,avatarUrl,country,province,city;public int gender;}
  public Text nickname,userId,gender,location,registered,status;
@@ -73,6 +73,7 @@ public sealed class Match3DUserProfileView : MonoBehaviour {
    nickname.text=string.IsNullOrWhiteSpace(data.nickName)?"微信玩家":Limit(data.nickName,64);gender.text=data.gender==1?"男":data.gender==2?"女":"未提供";
    var parts=new List<string>();foreach(var part in new[]{data.country,data.province,data.city})if(!string.IsNullOrWhiteSpace(part)&&!parts.Contains(part))parts.Add(Limit(part,48));location.text=parts.Count==0?"未提供":string.Join(" / ",parts);
    status.text="已同步微信资料";LoadAvatar(data.avatarUrl);
+   if(PotReplayService.Instance)PotReplayService.Instance.SyncPublicProfile(account,nickname.text,data.avatarUrl);
   }else {if(data.state!="authorize")status.gameObject.SetActive(true);if(data.state=="denied"||data.state=="authorize")ResetProfile();status.text=string.IsNullOrEmpty(data.message)?"微信暂未提供资料":Limit(data.message,120);}
  }
  static string Limit(string s,int count)=>s.Length>count?s.Substring(0,count):s;
