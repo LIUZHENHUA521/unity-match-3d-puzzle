@@ -1,0 +1,60 @@
+{
+  "server": {
+    "version": "060",
+    "filesChecked": 79,
+    "mismatches": [],
+    "health": [
+      {
+        "url": "https://9nanimal.cn/health",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "service": "goose-3d-pvp",
+          "rooms": 0
+        }
+      },
+      {
+        "url": "https://9nanimal.cn/invites/health",
+        "status": 200,
+        "body": {
+          "ready": true,
+          "database": true,
+          "loginConfigured": true
+        }
+      }
+    ]
+  },
+  "client": {
+    "version": "0.1.93",
+    "receipt": {
+      "size": {
+        "total": 28371457,
+        "packages": [
+          {
+            "name": "TOTAL",
+            "size": 28371457
+          },
+          {
+            "name": "main",
+            "size": 2537353
+          },
+          {
+            "name": "/data-package/",
+            "size": 19513736
+          },
+          {
+            "name": "/wasmcode/",
+            "size": 6320368
+          }
+        ]
+      }
+    },
+    "packageFiles": 69,
+    "inputFiles": 4289,
+    "snapshotHashesUnchanged": true
+  },
+  "clientCommit": "22d5bf6c76e79a1c853c69cf1895ab6149a430f8",
+  "serverCommit": "1e809783fcee5319f29154fae76470747e2453b8",
+  "workspaceInputsUnchangedAfterUpload": true,
+  "configurationPreserved": true
+}
