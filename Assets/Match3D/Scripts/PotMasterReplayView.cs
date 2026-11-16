@@ -22,7 +22,8 @@ public sealed class PotMasterReplayView : MonoBehaviour {
     }
     public static Button MakeButton(Transform parent,string name,string label,float x,float y,float w,float h,int size=25){
         var art=Art(parent,name,"pot-button",x,y,w,h);art.raycastTarget=true;var b=art.gameObject.AddComponent<Button>();b.targetGraphic=art;b.navigation=new Navigation{mode=Navigation.Mode.None};
-        var text=Label(art.transform,"Label",label,0,0,w,h-8,size);text.color=Color.white;var outline=text.gameObject.AddComponent<Outline>();outline.effectColor=new Color32(0,100,170,255);outline.effectDistance=new Vector2(1,-1);return b;
+        // The 64px sprite includes a lower shadow; center visible glyphs on its 52px button face.
+        var text=Label(art.transform,"Label",label,0,0,w,h*52f/64f,size);text.alignByGeometry=true;text.color=Color.white;var outline=text.gameObject.AddComponent<Outline>();outline.effectColor=new Color32(0,100,170,255);outline.effectDistance=new Vector2(1,-1);return b;
     }
     public static PotMasterReplayView Create(Transform parent){
         var root=Rect(parent,"PotMasterReplays",0,0,720,1280);root.anchorMin=Vector2.zero;root.anchorMax=Vector2.one;root.offsetMin=root.offsetMax=Vector2.zero;
