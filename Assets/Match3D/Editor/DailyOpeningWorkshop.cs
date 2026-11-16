@@ -13,6 +13,7 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
     static string potBoostPreviewImage;
     static string previewImage,status="打开后台下载的候选试玩文件。";
     static bool busy;
+    static int PotThemePool(Match3DDailyLevel level)=>Match3DModelThemes.Get(level.modelThemeId,"CountrysideStove").prefabs.Length;
     [Serializable] sealed class Export {public string date,tier,candidateId,previewImage;public int seed;public Match3DDailySnapshot opening;}
     [MenuItem("工具/每日同题/候选试玩")]
     public static void Open()=>GetWindow<DailyOpeningWorkshop>("每日同题试玩");
@@ -48,7 +49,7 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
             potBoostedCandidate.date=level.date;potBoostedCandidate.tier=level.tier;potBoostedCandidate.version=potBoostedCandidate.candidateId;
             if(extra["opening"]==null||extra["opening"].Type==Newtonsoft.Json.Linq.JTokenType.Null)potBoostedCandidate.opening=null;
             var check=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(potBoostedCandidate));check.generatorVersion="daily-v1";
-            if(!check.IsValid(23)||check.initialCount!=level.initialCount+level.potBoostCount||check.layers[0].count!=level.layers[0].count+level.potBoostCount)throw new Exception("加量候选参数无效");
+            if(!check.IsValid(PotThemePool(check))||check.initialCount!=level.initialCount+level.potBoostCount||check.layers[0].count!=level.layers[0].count+level.potBoostCount)throw new Exception("加量候选参数无效");
         }
         return level;
     }
@@ -57,8 +58,8 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
             var level=ParseCandidate(File.ReadAllText(path));
             if(level==null||string.IsNullOrEmpty(level.candidateId)||level.seed<=0)throw new Exception("不是候选关卡文件");
             var copy=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level));copy.generatorVersion="daily-v1";
-            if(!copy.IsValid(23))throw new Exception("候选参数无效");
-            if(level.opening!=null&&!level.opening.IsValid(level.initialCount,23))throw new Exception("布局版本不兼容，请重新生成");
+            if(!copy.IsValid(PotThemePool(copy)))throw new Exception("候选参数无效");
+            if(level.opening!=null&&!level.opening.IsValid(level.initialCount,PotThemePool(level)))throw new Exception("布局版本不兼容，请重新生成");
             if(!EditorApplication.isPlaying){
                 if(!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())return;
                 SessionState.SetString(Pending,path);EditorSceneManager.OpenScene(Match3DBuilder.Scene);EditorApplication.isPlaying=true;
@@ -103,7 +104,7 @@ public sealed class DailyOpeningWorkshop : EditorWindow {
             yield return new WaitForSeconds(5);
             opening.stages[stage-1]=flow.CaptureDailyOpening();
         }
-        if(!opening.IsValid(candidate.initialCount,23))throw new Exception("生成的布局不完整，请更换候选");
+        if(!opening.IsValid(candidate.initialCount,PotThemePool(candidate)))throw new Exception("生成的布局不完整，请更换候选");
         candidate.opening=opening;candidate.generatorVersion="shared-v2";
         for(int stage=1;stage<=2;stage++){
             flow.PreviewDailyOpening(candidate,stage);

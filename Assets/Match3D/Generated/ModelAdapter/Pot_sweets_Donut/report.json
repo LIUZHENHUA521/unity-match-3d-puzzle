@@ -1,0 +1,122 @@
+{
+    "requestId": "3b1651c9cfa2404aacf8fae10cc068f8",
+    "inputPath": "Assets/Match3D/IncomingModels/PotFoodPacks/Prefabs/Pot_sweets_Donut.prefab",
+    "logicalId": "Pot_sweets_Donut",
+    "displayName": "甜甜圈",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Pot_sweets_Donut/Pot_sweets_Donut.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Pot_sweets_Donut/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.9907408952713013,
+    "visualSize": {
+        "x": 0.21599999070167542,
+        "y": 0.0560000017285347,
+        "z": 0.21058443188667298
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.02800000086426735,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.21599999070167542,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 224,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 1209023,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "sweets_atlas2",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/sweets_atlas2.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 224,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 1227979,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "sweets_atlas2",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/sweets_atlas2.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 9,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "224 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TEXTURE_SIZE",
+            "message": "sweets_atlas2 当前 1024×1024，目标上限 512",
+            "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/sweets_atlas2.png"
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：224 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

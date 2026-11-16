@@ -13,6 +13,10 @@ public sealed class DailyWebPreview : MonoBehaviour {
     [Serializable] sealed class Package {public string date,tier,candidateId,previewImage;public int seed;public Match3DDailySnapshot opening;}
     [DllImport("__Internal")] static extern void GooseDailyPreviewEvent(string json);
     Match3DDailyLevel candidate;bool busy;
+    static int PotThemePool(Match3DDailyLevel level){
+        if(!Match3DModelThemes.TryGet(level.modelThemeId,"CountrysideStove",out var profile))throw new Exception("主题资源不兼容，请更新试玩版本");
+        return profile.prefabs.Length;
+    }
     void Start(){Instance=this;WebGLInput.captureAllKeyboardInput=false;Emit(new Reply{type="ready"});}
     void Emit(Reply reply){GooseDailyPreviewEvent(JsonUtility.ToJson(reply));}
     [Preserve] public void Receive(string json){
@@ -28,8 +32,9 @@ public sealed class DailyWebPreview : MonoBehaviour {
                 if(level!=null&&!command.hasOpening)level.opening=null;
                 if(level==null||string.IsNullOrEmpty(level.candidateId)||level.seed<=0)throw new Exception("候选参数缺失");
                 var check=JsonUtility.FromJson<Match3DDailyLevel>(JsonUtility.ToJson(level));check.generatorVersion="daily-v1";
-                if(!check.IsValid(23)||!DateTime.TryParseExact(level.date,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out _))throw new Exception("候选参数无效");
-                if(level.opening!=null&&!level.opening.IsValid(level.initialCount,23))throw new Exception("布局版本不兼容，请更换候选");
+                int pool=PotThemePool(level);
+                if(!check.IsValid(pool)||!DateTime.TryParseExact(level.date,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out _))throw new Exception("候选参数无效");
+                if(level.opening!=null&&!level.opening.IsValid(level.initialCount,pool))throw new Exception("布局版本不兼容，请更换候选");
                 candidate=level;StartCoroutine(Run(candidate.opening==null?Generate():command.exportOpening?ExportOpening():Play(2)));
             }else if(command.action=="play"&&candidate?.opening!=null){StartCoroutine(Run(Play(command.stage==1?1:2)));}
         }catch(Exception e){Emit(new Reply{type="error",message=e.Message});}
@@ -68,7 +73,7 @@ public sealed class DailyWebPreview : MonoBehaviour {
             yield return new WaitForSecondsRealtime(5);
             opening.stages[stage-1]=Match3DFlow.Instance.CaptureDailyOpening();
         }
-        if(!opening.IsValid(candidate.initialCount,23))throw new Exception("生成的开局不完整，请更换候选");
+        if(!opening.IsValid(candidate.initialCount,PotThemePool(candidate)))throw new Exception("生成的开局不完整，请更换候选");
         candidate.opening=opening;candidate.generatorVersion="shared-v2";
         yield return Play(2);
         Emit(new Reply{type="generated",package=new Package{date=candidate.date,tier=candidate.tier,candidateId=candidate.candidateId,seed=candidate.seed,opening=opening,previewImage=CaptureImage()}});

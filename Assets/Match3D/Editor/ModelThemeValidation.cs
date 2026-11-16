@@ -39,7 +39,7 @@ public static class ModelThemeValidation {
             Match3DTestPrivileges.ForceForValidation=true;
             flow.ChooseTestTheme(0,level);
             var picker=GameObject.Find("Test theme selection");Check(picker,"test picker visible");
-            var buttons=picker.GetComponentsInChildren<UnityEngine.UI.Button>();Check(buttons.Length==5,"all themes, default and cancel available");
+            var buttons=picker.GetComponentsInChildren<UnityEngine.UI.Button>();Check(buttons.Length==Resources.Load<Match3DModelThemes>("Match3D/ModelThemes").themes.Count(t=>t!=null&&t.profile!=null&&t.profile.environment=="CountrysideStove")+2,"all themes, default and cancel available");
             buttons.Single(b=>b.name.Contains(Match3DModelThemes.Title(id,"missing"))).onClick.Invoke();yield return Ready();
             var expectedAmbient=BoardLighting.ItemAmbientColor.r*(id=="playful-toys"?.65f:id=="tasty-kitchen"?.75f:1f);
             Check(Mathf.Abs(RenderSettings.ambientSkyColor.r-expectedAmbient)<.001f,id+" theme ambient");

@@ -1,0 +1,122 @@
+{
+    "requestId": "87f8c2e8528b4bd8a8e593c752d49941",
+    "inputPath": "Assets/Match3D/IncomingModels/PotFoodPacks/Prefabs/Pot_grocery_RiceBag.prefab",
+    "logicalId": "Pot_grocery_RiceBag",
+    "displayName": "大米",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Pot_grocery_RiceBag/Pot_grocery_RiceBag.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Pot_grocery_RiceBag/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.025334358215332,
+    "visualSize": {
+        "x": 0.4193754196166992,
+        "y": 0.10000001639127732,
+        "z": 0.3263895511627197
+    },
+    "visualCenter": {
+        "x": -7.450580596923828e-9,
+        "y": 0.05000000819563866,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": -7.450580596923828e-9,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.4193754196166992,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 192,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 835659,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "groceries_atlas3",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/groceries_atlas3.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 192,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 843946,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "groceries_atlas3",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/groceries_atlas3.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 2,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "192 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TEXTURE_SIZE",
+            "message": "groceries_atlas3 当前 1024×1024，目标上限 512",
+            "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/groceries_atlas3.png"
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：192 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

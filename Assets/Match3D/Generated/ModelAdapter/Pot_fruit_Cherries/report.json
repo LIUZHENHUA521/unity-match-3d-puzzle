@@ -1,0 +1,122 @@
+{
+    "requestId": "4c142ac746c042f384cca625540bb7c5",
+    "inputPath": "Assets/Match3D/IncomingModels/PotFoodPacks/Prefabs/Pot_fruit_Cherries.prefab",
+    "logicalId": "Pot_fruit_Cherries",
+    "displayName": "樱桃",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Pot_fruit_Cherries/Pot_fruit_Cherries.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Pot_fruit_Cherries/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.427474856376648,
+    "visualSize": {
+        "x": 0.12261435389518738,
+        "y": 0.3012312352657318,
+        "z": 0.20061883330345155
+    },
+    "visualCenter": {
+        "x": 0.009307175874710083,
+        "y": 0.1506156176328659,
+        "z": -0.0016905777156352997
+    },
+    "bottom": {
+        "x": 0.009307175874710083,
+        "y": 0.0,
+        "z": -0.0016905777156352997
+    },
+    "longestSide": 0.3012312352657318,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 232,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 837752,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "fruits_atlas2",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/fruits_atlas2.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 232,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 852365,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "fruits_atlas2",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/fruits_atlas2.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 6,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "232 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TEXTURE_SIZE",
+            "message": "fruits_atlas2 当前 1024×1024，目标上限 512",
+            "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/fruits_atlas2.png"
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：232 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

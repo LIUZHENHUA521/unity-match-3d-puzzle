@@ -1,0 +1,122 @@
+{
+    "requestId": "3ee420918f184fd4ac44f708958f10b7",
+    "inputPath": "Assets/Match3D/IncomingModels/PotFoodPacks/Prefabs/Pot_vegetable_Tomato.prefab",
+    "logicalId": "Pot_vegetable_Tomato",
+    "displayName": "番茄",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Pot_vegetable_Tomato/Pot_vegetable_Tomato.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Pot_vegetable_Tomato/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.628787875175476,
+    "visualSize": {
+        "x": 0.2639999985694885,
+        "y": 0.23815320432186128,
+        "z": 0.25114262104034426
+    },
+    "visualCenter": {
+        "x": 0.00003349781036376953,
+        "y": 0.1220766082406044,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.00003349781036376953,
+        "y": 0.003000006079673767,
+        "z": 0.0
+    },
+    "longestSide": 0.2639999985694885,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 205,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 808476,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "vegetables_atlas3",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/vegetables_atlas3.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 205,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 816725,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "vegetables_atlas3",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/vegetables_atlas3.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 2,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "205 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TEXTURE_SIZE",
+            "message": "vegetables_atlas3 当前 1024×1024，目标上限 512",
+            "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/vegetables_atlas3.png"
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：205 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

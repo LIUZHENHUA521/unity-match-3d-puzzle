@@ -25,6 +25,7 @@ public static class ModelThemeCatalogBuilder {
         var prefixes=new[]{"Toy","Kitchen_","Party_"};
         // Reconstruct each original ordered pool and tutorial choices from the saved import snapshot.
         var configs=new[]{"work/tasty-kitchen/before/SourceLevelConfig.json","work/foodie-party/before/SourceLevelConfig.json","Assets/Match3D/Resources/Match3D/SourceLevelConfig.json"};
+        var additional=(asset.themes??Array.Empty<Match3DModelThemes.Entry>()).Where(t=>t!=null&&!ids.Contains(t.id)).ToArray();
         asset.themes=ids.Select((id,i)=>{
             var json=JObject.Parse(File.ReadAllText(configs[i]))["themes"].Single(t=>(string)t["environment"]=="CountrysideStove");
             var template=AssetDatabase.LoadAssetAtPath<LevelLayoutConfig>(ThemeItemsEditorService.CatalogPath).profiles.Single(p=>p.environment=="CountrysideStove");
@@ -34,7 +35,7 @@ public static class ModelThemeCatalogBuilder {
             if(profile.prefabs.Length!=23||profile.prefabs.Any(p=>!p||!p.name.StartsWith(prefixes[i])||ThemeItemsEditorService.CheckPrefab(p)!=null))throw new Exception("Invalid models: "+id);
             LevelLayoutConfig.GetTutorial(profile);
             return new Match3DModelThemes.Entry{id=id,title=titles[i],profile=profile,ambientMultiplier=i==0?.65f:i==1?.75f:1f,lightMultiplier=i==0?.8f:i==1?.85f:1f};
-        }).ToArray();
+        }).Concat(additional).ToArray();
         if(!AssetDatabase.Contains(asset))AssetDatabase.CreateAsset(asset,path);
         EditorUtility.SetDirty(asset);AssetDatabase.SaveAssetIfDirty(asset);
     }

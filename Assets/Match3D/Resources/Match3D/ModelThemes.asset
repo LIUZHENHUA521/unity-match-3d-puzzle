@@ -14,10 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   themes:
   - id: playful-toys
-    background: {fileID: 21300000, guid: 062c1cb1f1144960a3bf59fc75e82f7b, type: 3}
-    ambientMultiplier: 0.65
-    lightMultiplier: 0.8
     title: "\u840C\u8DA3\u73A9\u5177"
+    background: {fileID: 21300000, guid: 062c1cb1f1144960a3bf59fc75e82f7b, type: 3}
     profile:
       environment: CountrysideStove
       sourceIndex: 1
@@ -51,7 +49,7 @@ MonoBehaviour:
       - ToyDinosaur
       - ToyDoll
       - ToyBear
-      ordinaryTypes: 
+      ordinaryTypes:
       layers:
       - count: 150
         types: 23
@@ -161,11 +159,11 @@ MonoBehaviour:
         - 1
         - 1
         - 1
+    ambientMultiplier: 0.65
+    lightMultiplier: 0.8
   - id: tasty-kitchen
-    background: {fileID: 21300000, guid: c2a0a12c3754484fa433efa055919e91, type: 3}
-    ambientMultiplier: 0.75
-    lightMultiplier: 0.85
     title: "\u7F8E\u5473\u53A8\u623F"
+    background: {fileID: 21300000, guid: c2a0a12c3754484fa433efa055919e91, type: 3}
     profile:
       environment: CountrysideStove
       sourceIndex: 1
@@ -199,7 +197,7 @@ MonoBehaviour:
       - Kitchen_bottle-oil
       - Kitchen_bread
       - Kitchen_bag-flat
-      ordinaryTypes: 
+      ordinaryTypes:
       layers:
       - count: 150
         types: 23
@@ -309,11 +307,11 @@ MonoBehaviour:
         - 1
         - 1
         - 1
+    ambientMultiplier: 0.75
+    lightMultiplier: 0.85
   - id: foodie-party
-    background: {fileID: 21300000, guid: 937d5943dcb84e60ac1ef6ff835ff777, type: 3}
-    ambientMultiplier: 1
-    lightMultiplier: 1
     title: "\u5403\u8D27\u6D3E\u5BF9"
+    background: {fileID: 21300000, guid: 937d5943dcb84e60ac1ef6ff835ff777, type: 3}
     profile:
       environment: CountrysideStove
       sourceIndex: 1
@@ -347,7 +345,7 @@ MonoBehaviour:
       - Party_BreadSlice
       - Party_ChocolateBar
       - Party_Bottle
-      ordinaryTypes: 
+      ordinaryTypes:
       layers:
       - count: 150
         types: 23
@@ -457,3 +455,770 @@ MonoBehaviour:
         - 1
         - 1
         - 1
+    ambientMultiplier: 1
+    lightMultiplier: 1
+  - id: pot-vegetable
+    title: "\u7530\u56ED\u83DC\u7BEE"
+    background: {fileID: 21300000, guid: 937d5943dcb84e60ac1ef6ff835ff777, type: 3}
+    profile:
+      environment: CountrysideStove
+      sourceIndex: 1
+      seconds: 600
+      limitHeight: 21.5
+      prefabs:
+      - {fileID: 7372425675518401843, guid: 54d7547849cda44428804edb50282371, type: 3}
+      - {fileID: 913604227343368, guid: ef8464b82558246dbaa3f9fa26e4c371, type: 3}
+      - {fileID: 2573674983829391102, guid: a6cd4a7c2c4c142d4981a4cbb3494416, type: 3}
+      - {fileID: 4426627722323620448, guid: 082aef36429224b61a71a479e7f7adb3, type: 3}
+      - {fileID: 1283470990838450746, guid: ee101b152679144678914786fad8339a, type: 3}
+      - {fileID: 1655530067151375624, guid: fa087e9cf38bf4136a0ceea3261565de, type: 3}
+      - {fileID: 5291132856714287185, guid: 5df73f48f3184445e93cfbd1e20e8a2d, type: 3}
+      - {fileID: 1850764772192271343, guid: 089e735bc0a7c486b99a23b9b942c84a, type: 3}
+      - {fileID: 8568756955340950271, guid: cfe6463e502894b57bd0e94016e0f762, type: 3}
+      - {fileID: 710298110310431313, guid: d9367ce15d809480da84593173ce6c73, type: 3}
+      - {fileID: 3215447638528207929, guid: 865e877b63f3749879733c73ca586709, type: 3}
+      - {fileID: 8069501178986413717, guid: 6edb327015617406aa4c310422014fc8, type: 3}
+      - {fileID: 3530331921988538964, guid: 930a68536b268412196ca81272187733, type: 3}
+      - {fileID: 4097076892428169880, guid: d114890cf4e724eaca6bbfeaa8914612, type: 3}
+      - {fileID: 8266388816045509676, guid: 03c51f00d1fe24fe686c01cc3decc37b, type: 3}
+      - {fileID: 1102898032242484015, guid: 164c04ba2a2ac4f4ab4b4c604f3bb540, type: 3}
+      - {fileID: 8069919697620459530, guid: 7893e6037eccb4520b72b67fc39eef6b, type: 3}
+      - {fileID: 2267388993045417816, guid: 9db69b6f56f2a47e1b93b356a88fc5da, type: 3}
+      - {fileID: 9025895711523817933, guid: 17e3c705e1fce40e099823eb68e9103d, type: 3}
+      - {fileID: 8866588230391120407, guid: 650126cfa73a54a3988ef11ba78090d0, type: 3}
+      - {fileID: 7322381486467550934, guid: 9f74bc79d3fc84b84a797c5f7bcb167e, type: 3}
+      - {fileID: 5948332238937536381, guid: 79a7fbd2959bd4950b4e3fab0f2e2084, type: 3}
+      - {fileID: 7592409026512409904, guid: 3d0cea3ba30744faf8d6e0c3416d1375, type: 3}
+      - {fileID: 3458230186231826168, guid: 01e4d97e7b0c141c5bd5df548b9b6b46, type: 3}
+      - {fileID: 4996958544174226975, guid: 7e81adaa5615d4c56bb097acd1e15428, type: 3}
+      - {fileID: 3546405280889989668, guid: c54465464a19942f19678f1b418bd6f2, type: 3}
+      tutorialNames:
+      - Pot_vegetable_Asparagus
+      - Pot_vegetable_Beet
+      - Pot_vegetable_BellPepper
+      - Pot_vegetable_Broccoli
+      - Pot_vegetable_Cabbage
+      ordinaryTypes:
+      layers:
+      - count: 150
+        types: 26
+        height: 14
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 60
+        types: 10
+        height: 18
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 8
+        height: 20
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 7
+        height: 22
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+    ambientMultiplier: 0.75
+    lightMultiplier: 0.85
+  - id: pot-meat
+    title: "\u8089\u8089\u76DB\u5BB4"
+    background: {fileID: 21300000, guid: 937d5943dcb84e60ac1ef6ff835ff777, type: 3}
+    profile:
+      environment: CountrysideStove
+      sourceIndex: 1
+      seconds: 600
+      limitHeight: 21.5
+      prefabs:
+      - {fileID: 5478662030174923382, guid: 477562b89f0614f0dab343e1c03b1efe, type: 3}
+      - {fileID: 8790461075548551367, guid: 3c6ab08a9e8034b9788de7efcedcae68, type: 3}
+      - {fileID: 1914739572553318635, guid: 8d5fee74adbd74c14b93eae3c6358ce1, type: 3}
+      - {fileID: 8286789027924866803, guid: fa84b3844d3bd4f0387778a2d9ea7057, type: 3}
+      - {fileID: 330555098836485564, guid: 08e70b009da0245629949c3d3aab024b, type: 3}
+      - {fileID: 6048622246740848212, guid: b97c51e90502747a6a08de425aefc5e4, type: 3}
+      - {fileID: 6999257651372469185, guid: 3cc25328e0215447cb04b9d9554abbc0, type: 3}
+      - {fileID: 3044412488441981813, guid: 8799d2fa196034e87b53568101eeb81d, type: 3}
+      - {fileID: 3149799305411958728, guid: f3833995c1fb6496fa024375294eb0f9, type: 3}
+      - {fileID: 7368430317872099857, guid: c49831df045d84e0f8cb644a5e9653da, type: 3}
+      - {fileID: 7946416527714720702, guid: d6081ed17b7364968bf4143560862cf9, type: 3}
+      - {fileID: 7573382052245723876, guid: 4a1a88052a63d4c76acdfc50051b807a, type: 3}
+      - {fileID: 8534428748757886828, guid: 4622a4ea17c504e20a9f2fcd09a5ffce, type: 3}
+      - {fileID: 3603682587599755254, guid: 5f552923758c44422b3435d267686e84, type: 3}
+      - {fileID: 4474495361127092452, guid: bdbf608c4290f4e7fba182d3e30e4e77, type: 3}
+      - {fileID: 3087933677482722718, guid: c90fb132a632a45adb668eef238fa0c5, type: 3}
+      - {fileID: 3326009878368788012, guid: 0fad9578bfaa9472293ebf32e7b6ab80, type: 3}
+      - {fileID: 8895379001336869371, guid: cf6e98bb5fbc54cfb8d4405a1a370e9b, type: 3}
+      - {fileID: 9007734333383418378, guid: 449929b708aa649108b52da8eaff0d67, type: 3}
+      - {fileID: 2305663462752962692, guid: e7553e68244194f47b66bd06ba525dd6, type: 3}
+      - {fileID: 6446951906240225648, guid: 7aa1ca2286a9b4a398fec1f10e924144, type: 3}
+      - {fileID: 4404721299601786997, guid: 1e1a5c49ad4184986bd33309cec895da, type: 3}
+      - {fileID: 4543261464000974742, guid: 0360d1aeadb3c47b2b396be155d807dd, type: 3}
+      - {fileID: 8752095421018837190, guid: 53ae42f5fb9cc416fb3334a0dcb475a6, type: 3}
+      - {fileID: 7736553451230770629, guid: 2f67d1125a3a948b89d2ab69415cde81, type: 3}
+      - {fileID: 4783106135404656937, guid: 40d62cc9ceb014696b28f60bde66942f, type: 3}
+      tutorialNames:
+      - Pot_meat_Bacon
+      - Pot_meat_BbqRibs
+      - Pot_meat_BurgerPatty
+      - Pot_meat_CheeseWheel
+      - Pot_meat_ChickenBreast
+      ordinaryTypes:
+      layers:
+      - count: 150
+        types: 26
+        height: 14
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 60
+        types: 10
+        height: 18
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 8
+        height: 20
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 7
+        height: 22
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+    ambientMultiplier: 0.75
+    lightMultiplier: 0.85
+  - id: pot-grocery
+    title: "\u5143\u6C14\u8D85\u5E02"
+    background: {fileID: 21300000, guid: 937d5943dcb84e60ac1ef6ff835ff777, type: 3}
+    profile:
+      environment: CountrysideStove
+      sourceIndex: 1
+      seconds: 600
+      limitHeight: 21.5
+      prefabs:
+      - {fileID: 8758107973542022269, guid: 157ac94118b4b4f3ba8b7c6167ca3978, type: 3}
+      - {fileID: 1104889006816987923, guid: c9ad0acf4622649efa1963769407a505, type: 3}
+      - {fileID: 958277012026872310, guid: a9b727c84229e41ba8b74b2b744d179b, type: 3}
+      - {fileID: 7387778785640860041, guid: 27538a857115f4daaa5e7969041890ce, type: 3}
+      - {fileID: 2340252479944245710, guid: d179b87e8f80b461fb198904c3f4ba84, type: 3}
+      - {fileID: 3910347327757650089, guid: 69900e7ea8f02423ba5eda03d27bc6d2, type: 3}
+      - {fileID: 3693619061556228815, guid: 2821fd8217a424ea69a5cdd36c7d25f6, type: 3}
+      - {fileID: 3567691426960594717, guid: a6633480462014985a3cb2538600d891, type: 3}
+      - {fileID: 8581241172030624032, guid: 52e850296a1c44ef48f0bb8551915422, type: 3}
+      - {fileID: 5715902998925994206, guid: 6909c25bc38f04873a90cadfbd6589a0, type: 3}
+      - {fileID: 358735435781035806, guid: 6d92cc6d14c344cc9b3d235ed25f2b67, type: 3}
+      - {fileID: 4168681898745874243, guid: 3059b752d21cb421e87940d6a7c84e1a, type: 3}
+      - {fileID: 4850457374590654334, guid: 4d5ab3b5ff2eb47b98d1b54e8cbea3a1, type: 3}
+      - {fileID: 3476467943903807426, guid: 16edba05253e7425b97234a50d67c778, type: 3}
+      - {fileID: 7217678649944002618, guid: aee523af5d23a45a19bb0e841e3c74dd, type: 3}
+      - {fileID: 797890981856954525, guid: 514f30ed17d144b349dc49de45f295ad, type: 3}
+      - {fileID: 6194473030484460479, guid: 784b3942916ec4f44a9df37ff61f9962, type: 3}
+      - {fileID: 3196050474279448913, guid: 70b371c4c7ffb4759b280191a7419170, type: 3}
+      - {fileID: 3779098006116141877, guid: 75cb20f673e4840acaf803fd72f07224, type: 3}
+      - {fileID: 4989026888798916977, guid: a1bfcdda03578437b84287380c4d4bc5, type: 3}
+      - {fileID: 5795956436318473975, guid: 6271d92fb98ec4e7181e9c1cea44d627, type: 3}
+      - {fileID: 8699253043893600158, guid: 26029ec292c4048b99b16ed29f23a11d, type: 3}
+      - {fileID: 8456071148844908651, guid: 0d0e30309037b4b7880702974c55efa4, type: 3}
+      - {fileID: 9081453839824855654, guid: a462eb2c19c5c493fade280b9d0067a4, type: 3}
+      - {fileID: 372415944789596022, guid: 0f1e01f4c95e64839b69817798b919ce, type: 3}
+      - {fileID: 5849765958042546103, guid: f45b4d0b9fe65481098d7c5843d0b23a, type: 3}
+      tutorialNames:
+      - Pot_grocery_Baguette
+      - Pot_grocery_BreadLoaf
+      - Pot_grocery_Butter
+      - Pot_grocery_CerealBox
+      - Pot_grocery_ChipsBag
+      ordinaryTypes:
+      layers:
+      - count: 150
+        types: 26
+        height: 14
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 60
+        types: 10
+        height: 18
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 8
+        height: 20
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 7
+        height: 22
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+    ambientMultiplier: 0.75
+    lightMultiplier: 0.85
+  - id: pot-fruit
+    title: "\u7F24\u7EB7\u679C\u56ED"
+    background: {fileID: 21300000, guid: 937d5943dcb84e60ac1ef6ff835ff777, type: 3}
+    profile:
+      environment: CountrysideStove
+      sourceIndex: 1
+      seconds: 600
+      limitHeight: 21.5
+      prefabs:
+      - {fileID: 6627033544577106394, guid: 0551666ecfbad446a9f8b7d13e4ac2eb, type: 3}
+      - {fileID: 5189198645180003785, guid: f74180481a9034334b257d14251b09cf, type: 3}
+      - {fileID: 3595147897658315275, guid: 57627d4047d734869a6450f3e1069487, type: 3}
+      - {fileID: 2003674438969475790, guid: e18a76322b6ec423d8b569356be5cc07, type: 3}
+      - {fileID: 1554481311351611200, guid: 8e2bde5467d3f4d8a9391dfdf3ace482, type: 3}
+      - {fileID: 6267943618057982239, guid: 5a3408cb998b543dcb2d0da7a97630d7, type: 3}
+      - {fileID: 2533752270096701987, guid: 2caf0c5478c2b4bc499aee76b5402320, type: 3}
+      - {fileID: 5202381568649621685, guid: bc0810c26429d4f4aabfb380a16ee7f8, type: 3}
+      - {fileID: 4208999911459242224, guid: 4941b0adbc5594f96a63c39de8f319ef, type: 3}
+      - {fileID: 6191364535443208975, guid: 0f6076b0ad6fd42f1ad4d39e30b5b8a5, type: 3}
+      - {fileID: 772069710939060286, guid: 1e8905ddbd8b8489dbb2325ef0a90b57, type: 3}
+      - {fileID: 8269683661227578249, guid: c3b2764090e2f41308332642b895f03f, type: 3}
+      - {fileID: 1218916418789782805, guid: d73d25952f82f4c97afb8993fe72d7ae, type: 3}
+      - {fileID: 7612830101066658726, guid: 417587d5a46e04f4b9f5cf279b59fb92, type: 3}
+      - {fileID: 3083556036790020898, guid: 9c171a1b635c04b4daa1538354ac879b, type: 3}
+      - {fileID: 5506121089818520457, guid: c61ec3a5b9b1e4e44aa360f52a6e5739, type: 3}
+      - {fileID: 2464133874027664843, guid: fd2de9912931547dda702193b6bb7c4f, type: 3}
+      - {fileID: 6362327038515362380, guid: ae0abe800bc8e483db15c64cf1e9ab4d, type: 3}
+      - {fileID: 3025794468188973563, guid: 5714326d3443b48248f13bc43dad9a0c, type: 3}
+      - {fileID: 2038827928077573113, guid: 14a90d6c0f1464e038d368a963d70d78, type: 3}
+      - {fileID: 8607020595755643287, guid: 320dd91fd5b724b58b32c06e6b0720a1, type: 3}
+      - {fileID: 8056530976872072462, guid: fa56cbd13ab564ef29ec1699cc73c12d, type: 3}
+      - {fileID: 3935259549225994564, guid: f501018d1ff904cbb9feedb39b10d4c2, type: 3}
+      - {fileID: 901903651421164545, guid: 993ea6f60e33147708d54ced1ad7c68d, type: 3}
+      - {fileID: 4692055565302886692, guid: 24754f97ee6874d748716d5c1ad2bdd2, type: 3}
+      - {fileID: 3377692147244945960, guid: 9a37270d1535f4e49b1c179ab9b2d63a, type: 3}
+      tutorialNames:
+      - Pot_fruit_Apple
+      - Pot_fruit_AvocadoHalf
+      - Pot_fruit_Bananas
+      - Pot_fruit_Blueberries
+      - Pot_fruit_Cashew
+      ordinaryTypes:
+      layers:
+      - count: 150
+        types: 26
+        height: 14
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 60
+        types: 10
+        height: 18
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 8
+        height: 20
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 7
+        height: 22
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+    ambientMultiplier: 0.75
+    lightMultiplier: 0.85
+  - id: pot-sweets
+    title: "\u751C\u871C\u5C0F\u5C4B"
+    background: {fileID: 21300000, guid: 937d5943dcb84e60ac1ef6ff835ff777, type: 3}
+    profile:
+      environment: CountrysideStove
+      sourceIndex: 1
+      seconds: 600
+      limitHeight: 21.5
+      prefabs:
+      - {fileID: 3115685126675234821, guid: 65ca27a7f256544dc86f72fd5d915b84, type: 3}
+      - {fileID: 130425463970517002, guid: 4f6477f2fc7cc46fb89ed0feb00a2c7f, type: 3}
+      - {fileID: 3587764971790186115, guid: 2f6f1f87d0c114de5b1dd94e10c732e8, type: 3}
+      - {fileID: 5078387575130721058, guid: 7b79b467b419442c6bfc1eeb7bdd205f, type: 3}
+      - {fileID: 2528105019649974923, guid: 89209554f638f4ec3b17a8bf767e6df0, type: 3}
+      - {fileID: 8059796651766636410, guid: 6b75a493673f64ca1bb4881931beff32, type: 3}
+      - {fileID: 2840510260019066403, guid: daa0a8cb34bba41d89ec0c42eb4690c4, type: 3}
+      - {fileID: 3018313601665461701, guid: bfbe630ab5bd24fa9bca08441cb247c3, type: 3}
+      - {fileID: 1734635910264255975, guid: 2d8d3f5c8c025458588064e1b9d56abf, type: 3}
+      - {fileID: 1800544208353343265, guid: e8110124251cb41ef8b7e5beb07d5bcc, type: 3}
+      - {fileID: 1976023656506862442, guid: b70c14406600d452ea952dd6c15c393e, type: 3}
+      - {fileID: 8004349430869225150, guid: 46329a7440fc04993a9708420c494053, type: 3}
+      - {fileID: 2861958370705128718, guid: eccc7f497c4c7485989c7cc12b75f44e, type: 3}
+      - {fileID: 1331703853816214084, guid: 4fd2b399083564289a79e384ea83ab96, type: 3}
+      - {fileID: 8834785195601607774, guid: 5c20389912ebe486ba409a183d06f93d, type: 3}
+      - {fileID: 299378752746817286, guid: 3df28745345ab4bd2b7406f07c1208a6, type: 3}
+      - {fileID: 1820823010465601286, guid: 1a4fd563c5348491d956dcf1f5947e5e, type: 3}
+      - {fileID: 5917921429055497451, guid: b1ac072c32ec1471f921ba2d62437e5f, type: 3}
+      - {fileID: 9185157657141332843, guid: e8cd315685e824966857e68794095f02, type: 3}
+      - {fileID: 7216905147476443555, guid: 12676b0b97b30417494ebd78132d340a, type: 3}
+      - {fileID: 8795047769984087390, guid: 794a54d93bc6b4854a8255a0521ba933, type: 3}
+      - {fileID: 6005189688214105226, guid: babc71207b902441a89b1bf738173c5a, type: 3}
+      - {fileID: 164506726961095701, guid: c5be9e8ac08504c8396fc2d61e4dfd20, type: 3}
+      - {fileID: 4190933268372248357, guid: ac2f99cab43ac4e6888a108369f29223, type: 3}
+      - {fileID: 1181584318624943562, guid: 5f51b3e39ac9447849ae726855949e38, type: 3}
+      - {fileID: 5540469638947418836, guid: 4fec237cc1ed74a589033ddc80d0ef71, type: 3}
+      tutorialNames:
+      - Pot_sweets_BallLollipop
+      - Pot_sweets_Brigadeiro
+      - Pot_sweets_CakeSlice
+      - Pot_sweets_CandyCane
+      - Pot_sweets_CandyJar
+      ordinaryTypes:
+      layers:
+      - count: 150
+        types: 26
+        height: 14
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 60
+        types: 10
+        height: 18
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 8
+        height: 20
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - count: 45
+        types: 7
+        height: 22
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+    ambientMultiplier: 0.75
+    lightMultiplier: 0.85

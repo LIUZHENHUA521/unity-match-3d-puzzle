@@ -1,0 +1,122 @@
+{
+    "requestId": "54d678086e9340b0b9c0f0a150d27026",
+    "inputPath": "Assets/Match3D/IncomingModels/PotFoodPacks/Prefabs/Pot_meat_Prosciutto.prefab",
+    "logicalId": "Pot_meat_Prosciutto",
+    "displayName": "生火腿",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/Pot_meat_Prosciutto/Pot_meat_Prosciutto.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/Pot_meat_Prosciutto/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.8009092807769775,
+    "visualSize": {
+        "x": 0.28473836183547976,
+        "y": 0.26249998807907107,
+        "z": 0.5368897914886475
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.13124999403953553,
+        "z": -1.4901161193847657e-8
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.4901161193847657e-8
+    },
+    "longestSide": 0.5368897914886475,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 160,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 743403,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "meats_atlas1",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/meats_atlas1.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 160,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 756377,
+        "textureMemoryBytes": 1398800,
+        "textures": [
+            {
+                "name": "meats_atlas1",
+                "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/meats_atlas1.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 1024,
+                "height": 1024,
+                "memoryBytes": 1398800,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 5,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "160 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TEXTURE_SIZE",
+            "message": "meats_atlas1 当前 1024×1024，目标上限 512",
+            "path": "Assets/Match3D/IncomingModels/PotFoodPacks/Textures/meats_atlas1.png"
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：160 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 1.3 MB → 1.3 MB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}
