@@ -161,6 +161,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
                             else if(!string.IsNullOrEmpty(receipt.rewardError))flow.Notice(RewardErrorMessage(receipt.rewardError));
                         }
                     }
+                    if(item.action=="finish"){var completed=JsonUtility.FromJson<Record>(item.json);if(completed.stage==2)PotReplayLocalState.SettlementSynced(item.owner,completed.recordId);}
                     queue.items.Remove(item);Save();delay=1;continue;}
                 if(req.responseCode==401){if(account.Ready&&account.State.inviteCode==item.owner)account.RefreshRecordLogin();}
                 else if(req.responseCode==400||req.responseCode==409){

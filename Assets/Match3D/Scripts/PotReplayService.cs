@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 public sealed class PotReplayService : MonoBehaviour {
     [Serializable] public class Honor {public PotCertificateData certificate;public string replayId;public long earnedAt;}
     [Serializable] public class Summary {public string id,recordId,status,date,tier,levelVersion,resourceVersion,nickName,avatarUrl;public int stage;public float duration;public long createdAt;}
-    [Serializable] public class Reply {public bool ok,hasMore;public string error,id,content,date,levelVersion;public int total;public bool ready;public UploadTicket upload;public DownloadTicket download;public Summary[] list;public Honor[] honors;public PotReplayData detail;}
+    [Serializable] public class Reply {public bool ok,hasMore;public string error,code,id,content,date,levelVersion;public int total;public bool ready;public UploadTicket upload;public DownloadTicket download;public Summary[] list;public Honor[] honors;public PotReplayData detail;}
     [Serializable] class RequestBody {public string state,reason,result,nickName,avatarUrl,phase,clientVersion,replayVersion;public long httpStatus;public int attempts;public long occurredAt;public string kind,date,tier,levelVersion,resourceVersion=PotReplayData.Resources,id,recordId,content,uploadFormat="gzip-v1";public int skip,index,count,offset;}
     [Serializable] public class UploadTicket {public string url,authorization,token,cosFileId,cloudPath,format;}
     [Serializable] public class DownloadTicket {public string url,format,sha256;}
@@ -118,10 +118,10 @@ public sealed class PotReplayService : MonoBehaviour {
         }
     }
     IEnumerator ReportDiagnostic(string owner){
-        var entry=PotReplayLocalState.NextDiagnostic(owner);if(entry==null)yield break;entry.diagnosticAttempt=PotReplayLocalState.Now;PotReplayLocalState.Put(owner,entry);
+        var entry=PotReplayLocalState.NextDiagnostic(owner);if(entry==null)yield break;PotReplayLocalState.BeginDiagnostic(owner,entry);
         Reply reply=null;long code=0;long revision=entry.updatedAt;
         yield return Send("diagnostic",new RequestBody{recordId=entry.recordId,state=entry.state,reason=entry.reason,result=entry.result,attempts=entry.attempts,occurredAt=entry.updatedAt,phase=entry.phase??"",httpStatus=entry.httpStatus,clientVersion=entry.clientVersion??PotReplayBuild.Version,replayVersion=entry.replayVersion??PotReplayData.Version},r=>reply=r,c=>code=c,owner);
-        if(reply?.ok==true||code==400){var current=PotReplayLocalState.Get(owner,entry.recordId);if(current!=null&&current.updatedAt==revision){current.reported=true;PotReplayLocalState.Put(owner,current);}}
+        PotReplayLocalState.CompleteDiagnostic(owner,entry.recordId,revision,reply?.ok==true,code,reply?.code);
     }
     static bool PermanentPackFailure(Exception error){
         string message=error.Message;
@@ -247,6 +247,7 @@ public sealed class PotReplayService : MonoBehaviour {
         using(var request=new UnityWebRequest(endpoint+"/pot-replays/"+action,"POST")){
             request.uploadHandler=new UploadHandlerRaw(Encoding.UTF8.GetBytes(JsonUtility.ToJson(body)));request.downloadHandler=new DownloadHandlerBuffer();request.timeout=45;
             request.SetRequestHeader("Content-Type","application/json");request.SetRequestHeader("Authorization","Bearer "+token);
+            if(action=="diagnostic")request.SetRequestHeader("X-Pot-Business-Result","1");
             yield return request.SendWebRequest();status?.Invoke(request.responseCode);
             if(!account.Ready||account.State.inviteCode!=owner){done(new Reply{error="账号已切换"});yield break;}
             Reply reply=null;try{reply=JsonUtility.FromJson<Reply>(request.downloadHandler.text);}catch{}

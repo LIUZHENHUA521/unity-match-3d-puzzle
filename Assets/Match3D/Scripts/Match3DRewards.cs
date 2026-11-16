@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 public sealed class Match3DRewards : MonoBehaviour {
     [Serializable] public class Voucher {public string id,type,runId,recordId,rewardTier,status;public int money;public long createTime,expiresAt;}
-    [Serializable] public class Reply {public bool ok,testToolsEnabled;public string error,runId,rewardTier,ruleVersion;public Match3DDailyLevel level;public Voucher[] vouchers;public int nextCursor=-1;}
+    [Serializable] public class Reply {public bool ok,testToolsEnabled;public string error,code,runId,rewardTier,ruleVersion;public Match3DDailyLevel level;public Voucher[] vouchers;public int nextCursor=-1;}
     [Serializable] class StartBody {public string requestId,tier,themeId;public int levelProtocol=3;public string openingVersion=Match3DDailySnapshot.ResourceVersion;}
     public static Match3DRewards Instance {get;private set;}
     string endpoint;bool starting;
@@ -63,6 +63,7 @@ public sealed class Match3DRewards : MonoBehaviour {
         using(var req=new UnityWebRequest(endpoint+(daily?"/levels/":"/rewards/")+action,"POST")){
             req.uploadHandler=new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(json));req.downloadHandler=new DownloadHandlerBuffer();req.timeout=10;
             req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("Authorization","Bearer "+account.RecordToken);
+            if(!daily&&action=="runs")req.SetRequestHeader("X-Pot-Business-Result","1");
             yield return req.SendWebRequest();Reply result=null;
             try{result=JsonUtility.FromJson<Reply>(req.downloadHandler.text);}catch{}
             if(req.responseCode==401)account.RefreshRecordLogin();

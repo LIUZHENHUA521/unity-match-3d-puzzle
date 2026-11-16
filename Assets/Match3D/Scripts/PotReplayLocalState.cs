@@ -7,6 +7,7 @@ using UnityEngine;
 public static class PotReplayLocalState {
     [Serializable] public sealed class Entry {
         public string recordId,date,tier,result,state,reason,phase,clientVersion,replayVersion;public long httpStatus,diagnosticAttempt;
+        public int diagnosticAttempts;public long diagnosticNextAttempt;public bool diagnosticStopped;
         public long updatedAt,nextAttempt;public int attempts,repairVersion;public bool reported;
     }
     [Serializable] sealed class Ledger {public List<Entry> entries=new List<Entry>();}
@@ -35,7 +36,24 @@ public static class PotReplayLocalState {
         e.updatedAt=Math.Max(Now,e.updatedAt+1);e.reported=false;if(state=="synced"){e.attempts=0;e.nextAttempt=0;}Put(owner,e);
     }
     public static void Phase(string owner,string id,string phase,long httpStatus=0){var e=Get(owner,id);if(e==null)return;e.phase=phase;e.httpStatus=Math.Max(0,Math.Min(599,httpStatus));e.clientVersion=PotReplayBuild.Version;e.replayVersion=PotReplayData.Version;e.updatedAt=Math.Max(Now,e.updatedAt+1);e.reported=false;Put(owner,e);}
-    public static Entry NextDiagnostic(string owner)=>All(owner).Where(e=>!e.reported&&e.state!="recording").OrderBy(e=>e.diagnosticAttempt).ThenBy(e=>e.updatedAt).FirstOrDefault();
+    public static Entry NextDiagnostic(string owner)=>All(owner).Where(e=>!e.reported&&!e.diagnosticStopped&&e.diagnosticAttempts<8&&e.diagnosticNextAttempt<=Now&&e.state!="recording").OrderBy(e=>e.diagnosticAttempt).ThenBy(e=>e.updatedAt).FirstOrDefault();
+    // Persist before sending: exceptions, app restarts and changing upload phases cannot bypass backoff.
+    public static void BeginDiagnostic(string owner,Entry entry){
+        entry.diagnosticAttempt=Now;entry.diagnosticAttempts=Math.Min(8,entry.diagnosticAttempts+1);
+        entry.diagnosticNextAttempt=Now+(long)Math.Min(3600,60*Math.Pow(2,entry.diagnosticAttempts-1))*1000;
+        Put(owner,entry);
+    }
+    public static void CompleteDiagnostic(string owner,string id,long revision,bool accepted,long status,string code){
+        var e=Get(owner,id);if(e==null||e.updatedAt!=revision)return;
+        if(accepted){e.reported=true;e.diagnosticAttempts=0;e.diagnosticNextAttempt=0;}
+        else if(status==400||status==403||status==404||code=="record_not_daily")e.diagnosticStopped=true;
+        Put(owner,e);
+    }
+    // A confirmed settlement is new evidence: wake diagnostics that were waiting for this record.
+    public static void SettlementSynced(string owner,string id){
+        var e=Get(owner,id);if(e==null)return;e.diagnosticAttempts=0;e.diagnosticNextAttempt=0;e.diagnosticStopped=false;e.reported=false;
+        e.updatedAt=Math.Max(Now,e.updatedAt+1);Put(owner,e);
+    }
     public static void Retry(string owner,string id,string reason){var e=Get(owner,id);if(e==null)return;e.attempts=Math.Min(e.attempts+1,20);e.nextAttempt=Now+(long)Math.Min(300,5*Math.Pow(2,e.attempts-1))*1000;Put(owner,e);Set(owner,id,"queued",reason);}
     public static void Outcome(string owner,Match3DGameRecords.Record record){var e=Get(owner,record.recordId);if(e!=null){e.result=record.status;e.reported=false;Put(owner,e);}}
     public static string Caption(string owner,string date,string tier){
