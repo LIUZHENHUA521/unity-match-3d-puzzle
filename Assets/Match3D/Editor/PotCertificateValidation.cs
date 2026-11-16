@@ -67,7 +67,15 @@ public static class PotCertificateValidation {
                     Open("bachelor");view.Skip();flow.ReceivePotSettlement("alice","run","record",null,null,"settlement_rejected");view.claim.onClick.Invoke();Check(view.status.text.Contains("未通过验证")&&view.number.text=="未通过验证","permanent rejection is not pending");
                     Open("elite");Set(account,"<State>k__BackingField",new Match3DInvitations.Reply{inviteCode="bob"});
                     typeof(Match3DFlow).GetMethod("CheckPotCertificateOwner",Flags).Invoke(flow,null);
-                    Check(!view.gameObject.activeSelf,"account switch clears certificate");Finish(null);return;
+                    Check(!view.gameObject.activeSelf,"account switch clears certificate");
+                    var records=new GameObject("Pot records fixture").AddComponent<Match3DGameRecords>();records.enabled=false;
+                    typeof(Match3DGameRecords).GetField("<Instance>k__BackingField",BindingFlags.Static|BindingFlags.NonPublic).SetValue(null,records);
+                    Set(records,"<LastFinished>k__BackingField",new Match3DGameRecords.Record{stage=2,status="win",recordId="preview",endedAt=1794830000000});
+                    Set(flow,"<LocalPreview>k__BackingField",true);Set(flow,"dailyLevel",new Match3DDailyLevel{tier="elite"});
+                    Check((bool)typeof(Match3DFlow).GetMethod("ShowPotCertificate",Flags).Invoke(flow,null),"editor daily victory uses real certificate entry");
+                    view=(PotCertificateView)Get(flow,"potCertificate");Check(view.number.text=="预览"&&!view.claim.interactable,"editor preview cannot claim real reward");
+                    Check(!flow.ReceivePotSettlement("bob",null,"preview",Data("elite"),"invalid",null),"preview ignores reward settlement");
+                    Finish(null);return;
             }
             due=EditorApplication.timeSinceStartup+2;
         }catch(Exception e){Finish(e);}
