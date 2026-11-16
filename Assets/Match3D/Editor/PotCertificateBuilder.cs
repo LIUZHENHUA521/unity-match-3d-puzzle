@@ -41,6 +41,12 @@ public static class PotCertificateBuilder {
         var gold=new Color32(229,138,31,255);var brown=new Color32(80,60,40,255);
         var main=Rect("Main info",v.card,0,-4.024f,500,160);v.mainGroup=main.gameObject.AddComponent<CanvasGroup>();
         v.title=CertificateLabel("Title",main,0,54.942f,540,48,37.3f,blue,true);
+        // Requested visual correction: the local Cocos prefab has no enabled dynamic outline.
+        // Keep a 1.25 layout-pixel gold edge even with the fractional font-size scale.
+        var titleOutline=v.title.gameObject.AddComponent<Outline>();
+        titleOutline.effectColor=new Color32(229,178,76,255);
+        float outlineWidth=1.25f/v.title.rectTransform.localScale.x;
+        titleOutline.effectDistance=new Vector2(outlineWidth,-outlineWidth);titleOutline.useGraphicAlpha=true;
         v.mode=CertificateLabel("Mode",main,0,16.893f,400,34,19.9f,purple);
         CertificateLabel("Duration caption",main,-46.612f,-14.83f,42,34,19.1f,blue,false,"用时");
         v.duration=CertificateLabel("Duration",main,23.107f,-14.83f,92,34,21,gold,true);
