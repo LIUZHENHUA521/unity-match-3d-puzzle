@@ -178,6 +178,7 @@ public partial class Match3DFlow : MonoBehaviour {
     }
     void OnDestroy(){CancelSourceCreation();if(stagePreloader)stagePreloader.Cancel();BoardPhysicsSettings.End();if(Instance==this)Instance=null;Time.timeScale=1;}
     void Update(){
+        CheckPotCertificateOwner();
         if(ScreenName=="game") {
             TickProgressDisplay();
             if(BoardTools.Enabled){
@@ -535,8 +536,10 @@ public partial class Match3DFlow : MonoBehaviour {
             float progress=DisplayProgress(win);
             string key=progressDisplay.BestKey(CurrentTheme.id,Stage);
             float best=Mathf.Max(progress,PlayerPrefs.GetFloat(key,0));PlayerPrefs.SetFloat(key,best);PlayerPrefs.Save();
+            if(!(win&&Stage==2&&ShowPotCertificate())){
             var result=OpenModal(win?"ResultSuccess":"ResultFailure").GetComponent<Match3DResultView>();
             result.Configure(PlayerPrefs.GetInt("goose.result.attempts",1),progress,best,win?(Action)Home:RestartStage,Home,ShareResult);
+            }
         }
         var clip=win?library.winSound:library.loseSound;if(SettingsEffects&&clip)effects.PlayOneShot(clip);
         if(!win)PotVibrate();
@@ -656,7 +659,7 @@ public partial class Match3DFlow : MonoBehaviour {
     }
     Match3DUIView OpenModal(string prefab){
         if(modal){modal.gameObject.SetActive(false);Destroy(modal.gameObject);}
-        var view=Match3DUIView.Load(prefab,page);modal=(RectTransform)view.transform;Match3DModalMotion.Play(view.gameObject);return view;
+        var view=Match3DUIView.Load(prefab,page);modal=(RectTransform)view.transform;if(prefab!="PotCertificate")Match3DModalMotion.Play(view.gameObject);return view;
     }
     void CloseModal(bool resume=false){
         if(modal){modal.gameObject.SetActive(false);Destroy(modal.gameObject);modal=null;}

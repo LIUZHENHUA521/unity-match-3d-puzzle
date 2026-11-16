@@ -9,28 +9,33 @@ public sealed class Match3DRewardPresenter : MonoBehaviour {
         public string label;
         public long receivedAt;
         public Action completed;
+        public Func<bool> valid;
     }
     readonly Queue<Request> pending = new Queue<Request>();
     Match3DRewardPopup current;
+    Func<bool> currentValid;
     public bool IsShowing => current && current.gameObject.activeSelf;
-    public void Enqueue(IReadOnlyList<Match3DRewardItem> rewards, string label, long receivedAt, Action completed) {
+    public void Enqueue(IReadOnlyList<Match3DRewardItem> rewards, string label, long receivedAt, Action completed, Func<bool> valid = null) {
         if (rewards == null || rewards.Count == 0) return;
         var snapshot = new Match3DRewardItem[rewards.Count];
         for (int i = 0; i < rewards.Count; i++) {
             if (rewards[i] == null) throw new ArgumentException("Reward entries cannot be null", nameof(rewards));
             snapshot[i] = rewards[i];
         }
-        pending.Enqueue(new Request { items = snapshot, label = label, receivedAt = receivedAt, completed = completed });
+        pending.Enqueue(new Request { items = snapshot, label = label, receivedAt = receivedAt, completed = completed, valid = valid });
     }
     void Update() {
+        if (IsShowing && currentValid != null && !currentValid()) {current.gameObject.SetActive(false);Destroy(current.gameObject);current=null;currentValid=null;}
         if (IsShowing || pending.Count == 0) return;
         var flow = Match3DFlow.Instance;
         // A late server response must not cover a running match or a revival prompt.
         if (flow && !flow.CanShowReceivedRewards) return;
         var request = pending.Dequeue();
+        if(request.valid != null && !request.valid())return;
+        currentValid=request.valid;
         current = Match3DUIView.Load("RewardReceived", transform).GetComponent<Match3DRewardPopup>();
         current.transform.SetAsLastSibling();
-        current.Configure(request.items, () => { current = null; request.completed?.Invoke(); }, request.label, request.receivedAt);
+        current.Configure(request.items, () => { current = null; currentValid=null; if(request.valid==null||request.valid())request.completed?.Invoke(); }, request.label, request.receivedAt);
         Match3DModalMotion.Play(current.gameObject);
         if (flow) flow.PotPlayReceivedRewardSound();
     }

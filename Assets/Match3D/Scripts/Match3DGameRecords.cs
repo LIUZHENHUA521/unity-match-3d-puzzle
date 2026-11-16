@@ -26,7 +26,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         public long rejectedAt,rejectionHttpStatus;public string rejectionReason;
     }
     [Serializable] public class Queue { public List<Pending> items=new List<Pending>(); }
-    [Serializable] class Receipt {public bool ok;public string recordId,voucherId,rewardError,error;}
+    [Serializable] class Receipt {public bool ok;public string recordId,voucherId,rewardError,error;public PotCertificateData certificate;}
     public static Match3DGameRecords Instance {get;private set;}
     const string QueueKey="goose.records.queue.v1";
     Match3DDailyLevel dailyLevel;
@@ -35,6 +35,8 @@ public sealed class Match3DGameRecords : MonoBehaviour {
     readonly List<Pending> unbound=new List<Pending>();
     readonly HashSet<string> rejectionNotifiedOwners=new HashSet<string>();
     public string SyncError {get;private set;}
+    public Record LastFinished {get;private set;}
+    public string LastFinishedOwner {get;private set;}
     public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');
         try{queue=JsonUtility.FromJson<Queue>(PlayerPrefs.GetString(QueueKey,""));}catch{}
         if(queue==null||queue.items==null)queue=new Queue();
@@ -59,9 +61,9 @@ public sealed class Match3DGameRecords : MonoBehaviour {
 #endif
         if(Instance==this)Instance=null;
     }
-    public void NewRun(){dailyLevel=null;runId=Guid.NewGuid().ToString("N");rewardTier=null;ruleVersion=null;}
+    public void NewRun(){LastFinished=null;LastFinishedOwner=null;dailyLevel=null;runId=Guid.NewGuid().ToString("N");rewardTier=null;ruleVersion=null;}
     public void NewDailyRun(Match3DDailyLevel level){NewRun();dailyLevel=level;}
-    public void QualifiedRun(string id,string tier,string version,Match3DDailyLevel level=null){runId=id;rewardTier=tier;ruleVersion=version;dailyLevel=level;}
+    public void QualifiedRun(string id,string tier,string version,Match3DDailyLevel level=null){LastFinished=null;LastFinishedOwner=null;runId=id;rewardTier=tier;ruleVersion=version;dailyLevel=level;}
     public void InventoryReceipt(string id){if(active!=null&&started&&!string.IsNullOrEmpty(id))toolReceipts.Add(id);}
     public Match3DAdTelemetry.Context AdContext(string account){
         if(active==null||!started||string.IsNullOrEmpty(account)||owner!=account)return null;
@@ -69,6 +71,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
     }
     public void Prepare(string theme,int stage,string date,int count,int seconds){
         if(PotReplayPlayer.Active)return;
+        LastFinished=null;LastFinishedOwner=null;
         if(string.IsNullOrEmpty(runId))NewRun();
         toolReceipts.Clear();
         active=new Record{rewardTier=rewardTier,ruleVersion=ruleVersion,recordId=Guid.NewGuid().ToString("N"),runId=runId,themeId=theme,stage=stage,levelDate=date,initialCount=count,timeLimitSeconds=seconds,clientVersion=Application.version,platform=Application.platform.ToString()};
@@ -116,7 +119,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         for(int i=0;i<BoardTools.ToolCount;i++){int used=BoardTools.UsedCount(i);active.toolUsage[i].free=BoardTools.FreeUses(i);active.toolUsage[i].share=BoardTools.ShareUses(i);active.toolUsage[i].ad=BoardTools.AdUses(i);active.toolUsage[i].rewarded=active.toolUsage[i].ad+active.toolUsage[i].share;active.toolUsage[i].test=BoardTools.TestUses(i);active.toolUsage[i].inventory=Math.Max(0,used-active.toolUsage[i].free-active.toolUsage[i].rewarded-active.toolUsage[i].test);}
         active.toolReceipts=toolReceipts.ToArray();
         if(!Match3DFlow.Instance||!Match3DFlow.Instance.LocalPreview)PotHomeReplayState.MarkWin(owner,active);
-        Add("finish",active,owner);active=null;started=false;
+        LastFinished=active;LastFinishedOwner=owner;Add("finish",active,owner);active=null;started=false;
     }
     void Add(string action,Record record,string account){
         if(Match3DFlow.Instance&&Match3DFlow.Instance.LocalPreview)return;
@@ -125,15 +128,16 @@ public sealed class Match3DGameRecords : MonoBehaviour {
         var item=new Pending{reward=!string.IsNullOrEmpty(record.rewardTier),owner=account,action=action,json=JsonUtility.ToJson(record)};
         if(string.IsNullOrEmpty(account))unbound.Add(item);else{queue.items.Add(item);Save();}
     }
-    static string RewardErrorMessage(string error){
+    public static string RewardErrorMessage(string error){
         switch(error){
             case "daily_quota_exhausted":return "通关已记录，今日红包名额已领完，本局未获得红包";
             case "hourly_quota_exhausted":return "通关已记录，当前时段红包名额已领完，本局未获得红包";
             case "daily_quota_claimed":return "通关已记录，今日已领取过该档位红包";
             case "rewards_closed":return "通关已记录，红包挑战已关闭，本局未获得红包";
-            case "qualification_expired":return "通关已记录，本局红包资格已过期";
+            case "qualification_expired":return "本局资格已过期，未通过验证";
+            case "settlement_rejected":return "本局未通过验证，请返回首页或联系客服";
             case "test_tools_not_allowed":return "通关已记录，本局未开通测试道具权限，请重新开始挑战";
-            default:return "通关已记录，未获红包资格："+error;
+            default:return "本局未通过验证："+error;
         }
     }
     void Save(){PlayerPrefs.SetString(QueueKey,JsonUtility.ToJson(queue));PlayerPrefs.Save();}
@@ -148,7 +152,15 @@ public sealed class Match3DGameRecords : MonoBehaviour {
                 req.SetRequestHeader("Content-Type","application/json");req.SetRequestHeader("Authorization","Bearer "+account.RecordToken);
                 yield return req.SendWebRequest();
                 Receipt receipt=null;try{receipt=JsonUtility.FromJson<Receipt>(req.downloadHandler.text);}catch{}
-                if(req.result==UnityWebRequest.Result.Success&&receipt!=null&&receipt.ok){if(item.reward&&item.action=="finish"&&Match3DFlow.Instance&&account.Ready&&account.State.inviteCode==item.owner){if(!string.IsNullOrEmpty(receipt.voucherId)&&Match3DRewards.Instance)Match3DRewards.Instance.NotifyReceivedVoucher(receipt.voucherId,item.owner);else if(!string.IsNullOrEmpty(receipt.rewardError))Match3DFlow.Instance.Notice(RewardErrorMessage(receipt.rewardError));}
+                if(req.result==UnityWebRequest.Result.Success&&receipt!=null&&receipt.ok){if(item.reward&&item.action=="finish"&&Match3DFlow.Instance&&account.Ready&&account.State.inviteCode==item.owner){
+                        var record=JsonUtility.FromJson<Record>(item.json);var flow=Match3DFlow.Instance;
+                        bool handled=flow.ReceivePotSettlement(item.owner,record.runId,record.recordId,receipt.certificate,receipt.voucherId,receipt.rewardError);
+                        // Historical settlements remain in My Rewards; never cover a different active result.
+                        if(!handled&&flow.ScreenName!="game"){
+                            if(!string.IsNullOrEmpty(receipt.voucherId)&&Match3DRewards.Instance)Match3DRewards.Instance.NotifyReceivedVoucher(receipt.voucherId,item.owner);
+                            else if(!string.IsNullOrEmpty(receipt.rewardError))flow.Notice(RewardErrorMessage(receipt.rewardError));
+                        }
+                    }
                     queue.items.Remove(item);Save();delay=1;continue;}
                 if(req.responseCode==401){if(account.Ready&&account.State.inviteCode==item.owner)account.RefreshRecordLogin();}
                 else if(req.responseCode==400||req.responseCode==409){
@@ -156,6 +168,7 @@ public sealed class Match3DGameRecords : MonoBehaviour {
                     string reason=receipt!=null?receipt.error:null;
                     item.rejectionReason=string.IsNullOrEmpty(reason)?"HTTP "+req.responseCode:reason.Substring(0,Math.Min(512,reason.Length));
                     Save();
+                    if(item.reward&&item.action=="finish"&&Match3DFlow.Instance){var record=JsonUtility.FromJson<Record>(item.json);Match3DFlow.Instance.ReceivePotSettlement(item.owner,record.runId,record.recordId,null,null,"settlement_rejected");}
                 }
                 delay=Mathf.Min(60,delay*2);
             }

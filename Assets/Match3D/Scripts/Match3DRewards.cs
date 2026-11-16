@@ -11,9 +11,9 @@ public sealed class Match3DRewards : MonoBehaviour {
     readonly System.Collections.Generic.HashSet<string> presented=new System.Collections.Generic.HashSet<string>();
     public void NotifyReceivedVoucher(string id,string owner){
         if(string.IsNullOrEmpty(id)||string.IsNullOrEmpty(owner)||!presented.Add(owner+":"+id))return;
-        StartCoroutine(PresentVoucher(id,owner));
+        StartCoroutine(PresentVoucher(id,owner,Match3DFlow.Instance?Match3DFlow.Instance.ScreenVersion:-1));
     }
-    IEnumerator PresentVoucher(string id,string owner){
+    IEnumerator PresentVoucher(string id,string owner,int screen){
         int cursor=0;Voucher found=null;
         while(cursor>=0){
             var account=Match3DInvitations.Instance;
@@ -25,11 +25,11 @@ public sealed class Match3DRewards : MonoBehaviour {
             cursor=reply.nextCursor;
         }
         var current=Match3DInvitations.Instance;
-        if(!current||!current.Ready||current.State.inviteCode!=owner||!Match3DFlow.Instance)yield break;
+        if(!current||!current.Ready||current.State.inviteCode!=owner||!Match3DFlow.Instance||Match3DFlow.Instance.ScreenVersion!=screen)yield break;
         // The settlement already confirmed this voucher. Never guess an amount if detail lookup fails.
         decimal? money=found!=null&&found.money>0?(decimal?)found.money:null;
         Match3DFlow.Instance.ShowReceivedRewards(new[]{Match3DRewardItem.RedPacket(money)},
-            buttonText:"联系客服兑换",onConfirm:Match3DCustomerService.Open,receivedAt:found!=null?found.createTime:0);
+            buttonText:"联系客服兑换",onConfirm:Match3DCustomerService.Open,receivedAt:found!=null?found.createTime:0,valid:()=>{var a=Match3DInvitations.Instance;return a&&a.State!=null&&a.State.inviteCode==owner;});
     }
     public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');}
     void OnDestroy(){if(Instance==this)Instance=null;}
