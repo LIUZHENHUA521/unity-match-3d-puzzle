@@ -46,8 +46,6 @@ public static class PotGloryBuilder {
             view.more=Link(content,"Load more","加载更多",180,0,270);var mr=(RectTransform)view.more.transform;mr.anchorMin=mr.anchorMax=new Vector2(.5f,1);mr.pivot=new Vector2(.5f,1);view.more.gameObject.SetActive(false);
             view.status=Text(design,"Status","正在加载荣耀…",90,790,540,180,28,"8B6049");view.status.alignment=TextAnchor.MiddleCenter;
             view.retry=Link(design,"Retry","点击重试",240,990,240);view.retry.gameObject.SetActive(false);
-            view.recordings=Link(design,"All recordings","全部录像",120,1480,220);view.masters=Link(design,"Masters","高手回放",380,1480,220);
-            view.recordings.GetComponentInChildren<Text>().color=view.masters.GetComponentInChildren<Text>().color=new Color32(255,240,206,255);
             PrefabUtility.SaveAsPrefabAsset(root.gameObject,Root+"UI/PotGlory.prefab");
         }finally{UnityEngine.Object.DestroyImmediate(root.gameObject);}
         string path=Root+"UI/Home.prefab";var homeRoot=PrefabUtility.LoadPrefabContents(path);

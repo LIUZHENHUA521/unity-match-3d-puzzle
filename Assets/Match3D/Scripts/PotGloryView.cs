@@ -9,7 +9,7 @@ public sealed class PotGloryView : MonoBehaviour {
     public RectTransform content;
     public ScrollRect scroll;
     public PotGloryRow gold,blue;
-    public Button more,retry,close,recordings,masters;
+    public Button more,retry,close;
     readonly List<PotGloryRow> rows=new List<PotGloryRow>();
     Match3DFlow flow;PotReplayService service;Action dismiss;
     string owner;int cursor;bool loading,hasMore,opening;string newest;
@@ -18,7 +18,6 @@ public sealed class PotGloryView : MonoBehaviour {
     public void Connect(Match3DFlow f,Action onClose){
         flow=f;dismiss=onClose;owner=Account();service=PotReplayService.Instance;
         close.onClick.AddListener(()=>{MarkSeen();dismiss();});
-        recordings.onClick.AddListener(()=>flow.ShowPotGloryRecordings(false));masters.onClick.AddListener(()=>flow.ShowPotGloryRecordings(true));
         more.onClick.AddListener(()=>Fetch(false));retry.onClick.AddListener(()=>Fetch(cursor==0));
         if(service)service.Uploaded+=Uploaded;
         Fetch(true);
@@ -50,7 +49,7 @@ public sealed class PotGloryView : MonoBehaviour {
             bool first=rows.Count==0;if(first)newest=honor.certificate.certificateKey;
             row.Configure(honor,first&&!string.IsNullOrEmpty(owner)&&newest!=PlayerPrefs.GetString("pot.glory.seen."+owner),()=>{if(!Current())return;MarkSeen();flow.ShowPotCollectedCertificate(honor.certificate);},()=>{
                 if(opening||!Current())return;
-                if(string.IsNullOrEmpty(honor.replayId)){flow.Notice("这局录像尚未同步或未保存，可在全部录像中查看同步状态");return;}
+                if(string.IsNullOrEmpty(honor.replayId)){flow.Notice("这局录像尚未同步或未保存，请稍后重试");return;}
                 opening=true;MarkSeen();flow.OpenPotGloryReplay(honor.replayId,Current,error=>{opening=false;});
             });rows.Add(row);
         }
