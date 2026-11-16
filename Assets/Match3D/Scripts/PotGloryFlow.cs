@@ -15,7 +15,6 @@ public partial class Match3DFlow {
         view.Configure(data,ShowPotGlory,ShowPotGlory);
         view.GuardCollection(Match3DInvitations.Instance.State.inviteCode,()=>{CloseModal();Notice("账号已变化，请重新打开我的荣耀");});
         view.status.text="已珍藏的通关奖状";view.buttonLabel.text="返回我的荣耀";
-        view.home.GetComponentInChildren<UnityEngine.UI.Text>().text="返回我的荣耀";
     }
     public void OpenPotGloryReplay(string id,System.Func<bool> current,System.Action<string> failed){
         potReplayReturnToGlory=true;OpenPotReplay(id,current,failed);

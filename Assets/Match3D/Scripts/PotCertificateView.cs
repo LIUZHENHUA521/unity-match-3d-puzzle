@@ -11,6 +11,9 @@ public sealed class PotCertificateView : MonoBehaviour {
     public Button claim,home;
     public Image stampImage,shade;
     public Sprite[] bachelorStamps,eliteStamps;
+    public AudioClip stampSound;
+    bool stampPlayed;
+    public int StampSoundCount {get;private set;}
     public bool Playing {get;private set;}
     public bool Confirmed {get;private set;}
     Vector2 cardPos,bannerPos,stampPos,footerPos,actionsPos;
@@ -23,7 +26,7 @@ public sealed class PotCertificateView : MonoBehaviour {
         if(!account||!account.Ready||account.State.inviteCode!=collectionOwner){collectionOwner=null;leaveCollection?.Invoke();}
     }
     public void Configure(PotCertificateData data,Action onConfirm,Action onHome){
-        confirm=onConfirm;Confirmed=false;
+        confirm=onConfirm;Confirmed=false;stampPlayed=false;StampSoundCount=0;
         cardPos=card.anchoredPosition;bannerPos=banner.anchoredPosition;stampPos=stamp.anchoredPosition;
         footerPos=footer.anchoredPosition;actionsPos=actions.anchoredPosition;
         Apply(data);status.text="通关记录同步中…";
@@ -44,9 +47,10 @@ public sealed class PotCertificateView : MonoBehaviour {
         nickname.text=string.IsNullOrWhiteSpace(data.nickName)?"微信玩家":data.nickName;
         date.text=(data.dateKey??"").Replace('-','.');number.text=string.IsNullOrEmpty(data.certificateNo)?"待同步":data.certificateNo;
     }
-    public void Message(string text,bool terminal=false){status.text=text;if(terminal){buttonLabel.text="已完成";claim.interactable=false;}}
-    public void Skip(){StopAllCoroutines();Sample(2);Playing=false;}
-    IEnumerator Enter(){Playing=true;float elapsed=0;Sample(0);while(elapsed<1.6f){yield return null;elapsed+=Time.unscaledDeltaTime;Sample(elapsed);}Sample(2);Playing=false;}
+    public void Message(string text,bool terminal=false){status.text=text;if(Confirmed&&Match3DFlow.Instance)Match3DFlow.Instance.Notice(text);if(terminal){buttonLabel.text="已完成";claim.interactable=false;}}
+    public void Skip(){StopAllCoroutines();PlayStamp();Sample(2);Playing=false;}
+    void PlayStamp(){if(stampPlayed)return;stampPlayed=true;var flow=Match3DFlow.Instance;if(flow&&flow.SettingsEffects&&stampSound){flow.PlayPotCertificateSound(stampSound);StampSoundCount++;}}
+    IEnumerator Enter(){Playing=true;float elapsed=0;Sample(0);while(elapsed<1.6f){yield return null;elapsed+=Time.unscaledDeltaTime;if(elapsed>=1)PlayStamp();Sample(elapsed);}Sample(2);Playing=false;}
     static float Phase(float time,float start,float length)=>Mathf.Clamp01((time-start)/length);
     static float Back(float t){float u=t-1;return 1+2.70158f*u*u*u+1.70158f*u*u;}
     public void Sample(float time){

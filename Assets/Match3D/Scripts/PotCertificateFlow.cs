@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 public partial class Match3DFlow {
+    public void PlayPotCertificateSound(AudioClip clip){if(SettingsEffects&&clip)effects.PlayOneShot(clip);}
     PotCertificateView potCertificate;
     string potCertificateOwner,potCertificateRun,potCertificateRecord,potVoucher,potSettlementError;
     bool potSettled,potRewardsReleased,potCertificatePreview;

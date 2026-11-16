@@ -29,7 +29,7 @@ public static class PotResourceCleanupValidation {
         }
         var library=Resources.Load<Match3DTheme>("Match3D/ThemeLibrary");
         Check(library.homeMusic&&library.gameMusic&&library.clickSound&&library.selectSound&&library.matchSound,"retained music and interaction sounds assigned");
-        Check(!library.winSound&&!library.loseSound,"removed result sounds have no dangling references");
+        Check(library.winSound&&library.winSound.name=="pot-victory"&&!library.loseSound,"explicit victory sound assigned; retired lose sound absent");
         EditorSettings.enterPlayModeOptionsEnabled=true;
         EditorSettings.enterPlayModeOptions=EnterPlayModeOptions.DisableDomainReload;
         EditorSceneManager.OpenScene("Assets/Scenes/Match3D.unity");

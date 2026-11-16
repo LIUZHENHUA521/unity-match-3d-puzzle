@@ -30,8 +30,9 @@ public static class PotCertificateBuilder {
         var root=Rect("PotCertificate",null,0,0,720,1280);var v=root.gameObject.AddComponent<PotCertificateView>();
         v.shade=root.gameObject.AddComponent<Image>();v.shade.color=new Color(0,0,0,.64f);
         root.gameObject.AddComponent<Match3DUIView>().bindings=new Match3DUIView.Binding[0];
-        var fit=Rect("Fitted layout",root,0,0,720,1280);root.gameObject.AddComponent<Match3DUIFitContent>().content=fit;
-        v.card=Rect("Certificate card",fit,0,80,590,431);
+        var layout=root.gameObject.AddComponent<PotCertificateLayout>();
+        var fit=Rect("Diploma width layout",root,0,80,590,431);layout.diploma=fit;
+        v.card=Rect("Certificate card",fit,0,0,590,431);
         Pic("Diploma","bg_diploma_02",v.card,0,0,590,431);
         v.banner=Rect("Banner",v.card,0,130,403,105);v.bannerGroup=v.banner.gameObject.AddComponent<CanvasGroup>();
         Pic("Left wing","certificateicon_wings",v.banner,-179,35,73,84);
@@ -64,8 +65,9 @@ public static class PotCertificateBuilder {
         v.nickname=values[0];v.date=values[1];v.number=values[2];
         v.stamp=Rect("Stamp",v.card,200,-15,86,78);v.stampGroup=v.stamp.gameObject.AddComponent<CanvasGroup>();v.stampImage=v.stamp.gameObject.AddComponent<Image>();v.stampImage.raycastTarget=false;
         v.bachelorStamps=new Sprite[6];v.eliteStamps=new Sprite[6];for(int i=0;i<6;i++){v.bachelorStamps[i]=Sprite("yz_"+(i+1).ToString("00"));v.eliteStamps[i]=Sprite("icon_yinzhang_"+(i+1).ToString("00"));}
-        v.actions=Rect("Actions",fit,0,-300,600,250);v.actionsGroup=v.actions.gameObject.AddComponent<CanvasGroup>();
-        v.status=Label("Status",v.actions,0,65,590,64,22);v.status.color=Color.white;
+        var actionLayout=Rect("Action layout",root,0,-300,600,250);layout.actions=actionLayout;
+        v.actions=Rect("Actions",actionLayout,0,0,600,250);v.actionsGroup=v.actions.gameObject.AddComponent<CanvasGroup>();
+        v.status=Label("Status",v.actions,0,65,590,64,22);v.status.color=Color.white;v.status.gameObject.SetActive(false);
         // Reuse this game's reward button, including its blue artwork, typography and stroke.
         var rewardPrefab=AssetDatabase.LoadAssetAtPath<GameObject>(Root+"UI/RewardReceived.prefab");
         if(!rewardPrefab)throw new InvalidOperationException("Missing game reward popup prefab");
@@ -74,7 +76,13 @@ public static class PotCertificateBuilder {
         ((RectTransform)button.transform).anchoredPosition=new Vector2(0,-15);
         v.claim=button.GetComponent<Button>();v.buttonLabel=button.GetComponentInChildren<Text>();
         v.buttonLabel.text="领取红包";
-        var homeRect=Rect("Home",fit,0,-465,250,60);var graphic=homeRect.gameObject.AddComponent<Image>();graphic.color=Color.clear;v.home=homeRect.gameObject.AddComponent<Button>();v.home.targetGraphic=graphic;Label("Home label",homeRect,0,0,250,60,22,"返回首页").color=new Color(1,1,1,.85f);
+        var homeRect=Rect("Close",root,320,480,56,56);layout.close=homeRect;
+        var graphic=homeRect.gameObject.AddComponent<Image>();graphic.sprite=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"PotGlorySkin/pot-close.png");
+        v.home=homeRect.gameObject.AddComponent<Button>();v.home.targetGraphic=graphic;
+        v.stampSound=AssetDatabase.LoadAssetAtPath<AudioClip>(Root+"PotCertificateAudio/pot-stamp.mp3");
+        var library=AssetDatabase.LoadAssetAtPath<Match3DTheme>(Root+"ThemeLibrary.asset");
+        library.winSound=AssetDatabase.LoadAssetAtPath<AudioClip>(Root+"PotCertificateAudio/pot-victory.mp3");EditorUtility.SetDirty(library);
+        layout.Fit();
         PrefabUtility.SaveAsPrefabAsset(root.gameObject,Root+"UI/PotCertificate.prefab");UnityEngine.Object.DestroyImmediate(root.gameObject);AssetDatabase.SaveAssets();
     }
 }

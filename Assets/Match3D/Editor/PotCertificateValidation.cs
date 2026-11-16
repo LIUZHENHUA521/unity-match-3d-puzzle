@@ -32,7 +32,7 @@ public static class PotCertificateValidation {
                     // UI-only fixture: no game startup, account login or network transport.
                     if(!flow.library)flow.library=ScriptableObject.CreateInstance<Match3DTheme>();
                     ((CanvasGroup)Get(flow,"startupInput")).interactable=true;
-                    Set(flow,"effects",flow.gameObject.AddComponent<AudioSource>());
+                    Set(flow,"effects",flow.gameObject.AddComponent<AudioSource>());flow.gameObject.AddComponent<AudioListener>();
                     Set(flow,"<ScreenName>k__BackingField","game");Set(flow,"resultShown",true);
                     var page=(RectTransform)Get(flow,"page");foreach(Transform t in page)t.gameObject.SetActive(false);
                     account=new GameObject("Pot account fixture").AddComponent<Match3DInvitations>();account.enabled=false;
@@ -45,6 +45,10 @@ public static class PotCertificateValidation {
                     Capture("entrance",.2f,720,1280);Capture("stamp-flight",.85f,720,1280);break;
                 case 1:
                     Check(!view.Playing&&Time.timeScale==0,"unscaled entrance completes while game paused");
+                    Check(view.StampSoundCount==1,"stamp audio plays once at impact while paused");view.Skip();Check(view.StampSoundCount==1,"repeated skip does not replay stamp");
+                    Check(flow.library.winSound&&flow.library.winSound.name=="pot-victory","crazy combo victory clip assigned");
+                    var sound=(AudioSource)Get(flow,"effects");sound.Stop();flow.PlayPotCertificateSound(flow.library.winSound);Check(sound.isPlaying,"victory clip plays on game effect source");
+                    Check(!view.status.gameObject.activeSelf&&view.home.GetComponentInChildren<Text>()==null,"small captions removed; icon close remains");
                     Capture("bachelor",2,720,1280);Capture("bachelor-long",2,720,1560);Capture("bachelor-tablet",2,768,1024);
                     view.claim.onClick.Invoke();Check(view.Confirmed&&!CanShow(),"early confirm waits for settlement");
                     Check(flow.ReceivePotSettlement("alice","run","record",Data("bachelor"),"voucher",null),"matching settlement accepted");
@@ -92,8 +96,9 @@ public static class PotCertificateValidation {
         view.Sample(time);var canvas=(Canvas)Get(flow,"canvas");var camera=new GameObject("Pot capture camera").AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color32(37,50,75,255);camera.transform.position=new Vector3(0,0,-10);
         var rt=new RenderTexture(width,height,24);rt.Create();var old=RenderTexture.active;var mode=canvas.renderMode;
         camera.targetTexture=rt;canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
-        Canvas.ForceUpdateCanvases();foreach(var fit in view.GetComponents<Match3DUIFitContent>())fit.Fit();Canvas.ForceUpdateCanvases();
+        Canvas.ForceUpdateCanvases();view.GetComponent<PotCertificateLayout>().Fit();Canvas.ForceUpdateCanvases();
         foreach(var button in view.GetComponentsInChildren<Button>()){var corners=new Vector3[4];((RectTransform)button.transform).GetWorldCorners(corners);foreach(var corner in corners){var p=camera.WorldToViewportPoint(corner);Check(p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1,name+" button on screen");}}
+        if(time>=2){var corners=new Vector3[4];view.card.GetWorldCorners(corners);var left=camera.WorldToViewportPoint(corners[0]);var right=camera.WorldToViewportPoint(corners[2]);Check(Mathf.Abs(left.x)<.002f&&Mathf.Abs(right.x-1)<.002f,name+" diploma fills full viewport width");}
         camera.Render();RenderTexture.active=rt;var tex=new Texture2D(width,height,TextureFormat.RGB24,false);tex.ReadPixels(new Rect(0,0,width,height),0,0);tex.Apply();File.WriteAllBytes(Output+name+".png",tex.EncodeToPNG());
         canvas.renderMode=mode;canvas.worldCamera=null;RenderTexture.active=old;camera.targetTexture=null;UnityEngine.Object.DestroyImmediate(tex);UnityEngine.Object.DestroyImmediate(rt);UnityEngine.Object.DestroyImmediate(camera.gameObject);
     }
