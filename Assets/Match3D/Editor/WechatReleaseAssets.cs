@@ -55,6 +55,24 @@ public static class WechatReleaseAssets {
         Atlas("WechatThemeBackgrounds", backgrounds, TextureImporterFormat.DXT1);
 
         var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+        // The production flow supplies its own theme catalogs for both stages.
+        // Keep the template demos in the source project, but do not bundle their
+        // Resources-only levels or the unused eight-food demo configuration.
+        var roots = scene.GetRootGameObjects();
+        if (!roots.Any(x=>x.GetComponentInChildren<Match3DFlow>(true)))
+            throw new InvalidOperationException("Legacy resource exclusion requires the Pot game flow");
+        foreach (var generator in roots.SelectMany(x=>x.GetComponentsInChildren<LevelGenerator>(true))) {
+            generator.foodPile = null;
+            EditorUtility.SetDirty(generator);
+        }
+        foreach (var folder in new[]{"CollectableObjects", "Levels"}) {
+            string source = "Assets/Resources/" + folder;
+            if (!AssetDatabase.IsValidFolder(source)) continue;
+            string error = AssetDatabase.MoveAsset(source, releaseUI + "/Legacy" + folder);
+            if (!string.IsNullOrEmpty(error)) throw new InvalidOperationException(error);
+        }
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
         var renderers = scene.GetRootGameObjects().SelectMany(x=>x.GetComponentsInChildren<Renderer>(true)).ToArray();
         if (!renderers.Any(x=>x.lightmapIndex>=0 && x.lightmapIndex<65534)) {
             Lightmapping.lightingDataAsset = null;
