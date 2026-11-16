@@ -30,7 +30,8 @@ public static class WechatReleaseAssets {
         Atlas("WechatBackgrounds", new[]{root+"HomeSkinPS/img_Homepage_bg2.jpg"},TextureImporterFormat.DXT1,64);
         // Opaque gameplay backdrops need no alpha channel. Limit only release
         // sprites to 1024px so their decoded textures fit the mini-game package.
-        var backgrounds = new[]{root+"ThemeBackgrounds/playful-toys.jpg", root+"ThemeBackgrounds/tasty-kitchen.jpg", root+"ThemeBackgrounds/foodie-party.jpg"};
+        var backgrounds = new[]{"playful-toys", "tasty-kitchen", "foodie-party", "pot-vegetable", "pot-meat", "pot-grocery", "pot-fruit", "pot-sweets"}
+            .Select(id => root+"ThemeBackgrounds/"+id+".jpg").ToArray();
         foreach (var path in backgrounds) {
             var importer=(TextureImporter)AssetImporter.GetAtPath(path);
             var settings=importer.GetPlatformTextureSettings("WebGL");

@@ -1,0 +1,116 @@
+{
+    "requestId": "a319225095ec47ad87d784a2f92db932",
+    "inputPath": "Assets/Match3D/IncomingModels/PotKitchenExpansion/food/003_turkey/turkey.obj",
+    "logicalId": "PotKitchen_turkey",
+    "displayName": "火鸡",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/PotKitchen_turkey/PotKitchen_turkey.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/PotKitchen_turkey/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.45998668670654299,
+    "visualSize": {
+        "x": 0.934809684753418,
+        "y": 0.376899391412735,
+        "z": 0.6789981722831726
+    },
+    "visualCenter": {
+        "x": 0.00708433985710144,
+        "y": 0.1884496957063675,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.00708433985710144,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.934809684753418,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 544,
+        "meshCount": 2,
+        "materialCount": 1,
+        "sourceFileBytes": 43593,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/PotKitchenExpansion/food/003_turkey/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 544,
+        "meshCount": 2,
+        "materialCount": 1,
+        "sourceFileBytes": 63467,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/PotKitchenExpansion/food/003_turkey/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 8,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "544 三角面 / 2 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：544 三角面 / 2 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

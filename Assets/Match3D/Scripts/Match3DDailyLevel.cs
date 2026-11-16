@@ -19,16 +19,29 @@ public sealed class Match3DDailyLevel {
         int total=0;float previous=1.5f;
         foreach(var l in layers){
             if(l==null||l.count<3||l.count>600||l.count%3!=0||l.types<1||l.types>Math.Min(pool,l.count/3)||float.IsNaN(l.height)||float.IsInfinity(l.height)||l.height<=previous||l.height>30)return false;
+            if(!PotModelsValid(l,pool))return false;
             total+=l.count;previous=l.height;
         }
         return (generatorVersion!="shared-v2"||(opening!=null&&opening.IsValid(initialCount,pool)))&&total==initialCount&&total<=1200&&Math.Abs(limitHeight-(previous-.5f))<.001f;
     }
     public IBoardRandom RandomForStage(int stage) {return new Match3DDailyRandom(unchecked(seed^(stage*0x45d9f3b)));}
+    public static bool PotModelsValid(ChallengeLayer layer,int pool) {
+        var selected=layer.potModelIndices;
+        if(selected==null||selected.Length==0)return true;
+        if(selected.Length!=layer.types)return false;
+        var seen=new HashSet<int>();
+        foreach(int type in selected)if(type<0||type>=pool||!seen.Add(type))return false;
+        return true;
+    }
     // Positive budgets preserve exact per-layer counts and selected type counts for every valid configuration.
     public static List<ChallengeTile> Generate(int pool,ChallengeLayer[] layers,IBoardRandom random) {
         var result=new List<ChallengeTile>();
         for(int layer=0;layer<layers.Length;layer++){
-            var row=layers[layer];var types=new List<int>();for(int t=0;t<pool;t++)types.Add(t);
+            var row=layers[layer];
+            if(!PotModelsValid(row,pool))throw new ArgumentException("Invalid selected daily models");
+            var types=new List<int>();
+            if(row.potModelIndices!=null&&row.potModelIndices.Length>0)types.AddRange(row.potModelIndices);
+            else for(int t=0;t<pool;t++)types.Add(t);
             for(int i=types.Count-1;i>0;i--){int j=(int)random.Range(0,i+1);int t=types[i];types[i]=types[j];types[j]=t;}
             var items=new List<int>();int groups=row.count/3;
             for(int g=0;g<groups;g++)for(int k=0;k<3;k++)items.Add(types[g%row.types]);

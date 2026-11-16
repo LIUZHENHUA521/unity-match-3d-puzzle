@@ -1,0 +1,102 @@
+{
+    "requestId": "10e4801d218e45b587c137f42c0cab01",
+    "inputPath": "Assets/Match3D/IncomingModels/PotPartyExpansion/quaternius/003_Sushi Nigiri/model.obj",
+    "logicalId": "PotParty_SushiNigiri",
+    "displayName": "握寿司",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/PotParty_SushiNigiri/PotParty_SushiNigiri.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/PotParty_SushiNigiri/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.7195442914962769,
+    "visualSize": {
+        "x": 0.5976004600524902,
+        "y": 0.2343524992465973,
+        "z": 0.27157461643218996
+    },
+    "visualCenter": {
+        "x": 0.03244933485984802,
+        "y": 0.11797119677066803,
+        "z": 0.0038099363446235658
+    },
+    "bottom": {
+        "x": 0.03244933485984802,
+        "y": 0.0007949471473693848,
+        "z": 0.0038099363446235658
+    },
+    "longestSide": 0.5976004600524902,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 196,
+        "meshCount": 1,
+        "materialCount": 2,
+        "sourceFileBytes": 58731,
+        "textureMemoryBytes": 0,
+        "textures": []
+    },
+    "generatedResources": {
+        "triangles": 196,
+        "meshCount": 1,
+        "materialCount": 2,
+        "sourceFileBytes": 74057,
+        "textureMemoryBytes": 0,
+        "textures": []
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 5,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "196 三角面 / 1 网格 / 2 材质 / 0 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "MODEL_TEXTURE_UNRESOLVED",
+            "message": "当前材质未引用贴图；启用优化后会尝试从模型副本提取内嵌贴图。纯色材质可忽略此提示。",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：196 三角面 / 1 网格 / 2 材质 / 0 贴图；贴图编辑器内存 0 B → 0 B（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

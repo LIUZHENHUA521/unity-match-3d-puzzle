@@ -267,6 +267,7 @@ public partial class Match3DFlow : MonoBehaviour {
     public string SourceEnvironmentForTheme(int theme){return library.themes[theme].sourceEnvironment;}
     public void BeginReward(int theme,string tier){
 #if UNITY_EDITOR
+        if(PotUseEditorConfiguration){BeginLocal(theme,tier,true);ShowTips("编辑器配置 · 道具免费 · 不发放红包");return;}
         var preview=GetComponent<PotEditorBetaLevels>()??gameObject.AddComponent<PotEditorBetaLevels>();
         preview.Begin(endpoint,theme,tier);
 #else
@@ -284,15 +285,16 @@ public partial class Match3DFlow : MonoBehaviour {
         StopBoard();IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;dailyLevel=level;ThemeIndex=theme;Stage=1;runDate=level.date;
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewDailyRun(level);StartStage();
     }
-    public void Begin(int theme){
+    public void Begin(int theme){BeginLocal(theme,"bachelor",false);}
+    void BeginLocal(int theme,string tier,bool localPreview){
         BeginProgressRun();
-        dailyLevel=null;runModelTheme=null;challengeTier="bachelor";
+        dailyLevel=null;runModelTheme=null;challengeTier=tier;
 #if UNITY_EDITOR
         var selectedTheme=UnityEditor.EditorPrefs.GetString(EditorThemePreference,"");
         if(Match3DModelThemes.TryGet(selectedTheme,SourceEnvironmentForTheme(theme),out _))runModelTheme=selectedTheme;
 #endif
         // Ordinary MainLevel starts with the recovered first-stage row.
-        StopBoard();LocalPreview=false;IsPvp=false;unlimitedMagnetRun=Match3DTestPrivileges.AccountEnabled;ThemeIndex=theme;Stage=1;runDate=Today;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewRun();StartStage();
+        StopBoard();LocalPreview=localPreview;IsPvp=false;unlimitedMagnetRun=localPreview||Match3DTestPrivileges.AccountEnabled;ThemeIndex=theme;Stage=1;runDate=Today;if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewRun();StartStage();
     }
     public void RestartStage(){if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.Finish("quit","restart");StopBoard();StartStage();}
     public void NextStage(){

@@ -1,0 +1,116 @@
+{
+    "requestId": "24c920b97f5449ee81fff2f020707fa3",
+    "inputPath": "Assets/Match3D/IncomingModels/PotToyExpansion/mini-skate/skateboard.obj",
+    "logicalId": "PotToy_Skateboard",
+    "displayName": "滑板",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/PotToy_Skateboard/PotToy_Skateboard.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/PotToy_Skateboard/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.6233891844749451,
+    "visualSize": {
+        "x": 0.3155752122402191,
+        "y": 0.18046590685844422,
+        "z": 0.6897777915000916
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.09023295342922211,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 0.6897777915000916,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 864,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 49900,
+        "textureMemoryBytes": 175448,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/PotToyExpansion/mini-skate/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 175448,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 864,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 68326,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/PotToyExpansion/mini-skate/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 7,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "864 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：864 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 171.3 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

@@ -64,7 +64,8 @@ public static class PotFoodPackImporter {
             profile.layers[0].types = 26;
             LevelLayoutConfig.GetTutorial(profile);
             var entry = new Match3DModelThemes.Entry { id = pack.id, title = pack.title, profile = profile,
-                background = baseline.background, ambientMultiplier = .75f, lightMultiplier = .85f };
+                background = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Match3D/Resources/Match3D/ThemeBackgrounds/" + pack.id + ".jpg") ?? baseline.background,
+                ambientMultiplier = .75f, lightMultiplier = .85f };
             int existing = entries.FindIndex(t => t.id == pack.id);
             if (existing >= 0) entries[existing] = entry; else entries.Add(entry);
         }

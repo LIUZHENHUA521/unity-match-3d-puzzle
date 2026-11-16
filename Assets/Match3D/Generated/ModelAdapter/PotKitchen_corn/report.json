@@ -1,0 +1,116 @@
+{
+    "requestId": "57f10b8a02924589a8d0254d6a47f03c",
+    "inputPath": "Assets/Match3D/IncomingModels/PotKitchenExpansion/food/001_corn/corn.obj",
+    "logicalId": "PotKitchen_corn",
+    "displayName": "玉米",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/PotKitchen_corn/PotKitchen_corn.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/PotKitchen_corn/index.html",
+    "status": "Generated",
+    "normalizedScale": 1.2528444528579713,
+    "visualSize": {
+        "x": 0.34321898221969607,
+        "y": 0.3161981999874115,
+        "z": 0.3002209961414337
+    },
+    "visualCenter": {
+        "x": 0.0065178945660591129,
+        "y": 0.15809909999370576,
+        "z": -0.005669504404067993
+    },
+    "bottom": {
+        "x": 0.0065178945660591129,
+        "y": 0.0,
+        "z": -0.005669504404067993
+    },
+    "longestSide": 0.34321898221969607,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 256,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 23498,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/PotKitchenExpansion/food/001_corn/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 256,
+        "meshCount": 1,
+        "materialCount": 1,
+        "sourceFileBytes": 42016,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/PotKitchenExpansion/food/001_corn/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 7,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "256 三角面 / 1 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：256 三角面 / 1 网格 / 1 材质 / 1 贴图；贴图编辑器内存 342.0 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

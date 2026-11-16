@@ -1,0 +1,116 @@
+{
+    "requestId": "fba5c6be3df04ea18e8b861704dfc647",
+    "inputPath": "Assets/Match3D/IncomingModels/PotToyExpansion/train-kit/train-locomotive-a.obj",
+    "logicalId": "PotToy_Train",
+    "displayName": "小火车",
+    "generatedPrefabPath": "Assets/Match3D/Generated/ModelAdapter/PotToy_Train/PotToy_Train.prefab",
+    "previewPath": "Assets/Match3D/Generated/ModelAdapter/PotToy_Train/index.html",
+    "status": "Generated",
+    "normalizedScale": 0.16538462042808534,
+    "visualSize": {
+        "x": 1.4293323755264283,
+        "y": 1.6594990491867066,
+        "z": 2.5999999046325685
+    },
+    "visualCenter": {
+        "x": 0.0,
+        "y": 0.8297495245933533,
+        "z": 0.0
+    },
+    "bottom": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "longestSide": 2.5999999046325685,
+    "resourceOptions": {
+        "optimizeTextures": false,
+        "maxTextureSize": 512,
+        "compressTextures": true,
+        "triangleWarning": 3000
+    },
+    "sourceResources": {
+        "triangles": 2672,
+        "meshCount": 3,
+        "materialCount": 1,
+        "sourceFileBytes": 141059,
+        "textureMemoryBytes": 175448,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/PotToyExpansion/train-kit/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 175448,
+                "embedded": false
+            }
+        ]
+    },
+    "generatedResources": {
+        "triangles": 2672,
+        "meshCount": 3,
+        "materialCount": 1,
+        "sourceFileBytes": 156311,
+        "textureMemoryBytes": 350224,
+        "textures": [
+            {
+                "name": "colormap",
+                "path": "Assets/Match3D/IncomingModels/PotToyExpansion/train-kit/Textures/colormap.png",
+                "format": "RGBA_DXT1_UNorm",
+                "width": 512,
+                "height": 512,
+                "memoryBytes": 350224,
+                "embedded": false
+            }
+        ]
+    },
+    "hasRigidbody": false,
+    "hasPickCollider": true,
+    "hasBodyCollider": true,
+    "colliderCount": 5,
+    "issues": [
+        {
+            "severity": 0,
+            "code": "BOUNDS_OK",
+            "message": "包围盒和归一化缩放有效",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "RIGIDBODY_MISSING",
+            "message": "生成时会补齐标准根 Rigidbody",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "TAG_REPAIR",
+            "message": "生成时会设置 Collectable tag",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RENDERER_OK",
+            "message": "Renderer 和材质有效",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "RESOURCE_STATS",
+            "message": "2672 三角面 / 3 网格 / 1 材质 / 1 贴图",
+            "path": ""
+        },
+        {
+            "severity": 1,
+            "code": "COLLIDER_DRAFT",
+            "message": "将生成拾取包围盒和贴合模型的组合实体碰撞体",
+            "path": ""
+        },
+        {
+            "severity": 0,
+            "code": "GENERATED_RESOURCES",
+            "message": "生成后：2672 三角面 / 3 网格 / 1 材质 / 1 贴图；贴图编辑器内存 171.3 KB → 342.0 KB（不是下载包体）",
+            "path": ""
+        }
+    ]
+}

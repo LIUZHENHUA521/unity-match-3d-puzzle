@@ -4,6 +4,8 @@ using System.Linq;
 
 [Serializable] public class ChallengeLayer {
     public int count, types;
+    // Optional exact model set for daily levels; empty retains random selection.
+    public int[] potModelIndices;
     public float height;
     // Type-budget weights, not selection weights. Empty means equal budgets.
     public float[] weights;

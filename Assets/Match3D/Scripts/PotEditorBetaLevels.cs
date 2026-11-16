@@ -38,6 +38,8 @@ public sealed class PotEditorBetaLevels : MonoBehaviour {
     }
 }
 public partial class Match3DFlow {
+    public const string PotEditorConfigurationPreference="pot.editor.useEditorConfiguration";
+    public static bool PotUseEditorConfiguration=>UnityEditor.EditorPrefs.GetBool(PotEditorConfigurationPreference,false);
     public void BeginPotEditorBeta(int theme,Match3DDailyLevel level){
         LocalPreview=true;BeginDailyPractice(theme,level);unlimitedMagnetRun=true;
         ShowTips("编辑器内测关卡 · 道具免费 · 不发放红包");

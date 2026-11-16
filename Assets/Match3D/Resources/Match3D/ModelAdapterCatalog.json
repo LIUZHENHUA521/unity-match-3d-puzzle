@@ -36441,6 +36441,2121 @@
                 "combineDefault": false,
                 "goose": false
             }
+        },
+        {
+            "id": "PotKitchen_corn",
+            "displayName": "玉米",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotKitchen_corn/PotKitchen_corn.prefab",
+            "normalizedToSource": 3.9767441749572756,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；饱满形状缩小 10%",
+            "colliderProfile": {
+                "name": "PotKitchen_corn",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.4300000071525574,
+                                    "y": 0.3961471617221832,
+                                    "z": 0.37613022327423098
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.17061996459960938,
+                                    "y": 0.1402515172958374,
+                                    "z": 0.19264820218086244
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            1
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.24585413932800294,
+                                    "y": 0.0610220804810524,
+                                    "z": 0.2718031406402588
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            2
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.3958319425582886,
+                                    "y": 0.2770536243915558,
+                                    "z": 0.07747411727905274
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            3
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.3318876028060913,
+                                    "y": 0.1411484032869339,
+                                    "z": 0.03596504405140877
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            4
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.11969203501939774,
+                                    "y": 0.11296776682138443,
+                                    "z": 0.13731162250041963
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            5
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.06911120563745499,
+                                    "y": 0.04730943217873573,
+                                    "z": 0.0020000000949949028
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotKitchen_corn",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
+        },
+        {
+            "id": "PotKitchen_fish",
+            "displayName": "鱼",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotKitchen_fish/PotKitchen_fish.prefab",
+            "normalizedToSource": 4.418604373931885,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；保持档位尺寸",
+            "colliderProfile": {
+                "name": "PotKitchen_fish",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.13703297078609467,
+                                    "y": 0.22318033874034882,
+                                    "z": 0.4300000071525574
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.01738232560455799,
+                                    "y": 0.0685541033744812,
+                                    "z": 0.254231721162796
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            1
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.09743499010801316,
+                                    "y": 0.11095836013555527,
+                                    "z": 0.43160000443458559
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            2
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.09128177911043167,
+                                    "y": 0.025033937767148019,
+                                    "z": 0.41184625029563906
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            3
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.013050870038568974,
+                                    "y": 0.025033922865986825,
+                                    "z": 0.10117107629776001
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            4
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.13863296806812287,
+                                    "y": 0.024946125224232675,
+                                    "z": 0.2457697093486786
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotKitchen_fish",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
+        },
+        {
+            "id": "PotKitchen_turkey",
+            "displayName": "火鸡",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotKitchen_turkey/PotKitchen_turkey.prefab",
+            "normalizedToSource": 4.418604373931885,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；保持档位尺寸",
+            "colliderProfile": {
+                "name": "PotKitchen_turkey",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.4300000071525574,
+                                    "y": 0.17336870729923249,
+                                    "z": 0.31233012676239016
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.08448919653892517,
+                                    "y": 0.06666423380374909,
+                                    "z": 0.17304089665412904
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            1
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.12001314759254456,
+                                    "y": 0.05827023461461067,
+                                    "z": 0.28922486305236819
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            2
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.05962244048714638,
+                                    "y": 0.057132538408041,
+                                    "z": 0.25077584385871889
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            3
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.1369856894016266,
+                                    "y": 0.08828435093164444,
+                                    "z": 0.3114510774612427
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            4
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.047979749739170077,
+                                    "y": 0.009401592426002026,
+                                    "z": 0.27094316482543948
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            5
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.26155975461006167,
+                                    "y": 0.019803719595074655,
+                                    "z": 0.29177212715148928
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            6
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.34558820724487307,
+                                    "y": 0.06227904558181763,
+                                    "z": 0.31393012404441836
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotKitchen_turkey",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
+        },
+        {
+            "id": "PotParty_Banana",
+            "displayName": "香蕉",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotParty_Banana/PotParty_Banana.prefab",
+            "normalizedToSource": 4.418604373931885,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；保持档位尺寸",
+            "colliderProfile": {
+                "name": "PotParty_Banana",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.35993173718452456,
+                                    "y": 0.4300000071525574,
+                                    "z": 0.09476940333843231
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "CapsuleCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "radius": 0.04928283765912056,
+                                "height": 0.14576487243175507,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            1
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "CapsuleCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "radius": 0.023698994889855386,
+                                "height": 0.15413431823253632,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            2
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.2801026999950409,
+                                    "y": 0.1287723332643509,
+                                    "z": 0.0925501212477684
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            3
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "CapsuleCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "radius": 0.050499558448791507,
+                                "height": 0.16978871822357179,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotParty_Banana",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
+        },
+        {
+            "id": "PotParty_Croissant",
+            "displayName": "可颂",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotParty_Croissant/PotParty_Croissant.prefab",
+            "normalizedToSource": 4.418604373931885,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；保持档位尺寸",
+            "colliderProfile": {
+                "name": "PotParty_Croissant",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.4300000071525574,
+                                    "y": 0.18122823536396027,
+                                    "z": 0.2407950460910797
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.43160000443458559,
+                                    "y": 0.18282821774482728,
+                                    "z": 0.08587826788425446
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            1
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.21130695939064027,
+                                    "y": 0.1304871141910553,
+                                    "z": 0.026883484795689584
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            2
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.34897828102111819,
+                                    "y": 0.18282821774482728,
+                                    "z": 0.06059478595852852
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            3
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.39918938279151919,
+                                    "y": 0.1359299123287201,
+                                    "z": 0.023271555081009866
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            4
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.11271446943283081,
+                                    "y": 0.09214920550584793,
+                                    "z": 0.05216697230935097
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            5
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.11271446943283081,
+                                    "y": 0.09214920550584793,
+                                    "z": 0.05216697230935097
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotParty_Croissant",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
+        },
+        {
+            "id": "PotParty_SushiNigiri",
+            "displayName": "握寿司",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotParty_SushiNigiri/PotParty_SushiNigiri.prefab",
+            "normalizedToSource": 4.418604373931885,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；保持档位尺寸",
+            "colliderProfile": {
+                "name": "PotParty_SushiNigiri",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.4300000071525574,
+                                    "y": 0.16862700879573823,
+                                    "z": 0.19540996849536897
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.4315999746322632,
+                                    "y": 0.060619454830884936,
+                                    "z": 0.17640316486358643
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            1
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.4205322563648224,
+                                    "y": 0.060619454830884936,
+                                    "z": 0.19700996577739716
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            2
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.3689752519130707,
+                                    "y": 0.02689404971897602,
+                                    "z": 0.18188709020614625
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            3
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.28960055112838747,
+                                    "y": 0.026894042268395425,
+                                    "z": 0.1517559289932251
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotParty_SushiNigiri",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
+        },
+        {
+            "id": "PotToy_Brick",
+            "displayName": "积木",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotToy_Brick/PotToy_Brick.prefab",
+            "normalizedToSource": 3.9767441749572756,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；饱满形状缩小 10%",
+            "colliderProfile": {
+                "name": "PotToy_Brick",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.4300000071525574,
+                                    "y": 0.3083018958568573,
+                                    "z": 0.42729565501213076
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.4300000071525574,
+                                    "y": 0.3083019256591797,
+                                    "z": 0.42729565501213076
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotToy_Brick",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
+        },
+        {
+            "id": "PotToy_Train",
+            "displayName": "小火车",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotToy_Train/PotToy_Train.prefab",
+            "normalizedToSource": 4.418604373931885,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；保持档位尺寸",
+            "colliderProfile": {
+                "name": "PotToy_Train",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.23638959228992463,
+                                    "y": 0.27445560693740847,
+                                    "z": 0.4300000071525574
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.23798958957195283,
+                                    "y": 0.08393669128417969,
+                                    "z": 0.43160000443458559
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            1
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.21347633004188538,
+                                    "y": 0.19371892511844636,
+                                    "z": 0.27944615483283999
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            2
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.16698461771011353,
+                                    "y": 0.12019182741641998,
+                                    "z": 0.1206769347190857
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            3
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.05140872299671173,
+                                    "y": 0.052425090223550799,
+                                    "z": 0.10413847118616104
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotToy_Train",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
+        },
+        {
+            "id": "PotToy_Skateboard",
+            "displayName": "滑板",
+            "prefabPath": "Assets/Match3D/Generated/ModelAdapter/PotToy_Skateboard/PotToy_Skateboard.prefab",
+            "normalizedToSource": 4.860465049743652,
+            "trayBaseScale": 4.883720397949219,
+            "sizeTier": "中",
+            "sizeReason": "未识别名称，默认中档；细长/扁平形状增大 10%",
+            "colliderProfile": {
+                "name": "PotToy_Skateboard",
+                "col": [
+                    1
+                ],
+                "realCol": [
+                    2
+                ],
+                "nodes": [
+                    {
+                        "indices": [
+                            1
+                        ],
+                        "layer": 7,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.19672617316246034,
+                                    "y": 0.11250049620866776,
+                                    "z": 0.4300000071525574
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            0
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.19832617044448853,
+                                    "y": 0.057850249111652377,
+                                    "z": 0.07141958177089691
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            1
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.19832617044448853,
+                                    "y": 0.057850249111652377,
+                                    "z": 0.07141958177089691
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            2
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.18933263421058656,
+                                    "y": 0.11423870921134949,
+                                    "z": 0.0462995246052742
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            3
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.19046840071678163,
+                                    "y": 0.034710533916950229,
+                                    "z": 0.10909999907016754
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            4
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.19046840071678163,
+                                    "y": 0.034710533916950229,
+                                    "z": 0.10909999907016754
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "indices": [
+                            2,
+                            5
+                        ],
+                        "layer": 10,
+                        "colliders": [
+                            {
+                                "type": "BoxCollider",
+                                "enabled": true,
+                                "trigger": false,
+                                "hasMaterial": false,
+                                "center": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 0.1894170194864273,
+                                    "y": 0.11482551693916321,
+                                    "z": 0.04644441977143288
+                                },
+                                "radius": 0.0,
+                                "height": 0.0,
+                                "direction": 0,
+                                "material": {
+                                    "m_Name": "",
+                                    "dynamicFriction": 0.0,
+                                    "staticFriction": 0.0,
+                                    "bounciness": 0.0,
+                                    "frictionCombine": 0,
+                                    "bounceCombine": 0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "audioProfile": {
+                "name": "PotToy_Skateboard",
+                "select": 1,
+                "combine": 0,
+                "usePitch": true,
+                "combineDefault": false,
+                "goose": false
+            }
         }
     ]
 }
