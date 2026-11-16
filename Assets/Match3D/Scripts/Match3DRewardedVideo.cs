@@ -6,6 +6,7 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
     [Serializable] public class Configuration {public string clearAdUnitId,timeAdUnitId,toolAdUnitId;}
     [Serializable] class Reply {public string requestId,error;public bool completed;}
     Action<bool,string> callback;string requestId;
+    Match3DRewardAcquisition.Offer acquisition;
 #if UNITY_EDITOR
     public static Action<Action<bool,string>> EditorShowOverride;
     public static Action<Action<bool,string>> EditorShareOverride;
@@ -17,7 +18,9 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
     [DllImport("__Internal")] static extern void GooseRewardShareCancel(string request);
 #endif
     public void Acquire(Match3DRewardAcquisition.Offer offer,bool timeout,Action<bool,string> done,int toolType=0){
-        if(!Match3DRewardAcquisition.IsCurrent(offer)){done(false,"获取状态已变化，请关闭后重试");return;}
+        if(callback!=null||!Match3DRewardAcquisition.TryBegin(offer)){done(false,"获取状态已变化或正在获取中，请关闭后重试");return;}
+        acquisition=offer;
+        var finish=done;done=(ok,error)=>{try{finish(ok,error);}finally{Match3DRewardAcquisition.End(offer);if(acquisition==offer)acquisition=null;}};
         switch(offer.route){
             case Match3DRewardAcquisition.Route.Free:done(true,null);return;
             case Match3DRewardAcquisition.Route.Share:ShowShare(done);return;
@@ -72,13 +75,14 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
     }
     void Complete(string request,bool completed,string error){
         if(callback==null||request!=requestId)return;
-        var done=callback;callback=null;requestId=null;done(completed,error);
+        var done=callback;callback=null;requestId=null;acquisition=null;done(completed,error);
     }
     public void Cancel(){
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         if(requestId!=null){GooseReviveAdCancel(requestId);GooseRewardShareCancel(requestId);}
 #endif
         callback=null;requestId=null;
+        Match3DRewardAcquisition.End(acquisition);acquisition=null;
     }
     void OnDestroy(){Cancel();}
 }

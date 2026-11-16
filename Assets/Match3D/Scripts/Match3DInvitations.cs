@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 // The server is authoritative. PlayerPrefs stores only an unfinished request, never rewards.
 public sealed partial class Match3DInvitations : MonoBehaviour {
-    [Serializable] public class Reply {public string token,inviteCode,error,requestId;public int invited;public long createdAt;public int[] inventory;public bool refunded,unlimitedMagnet;public Match3DMail[] mails;public int nextCursor;public bool attention;public Match3DSignInState signIn;public Match3DSignInReceipt signInReceipt;}
+    [Serializable] public class Reply {public Match3DRewardAcquisition.PotRemoteConfiguration potAcquisition;public string token,inviteCode,error,requestId;public int invited;public long createdAt;public int[] inventory;public bool refunded,unlimitedMagnet;public Match3DMail[] mails;public int nextCursor;public bool attention;public Match3DSignInState signIn;public Match3DSignInReceipt signInReceipt;}
     [Serializable] class Bridge {public string code,inviter,error;public bool refresh;}
     [Serializable] class LoginBody {public string code,inviter;}
     [Serializable] class UseBody {public string requestId;public int type;}
@@ -44,7 +44,7 @@ public sealed partial class Match3DInvitations : MonoBehaviour {
     [DllImport("__Internal")] static extern void GooseInvitesLogin();
     [DllImport("__Internal")] static extern void GooseInvitesShare(string code);
 #endif
-    public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');
+    public void Initialize(string url){Instance=this;endpoint=url.TrimEnd('/');Match3DRewardAcquisition.SetEnvironment(endpoint);
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
         GooseInvitesInit(gameObject.name);
 #endif
@@ -64,7 +64,7 @@ public sealed partial class Match3DInvitations : MonoBehaviour {
     [UnityEngine.Scripting.Preserve]
     public void OnInvitationBridge(string json){var data=JsonUtility.FromJson<Bridge>(json);if(data.refresh){Refresh();return;}if(!string.IsNullOrEmpty(data.error)){logging=false;SetStatus(data.error);return;}if(!string.IsNullOrEmpty(data.code)){logging=false;if(!Busy)StartCoroutine(Login(data));}}
     IEnumerator Login(Bridge data){Busy=true;Reply reply=null;yield return Request("login",JsonUtility.ToJson(new LoginBody{code=data.code,inviter=data.inviter}),r=>reply=r,false);
-        if(reply!=null){if(State!=null&&State.inviteCode!=reply.inviteCode){Mails.Clear();MailLoaded=false;MailAttention=false;MailNextCursor=-1;MailChanged?.Invoke();}token=reply.token;Apply(reply);yield return Recover();yield return FetchMail("list",null,0);}Busy=false;Changed?.Invoke();if(Ready)RefreshSignIn();
+        if(reply!=null){if(State!=null&&State.inviteCode!=reply.inviteCode){Mails.Clear();MailLoaded=false;MailAttention=false;MailNextCursor=-1;MailChanged?.Invoke();}token=reply.token;Match3DRewardAcquisition.ApplyRemote(reply.potAcquisition);Apply(reply);yield return Recover();yield return FetchMail("list",null,0);}Busy=false;Changed?.Invoke();if(Ready)RefreshSignIn();
     }
     void Apply(Reply reply){if(State==null||State.inviteCode!=reply.inviteCode)ClearSignIn();State=reply;SetStatus("");}
     IEnumerator Request(string route,string body,Action<Reply> callback,bool retry=true){
