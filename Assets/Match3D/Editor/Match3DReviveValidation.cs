@@ -49,6 +49,19 @@ public static class Match3DReviveValidation {
             Assert(BoardTools.UsedCount(0)==0&&Mathf.Abs(time-GameManager.Instance.currentLevelTime)<.01f,"clear revival does not spend move tool or change timer");
             Assert(ReferenceEquals(record,Field(records,"active"))&&PlayerPrefs.GetInt(keys[1])==attempt,"revival preserves record and challenge count");
             yield return new WaitForSeconds(.5f);
+            // Seven stored objects form columns of 3, 2, 2; only the last in each is emphasized.
+            foreach(var obj in seven){
+                int index=Array.IndexOf(seven,obj);bool top=index>=4;
+                var expected=ItemFlightMotion.StoreScale(obj,obj.transform.localScale)*BoardToolVisual.StoreSize*(top?1.25f:1f);
+                Assert(Vector3.Distance(obj.transform.localScale,expected)<.001f,"stored scale "+index+" top="+top);
+            }
+            Capture("pot-store-top-125");
+            var promoted=seven[3];
+            input.AddObjectOnStack(seven[6],false);yield return new WaitForSeconds(.5f);
+            var promotedScale=ItemFlightMotion.StoreScale(promoted,promoted.transform.localScale)*BoardToolVisual.StoreSize*1.25f;
+            Assert(Vector3.Distance(promoted.transform.localScale,promotedScale)<.001f,"taking top smoothly promotes next item to 125 percent");
+            Assert(!BoardTools.IsStored(seven[6])&&input.objectsOnStack.Contains(seven[6]),"enlarged top returns to tray");
+            Capture("pot-store-top-promoted");
             string kind=seven[0].name;var triple=board.Where(x=>x.name==kind).Take(3).ToArray();int before=board.Count;
             foreach(var obj in triple)input.AddObjectOnStack(obj,false);yield return new WaitForSeconds(1);
             Assert(board.Count==before-3,"stored objects can be picked and matched after revival");
@@ -88,9 +101,21 @@ public static class Match3DReviveValidation {
         }finally{Match3DRewardedVideo.EditorShowOverride=null;Match3DRewardAcquisition.Configure(null);flow.Home();PlayerPrefs.SetString(keys[0],date);PlayerPrefs.SetInt(keys[1],attempts);PlayerPrefs.SetString(keys[2],queue);PlayerPrefs.SetFloat(keys[3],best);PlayerPrefs.Save();}
     }
     static void Capture(string name){
-        var c=Camera.main;var canvases=UnityEngine.Object.FindObjectsOfType<Canvas>().Where(x=>x.isRootCanvas&&x.gameObject.activeInHierarchy).ToArray();var modes=canvases.Select(x=>x.renderMode).ToArray();var cameras=canvases.Select(x=>x.worldCamera).ToArray();var distances=canvases.Select(x=>x.planeDistance).ToArray();var rt=new RenderTexture(720,1280,24);rt.Create();var old=c.targetTexture;var active=RenderTexture.active;c.targetTexture=rt;
+        var c=Camera.main;var canvases=UnityEngine.Object.FindObjectsOfType<Canvas>().Where(x=>x.isRootCanvas&&x.gameObject.activeInHierarchy).ToArray();var modes=canvases.Select(x=>x.renderMode).ToArray();var cameras=canvases.Select(x=>x.worldCamera).ToArray();var distances=canvases.Select(x=>x.planeDistance).ToArray();var rt=new RenderTexture(720,1280,24);rt.Create();var old=c.targetTexture;var oldAspect=c.aspect;var active=RenderTexture.active;c.targetTexture=rt;c.aspect=720f/1280;
         for(int i=0;i<canvases.Length;i++){canvases[i].renderMode=RenderMode.ScreenSpaceCamera;canvases[i].worldCamera=c;canvases[i].planeDistance=1;}
-        Canvas.ForceUpdateCanvases();foreach(var fit in UnityEngine.Object.FindObjectsOfType<Match3DUIFitContent>())fit.Fit();Canvas.ForceUpdateCanvases();c.Render();RenderTexture.active=rt;var tex=new Texture2D(720,1280,TextureFormat.RGB24,false);tex.ReadPixels(new Rect(0,0,720,1280),0,0);tex.Apply();File.WriteAllBytes(Output+"/"+name+"-720x1280.png",tex.EncodeToPNG());c.targetTexture=old;RenderTexture.active=active;
+        foreach(var presentation in UnityEngine.Object.FindObjectsOfType<Match3DThemePresentation>())if(presentation.Active)presentation.Fit();
+        Match3DTray.Instance.SendMessage("LateUpdate");
+        foreach(var visual in UnityEngine.Object.FindObjectsOfType<BoardToolVisual>())visual.SendMessage("LateUpdate");
+        var tools=UnityEngine.Object.FindObjectOfType<BoardTools>();
+        if(tools){
+            var columns=(System.Collections.Generic.List<GameObject>[])Field(tools,"columns");
+            for(int col=0;col<columns.Length;col++)for(int i=0;i<columns[col].Count;i++){
+                var obj=columns[col][i];var rotation=BoardTools.StoreRotation(obj);
+                obj.transform.SetPositionAndRotation(BoardTools.StoreItemPosition(obj,BoardTools.StorePosition(col,i,columns[col].Count),rotation,obj.transform.localScale),rotation);
+            }
+        }
+        if(ComboProbeController.Instance)ComboProbeController.Instance.View.SendMessage("LateUpdate");
+        Canvas.ForceUpdateCanvases();foreach(var fit in UnityEngine.Object.FindObjectsOfType<Match3DUIFitContent>())fit.Fit();Canvas.ForceUpdateCanvases();c.Render();RenderTexture.active=rt;var tex=new Texture2D(720,1280,TextureFormat.RGB24,false);tex.ReadPixels(new Rect(0,0,720,1280),0,0);tex.Apply();File.WriteAllBytes(Output+"/"+name+"-720x1280.png",tex.EncodeToPNG());c.targetTexture=old;c.aspect=oldAspect;RenderTexture.active=active;
         for(int i=0;i<canvases.Length;i++){canvases[i].renderMode=modes[i];canvases[i].worldCamera=cameras[i];canvases[i].planeDistance=distances[i];}UnityEngine.Object.Destroy(tex);rt.Release();UnityEngine.Object.Destroy(rt);
     }
 }

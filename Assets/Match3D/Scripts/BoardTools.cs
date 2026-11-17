@@ -17,6 +17,7 @@ public sealed class BoardTools : MonoBehaviour {
     }
     public const int ReturnCount=3;
     public const float StoreSeconds=.36f,StoreScaleSeconds=.2f;
+    public const float StoreTopScaleMultiplier=1.25f;
     // WX metadata field defaults: 3=OutSine, 26=InBack, 27=OutBack.
     public const Ease StoreXEase=Ease.OutSine,StoreYEase=Ease.InBack,StoreZEase=Ease.OutBack,StoreScaleEase=Ease.InBack;
     static BoardTools instance;
@@ -247,6 +248,7 @@ public sealed class BoardTools : MonoBehaviour {
             var obj=items[i];obj.transform.DOKill();
             var rotation=StoreRotation(obj);
             var scale=ItemFlightMotion.StoreScale(obj,obj.transform.localScale)*BoardToolVisual.StoreSize;
+            if(i==items.Count-1)scale*=StoreTopScaleMultiplier;
             var pos=StoreItemPosition(obj,StorePosition(column,i,items.Count),rotation,scale);
             obj.transform.DOScale(scale,StoreScaleSeconds).SetEase(StoreScaleEase);
             if(obj==newlyMoved){
