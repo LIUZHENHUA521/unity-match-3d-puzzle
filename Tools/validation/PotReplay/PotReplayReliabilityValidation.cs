@@ -8,6 +8,7 @@ using UnityEngine;
 public static class PotReplayReliabilityValidation {
     static void Check(bool value,string message){if(!value)throw new Exception(message);}
     public static void Run(){try{
+        PotReplayCacheValidation.Run();
         const string owner="pot-reliability-fixture",id="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         PlayerPrefs.DeleteKey("pot.replay.state.v1."+owner);
         foreach(var path in PotReplayFiles.List(owner+"_*"))PotReplayFiles.Delete(path);
@@ -63,6 +64,17 @@ public static class PotReplayReliabilityValidation {
         // Cancellation never commits a partial gzip or removes its original journal.
         Exception cancelled=null;var interrupted=Match3DStartupRunner.Run(PotReplayCache.Prepare(ready,()=>true),e=>cancelled=e);while(interrupted.MoveNext()){}
         Check(cancelled is OperationCanceledException&&File.Exists(journal)&&!File.Exists(PotReplayCache.Packed(ready))&&!File.Exists(Path.ChangeExtension(ready,".packing")),"cancelled compression retains original, discards partial output");
+        bool paused=false;Exception pauseFailure=null;
+        var suspended=Match3DStartupRunner.Run(PotReplayCache.Prepare(ready,()=>false,()=>paused),e=>pauseFailure=e);
+        string partial=Path.ChangeExtension(ready,".packing");int steps=0;
+        do{Check(suspended.MoveNext(),"compression yields before completing");Check(++steps<1000,"compression makes bounded progress");}while(PotReplayFiles.Size(partial)==0);
+        paused=true;long progress=PotReplayFiles.Size(partial);
+        Check(progress>0,"partial gzip contains real progress");
+        for(int i=0;i<30;i++){Check(suspended.MoveNext(),"gameplay pauses compression without cancelling");Check(PotReplayFiles.Size(partial)==progress,"paused compressor does not write");}
+        Check(File.Exists(journal)&&!File.Exists(PotReplayCache.Packed(ready)),"paused output is never committed");
+        paused=false;while(suspended.MoveNext()){}
+        Check(pauseFailure==null,"paused gzip resumes without exception");
+        Check(PotReplayTransfer.Unpack(File.ReadAllBytes(PotReplayCache.Packed(ready)))==PotReplayTransfer.Unpack(File.ReadAllBytes(packed)),"resumed gzip equals uninterrupted recording");
         // Commit gzip before deleting journal. A repeated prepare reuses the committed bytes.
         var prepare=PotReplayCache.Prepare(ready,()=>false);while(prepare.MoveNext()){if(prepare.Current is System.Collections.IEnumerator child)while(child.MoveNext()){} }
         string durable=PotReplayCache.Packed(ready);Check(File.Exists(durable)&&!File.Exists(journal),"gzip commit frees raw journal");

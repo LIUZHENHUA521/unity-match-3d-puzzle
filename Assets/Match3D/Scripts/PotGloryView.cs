@@ -50,9 +50,9 @@ public sealed class PotGloryView : MonoBehaviour {
             bool first=rows.Count==0;if(first)newest=honor.certificate.certificateKey;
             row.Configure(honor,first&&!string.IsNullOrEmpty(owner)&&newest!=PlayerPrefs.GetString("pot.glory.seen."+owner),()=>{if(!Current())return;MarkSeen();flow.ShowPotCollectedCertificate(honor.certificate);},()=>{
                 if(opening||!Current())return;
-                if(string.IsNullOrEmpty(honor.replayId)){flow.Notice("这局录像尚未同步或未保存，请稍后重试");return;}
+                if(string.IsNullOrEmpty(honor.replayId)){row.RefreshReplayState(honor,owner);flow.Notice(PotGloryReplayState.Explanation(PotGloryReplayState.Resolve(honor,owner)));return;}
                 opening=true;MarkSeen();flow.OpenPotGloryReplay(honor.replayId,Current,error=>{opening=false;});
-            });rows.Add(row);
+            },owner);rows.Add(row);
         }
         cursor+=honors.Length;hasMore=reply.hasMore&&honors.Length>0;
         content.sizeDelta=new Vector2(633,Mathf.Max(850,rows.Count*277+(hasMore?72:0)));

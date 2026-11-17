@@ -9,12 +9,17 @@ public static class PotReplayQueue {
     public static PotReplayLocalState.Entry Import(string owner,string path){
         string id=Id(owner,path);var entry=PotReplayLocalState.Get(owner,id);
         if(entry!=null)return entry;
-        entry=new PotReplayLocalState.Entry{recordId=id,state="queued",updatedAt=PotReplayLocalState.Now};
+        entry=new PotReplayLocalState.Entry{recordId=id,state="queued",updatedAt=PotReplayLocalState.Now,retainedAt=PotReplayLocalState.Now};
+        var data=ReadMetadata(path);
+        if(data!=null){if(data.recordId!=id)throw new IOException("录像对局不匹配");entry.date=data.level?.date;entry.tier=data.level?.tier;entry.result=data.status;}
+        PotReplayLocalState.Put(owner,entry);return entry;
+    }
+    public static PotReplayData ReadMetadata(string path){
         PotReplayData data=null;
         if(path.Contains(".ready")){
             if(PotReplayFiles.Size(path)>8*1024*1024)throw new IOException("录像索引过大");
             var m=JsonUtility.FromJson<PotReplayJournal.Manifest>(PotReplayFiles.Read(path));
-            if(m?.data==null||m.data.recordId!=id)throw new IOException("录像索引与文件名不匹配");
+            if(m?.data==null)throw new IOException("录像索引无效");
             data=m.data;
         }
         else if(path.Contains(".pending")){
@@ -27,8 +32,7 @@ public static class PotReplayQueue {
                 }
             }
         }
-        if(data!=null){if(data.recordId!=id)throw new IOException("录像对局不匹配");entry.date=data.level?.date;entry.tier=data.level?.tier;entry.result=data.status;}
-        PotReplayLocalState.Put(owner,entry);return entry;
+        return data;
     }
     public static string Next(string owner){
         var candidates=PotReplayFiles.List(owner+"_*.ready").Concat(PotReplayFiles.List(owner+"_*.pending"));
@@ -51,6 +55,7 @@ public static class PotReplayQueue {
     public static void Reconcile(string owner){
         bool pressure=PotReplayFiles.List().Sum(p=>PotReplayFiles.Size(p))>96L*1024*1024;
         foreach(var e in PotReplayLocalState.All(owner)){
+            if(PotReplayRetention.IsActive(owner,e.recordId))continue;
             if(e.state=="synced"){PotReplayCache.DeleteSynced(owner,e.recordId);continue;}
             string ready=PotReplayService.PathFor(owner,e.recordId,".ready"),pending=PotReplayService.PathFor(owner,e.recordId,".pending");
             bool complete=PotReplayFiles.Exists(ready)||PotReplayFiles.Exists(pending);

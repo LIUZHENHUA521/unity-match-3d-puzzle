@@ -4,10 +4,10 @@ using System.IO;
 
 public static class PotReplayCache {
     public static string Packed(string path)=>Path.ChangeExtension(path,".packed");
-    public static IEnumerator Prepare(string path,Func<bool> pause){
+    public static IEnumerator Prepare(string path,Func<bool> cancel,Func<bool> pause=null){
         string packed=Packed(path),temporary=Path.ChangeExtension(path,".packing");
         if(!PotReplayFiles.Exists(packed)){
-            try {yield return PotReplayTransfer.PackFile(path,temporary,pause);
+            try {yield return PotReplayTransfer.PackFile(path,temporary,cancel,pause);
                 PotReplayFiles.Move(temporary,packed);
             }finally{if(PotReplayFiles.Exists(temporary))PotReplayFiles.Delete(temporary);}
         }

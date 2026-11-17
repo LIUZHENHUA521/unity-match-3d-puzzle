@@ -8,7 +8,7 @@ public static class PotReplayLocalState {
     [Serializable] public sealed class Entry {
         public string recordId,date,tier,result,state,reason,phase,clientVersion,replayVersion;public long httpStatus,diagnosticAttempt;
         public int diagnosticAttempts;public long diagnosticNextAttempt;public bool diagnosticStopped;
-        public long updatedAt,nextAttempt;public int attempts,repairVersion;public bool reported;
+        public long updatedAt,nextAttempt,retainedAt;public int attempts,repairVersion;public bool reported;
     }
     [Serializable] sealed class Ledger {public List<Entry> entries=new List<Entry>();}
     const string Prefix="pot.replay.state.v1.";
@@ -30,7 +30,7 @@ public static class PotReplayLocalState {
         ledger.entries.RemoveAll(e=>(e.state=="failed"||e.state=="synced")&&Now-e.updatedAt>30L*86400000&&!PotReplayFiles.List(owner+"_"+e.recordId+".*").Any());
         try{PlayerPrefs.SetString(Prefix+owner,JsonUtility.ToJson(ledger));PlayerPrefs.Save();}catch(Exception error){Debug.LogWarning(error.Message);}
     }
-    public static void Start(string owner,Match3DGameRecords.Record record,Match3DDailyLevel level){Put(owner,new Entry{recordId=record.recordId,date=level.date,tier=level.tier,state="recording",updatedAt=Now});}
+    public static void Start(string owner,Match3DGameRecords.Record record,Match3DDailyLevel level){Put(owner,new Entry{recordId=record.recordId,date=level.date,tier=level.tier,state="recording",updatedAt=Now,retainedAt=Now,clientVersion=PotReplayBuild.Version,replayVersion=PotReplayData.Version});}
     public static void Set(string owner,string id,string state,string reason="",string result=null){
         var e=Get(owner,id);if(e==null)return;e.state=state;e.reason=(reason??"").Substring(0,Math.Min(240,(reason??"").Length));if(result!=null)e.result=result;
         e.updatedAt=Math.Max(Now,e.updatedAt+1);e.reported=false;if(state=="synced"){e.attempts=0;e.nextAttempt=0;}Put(owner,e);

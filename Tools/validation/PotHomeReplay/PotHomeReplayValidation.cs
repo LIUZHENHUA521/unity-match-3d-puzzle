@@ -36,6 +36,9 @@ public static class PotHomeReplayValidation {
             service.GetType().GetField("endpoint",Private)?.SetValue(service,File.ReadAllText(Output+"/endpoint"));
         }
         var replay=PotReplayService.Instance;
+        // Keep the service enabled for explicit upload calls, while disposing its automatic queue.
+        var queueField=typeof(PotReplayService).GetField("queueRoutine",Private);
+        (queueField.GetValue(replay) as IDisposable)?.Dispose();queueField.SetValue(replay,null);replay.enabled=true;
         Account(Owner);PlayerPrefs.DeleteKey("pot.replay.state.v1."+Owner);PlayerPrefs.DeleteKey("pot.replay.state.v1."+Other);foreach(var tier in new[]{"bachelor","elite"})PlayerPrefs.DeleteKey("pot.home-replay.win."+Owner+"."+tier);
         Mode("pending");flow.Home();yield return new WaitForSecondsRealtime(1.2f);
         Check(!Caption("Bachelor").gameObject.activeSelf&&!Caption("Elite").gameObject.activeSelf,"unfinished tiers retain original reward artwork");

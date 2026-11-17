@@ -9,13 +9,13 @@ using System.Text;
 public static class PotReplayTransfer {
     public const int MaxFileBytes=16*1024*1024;
     // Pack one disk-backed frame/chunk at a time; never allocate an entire uncompressed replay.
-    public static IEnumerator PackFile(string source,string target,Func<bool> pause=null){
+    public static IEnumerator PackFile(string source,string target,Func<bool> cancel=null,Func<bool> pause=null){
         using(var output=new LimitedStream(PotReplayFiles.OpenWrite(target),MaxFileBytes)){
             using(var gzip=new GZipStream(output,System.IO.Compression.CompressionLevel.Fastest)){
                 long total=0;float budget=Time.realtimeSinceStartup;
                 if(source.EndsWith(".ready",StringComparison.Ordinal)){
                     using(var writer=new StreamWriter(gzip,new UTF8Encoding(false),32768,true))foreach(var part in PotReplayJournal.JsonPieces(source)){
-                        if(pause!=null&&pause())throw new OperationCanceledException("录像将在空闲时继续同步");
+                        do {if(cancel!=null&&cancel())throw new OperationCanceledException("录像将在空闲时继续同步");if(pause==null||!pause())break;yield return null;}while(true);
                         total+=Encoding.UTF8.GetByteCount(part);if(total>PotReplayService.MaxJsonBytes)throw new IOException("录像展开大小超过64MiB");
                         writer.Write(part);
                         if(Time.realtimeSinceStartup-budget>.004f){writer.Flush();yield return null;budget=Time.realtimeSinceStartup;}
@@ -23,7 +23,7 @@ public static class PotReplayTransfer {
                 }else{
                     using(var input=PotReplayFiles.OpenRead(source)){var buffer=new byte[32768];int count;
                         while((count=input.Read(buffer,0,buffer.Length))>0){
-                            if(pause!=null&&pause())throw new OperationCanceledException("录像将在空闲时继续同步");
+                            do {if(cancel!=null&&cancel())throw new OperationCanceledException("录像将在空闲时继续同步");if(pause==null||!pause())break;yield return null;}while(true);
                             total+=count;if(total>PotReplayService.MaxJsonBytes)throw new IOException("录像展开大小超过64MiB");gzip.Write(buffer,0,count);
                             if(Time.realtimeSinceStartup-budget>.004f){yield return null;budget=Time.realtimeSinceStartup;}
                         }

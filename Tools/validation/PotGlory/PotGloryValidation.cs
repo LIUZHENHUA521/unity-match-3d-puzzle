@@ -36,7 +36,9 @@ public static class PotGloryValidation {
  case 1:
   Check(Rows().Length==10,"first page fetched through real HTTP transport");Check(view.count.Value==12,"total count uses server total");
   Check(Rows()[0].tier.text=="清北局"&&Rows()[1].tier.text=="本科局","both tier cards mapped");Check(Rows()[0].duration.text=="03:28","duration formatted");
-  Check(Rows()[0].badge.activeSelf,"newly acquired badge visible");Check(Rows()[2].replayState.transform.parent.gameObject.activeSelf,"pending replay remains visible");
+  Check(Rows()[0].badge.activeSelf,"newly acquired badge visible");Check(Rows()[2].replayState.transform.parent.gameObject.activeSelf,"unavailable replay remains visible");
+  Check(Rows()[2].replayState.text=="本局未保存"&&Rows()[3].replayState.text=="回放同步中"&&Rows()[4].replayState.text=="回放待同步","unavailable, uploading and legacy pending states rendered separately");
+  Rows()[2].replay.onClick.Invoke();Check(!(bool)Get(view,"opening"),"unavailable row never starts a download");
   Check(view.more.gameObject.activeSelf,"pagination offered");
   var thumb=Rows()[0].transform.Find("Certificate thumbnail");
   var labels=thumb.GetComponentsInChildren<Text>();

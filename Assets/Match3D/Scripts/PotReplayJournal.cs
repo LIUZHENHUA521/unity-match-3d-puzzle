@@ -39,12 +39,14 @@ public static class PotReplayJournal {
         yield return "]"+metadata.Substring(start+marker.Length);
     }
     // Old unfinished files are scanned once with O(board + events) memory, never ReadAllText/Split.
-    public static System.Collections.IEnumerator Recover(string journal){
+    public static System.Collections.IEnumerator Recover(string journal,Func<bool> cancel=null,Func<bool> pause=null){
         using(var stream=PotReplayFiles.OpenRead(journal))using(var reader=new StreamReader(stream,Encoding.UTF8,false,16384)){
             var header=Line(reader);if(header==null)yield break;
             var data=JsonUtility.FromJson<PotReplayData>(header);if(data==null||data.stage!=2)yield break;
             data.frames.Clear();data.events.Clear();var state=new Dictionary<int,PotReplayPose>();PotReplayFrame last=null;int count=0;
-            string line;while((line=Line(reader))!=null){
+            string line;while(true){
+                do{if(cancel!=null&&cancel())throw new OperationCanceledException("录像恢复已暂停");if(pause==null||!pause())break;yield return null;}while(true);
+                line=Line(reader);if(line==null)break;
                 PotReplayFrame frame=null;try{if(line.EndsWith("}",StringComparison.Ordinal))frame=JsonUtility.FromJson<PotReplayFrame>(line);}catch{}
                 if(frame?.items==null||last!=null&&frame.t<last.t||count==0&&!frame.full)break;
                 foreach(var pose in frame.items)state[pose.id]=pose;

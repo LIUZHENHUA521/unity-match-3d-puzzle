@@ -14,6 +14,8 @@ if not (STAGE / 'Library').exists() and (ROOT / 'Library').exists():
     subprocess.run(['cp', '-cR', str(ROOT / 'Library'), str(STAGE / 'Library')], check=True)
 shutil.copy(Path(__file__).with_name('PotReplayReliabilityValidation.cs'),
             STAGE / 'Assets/Match3D/Editor/PotReplayReliabilityValidation.cs')
+shutil.copy(Path(__file__).with_name('PotReplayCacheValidation.cs'),
+            STAGE / 'Assets/Match3D/Editor/PotReplayCacheValidation.cs')
 log = OUT / 'unity.log'
 subprocess.run(['/Applications/Unity/Unity.app/Contents/MacOS/Unity', '-batchmode',
                 '-projectPath', str(STAGE), '-executeMethod', 'PotReplayReliabilityValidation.Run',

@@ -33,6 +33,7 @@ public sealed class PotReplayRecorder : MonoBehaviour {
         owner=account.State.inviteCode;recordId=record.recordId;journal=null;writtenBytes=0;
         try{
             PotReplayQueue.Reconcile(owner);
+            PotReplayRetention.Trim(owner);
             PotReplayLocalState.Start(owner,record,level);
             if(PotReplayFiles.List().Sum(x=>PotReplayFiles.Size(x))>128*1024*1024)throw new Exception("录像本地缓存已满，请联网同步");
             owner=account.State.inviteCode;pendingFrames.Clear();memory=new PotReplayMemoryPolicy();lastMemoryNotification=float.NegativeInfinity;

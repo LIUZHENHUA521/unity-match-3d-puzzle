@@ -18,7 +18,7 @@ public sealed class PotGloryRow : MonoBehaviour {
         foreach(var graphic in card.GetComponentsInChildren<Graphic>())graphic.raycastTarget=false;
         Destroy(preview.gameObject);
     }
-    public void Configure(PotReplayService.Honor honor,bool fresh,Action showCertificate,Action showReplay){
+    public void Configure(PotReplayService.Honor honor,bool fresh,Action showCertificate,Action showReplay,string owner=null){
         var data=honor.certificate;tier.text=data.rewardTier=="elite"?"清北局":"本科局";
         date.text=(data.dateKey??"").Replace('-','.');
         long seconds=Math.Max(0,data.activeDurationMs/1000);duration.text=$"{seconds/60:00}:{seconds%60:00}";
@@ -26,7 +26,11 @@ public sealed class PotGloryRow : MonoBehaviour {
         badge.SetActive(fresh);
         certificate.onClick.AddListener(()=>{if(Match3DFlow.Instance)Match3DFlow.Instance.HomeClick();showCertificate();});
         replay.onClick.AddListener(()=>{if(Match3DFlow.Instance)Match3DFlow.Instance.HomeClick();showReplay();});
-        bool ready=!string.IsNullOrEmpty(honor.replayId);replayState.transform.parent.gameObject.SetActive(!ready);
-        replayState.text="回放待同步";replay.image.color=ready?Color.white:new Color(.65f,.65f,.65f,1);
+        RefreshReplayState(honor,owner);
+    }
+    public void RefreshReplayState(PotReplayService.Honor honor,string owner){
+        string state=PotGloryReplayState.Resolve(honor,owner);bool ready=state=="ready";
+        replayState.transform.parent.gameObject.SetActive(!ready);
+        replayState.text=PotGloryReplayState.Caption(state);replay.image.color=ready?Color.white:new Color(.65f,.65f,.65f,1);
     }
 }
