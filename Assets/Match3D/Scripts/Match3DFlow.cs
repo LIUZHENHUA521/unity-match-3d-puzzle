@@ -263,11 +263,13 @@ public partial class Match3DFlow : MonoBehaviour {
     Match3DDailyLevel dailyLevel;
     string challengeTier="bachelor";
     string CurrentModelThemeTitle => Match3DModelThemes.Title(ActiveModelTheme,CurrentTheme.title);
-    LevelLayoutConfig.Profile SourceProfile(bool tutorial=false) => Match3DModelThemes.Get(ActiveModelTheme,CurrentTheme.sourceEnvironment,tutorial);
+    LevelLayoutConfig.Profile potEditorRunProfile;
+    LevelLayoutConfig.Profile SourceProfile(bool tutorial=false) => !tutorial&&potEditorRunProfile!=null?potEditorRunProfile:Match3DModelThemes.Get(ActiveModelTheme,CurrentTheme.sourceEnvironment,tutorial);
     public string SourceEnvironmentForTheme(int theme){return library.themes[theme].sourceEnvironment;}
     public void BeginReward(int theme,string tier){
 #if UNITY_EDITOR
-        if(PotUseEditorConfiguration){BeginLocal(theme,tier,true);ShowTips("编辑器配置 · 道具免费 · 不发放红包");return;}
+        if(PotEditorSource==2){var config=GetComponent<PotEditorLevelConfig>()??gameObject.AddComponent<PotEditorLevelConfig>();config.Begin(endpoint,theme,tier);return;}
+        if(PotEditorSource==1){BeginLocal(theme,tier,true);ShowTips("编辑器配置 · 道具免费 · 不发放红包");return;}
         var preview=GetComponent<PotEditorBetaLevels>()??gameObject.AddComponent<PotEditorBetaLevels>();
         preview.Begin(endpoint,theme,tier);
 #else
@@ -286,11 +288,11 @@ public partial class Match3DFlow : MonoBehaviour {
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.NewDailyRun(level);StartStage();
     }
     public void Begin(int theme){BeginLocal(theme,"bachelor",false);}
-    void BeginLocal(int theme,string tier,bool localPreview){
+    void BeginLocal(int theme,string tier,bool localPreview,LevelLayoutConfig.Profile editorProfile=null,string editorTheme=null){
         BeginProgressRun();
-        dailyLevel=null;runModelTheme=null;challengeTier=tier;
+        dailyLevel=null;runModelTheme=null;challengeTier=tier;potEditorRunProfile=editorProfile;
 #if UNITY_EDITOR
-        var selectedTheme=UnityEditor.EditorPrefs.GetString(EditorThemePreference,"");
+        var selectedTheme=editorTheme??UnityEditor.EditorPrefs.GetString(EditorThemePreference,"");
         if(Match3DModelThemes.TryGet(selectedTheme,SourceEnvironmentForTheme(theme),out _))runModelTheme=selectedTheme;
 #endif
         // Ordinary MainLevel starts with the recovered first-stage row.

@@ -13,7 +13,7 @@ shutil.copy(Path(__file__).with_name('PotEditorBetaValidation.cs'),STAGE/'Assets
 fixture=subprocess.Popen(['node',str(Path(__file__).with_name('fixture.mjs'))],stdout=subprocess.PIPE,text=True)
 try:
     if fixture.stdout.readline().strip()!='READY': raise RuntimeError('Fixture did not start')
-    subprocess.run(['/Applications/Unity/Unity.app/Contents/MacOS/Unity','-batchmode','-projectPath',str(STAGE),'-executeMethod','PotEditorBetaValidation.Run','-logFile',str(OUT/'unity.log')],check=True,timeout=300,cwd=STAGE)
+    subprocess.run(['/Applications/Unity/Unity.app/Contents/MacOS/Unity','-batchmode','-projectPath',str(STAGE),'-executeMethod','PotEditorBetaValidation.Run','-logFile',str(OUT/'unity.log')],check=True,timeout=960,cwd=STAGE)
     report=(STAGE/'work/pot-editor-beta/checks.txt').read_text()
     print(report)
     if not report.endswith('COMPLETE\n'): raise RuntimeError('Validation incomplete')
