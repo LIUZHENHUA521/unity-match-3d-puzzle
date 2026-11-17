@@ -1,4 +1,4 @@
-# Pot 发布期名称混淆（试验开关）
+# Pot 发布期名称混淆（微信发布默认启用）
 
 仅改写发布副本的玩家程序集。源码、编辑器程序集、组件类型、字段、公开接口与协议保持原样；不增加控制流、加密、运行时解密或垃圾指令。本版仅覆盖 methods.txt 中 15 个私有方法，**不是整个游戏的全面混淆**。类型、编译器生成的协程/闭包名称与字符串仍可能提供算法线索。
 
@@ -8,7 +8,7 @@ python3 Tools/wechat/obfuscation/test.py
 python3 Tools/wechat/obfuscation/compare.py Builds/PotObfuscationProject Builds/PotProtectedProject
 ```
 
-默认发布流程仍不启用试验开关。未执行上传、提审或正式发布。不要手工把这些 C# 工具放入主工程 Assets。
+按用户约定，微信构建默认启用名称混淆，Unity 发布菜单也显式传入 `--obfuscate`；不提供发布时关闭混淆的参数。混淆或验证失败将停止构建和上传，不自动回退未混淆包。不要手工把这些 C# 工具放入主工程 Assets。
 
 ## 构建方式
 
@@ -24,6 +24,6 @@ python3 Tools/wechat/obfuscation/compare.py Builds/PotObfuscationProject Builds/
 
 test.py 覆盖直接调用、嵌套调用、委托、迭代器、IL 等价，以及不安全/缺失/字符串引用目标和重复执行的拒绝。PotSeedProbe.cs 可运行实际游戏程序集的 Generate 与 GenerateSource（注入相同伪随机流），比较 36 组关卡输出及随机调用次数。它不模拟 Unity 原生物理或微信设备。
 
-扩展保护范围应单独审查名单，不需要修改业务源码。需在微信真机验证三消、满槽、道具、复活、回放及性能后再考虑默认启用。名称混淆增加阅读成本，无法阻止算法还原。
+扩展保护范围应单独审查名单，不需要修改业务源码。微信真机的三消、满槽、道具、复活、回放及性能仍需在发布验收中验证。名称混淆增加阅读成本，无法阻止算法还原。
 
 本次构建与体积结果见 `docs/validation/pot-release-obfuscation.md`。

@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
 parser.add_argument('--stage', type=Path, default=ROOT / 'Builds/WechatProject')
 parser.add_argument('--prepare-only', action='store_true')
-parser.add_argument('--obfuscate', action='store_true', help='Protect selected private method names in player assemblies only')
+parser.add_argument('--obfuscate', action='store_true', default=True,
+                    help='Protect selected private method names (always enabled for WeChat releases)')
 parser.add_argument('--version', help='Release version stamped into the staged Unity player')
 args = parser.parse_args()
 if args.version and not re.fullmatch(r'\d+\.\d+\.\d+', args.version):

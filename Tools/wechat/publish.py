@@ -41,7 +41,7 @@ def publish(args):
     print('1/3 正在构建独立副本；详细进度见 Builds/wechat-build.log', flush=True)
     # A dedicated stage avoids consuming another build's shared output.
     stage = ROOT / 'Builds/WechatMenuProject'
-    subprocess.run([sys.executable, str(ROOT / 'Tools/wechat/build.py'), '--stage', str(stage), '--version', args.version],
+    subprocess.run([sys.executable, str(ROOT / 'Tools/wechat/build.py'), '--stage', str(stage), '--version', args.version, '--obfuscate'],
                    cwd=ROOT, check=True, timeout=3600)
     output = stage / config['output']
     print('2/3 校验发布包', flush=True)

@@ -1,3 +1,7 @@
+## 微信发布默认名称混淆（2026-11-17）
+
+按用户约定，后续体验版使用发布期名称混淆版本。`build.py` 默认开启，Unity 发布菜单通过 `publish.py` 显式启用；任何混淆或验证错误都会停止发布。业务源码不受影响。配置与维护说明见 `obfuscation/README.md`。
+
 ## 界面发布图片优化
 
 构建依赖 `pngquant` 和 `jpeg-turbo`（`brew install pngquant jpeg-turbo`）。只在发布副本中对 `MailSkinPS`、`ProfileSkinPS`、`PotGlorySkin`、`SignInSkinPS`、`InviteSkinPS` 做质量下限 90 的颜色量化，保留原始分辨率；未达到质量下限的图片保留原图。五组素材通过 GUID 保持预制体引用，并移出发布副本的 Resources 后打入 DXT5 图集，避免重复携带独立贴图。源工程图片不变；未来若增加按 Resources 路径加载这五组素材的代码，须同步调整该发布转换。
