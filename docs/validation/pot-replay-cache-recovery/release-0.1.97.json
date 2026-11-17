@@ -1,0 +1,61 @@
+{
+  "client": {
+    "version": "0.1.97",
+    "snapshot": "/Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/Wechat/release-0.1.97-pot-replay-cache",
+    "receipt": "/Users/liuzhenhua/Desktop/code/unity-match-3d-puzzle/Builds/Wechat/upload-info-0.1.97-pot-replay-cache.json",
+    "size": {
+      "total": 31458608,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 31458608
+        },
+        {
+          "name": "main",
+          "size": 2463362
+        },
+        {
+          "name": "/data-package/",
+          "size": 22669571
+        },
+        {
+          "name": "/wasmcode/",
+          "size": 6325675
+        }
+      ]
+    },
+    "inputs": 6227,
+    "packageFiles": 70,
+    "inputCoverage": "unchanged",
+    "packageCoverage": "unchanged"
+  },
+  "server": {
+    "version": "064",
+    "status": "normal",
+    "flowRatio": 100,
+    "image": "ccr.ccs.tencentyun.com/tcb-100026349433-ntfu/ca-hadnxhdq_goose-3d-pvp:goose-3d-pvp-064-20261117122937",
+    "sourceFilesChecked": 81,
+    "mismatches": [],
+    "health": {
+      "/health": {
+        "status": 200,
+        "data": {
+          "ok": true,
+          "service": "goose-3d-pvp",
+          "rooms": 0
+        }
+      },
+      "/invites/health": {
+        "status": 200,
+        "data": {
+          "ready": true,
+          "database": true,
+          "loginConfigured": true
+        }
+      }
+    }
+  },
+  "clientCommit": "fba174d5c7b3a13c713701bf11bff6e58634b6ee",
+  "serverCommit": "cf0c07dd39fa1ed7954ace3bbc5916487640adf6",
+  "scope": "complete current Unity source and services/goose-server workspace; unrelated service, analysis outputs, historical branches/worktrees excluded"
+}
