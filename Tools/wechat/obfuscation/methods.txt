@@ -1,0 +1,16 @@
+# Private methods only. All overloads must be reviewed before adding a name.
+ChallengePlan::GenerateInternal
+ChallengePlan::ValidateLayer
+ChallengePlan::SelectLayerTypes
+ChallengePlan::AllocateLayerBudgets
+ChallengePlan::PlaceType
+ChallengePlan::FindAvailableLayer
+ChallengePlan::BuildTiles
+ChallengePlan::ShuffleLayer
+ChallengePlan/FrequencyPool::RollSource
+InputController::SourcePick
+InputController::RepositionSource
+InputController::SourceCombine
+InputController::RemoveSourceVisual
+InputController::Reposition
+InputController::Resolve

@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
 parser.add_argument('--stage', type=Path, default=ROOT / 'Builds/WechatProject')
 parser.add_argument('--prepare-only', action='store_true')
+parser.add_argument('--obfuscate', action='store_true', help='Protect selected private method names in player assemblies only')
 parser.add_argument('--version', help='Release version stamped into the staged Unity player')
 args = parser.parse_args()
 if args.version and not re.fullmatch(r'\d+\.\d+\.\d+', args.version):
@@ -180,7 +181,10 @@ for relative in (
     text = meta.read_text()
     text = re.sub(r'(?m)^(    quality: ).+$', r'\g<1>0.15', text)
     meta.write_text(text)
-print(f'Staged {stage}; retired reference art excluded', flush=True)
+from pot_obfuscation import prepare, input_hashes, verify
+prepare(ROOT, stage, args.obfuscate)
+(stage / 'BuildInputs/pot-input-hashes.json').write_text(json.dumps(input_hashes(stage), sort_keys=True, indent=2) + '\n')
+print(f'Staged {stage}; retired reference art excluded; obfuscation={args.obfuscate}', flush=True)
 if args.prepare_only:
     raise SystemExit(0)
 log = ROOT / 'Builds/wechat-build.log'
@@ -201,6 +205,8 @@ print('Lossless cover compression: ' + json.dumps(optimize_cover_jpegs(output)),
 entry = (output / 'game.js').read_text()
 if 'loadDataPackageFromSubpackage: true' not in entry:
     raise SystemExit('Resources fell back to CDN; refusing to publish an incomplete package')
+metrics = verify(stage, output, args.obfuscate)
+print('Pot package sizes: ' + json.dumps({k: v for k, v in metrics.items() if k != 'files'}), flush=True)
 destination = ROOT / 'Builds/Wechat/minigame'
 if destination.exists():
     # Only generated output is replaced. Keep the previous successful package.
