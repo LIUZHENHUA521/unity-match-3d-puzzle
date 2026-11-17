@@ -8,7 +8,7 @@ createServer(async(req,res)=>{
  let body='';for await(const chunk of req)body+=chunk;
  if(req.url==='/pot-editor/config'){
   configReads++;
-  res.end(JSON.stringify({ok:true,revision:configReads,config:{layers:[{count:configReads%2?30:36,types:4},{count:12,types:2}]}}));return;
+  res.end(JSON.stringify({ok:true,revision:configReads,config:{layers:[{count:configReads%2?30:36,types:4,height:14.5},{count:12,types:2,height:19.5}]}}));return;
  }
  const {tier}=JSON.parse(body);reads++;
  const count=reads===1?30:12;

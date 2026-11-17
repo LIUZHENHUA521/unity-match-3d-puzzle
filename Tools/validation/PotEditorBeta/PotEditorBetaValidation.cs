@@ -75,6 +75,7 @@ public static class PotEditorBetaValidation {
             var profile=Match3DModelThemes.Get(entry.id,flow.SourceEnvironmentForTheme(0));
             var snapshot=(LevelLayoutConfig.Profile)typeof(Match3DFlow).GetField("potEditorRunProfile",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(flow);
             Check(snapshot!=null&&snapshot.layers.Sum(l=>l.count)==expected,"fresh config and duplicate click guard "+label);
+            Check(snapshot.layers[0].height==14.5f&&snapshot.layers[1].height==19.5f,"backend heights override local heights "+label);
             Check(snapshot!=profile&&snapshot.layers!=profile.layers&&snapshot.seconds==profile.seconds,"local profile preserved "+label);
             Check(flow.ActiveModelTheme==entry.id&&LevelGenerator.Instance.objectsOnScene.Count==15,"local theme and tutorial "+label);
             Check(typeof(Match3DFlow).GetField("dailyLevel",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(flow)==null,"no daily snapshot "+label);
@@ -84,6 +85,7 @@ public static class PotEditorBetaValidation {
             Check(GameManager.Instance.currentLevelTime>profile.seconds-5&&GameManager.Instance.currentLevelTime<=profile.seconds,"local timer "+label);
             flow.RestartStage();while(flow.CreationInProgress)yield return null;
             Check(flow.ActiveModelTheme==entry.id&&LevelGenerator.Instance.objectsOnScene.Count==expected&&flow.UnlimitedTools,"retry preserves config "+label);
+            Check(snapshot.layers[0].height==14.5f&&snapshot.layers[1].height==19.5f,"retry preserves backend heights "+label);
             var extra=PotEditorLevelConfig.BuildProfile(profile,new PotEditorLevelConfig.Config{layers=Enumerable.Range(0,profile.layers.Length+2).Select(_=>new PotEditorLevelConfig.Layer{count=12,types=2}).ToArray()});
             Check(extra.layers.Take(profile.layers.Length).Select(l=>l.height).SequenceEqual(profile.layers.Select(l=>l.height))&&extra.layers.Last().height>extra.layers[extra.layers.Length-2].height,"additional layer heights "+label);
             Check(extra.layers.Last().weights.Length==0&&extra.layers.Take(profile.layers.Length).Select((l,i)=>l.weights.SequenceEqual(profile.layers[i].weights??Array.Empty<float>())).All(x=>x),"preserve local weights and new equal weights "+label);

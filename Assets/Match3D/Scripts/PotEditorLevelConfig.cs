@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 // Editor-only configuration reader. Never creates player identities or reward runs.
 public sealed class PotEditorLevelConfig : MonoBehaviour {
-    [Serializable] public sealed class Layer { public int count,types; }
+    [Serializable] public sealed class Layer { public int count,types;public float height; }
     [Serializable] public sealed class Config { public Layer[] layers; }
     [Serializable] sealed class Reply { public bool ok;public string error;public Config config;public int revision; }
     bool loading;
@@ -48,6 +48,10 @@ public sealed class PotEditorLevelConfig : MonoBehaviour {
             if(input==null||input.count<3||input.count>30000||input.count%3!=0||input.types<1||input.types>input.count/3||input.types>source.prefabs.Length)throw new ArgumentException("第 "+(i+1)+" 层数量或类型数无效");
             var original=i<originals.Length?originals[i]:null;
             float height=original!=null?original.height:i==0?14:layers[i-1].height+step;
+            if(input.height!=0){
+                if(float.IsNaN(input.height)||float.IsInfinity(input.height)||input.height<=1.5f||input.height>30)throw new ArgumentException("第 "+(i+1)+" 层高度无效");
+                height=input.height;
+            }
             layers[i]=new ChallengeLayer(input.count,input.types,height){weights=original?.weights==null?Array.Empty<float>():(float[])original.weights.Clone()};
         }
         return new LevelLayoutConfig.Profile{environment=source.environment,sourceIndex=source.sourceIndex,seconds=source.seconds,limitHeight=source.limitHeight,prefabs=(GameObject[])source.prefabs.Clone(),tutorialNames=source.tutorialNames,ordinaryTypes=source.ordinaryTypes,layers=layers};

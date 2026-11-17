@@ -1,0 +1,310 @@
+TAP version 13
+# Subtest: counts entire multi-batch result independently from page and keeps received-time cutoff on pagination
+ok 1 - counts entire multi-batch result independently from page and keeps received-time cutoff on pagination
+  ---
+  duration_ms: 18.257875
+  ...
+# Subtest: completion dates, registration cohort, placement and user filters remain independent
+ok 2 - completion dates, registration cohort, placement and user filters remain independent
+  ---
+  duration_ms: 0.334416
+  ...
+# Subtest: association is bounded and scoped to owner plus record, including unsettled/orphan events
+ok 3 - association is bounded and scoped to owner plus record, including unsettled/orphan events
+  ---
+  duration_ms: 0.181291
+  ...
+# Subtest: scan limits and storage failures produce errors, never zero or partial totals
+ok 4 - scan limits and storage failures produce errors, never zero or partial totals
+  ---
+  duration_ms: 0.39775
+  ...
+# Subtest: rejects invalid dates, ids, unsupported actions and malformed cursors
+ok 5 - rejects invalid dates, ids, unsupported actions and malformed cursors
+  ---
+  duration_ms: 0.343791
+  ...
+# Subtest: entrypoint requires active administrator with existing records permission for both ad actions
+ok 6 - entrypoint requires active administrator with existing records permission for both ad actions
+  ---
+  duration_ms: 2.549708
+  ...
+# Subtest: keyset pagination tolerates late commits before and after the last row without duplicates or offset skips
+ok 7 - keyset pagination tolerates late commits before and after the last row without duplicates or offset skips
+  ---
+  duration_ms: 0.539667
+  ...
+# Subtest: keyset tie breaker preserves same-timestamp records and rejects malformed old offset cursors
+ok 8 - keyset tie breaker preserves same-timestamp records and rejects malformed old offset cursors
+  ---
+  duration_ms: 0.234
+  ...
+# Subtest: beta flag preserves inventory, identity and test-tools permission; revision and audit are atomic
+ok 9 - beta flag preserves inventory, identity and test-tools permission; revision and audit are atomic
+  ---
+  duration_ms: 1.383708
+  ...
+# Subtest: shared beta config saves immediately with strict layer validation and optimistic locking
+ok 10 - shared beta config saves immediately with strict layer validation and optimistic locking
+  ---
+  duration_ms: 3.016625
+  ...
+# Subtest: strict config and opening validation rejects malformed geometry and incomplete triples
+ok 11 - strict config and opening validation rejects malformed geometry and incomplete triples
+  ---
+  duration_ms: 9.179208
+  ...
+# Subtest: publication needs a valid opening but does not require playtest or client confirmation
+ok 12 - publication needs a valid opening but does not require playtest or client confirmation
+  ---
+  duration_ms: 31.130584
+  ...
+# Subtest: today can publish and revise an unreviewed opening with no confirmation flags
+ok 13 - today can publish and revise an unreviewed opening with no confirmation flags
+  ---
+  duration_ms: 19.882667
+  ...
+# Subtest: regeneration invalidates old import, review and preview; concurrent edits cannot overwrite
+ok 14 - regeneration invalidates old import, review and preview; concurrent edits cannot overwrite
+  ---
+  duration_ms: 5.126334
+  ...
+# Subtest: today supports the full workflow and republication; historical dates lock at Beijing midnight
+ok 15 - today supports the full workflow and republication; historical dates lock at Beijing midnight
+  ---
+  duration_ms: 36.281084
+  ...
+# Subtest: today publication creates a shared entry snapshot even before the first shared player
+ok 16 - today publication creates a shared entry snapshot even before the first shared player
+  ---
+  duration_ms: 9.348791
+  ...
+# Subtest: a request queued across Beijing midnight cannot edit yesterday
+ok 17 - a request queued across Beijing midnight cannot edit yesterday
+  ---
+  duration_ms: 0.181875
+  ...
+# Subtest: failed shared snapshot write rolls back publication and schedule together
+ok 18 - failed shared snapshot write rolls back publication and schedule together
+  ---
+  duration_ms: 6.516959
+  ...
+# Subtest: actual game entry reads the replacement while existing runs retry and settle their original version
+ok 19 - actual game entry reads the replacement while existing runs retry and settle their original version
+  ---
+  duration_ms: 60.621667
+  ...
+# Subtest: only image data allowed; mismatched candidate, day, tier and resource version rejected
+ok 20 - only image data allowed; mismatched candidate, day, tier and resource version rejected
+  ---
+  duration_ms: 2.790041
+  ...
+# Subtest: pot tall cylinder opening retains coordinates and rejects non-finite or excessive geometry
+ok 21 - pot tall cylinder opening retains coordinates and rejects non-finite or excessive geometry
+  ---
+  duration_ms: 0.875125
+  ...
+# Subtest: pot paired import and publication are atomic and regenerate both candidates when n changes
+ok 22 - pot paired import and publication are atomic and regenerate both candidates when n changes
+  ---
+  duration_ms: 15.033917
+  ...
+# Subtest: pot beta triple publication validates reduced identity, tutorial, geometry and atomicity
+ok 23 - pot beta triple publication validates reduced identity, tutorial, geometry and atomicity
+  ---
+  duration_ms: 12.742709
+  ...
+# Subtest: fixed models survive save, shared variants, import and publication; random stale preview is rejected
+ok 24 - fixed models survive save, shared variants, import and publication; random stale preview is rejected
+  ---
+  duration_ms: 7.038667
+  ...
+# Subtest: updates inventory atomically, preserves game fields and records actor/before/after
+ok 25 - updates inventory atomically, preserves game fields and records actor/before/after
+  ---
+  duration_ms: 1.117917
+  ...
+# Subtest: rejects stale inventory and stale revision without writes
+ok 26 - rejects stale inventory and stale revision without writes
+  ---
+  duration_ms: 0.331
+  ...
+# Subtest: rejects invalid values, missing reason, unknown players
+ok 27 - rejects invalid values, missing reason, unknown players
+  ---
+  duration_ms: 0.285625
+  ...
+# Subtest: retry cannot overwrite subsequent game consumption; same-value save creates no history
+ok 28 - retry cannot overwrite subsequent game consumption; same-value save creates no history
+  ---
+  duration_ms: 0.1355
+  ...
+# Subtest: history bounded to latest 20 entries
+ok 29 - history bounded to latest 20 entries
+  ---
+  duration_ms: 1.091875
+  ...
+# Subtest: modern admin adds time to legacy wallet and compares all four fields
+ok 30 - modern admin adds time to legacy wallet and compares all four fields
+  ---
+  duration_ms: 0.20475
+  ...
+# Subtest: legacy admin writes preserve add-time instead of dropping the fourth balance
+ok 31 - legacy admin writes preserve add-time instead of dropping the fourth balance
+  ---
+  duration_ms: 0.093167
+  ...
+# Subtest: defaults, strict validation, allowlisted writes and persistence
+ok 32 - defaults, strict validation, allowlisted writes and persistence
+  ---
+  duration_ms: 1.434542
+  ...
+# Subtest: read and write errors are not disguised as defaults or success
+ok 33 - read and write errors are not disguised as defaults or success
+  ---
+  duration_ms: 0.128334
+  ...
+# Subtest: pot n validates triples, zero and both capacity limits
+ok 34 - pot n validates triples, zero and both capacity limits
+  ---
+  duration_ms: 0.92675
+  ...
+# Subtest: pot paired config permits only first-layer quantity difference
+ok 35 - pot paired config permits only first-layer quantity difference
+  ---
+  duration_ms: 0.246833
+  ...
+# Subtest: pot beta reduction validates capacity and variant isolation
+ok 36 - pot beta reduction validates capacity and variant isolation
+  ---
+  duration_ms: 0.237084
+  ...
+# Subtest: editor saves only independent layer budgets with atomic revision checks
+ok 37 - editor saves only independent layer budgets with atomic revision checks
+  ---
+  duration_ms: 3.007208
+  ...
+# Subtest: admin: new themes accept all 26 models; all themes accept 26
+ok 38 - admin: new themes accept all 26 models; all themes accept 26
+  ---
+  duration_ms: 0.873666
+  ...
+# Subtest: admin: opening model index follows the selected theme
+ok 39 - admin: opening model index follows the selected theme
+  ---
+  duration_ms: 13.05975
+  ...
+# Subtest: server: new themes accept all 26 models; all themes accept 26
+ok 40 - server: new themes accept all 26 models; all themes accept 26
+  ---
+  duration_ms: 0.293041
+  ...
+# Subtest: server: opening model index follows the selected theme
+ok 41 - server: opening model index follows the selected theme
+  ---
+  duration_ms: 4.124625
+  ...
+# Subtest: admin and game server expose identical theme counts
+ok 42 - admin and game server expose identical theme counts
+  ---
+  duration_ms: 0.1055
+  ...
+# Subtest: admin selections normalize, roundtrip and reject malformed sets
+ok 43 - admin selections normalize, roundtrip and reject malformed sets
+  ---
+  duration_ms: 3.002292
+  ...
+# Subtest: admin imported opening enforces exact per-layer set and triples
+ok 44 - admin imported opening enforces exact per-layer set and triples
+  ---
+  duration_ms: 2.481084
+  ...
+# Subtest: server selections normalize, roundtrip and reject malformed sets
+ok 45 - server selections normalize, roundtrip and reject malformed sets
+  ---
+  duration_ms: 0.688709
+  ...
+# Subtest: server imported opening enforces exact per-layer set and triples
+ok 46 - server imported opening enforces exact per-layer set and triples
+  ---
+  duration_ms: 3.460666
+  ...
+# Subtest: admin and service contracts remain identical
+ok 47 - admin and service contracts remain identical
+  ---
+  duration_ms: 0.247
+  ...
+# Subtest: family trims only first layer triples and retains exact geometry/state/order across variants
+ok 48 - family trims only first layer triples and retains exact geometry/state/order across variants
+  ---
+  duration_ms: 5.740959
+  ...
+# Subtest: zero delta retains exact snapshot and invalid first-layer capacities are rejected
+ok 49 - zero delta retains exact snapshot and invalid first-layer capacities are rejected
+  ---
+  duration_ms: 3.040167
+  ...
+# Subtest: server rejects independent or altered retained layouts and unknown family versions
+ok 50 - server rejects independent or altered retained layouts and unknown family versions
+  ---
+  duration_ms: 8.313125
+  ...
+# Subtest: browser and both backend copies use identical family derivation
+ok 51 - browser and both backend copies use identical family derivation
+  ---
+  duration_ms: 0.66
+  ...
+# Subtest: admin shows Beijing date and cumulative hourly quota; saves only quota and audit metadata
+ok 52 - admin shows Beijing date and cumulative hourly quota; saves only quota and audit metadata
+  ---
+  duration_ms: 7.221958
+  ...
+# Subtest: elite is fully available, stats are isolated, and partial saves preserve the other tier
+ok 53 - elite is fully available, stats are isolated, and partial saves preserve the other tier
+  ---
+  duration_ms: 0.199958
+  ...
+# Subtest: quota validation is atomic and both counters must be valid
+ok 54 - quota validation is atomic and both counters must be valid
+  ---
+  duration_ms: 0.405791
+  ...
+# Subtest: stable tie pagination and cursor bound to query
+ok 55 - stable tie pagination and cursor bound to query
+  ---
+  duration_ms: 7.38825
+  ...
+# Subtest: unknown filter applies before pagination and late terminal record stays win
+ok 56 - unknown filter applies before pagination and late terminal record stays win
+  ---
+  duration_ms: 0.779875
+  ...
+# Subtest: combined filters and related runs; malformed queries rejected
+ok 57 - combined filters and related runs; malformed queries rejected
+  ---
+  duration_ms: 0.317541
+  ...
+# Subtest: entrypoint denies unsigned expired disabled and unauthorized users for both actions
+ok 58 - entrypoint denies unsigned expired disabled and unauthorized users for both actions
+  ---
+  duration_ms: 6.689292
+  ...
+# Subtest: registered player list filters and paginates with OpenID but without unionid
+ok 59 - registered player list filters and paginates with OpenID but without unionid
+  ---
+  duration_ms: 0.627625
+  ...
+# Subtest: unexpected SDK errors are logged without request credentials and remain generic to clients
+ok 60 - unexpected SDK errors are logged without request credentials and remain generic to clients
+  ---
+  duration_ms: 2.302834
+  ...
+1..60
+# tests 60
+# suites 0
+# pass 60
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 275.654875

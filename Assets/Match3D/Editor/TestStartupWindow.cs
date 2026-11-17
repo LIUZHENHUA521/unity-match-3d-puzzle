@@ -20,7 +20,7 @@ public sealed class TestStartupWindow:EditorWindow {
         if(next!=current)EditorPrefs.SetString(Match3DFlow.EditorThemePreference,ids[next]);
         EditorGUI.EndDisabledGroup();
         EditorGUILayout.HelpBox(nextSource==2
-            ?"点击本科局或清北局，读取后台「编辑器玩家」的层数、物品数量、类型数量。主题使用上方选择，其余参数沿用本地配置。保存后下次新开局生效，重试保持本局配置。"
+            ?"点击本科局或清北局，读取后台「编辑器玩家」的层数、物品数量、类型数量和层顶高度。主题使用上方选择，其余参数沿用本地配置。保存后下次新开局生效，重试保持本局配置。"
             :nextSource==0
             ?"点击本科局或清北局，每次新开局读取后台最新内测配置，主题、数量和限时跟随后台。道具免费，不发放红包。"
             :"点击本科局或清北局，使用上方主题及其本地关卡配置，不读取后台内测配置。两档均使用本地配置的数量和限时。修改在下次新开局生效。道具免费，不发放红包。",MessageType.Info);
