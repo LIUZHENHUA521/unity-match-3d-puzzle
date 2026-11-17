@@ -195,7 +195,7 @@ public partial class Match3DFlow : MonoBehaviour {
     }
 
     void Clear(bool preserveReplayTip=false){
-        ScreenVersion++;
+        ScreenVersion++;potUploading=false;
         if(!preserveReplayTip)CancelPotReplayDownloadTip();
         ResetToolOffer();
         displayedTime=displayedCount=-1;

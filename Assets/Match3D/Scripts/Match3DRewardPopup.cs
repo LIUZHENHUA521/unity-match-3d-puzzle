@@ -12,7 +12,8 @@ public sealed class Match3DRewardPopup : MonoBehaviour {
     public Text buttonLabel, timestamp;
     public Text potScreenshotHint;
     public Button confirm;
-    bool confirmed;
+    bool confirmed,potRedPacket;
+    Button potHome;
     Action onConfirm;
 
     public void Configure(IReadOnlyList<Match3DRewardItem> rewards, Action completed = null,
@@ -28,6 +29,26 @@ public sealed class Match3DRewardPopup : MonoBehaviour {
         buttonLabel.text = string.IsNullOrWhiteSpace(buttonText) ? "领取" : buttonText;
         bool hasRedPacket = false;
         for (int i = 0; i < rewards.Count; i++) hasRedPacket |= rewards[i].IsRedPacket;
+        potRedPacket=hasRedPacket;
+        if(hasRedPacket){
+            buttonLabel.text="联系客服";
+            if(!potHome){
+                potHome=Instantiate(confirm,confirm.transform.parent,false);
+                potHome.name="PotReturnHome";
+                potHome.GetComponentInChildren<Text>().text="返回首页";
+                potHome.onClick.RemoveAllListeners();potHome.onClick.AddListener(()=>{
+                    gameObject.SetActive(false);Destroy(gameObject);
+                    if(Match3DFlow.Instance)Match3DFlow.Instance.Home();
+                });
+            }
+            var rect=(RectTransform)confirm.transform;
+            rect.anchoredPosition=new Vector2(-155,rect.anchoredPosition.y);
+            rect.sizeDelta=new Vector2(280,rect.sizeDelta.y);
+            rect.localScale=Vector3.one;
+            var homeRect=(RectTransform)potHome.transform;
+            homeRect.anchoredPosition=new Vector2(155,rect.anchoredPosition.y);homeRect.sizeDelta=rect.sizeDelta;homeRect.localScale=rect.localScale;
+        }
+        if(potHome)potHome.gameObject.SetActive(hasRedPacket);
         if (potScreenshotHint) potScreenshotHint.gameObject.SetActive(hasRedPacket);
         timestamp.gameObject.SetActive(receivedAt > 0);
         timestamp.text = receivedAt > 0
@@ -66,6 +87,10 @@ public sealed class Match3DRewardPopup : MonoBehaviour {
 
     void Confirm() {
         if (confirmed || !confirm.interactable) return;
+        if(potRedPacket){
+            if(Match3DFlow.Instance)Match3DFlow.Instance.HomeClick();
+            Match3DCustomerService.Open();return;
+        }
         confirmed = true;
         confirm.interactable = false;
         var callback = onConfirm;

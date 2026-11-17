@@ -227,6 +227,11 @@ public sealed class LayeredItemPile : MonoBehaviour {
         optimizationElapsed+=Mathf.Max(0,delta);
         if(optimizationElapsed>=BoardLayoutSettings.OptimizationInterval){optimizationElapsed=0;RefreshVisibility();}
     }
+#if UNITY_EDITOR || DAILY_WEB_PREVIEW
+    // Registered authored renderers, including those hidden by the height window.
+    public IEnumerable<Renderer> PotStructureRenderers=>entries.Where(e=>e.body).SelectMany(e=>e.renderers);
+    public GameObject PotStructureBoundary=>boundary;
+#endif
     public Match3DDailyStage CaptureDailyState(int stage)=>new Match3DDailyStage{stage=stage,touchHeight=touchHeight,maxHeight=maxHeight,threshold=Threshold,physicsThreshold=PhysicsThreshold};
     public bool DailyVisible(Rigidbody body)=>entriesByBody.TryGetValue(body,out var e)&&e.visible;
     public void RestoreDailyState(Match3DDailyStage state){touchHeight=state.touchHeight;maxHeight=state.maxHeight;Threshold=state.threshold;PhysicsThreshold=state.physicsThreshold;optimizationElapsed=0;}

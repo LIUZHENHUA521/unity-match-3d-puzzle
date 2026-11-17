@@ -87,10 +87,6 @@ public sealed class DailyWebPreview : MonoBehaviour {
         Match3DFlow.Instance.PreviewDailyOpening(candidate,stage);yield return WaitForBoard();yield return null;
         Emit(new Reply{type="playing",stage=stage,count=LevelGenerator.Instance.objectsOnScene.Count,message="第 "+stage+" 关试玩中 · 道具免费"});
     }
-    static string CaptureImage(){
-        var camera=Camera.main;var rt=new RenderTexture(360,640,24);var old=camera.targetTexture;var active=RenderTexture.active;var tex=new Texture2D(360,640,TextureFormat.RGB24,false);
-        try{camera.targetTexture=rt;rt.Create();Match3DFlow.Instance.GetComponent<Match3DThemePresentation>().Fit();Match3DTray.Instance.SendMessage("Layout");camera.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,360,640),0,0);tex.Apply();return "data:image/jpeg;base64,"+Convert.ToBase64String(tex.EncodeToJPG(65));}
-        finally{camera.targetTexture=old;Match3DFlow.Instance.GetComponent<Match3DThemePresentation>().Fit();Match3DTray.Instance.SendMessage("Layout");RenderTexture.active=active;Destroy(tex);rt.Release();Destroy(rt);}
-    }
+    static string CaptureImage()=>PotStructurePreview.Capture();
 }
 #endif

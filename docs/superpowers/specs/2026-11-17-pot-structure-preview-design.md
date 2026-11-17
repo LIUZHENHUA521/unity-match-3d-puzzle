@@ -1,0 +1,9 @@
+# Pot complete level structure preview
+
+Approved in chat: replace the existing generated daily preview with a full-height side/oblique image showing all items, the pan, and green physical collider outlines. Normal, boosted and reduced variants each retain their own image; existing image enlargement remains available.
+
+Use a standalone synchronous render camera and the actual restored opening. Obtain the pile's registered visual renderers (including height-hidden ones), the presentation pan and the current boundary. Temporarily expose only those visual renderers to the capture camera, restore every renderer/layer state in finally, and do not change physics, transforms, visibility thresholds or the gameplay camera. Build green line geometry from actual solid Box/Sphere/Capsule/Mesh colliders, excluding pick triggers and inactive pooled objects. Include boundary outlines and frame the union of item, pan and collider geometry using an orthographic oblique view.
+
+Reuse the existing previewImage package field and save/publish flow; no database, API, bridge or gameplay protocol migration. Generate JPEG within the existing backend size limit. Older saved images remain valid; the next generated opening gets the new image. A versioned admin WebGL player URL prevents stale build caches.
+
+Validate with a real Unity scene: hidden lower items included, all geometry fits, supported primitive and mesh collider shapes, capture restores game state on success and failure, and repeat capture does not accumulate scene resources. Inspect a rendered image. Build the WebGL player from the complete current workspace and verify admin build and related preview protocol tests. Include and validate existing Unity changes in this build. Commit/push scoped publishing inputs and deploy the versioned player before the admin entrypoint through CloudBase MCP. Verify hosted bytes and references. No WeChat release or unrelated backend/H5 deployment.

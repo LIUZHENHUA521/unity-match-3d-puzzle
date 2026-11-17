@@ -14,6 +14,9 @@ public sealed class Match3DThemePresentation : MonoBehaviour {
  BoardCameraZoom zoom;
  Transform pan;
  public static readonly Vector3 PanBowlLocalCenter=new Vector3(.105f,0,0);
+#if UNITY_EDITOR || DAILY_WEB_PREVIEW
+ public Renderer[] PotStructurePanRenderers=>pan?pan.GetComponentsInChildren<Renderer>():new Renderer[0];
+#endif
  public Vector3 PanBowlCenter=>pan?pan.TransformPoint(PanBowlLocalCenter):Vector3.zero;
  Collider[] legacyColliders;bool[] colliderStates;
  Renderer[] legacy;bool[] enabledStates;BoardLighting lighting;
