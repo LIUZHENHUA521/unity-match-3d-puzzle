@@ -1,117 +1,56 @@
-// Mechanically ported saved WX GLES Glow program 1; active Medium branch.
-Shader "Goose/SourceHighlight/Glow" {Properties{_MainTex("Texture",2D)="white"{} _Color("Color",Color)=(1,1,1,1)
- _OutlineColor("Outline",Color)=(0,0,0,1) _OutlineWidth("Width",Float)=.002 _OutlineVertexWidth("Vertex width",Float)=0 _ConstantWidth("Constant width",Float)=1 _OutlineDirection("Direction",Vector)=(0,0,0,0)
- _GlowColor("Glow color",Color)=(1,.964705944,.13333334,1) _Glow("Glow",Vector)=(.93,.0025,.75,.5) _Glow2("Glow2",Vector)=(.002,1,1,0) _GlowDirection("Direction",Vector)=(0,0,0,0)
- _OverlayColor("Overlay",Color)=(1,.92156863,.015686275,.5) _OverlayBackColor("Back",Color)=(1,1,1,1) _OverlayData("Data",Vector)=(1,.5,1,1) _OverlayHitPosData("Hit",Vector)=(0,0,0,0) _OverlayHitStartTime("Hit start",Float)=0}
-SubShader{Tags {"Queue"="Transparent+121"} Pass{Cull Back ZWrite Off ZTest Always Blend SrcAlpha OneMinusSrcAlpha
-Stencil {Ref 2 ReadMask 2 Comp NotEqual Pass Keep}
-CGPROGRAM
-#pragma target 3.0
-#pragma vertex vert
-#pragma fragment frag
-#include "UnityCG.cginc"
-float2 V2(float a){return a.xx;} float2 V2(float2 a){return a;} float2 V2(float a,float b){return float2(a,b);}
-float3 V3(float a){return a.xxx;} float3 V3(float3 a){return a;} float3 V3(float a,float b,float c){return float3(a,b,c);}
-float4 V4(float a){return a.xxxx;} float4 V4(float4 a){return a;} float4 V4(float a,float b,float c,float d){return float4(a,b,c,d);}
-// GLES clip Z is [-w,w]. Preserve its width equation on Metal/D3D reversed-Z targets.
-float SourceClipZ(float4 p){
-#if defined(UNITY_REVERSED_Z)
- return p.w-2*p.z;
-#elif defined(SHADER_API_GLCORE) || defined(SHADER_API_GLES) || defined(SHADER_API_GLES3)
- return p.z;
-#else
- return 2*p.z-p.w;
-#endif
+// Pot implementation: a pulsing expanded shell, softly weighted toward grazing faces.
+// _Glow=(opacity,width,unused,unused); _Glow2.xy=(outline width,animation speed).
+Shader "Pot/Highlight/Glow" {
+    Properties {
+        _GlowColor ("Glow color", Color) = (0.4,0.8,1,1)
+        _Glow ("Opacity and viewport width", Vector) = (0.93,0.0025,0,0)
+        _Glow2 ("Animation controls", Vector) = (0,1,0,0)
+        _GlowDirection ("Shell offset direction", Vector) = (0,0,0,0)
+    }
+    SubShader {
+        Tags { "Queue"="Transparent+121" "RenderType"="Transparent" }
+        Pass {
+            Cull Back ZWrite Off ZTest Always
+            Blend SrcAlpha OneMinusSrcAlpha, Zero One
+            Stencil { Ref 2 ReadMask 2 WriteMask 0 Comp NotEqual Pass Keep }
+            CGPROGRAM
+            #pragma target 3.0
+            #pragma vertex Vert
+            #pragma fragment Frag
+            #include "UnityCG.cginc"
+            float4 _Glow, _Glow2, _GlowDirection;
+            fixed4 _GlowColor;
+            struct Input { float4 position : POSITION; float3 normal : NORMAL; };
+            struct Interpolators {
+                float4 position : SV_POSITION;
+                float3 normal : TEXCOORD0;
+                float3 toCamera : TEXCOORD1;
+            };
+            Interpolators Vert(Input input) {
+                Interpolators output;
+                float3 worldPosition = mul(unity_ObjectToWorld, input.position).xyz;
+                output.normal = UnityObjectToWorldNormal(input.normal);
+                // Orthographic and perspective cameras need different view directions.
+                float3 parallelView = UNITY_MATRIX_V[2].xyz;
+                output.toCamera = lerp(_WorldSpaceCameraPos.xyz - worldPosition, parallelView, unity_OrthoParams.w);
+                float2 viewNormal = mul((float3x3)UNITY_MATRIX_V, output.normal).xy;
+                viewNormal /= max(length(viewNormal), 0.001);
+                float2 aspect = float2(1, _ScreenParams.x / max(_ScreenParams.y, 1));
+                float breath = 1 + 0.25 * sin(_Time.y * _Glow2.y * 3);
+                // Keep the soft shell outside the narrower black outline at its pulse minimum.
+                float shellWidth = max(_Glow.y * breath * 2.5, _Glow2.x * 2.5);
+                float2 offset = (viewNormal * aspect + _GlowDirection.xy) * max(shellWidth, 0);
+                output.position = UnityObjectToClipPos(input.position);
+                output.position.xy += offset * max(output.position.w, 0);
+                return output;
+            }
+            fixed4 Frag(Interpolators input) : SV_Target {
+                float facing = abs(dot(normalize(input.normal), normalize(input.toCamera)));
+                float softness = lerp(0.2, 0.65, 1 - saturate(facing));
+                return fixed4(_GlowColor.rgb, saturate(_Glow.x * _GlowColor.a * softness));
+            }
+            ENDCG
+        }
+    }
+    Fallback Off
 }
-float3 _Glow2;
-float _ConstantWidth;
-float4 _GlowColor;
-float4 _Glow;
-float4 _GlowDirection;
-struct appdata {float4 vertex:POSITION;float3 normal:NORMAL;float2 uv:TEXCOORD0;};
-struct v2f{float4 pos:SV_POSITION;float2 uv:TEXCOORD0;float3 world:TEXCOORD1;float3 normal:TEXCOORD2;float4 color:COLOR0;};
-v2f vert(appdata v){v2f o=(v2f)0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-float4 u_xlat0;
-float4 u_xlat1;
-float4 u_xlat2;
-float2 u_xlat3;
-float u_xlat6;
-float u_xlat9;
-
-    u_xlat0.xyz = transpose(unity_WorldToObject)[1].xyz * transpose(UNITY_MATRIX_I_V)[0].yyy;
-    u_xlat0.xyz = transpose(unity_WorldToObject)[0].xyz * transpose(UNITY_MATRIX_I_V)[0].xxx + u_xlat0.xyz;
-    u_xlat0.xyz = transpose(unity_WorldToObject)[2].xyz * transpose(UNITY_MATRIX_I_V)[0].zzz + u_xlat0.xyz;
-    u_xlat0.xyz = transpose(unity_WorldToObject)[3].xyz * transpose(UNITY_MATRIX_I_V)[0].www + u_xlat0.xyz;
-    u_xlat0.x = dot(u_xlat0.xyz, v.normal.xyz);
-    u_xlat1.xyz = transpose(unity_WorldToObject)[1].xyz * transpose(UNITY_MATRIX_I_V)[1].yyy;
-    u_xlat1.xyz = transpose(unity_WorldToObject)[0].xyz * transpose(UNITY_MATRIX_I_V)[1].xxx + u_xlat1.xyz;
-    u_xlat1.xyz = transpose(unity_WorldToObject)[2].xyz * transpose(UNITY_MATRIX_I_V)[1].zzz + u_xlat1.xyz;
-    u_xlat1.xyz = transpose(unity_WorldToObject)[3].xyz * transpose(UNITY_MATRIX_I_V)[1].www + u_xlat1.xyz;
-    u_xlat0.y = dot(u_xlat1.xyz, v.normal.xyz);
-    u_xlat6 = dot(u_xlat0.xy, u_xlat0.xy);
-    u_xlat6 = rsqrt(u_xlat6);
-    u_xlat0.xy = V2(u_xlat6) * u_xlat0.xy;
-    u_xlat3.xy = u_xlat0.yy * transpose(UNITY_MATRIX_P)[1].xy;
-    u_xlat0.xy = transpose(UNITY_MATRIX_P)[0].xy * u_xlat0.xx + u_xlat3.xy;
-    u_xlat0.xy = u_xlat0.xy + _GlowDirection.xy;
-    u_xlat6 = _Time.w * _Glow2.y;
-    u_xlat6 = sin(u_xlat6);
-    u_xlat6 = u_xlat6 * 0.25 + 1.0;
-    u_xlat6 = _Glow.y * u_xlat6 + _Glow2.x;
-    u_xlat1.xyz = v.normal.xyz * _GlowDirection.zzz + v.vertex.xyz;
-    u_xlat2 = u_xlat1.yyyy * transpose(unity_ObjectToWorld)[1];
-    u_xlat2 = transpose(unity_ObjectToWorld)[0] * u_xlat1.xxxx + u_xlat2;
-    u_xlat1 = transpose(unity_ObjectToWorld)[2] * u_xlat1.zzzz + u_xlat2;
-    u_xlat1 = u_xlat1 + transpose(unity_ObjectToWorld)[3];
-    u_xlat2 = u_xlat1.yyyy * transpose(UNITY_MATRIX_VP)[1];
-    u_xlat2 = transpose(UNITY_MATRIX_VP)[0] * u_xlat1.xxxx + u_xlat2;
-    u_xlat2 = transpose(UNITY_MATRIX_VP)[2] * u_xlat1.zzzz + u_xlat2;
-    u_xlat1 = transpose(UNITY_MATRIX_VP)[3] * u_xlat1.wwww + u_xlat2;
-    u_xlat9 = (-SourceClipZ(u_xlat1)) + 2.0;
-    u_xlat9 = transpose(UNITY_MATRIX_P)[3].w * u_xlat9 + SourceClipZ(u_xlat1);
-    u_xlat9 = u_xlat9 + -2.0;
-    u_xlat9 = _ConstantWidth * u_xlat9 + 2.0;
-    u_xlat6 = u_xlat6 * u_xlat9;
-    o.pos.xy = u_xlat0.xy * V2(u_xlat6) + u_xlat1.xy;
-    o.pos.zw = u_xlat1.zw;
-    u_xlat0.xyz = _GlowColor.xyz;
-    u_xlat0.w = _Glow.x;
-    o.color = u_xlat0;
-    return o;
-}
-float4 frag(v2f i):SV_Target {float4 result;
-
-
-
-
-float2 u_xlat0;
-
-float4 hlslcc_FragCoord = i.pos;
-    u_xlat0.xy = hlslcc_FragCoord.xy * _Glow.zz;
-    u_xlat0.xy = floor(u_xlat0.xy);
-    u_xlat0.xy = u_xlat0.xy * _Glow.ww;
-    u_xlat0.x = u_xlat0.y + u_xlat0.x;
-    u_xlat0.x = frac(u_xlat0.x);
-    u_xlat0.x = u_xlat0.x + _Glow2.z;
-    u_xlat0.x = clamp(u_xlat0.x, 0.0, 1.0);
-    u_xlat0.x = u_xlat0.x * i.color.w;
-    result.w = u_xlat0.x;
-    result.xyz = i.color.xyz;
-    return result;
-}
-ENDCG
-}}}

@@ -1,0 +1,58 @@
+PASS shader supported: Outline
+PASS shader supported: Glow
+PASS shader supported: Overlay
+PASS shader supported: ScreenHalo
+GPU Metal
+MODEL Party_Donut
+MODEL Party_Burger
+MODEL Party_Pizza
+PASS wechat-compatible selection visible
+PASS wechat-compatible no black surface: 0
+PASS wechat-compatible blue feedback, no error pink: 15134
+PASS wechat-compatible external halo: 2201
+PASS wechat-compatible cancel restores pixels
+PASS wechat-compatible two absorption targets
+PASS wechat-compatible selection cancellation preserves tool targets
+PASS wechat-compatible tool expiration restores pixels
+PASS wechat-compatible full cleanup
+PASS wechat-compatible opaque occluder stays unchanged: 0
+MODEL Party_Donut
+MODEL Party_Burger
+MODEL Party_Pizza
+PASS stencil selection visible
+PASS stencil no black surface: 0
+PASS stencil blue feedback, no error pink: 13154
+PASS stencil external halo: 408
+PASS stencil cancel restores pixels
+PASS stencil two absorption targets
+PASS stencil selection cancellation preserves tool targets
+PASS stencil tool expiration restores pixels
+PASS stencil full cleanup
+PASS stencil opaque occluder stays unchanged: 0
+MODEL Party_Donut
+MODEL Party_Burger
+MODEL Party_Pizza
+PASS wechat-compatible-perspective selection visible
+PASS wechat-compatible-perspective no black surface: 0
+PASS wechat-compatible-perspective blue feedback, no error pink: 14334
+PASS wechat-compatible-perspective external halo: 1884
+PASS wechat-compatible-perspective cancel restores pixels
+PASS wechat-compatible-perspective two absorption targets
+PASS wechat-compatible-perspective selection cancellation preserves tool targets
+PASS wechat-compatible-perspective tool expiration restores pixels
+PASS wechat-compatible-perspective full cleanup
+PASS wechat-compatible-perspective opaque occluder stays unchanged: 0
+MODEL Party_Donut
+MODEL Party_Burger
+MODEL Party_Pizza
+PASS stencil-perspective selection visible
+PASS stencil-perspective no black surface: 0
+PASS stencil-perspective blue feedback, no error pink: 12522
+PASS stencil-perspective external halo: 357
+PASS stencil-perspective cancel restores pixels
+PASS stencil-perspective two absorption targets
+PASS stencil-perspective selection cancellation preserves tool targets
+PASS stencil-perspective tool expiration restores pixels
+PASS stencil-perspective full cleanup
+PASS stencil-perspective opaque occluder stays unchanged: 0
+COMPLETE
