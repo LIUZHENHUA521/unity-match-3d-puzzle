@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-// Stage 1 preserves the original boundary; stage 2 uses the approved new shell.
+// Stage 1 uses a short circular boundary; stage 2 uses the layered shell.
 public static class BoardEnvironment {
     [Serializable] public class Border {public Vector3 position,scale;}
     public static string CurrentName {get;private set;}="CountrysideStove";

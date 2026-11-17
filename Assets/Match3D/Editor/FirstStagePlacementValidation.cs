@@ -53,11 +53,27 @@ public static class FirstStagePlacementValidation {
         flow.Home();Physics.autoSimulation=simulation;yield return null;
         for(int mode=0;mode<2;mode++){
             if(mode==0)flow.Begin(0);else flow.BeginDailyPractice(0,daily);
+            profile=LevelLayoutConfig.GetTutorial(Match3DModelThemes.Get(flow.ActiveModelTheme,flow.SourceEnvironmentForTheme(0)));
             Check(board.Count==1&&flow.CreationInProgress,"first batch must contain one item");
             var shell=GameObject.Find(Match3DThemePresentation.SceneAssetName(profile.environment)+" first stage container");
             Check(shell.GetComponentsInChildren<Transform>().Any(t=>t.name=="Lv1Col"),"first-stage collision subtree");
             var walls=shell.GetComponentsInChildren<Transform>().Single(t=>t.name=="Lv1Col");
             Check(Vector3.Distance(walls.up,Vector3.up)<.00001f,"first-stage container axis must be perpendicular to the ground");
+            Check(shell.GetComponentInChildren<PotFirstStageBoundary>()!=null,"short circular first-stage boundary");
+            Physics.SyncTransforms();
+            var circular=walls.GetComponentsInChildren<MeshCollider>();
+            Check(circular.Length==2,"circular wall and ceiling only");
+            var wall=circular.Single(c=>c.name=="Pot circular wall");
+            var ceiling=circular.Single(c=>c.name=="Pot circular ceiling");
+            Check(Mathf.Abs(wall.bounds.max.y-8)<.001f,"first-stage wall height is 8");
+            for(int direction=0;direction<96;direction++){
+                float angle=direction*Mathf.PI*2/96;
+                var radial=new Vector3(Mathf.Cos(angle),0,Mathf.Sin(angle));
+                Check(wall.Raycast(new Ray(Vector3.up*3,radial),out var hit,10),"circular wall contains direction "+direction);
+                Check(Mathf.Abs(hit.distance-PotFirstStageBoundary.Radius(3))<.02f,"uniform circular radius "+direction);
+                Check(Vector3.Dot(hit.normal,radial)<-.9f,"wall faces inward "+direction);
+            }
+            Check(ceiling.Raycast(new Ray(new Vector3(.1f,6,.1f),Vector3.up),out var lid,3)&&Mathf.Abs(lid.point.y-8)<.001f,"ceiling blocks from below");
             for(float height=0;height<=30;height+=.5f)
                 Check(Mathf.Abs(FirstStageContainer.GetBorder(height).position.z)<.00001f,"first-stage spawn region must not drift with height");
             Check(board[0].transform.localScale==Vector3.zero&&board[0].GetComponent<Rigidbody>().isKinematic,"initial zero scale and held body");

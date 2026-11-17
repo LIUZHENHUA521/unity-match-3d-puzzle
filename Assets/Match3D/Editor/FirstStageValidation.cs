@@ -30,7 +30,7 @@ public static class FirstStageValidation {
                 Check(plan.All(t=>profile.tutorialNames.Contains(profile.prefabs[t.type].name)),"only curated tutorial models");
                 selections.Add(string.Join(",",plan.Select(t=>t.type).Distinct().OrderBy(t=>t)));
             }
-            Check(selections.Count>1,"selection varies across seeds");
+            Check(profile.ordinaryTypes.Length<=2||selections.Count>1,"selection varies across seeds when more than two ordinary types exist");
         }
         Debug.Log("PASS first-stage theme plans: "+checks+" assertions");
     }

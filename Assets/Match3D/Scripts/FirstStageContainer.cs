@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-// Original first-stage boundary shape and spawn rules, with an upright axis.
+// Original first-stage spawn rules with a short circular physical boundary.
 // Stage 2 uses SoftTransitionContainer and never reads this data.
 public static class FirstStageContainer {
     [Serializable] public class Border {public Vector3 position,scale;}
@@ -75,7 +75,12 @@ public static class FirstStageContainer {
     public static Quaternion Rotation(IBoardRandom random)=>Quaternion.Euler(random.Range(0f,1f)*360f,random.Range(0f,1f)*360f,random.Range(0f,1f)*360f);
     public static GameObject CreateBoundary(){
         var nodes=Source.nodes;var objects=new GameObject[nodes.Length];
-        for(int i=0;i<nodes.Length;i++)objects[i]=Build(nodes[i],nodes[i].parent<0?null:objects[nodes[i].parent].transform);
+        for(int i=0;i<nodes.Length;i++){
+            // Skip the old tall wall subtree, retaining the authored bottom supports.
+            if(nodes[i].name=="Lv1Col"||(nodes[i].parent>=0&&!objects[nodes[i].parent]))continue;
+            objects[i]=Build(nodes[i],nodes[i].parent<0?null:objects[nodes[i].parent].transform);
+        }
+        PotFirstStageBoundary.Create(objects[0].transform);
         return objects[0];
     }
     static GameObject Build(Node n,Transform parent){
