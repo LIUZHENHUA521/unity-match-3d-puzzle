@@ -55,7 +55,9 @@ public sealed class PotEditorLevelConfig : MonoBehaviour {
             }
             layers[i]=new ChallengeLayer(input.count,input.types,height){weights=original?.weights==null?Array.Empty<float>():(float[])original.weights.Clone()};
         }
-        return new LevelLayoutConfig.Profile{environment=source.environment,sourceIndex=source.sourceIndex,seconds=source.seconds,limitHeight=source.limitHeight,prefabs=(GameObject[])source.prefabs.Clone(),tutorialNames=source.tutorialNames,ordinaryTypes=source.ordinaryTypes,layers=layers};
+        // Visibility and dynamic physics must start at this run's top, including added layers.
+        // Same derived baseline as daily levels; never retain the local four-layer baseline.
+        return new LevelLayoutConfig.Profile{environment=source.environment,sourceIndex=source.sourceIndex,seconds=source.seconds,limitHeight=layers[layers.Length-1].height-.5f,prefabs=(GameObject[])source.prefabs.Clone(),tutorialNames=source.tutorialNames,ordinaryTypes=source.ordinaryTypes,layers=layers};
     }
 }
 public partial class Match3DFlow {

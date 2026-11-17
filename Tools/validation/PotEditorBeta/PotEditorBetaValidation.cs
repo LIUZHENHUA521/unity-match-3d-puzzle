@@ -82,6 +82,7 @@ public static class PotEditorBetaValidation {
             var snapshot=(LevelLayoutConfig.Profile)typeof(Match3DFlow).GetField("potEditorRunProfile",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(flow);
             Check(snapshot!=null&&snapshot.layers.Sum(l=>l.count)==expected,"fresh config and duplicate click guard "+label);
             Check(snapshot.layers[0].height==14.5f&&snapshot.layers[1].height==19.5f,"backend heights override local heights "+label);
+            Check(snapshot.limitHeight==19f,"visibility baseline follows configured top "+label);
             Check(snapshot!=profile&&snapshot.layers!=profile.layers&&snapshot.seconds==profile.seconds,"local profile preserved "+label);
             Check(flow.ActiveModelTheme==entry.id&&LevelGenerator.Instance.objectsOnScene.Count==15,"local theme and tutorial "+label);
             Check(typeof(Match3DFlow).GetField("dailyLevel",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(flow)==null,"no daily snapshot "+label);
@@ -97,6 +98,26 @@ public static class PotEditorBetaValidation {
             Check(extra.layers.Last().weights.Length==0&&extra.layers.Take(profile.layers.Length).Select((l,i)=>l.weights.SequenceEqual(profile.layers[i].weights??Array.Empty<float>())).All(x=>x),"preserve local weights and new equal weights "+label);
           }
         }
+        var sixSource=Match3DModelThemes.Get("pot-sweets",flow.SourceEnvironmentForTheme(0));
+        var six=PotEditorLevelConfig.BuildProfile(sixSource,new PotEditorLevelConfig.Config{layers=new[]{
+            new PotEditorLevelConfig.Layer{count=150,types=23,height=14},new PotEditorLevelConfig.Layer{count=60,types=10,height=18},
+            new PotEditorLevelConfig.Layer{count=45,types=8,height=20},new PotEditorLevelConfig.Layer{count=45,types=7,height=22},
+            new PotEditorLevelConfig.Layer{count=45,types=7,height=24},new PotEditorLevelConfig.Layer{count=150,types=7,height=26}}});
+        Check(six.limitHeight==25.5f&&sixSource.limitHeight==21.5f,"six layers raise baseline without mutating source");
+        flow.Home();flow.BeginPotEditorConfig(0,"bachelor","pot-sweets",six);
+        while(flow.CreationInProgress)yield return null;
+        flow.NextStage();
+        var pile=LayeredItemPile.Instance;
+        Check(pile.SourceRecordedMaxHeight==25.5f&&pile.Threshold==19.5f&&pile.PhysicsThreshold==20.5f,"six layer initial visible and physics thresholds follow new top");
+        while(flow.CreationInProgress)yield return null;
+        pile.RefreshVisibility();
+        var bodies=LevelGenerator.Instance.objectsOnScene.Select(o=>o.GetComponent<Rigidbody>()).ToArray();
+        Check(bodies.Length==495&&pile.HiddenCount>0&&pile.HiddenCount<495,"six layers retain hidden lower items");
+        Check(bodies.Any(b=>b.isKinematic)&&bodies.Any(b=>!b.isKinematic),"six layers retain frozen and dynamic regions");
+        Check(bodies.Where(b=>!pile.DailyVisible(b)).All(b=>b.GetComponentsInChildren<Renderer>().All(r=>!r.enabled)),"hidden lower items do not render");
+        Check(bodies.Where(b=>!pile.NeedsPhysics(b)&&b.velocity.sqrMagnitude<=.04f).All(b=>b.isKinematic),"settled bodies below physics band stay frozen");
+        float expectedThreshold=pile.SourceTouchHeight-Mathf.Lerp(BoardLayoutSettings.VisibleMin,BoardLayoutSettings.VisibleMax,Mathf.Clamp01((BoardLayoutSettings.MinVisibleY-pile.SourceTouchHeight)/BoardLayoutSettings.MinVisibleY));
+        Check(Mathf.Abs(pile.Threshold-expectedThreshold)<.001f&&pile.PhysicsThreshold>pile.Threshold,"visible depth and narrower physics depth preserved");
         flow.Home();File.WriteAllText(PotEditorBetaLevels.CredentialsPath,"{}");flow.BeginReward(0,"bachelor");yield return null;
         Check(!flow.LocalPreview&&flow.ScreenName=="home","independent missing key never falls back");
         EditorPrefs.SetInt(Match3DFlow.PotEditorSourcePreference,0);
