@@ -20,6 +20,12 @@ public static class PotEditorBetaValidation {
         EditorPrefs.DeleteKey(Match3DFlow.PotEditorConfigurationPreference);
         EditorPrefs.DeleteKey(Match3DFlow.PotEditorSourcePreference);
         Check(Match3DFlow.PotEditorSource==2,"new editors default to independent config");
+        EditorPrefs.SetBool(Match3DFlow.PotEditorConfigurationPreference,true);
+        Check(Match3DFlow.PotEditorSource==2,"legacy local flag migrates to backend editor config");
+        EditorPrefs.SetBool(Match3DFlow.PotEditorConfigurationPreference,false);
+        Check(Match3DFlow.PotEditorSource==2,"legacy beta flag migrates to backend editor config");
+        EditorPrefs.SetInt(Match3DFlow.PotEditorSourcePreference,1);
+        Check(Match3DFlow.PotEditorSource==1,"explicit current local selection is preserved");
         EditorPrefs.SetInt(Match3DFlow.PotEditorSourcePreference,0);
         Check(!Match3DFlow.PotUseEditorConfiguration,"default remains beta configuration");
         EditorPrefs.SetString(Match3DFlow.EditorThemePreference,"playful-toys");

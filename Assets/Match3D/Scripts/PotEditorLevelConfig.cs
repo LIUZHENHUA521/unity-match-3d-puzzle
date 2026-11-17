@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -33,7 +34,7 @@ public sealed class PotEditorLevelConfig : MonoBehaviour {
                 catch(Exception e){error=e.Message;}
                 if(error!=null){flow.Notice("编辑器配置无效："+error);yield break;}
                 flow.BeginPotEditorConfig(theme,tier,selected,profile);
-                Debug.Log("[Pot] 编辑器配置版本 "+reply.revision+" / "+selected);
+                Debug.Log("[Pot] 后台编辑器配置 v"+reply.revision+" / 主题 "+selected+" / 第二关 "+profile.layers.Length+" 层 / "+profile.layers.Sum(l=>l.count)+" 个 / "+string.Join("；",profile.layers.Select((l,i)=>"层"+(i+1)+":"+l.count+"个,"+l.types+"种,高度"+l.height)));
             }
         }finally{loading=false;}
     }
@@ -59,8 +60,9 @@ public sealed class PotEditorLevelConfig : MonoBehaviour {
 }
 public partial class Match3DFlow {
     public const string PotEditorSourcePreference="pot.editor.configurationSource";
-    // Existing explicit selections retain their meaning; new editors use the independent config.
-    public static int PotEditorSource => UnityEditor.EditorPrefs.HasKey(PotEditorSourcePreference)?UnityEditor.EditorPrefs.GetInt(PotEditorSourcePreference,2):UnityEditor.EditorPrefs.HasKey(PotEditorConfigurationPreference)?(PotUseEditorConfiguration?1:0):2;
+    // Only an explicit choice in the current three-source selector overrides the backend default.
+    // The retired boolean must not silently keep existing editors on local budgets.
+    public static int PotEditorSource => UnityEditor.EditorPrefs.GetInt(PotEditorSourcePreference,2);
     public void BeginPotEditorConfig(int theme,string tier,string modelTheme,LevelLayoutConfig.Profile profile){
         BeginLocal(theme,tier,true,profile,modelTheme);
         ShowTips("编辑器玩家 · 道具免费 · 不发放红包");
