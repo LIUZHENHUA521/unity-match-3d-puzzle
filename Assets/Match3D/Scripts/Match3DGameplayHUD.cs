@@ -7,6 +7,9 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
     public Text[] quantities;
     readonly Image[] toolBackgrounds=new Image[BoardTools.ToolCount];
     readonly Sprite[] normalBackgrounds=new Sprite[BoardTools.ToolCount];
+    readonly Image[] quantityBadges=new Image[BoardTools.ToolCount];
+    readonly Sprite[] numberBadges=new Sprite[BoardTools.ToolCount];
+    Sprite addBadge;
     Sprite usedBackground;Texture2D usedTexture;
     bool replay;
     public void SetReplayMode(){
@@ -24,6 +27,11 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
             var button=view.Get<Button>(keys[i]);button.transition=Selectable.Transition.None;
             toolBackgrounds[i]=button.GetComponent<Image>();normalBackgrounds[i]=toolBackgrounds[i].sprite;
             toolBackgrounds[i].canvasRenderer.SetColor(Color.white);
+        }
+        addBadge=Resources.Load<Sprite>("Match3D/GameplaySkin/image_add_circle");
+        for(int i=0;i<quantities.Length;i++){
+            quantityBadges[i]=quantities[i].transform.parent.GetComponent<Image>();
+            numberBadges[i]=quantityBadges[i].sprite;
         }
         var source=normalBackgrounds[0];if(!source)return;
         // Preserve the authored shape/alpha while desaturating only the background.
@@ -73,7 +81,14 @@ public sealed class Match3DGameplayHUD : MonoBehaviour {
         bool limited=BoardTools.Enabled&&!replay;
         for(int i=0;i<quantities.Length;i++){
             quantities[i].transform.parent.gameObject.SetActive(limited);
-            if(limited)quantities[i].text=Match3DTestPrivileges.UnlimitedTools?"∞":!BoardTools.HasUseRemaining(i)?"0":BoardTools.Remaining(i).ToString();
+            if(limited){
+                bool unlimited=Match3DTestPrivileges.UnlimitedTools;
+                int count=BoardTools.HasUseRemaining(i)?BoardTools.Remaining(i):0;
+                bool empty=!unlimited&&count<=0;
+                quantityBadges[i].sprite=empty?addBadge:numberBadges[i];
+                quantities[i].enabled=!empty;
+                quantities[i].text=unlimited?"∞":empty?"":count.ToString();
+            }
             if(i<toolBackgrounds.Length&&toolBackgrounds[i])toolBackgrounds[i].sprite=limited&&!Match3DTestPrivileges.UnlimitedTools&&BoardTools.UsedCount(i)>0&&usedBackground?usedBackground:normalBackgrounds[i];
         }
     }

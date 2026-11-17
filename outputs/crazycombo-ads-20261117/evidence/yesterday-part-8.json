@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "rows": [
+    {
+      "mode": "replay",
+      "starts": "3",
+      "users": "3"
+    },
+    {
+      "mode": "level",
+      "starts": "149",
+      "users": "27"
+    },
+    {
+      "mode": "challenge",
+      "starts": "2133",
+      "users": "267"
+    }
+  ],
+  "columns": [
+    {
+      "name": "mode",
+      "type": "string"
+    },
+    {
+      "name": "starts",
+      "type": "string"
+    },
+    {
+      "name": "users",
+      "type": "string"
+    }
+  ],
+  "rowCount": 3,
+  "elapsed": 168,
+  "sql": "SELECT JSONExtractString(more_info,'mode') mode,uniqExact(tuple(openid,event_time,more_info)) starts,uniqExact(openid) users FROM events WHERE appid='wx85d24d5dbf72b423' AND event_type='level_start' AND event_time>='2026-11-16 00:00:00' AND event_time<'2026-11-16 11:00:00' AND openid>='offk55X-l73O7jYqbHpQy84fVsl8' AND openid<'offk55Y-ZR_h5fOAQcG5XGTbbkqQ'  AND hex(SHA256(openid)) NOT IN ('2C111186BF7A563FD38435C153E609C64BDA13230050212ED9E8BCCF2EC96602') GROUP BY mode LIMIT 10000"
+}

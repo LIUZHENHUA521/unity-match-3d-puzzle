@@ -40,8 +40,8 @@ public static class Match3DGameplaySkinBuilder {
             var timerBg=Image("Timer frame",header,"img_whiteLine_cube",new Vector2(0,1),new Vector2(360,-60),new Vector2(254,82));
             timerBg.transform.SetAsFirstSibling();
             Image("Clock",header,"img_icon_time",new Vector2(0,1),new Vector2(286.5f,-59.5f),new Vector2(53,55));
-            var timer=view.Get<Text>("Timer");Place(timer.rectTransform,header,new Vector2(0,1),new Vector2(390,-60),new Vector2(132,62));timer.fontSize=46;timer.fontStyle=FontStyle.Bold;timer.color=new Color32(0,119,190,255);timer.text="7:35";
-            var outline=timer.GetComponent<Outline>()??timer.gameObject.AddComponent<Outline>();outline.effectColor=Color.white;outline.effectDistance=new Vector2(2,-2);
+            var timer=view.Get<Text>("Timer");Place(timer.rectTransform,header,new Vector2(0,1),new Vector2(390,-60),new Vector2(144,62));timer.fontSize=50;timer.fontStyle=FontStyle.Bold;timer.color=Color.white;timer.alignByGeometry=true;timer.text="7:35";
+            var outline=timer.GetComponent<Outline>()??timer.gameObject.AddComponent<Outline>();outline.effectColor=new Color32(7,92,171,255);outline.effectDistance=new Vector2(3,-3);
             var skin=root.AddComponent<Match3DGameplayHUD>();skin.header=header;skin.footer=footer;skin.quantities=new Text[3];
             var keys=new[]{"Undo","Hint","Shuffle"};var labels=new[]{"移出","吸附","洗牌"};var icons=new[]{"image_btn_remove","image_btn_adsorpt","image_btn_shuffle"};
             float[] centerX={157,361,565};
@@ -53,7 +53,7 @@ public static class Match3DGameplaySkinBuilder {
                 Image("Icon",rect,icons[i],new Vector2(.5f,.5f),new Vector2(0,19),new Vector2(i==0?71:i==1?74:69,i==0?81:i==1?80:71));
                 Image("Label artwork",rect,labels[i],new Vector2(.5f,.5f),new Vector2(0,-26),new Vector2(i==2?63:62,35));
                 var badge=Image("Remaining uses",rect,"image_number_circle-background",new Vector2(.5f,.5f),new Vector2(65,52.5f),new Vector2(44,44));
-                var number=Rect("Count",badge.transform,new Vector2(.5f,.5f),Vector2.zero,new Vector2(44,44)).gameObject.AddComponent<Text>();number.font=timer.font;number.fontSize=31;number.color=Color.white;number.alignment=TextAnchor.MiddleCenter;number.alignByGeometry=true;number.raycastTarget=false;number.text="1";number.verticalOverflow=VerticalWrapMode.Overflow;number.horizontalOverflow=HorizontalWrapMode.Overflow;
+                var number=Rect("Count",badge.transform,new Vector2(.5f,.5f),Vector2.zero,new Vector2(44,44)).gameObject.AddComponent<Text>();number.font=timer.font;number.fontSize=31;number.fontStyle=FontStyle.Bold;number.color=Color.white;number.alignment=TextAnchor.MiddleCenter;number.alignByGeometry=true;number.raycastTarget=false;number.text="1";number.verticalOverflow=VerticalWrapMode.Overflow;number.horizontalOverflow=HorizontalWrapMode.Overflow;
                 skin.quantities[i==0?0:i==1?1:2]=number;
             }
             view.bindings=bindings.ToArray();PrefabUtility.SaveAsPrefabAsset(root,UI+"GameHUD.prefab");

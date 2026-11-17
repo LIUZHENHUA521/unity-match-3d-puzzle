@@ -74,7 +74,7 @@ public static class Match3DGameplaySkinValidation {
                 Hud.Get<Button>("Undo").onClick.Invoke();due=EditorApplication.timeSinceStartup+1;break;
             case 7:
                 Check(BoardTools.UsedCount(0)==1&&InputController.Instance.objectsOnStack.Count==0,"remove button consumes real use and empties tray");
-                Check(Hud.GetComponent<Match3DGameplayHUD>().quantities[0].text=="0","remaining badge updates after use");
+                Check(!Hud.GetComponent<Match3DGameplayHUD>().quantities[0].enabled&&Hud.GetComponent<Match3DGameplayHUD>().quantities[0].transform.parent.GetComponent<Image>().sprite.name=="image_add_circle","remaining badge updates after use");
                 InputController.Instance.AddObjectOnStack(LevelGenerator.Instance.objectsOnScene.First(o=>!BoardTools.IsStored(o)));due=EditorApplication.timeSinceStartup+1;break;
             case 8:Hud.Get<Button>("Hint").onClick.Invoke();due=EditorApplication.timeSinceStartup+2;break;
             case 9:Check(BoardTools.UsedCount(1)==1,"adsorb button invokes auto-find");Hud.Get<Button>("Shuffle").onClick.Invoke();due=EditorApplication.timeSinceStartup+2;break;

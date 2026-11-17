@@ -1,0 +1,1 @@
+SELECT toDate(occurred_at) day,toHour(occurred_at) hour,uniqExact(tuple(openid,impression_id)) ads,max(received_at) received FROM ad_events_v2 FINAL WHERE appid='wx85d24d5dbf72b423' AND occurred_at>='2026-11-16 00:00:00' AND occurred_at<'2026-11-17 12:00:00' AND event_type='completed' AND ingest_verified=1 GROUP BY day,hour ORDER BY day,hour

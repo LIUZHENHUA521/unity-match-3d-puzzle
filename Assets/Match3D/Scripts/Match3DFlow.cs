@@ -309,6 +309,7 @@ public partial class Match3DFlow : MonoBehaviour {
         ShowTips((dailyLevel?.tier??challengeTier)=="elite"?"基础题完成，进入清北压轴题！":"基础题完成，进入本科压轴题！");
     }
     void StartStage(Match3DThemePresentation reusedPresentation=null,GameObject reusedBoundary=null,bool countAttempt=true){
+        PotZoomUnlocked=false;
         progressDisplay.ResetStage();nextProgressSample=0;
         if(!IsPvp){
             if(PlayerPrefs.GetString("goose.result.date","")!=Today){PlayerPrefs.SetString("goose.result.date",Today);PlayerPrefs.SetInt("goose.result.attempts",0);}

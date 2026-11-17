@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "rows": [
+    {
+      "latest_event": "2026-11-17 11:35:12.836"
+    }
+  ],
+  "columns": [
+    {
+      "name": "latest_event",
+      "type": "string"
+    }
+  ],
+  "rowCount": 1,
+  "elapsed": 19,
+  "sql": "SELECT max(event_time) latest_event FROM events WHERE appid='wx85d24d5dbf72b423' AND event_time>='2026-11-17 00:00:00' AND event_time<'2026-11-18 00:00:00' AND event_type='level_start' LIMIT 10000"
+}

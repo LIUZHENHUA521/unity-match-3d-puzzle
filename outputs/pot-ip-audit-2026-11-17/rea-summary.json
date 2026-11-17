@@ -1,0 +1,57 @@
+{
+  "evidence_id": "ev_623113ae05b8c8a6c2f088198e16d60283c0180087d1bdc1c60aa81a3fe84592",
+  "subject": {
+    "name": "goose-wechat-extracted",
+    "digest": {
+      "sha256": "cb5f9f858e03ec170c1c0b8163a04ffee958b31b936dbda53f0f608a65e48c4f"
+    },
+    "format": "directory",
+    "architecture": null,
+    "local_path": "/Users/liuzhenhua/Documents/Codex/2026-10-13/r/work/goose-wechat-extracted"
+  },
+  "operation": "analyze_javascript_application",
+  "limitations": [
+    "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+    "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+    "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+    "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+    "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+    "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code.",
+    "game.js: Resource constraint during analyze_javascript_application: Owned JavaScript worker exhausted its heap while analyzing game.js during semantic",
+    "subContext.js: Resource constraint during analyze_javascript_application: Owned JavaScript worker exhausted its heap while analyzing subContext.js during semantic"
+  ],
+  "statistics": {
+    "relevant_files": 6,
+    "nested_asar_containers": 0,
+    "text_bytes_read": 824069,
+    "invalid_utf8_files": 0,
+    "parsed_javascript_files": 5,
+    "visited_ast_nodes": 180264,
+    "findings": 235,
+    "modules": 0,
+    "parse_failures": 0
+  },
+  "summary": {
+    "browser_windows": 0,
+    "explicit_web_preferences": 0,
+    "preload_entrypoints": 0,
+    "context_bridge_apis": 0,
+    "exposed_api_members": 0,
+    "ipc": {
+      "operations": 0,
+      "literal_channels": 0,
+      "dynamic_channel_operations": 0,
+      "renderer_transmissions": 0,
+      "renderer_listeners": 0,
+      "main_handlers": 0,
+      "paired_renderer_transmissions": 0,
+      "ambiguous_renderer_transmissions": 0,
+      "unpaired_literal_renderer_transmissions": 0
+    },
+    "sender_validation_observations": 0,
+    "utility_processes": 0,
+    "resolved_utility_entrypoints": 0,
+    "native_addon_bindings": 0,
+    "resolved_native_addon_bindings": 0
+  }
+}

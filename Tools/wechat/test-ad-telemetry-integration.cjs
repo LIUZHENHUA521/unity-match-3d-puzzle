@@ -2,6 +2,7 @@
 const assert=require('node:assert/strict'),path=require('node:path'),{pathToFileURL}=require('node:url');
 const {fixture,event}=require('./test-ad-telemetry.cjs');
 (async()=>{
+ const placement=process.env.POT_TEST_AD_PLACEMENT||'pot_master_replay';
  const {createService}=await import(pathToFileURL(path.resolve(__dirname,'../../../crazyCombo/server/services/goose-server/src/server.mjs')));
  const rows=new Map(),forwarded=[];let tail=Promise.resolve();
  const store={transaction(fn){const p=tail.then(async()=>{const snapshot=new Map(structuredClone([...rows]));const result=await fn({get:async(t,id)=>snapshot.get(t+id),set:async(t,id,v)=>snapshot.set(t+id,v)});rows.clear();for(const [k,v]of snapshot)rows.set(k,v);return result;});tail=p.catch(()=>{});return p;}};
@@ -10,7 +11,7 @@ const {fixture,event}=require('./test-ad-telemetry.cjs');
  try{
   const user=await (await fetch(base+'/invites/login',{method:'POST',body:JSON.stringify({code:'telemetry-fixture-only'})})).json();
   let x=fixture();x.bind(user.inviteCode,user.token);x.q.session.endpoint=base;
-  const ad=await x.show({...event('c'.repeat(32),user.inviteCode),placement:'pot_master_replay'});ad.end({isEnded:true});
+  const ad=await x.show({...event('c'.repeat(32),user.inviteCode),placement});ad.end({isEnded:true});
   const deliver=async request=>{const r=await fetch(request.url,{method:'POST',headers:request.header,body:JSON.stringify(request.data)});return {statusCode:r.status,data:await r.json()};};
   const committed=await deliver(x.requests[0]);assert.equal(committed.statusCode,200);assert.equal(committed.data.ok,true);
   // Kill the client before it receives the successful ACK, then replay its disk cache in a fresh VM.
@@ -19,7 +20,7 @@ const {fixture,event}=require('./test-ad-telemetry.cjs');
   y.requests[0].url=base+'/ads/events';const replay=await deliver(y.requests[0]);y.requests[0].success(replay);
   assert.equal(y.q.items.length,0);assert.equal([...rows.keys()].filter(k=>k.startsWith('ad_events')).length,1);
   assert.equal([...rows.keys()].filter(k=>k.startsWith('game_records')).length,0);
-  const stored=[...rows.values()].find(v=>v.eventType==='completed');assert.equal(stored.userId,user.inviteCode);assert.equal(stored.placement,'pot_master_replay');assert.equal(forwarded.length,2);assert(forwarded.every(e=>e.placement==='pot_master_replay'));
+  const stored=[...rows.values()].find(v=>v.eventType==='completed');assert.equal(stored.userId,user.inviteCode);assert.equal(stored.placement,placement);assert.equal(forwarded.length,2);assert(forwarded.every(e=>e.placement===placement));
   const changed={...x.requests[0],data:{...x.requests[0].data,placement:'tool_remove'}};assert.equal((await deliver(changed)).statusCode,409);
   console.log('PASS production JS -> HTTP -> transaction: completion without settlement; terminate before ACK; restart/replay exactly once; conflicting replay denied');
  }finally{await service.close();}

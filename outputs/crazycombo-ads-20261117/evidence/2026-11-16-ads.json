@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "rows": [
+    {
+      "placement": "in_game_tool",
+      "ad_group": "tool",
+      "ads": "14416",
+      "users": "2717"
+    },
+    {
+      "placement": "revive",
+      "ad_group": "legacy",
+      "ads": "6991",
+      "users": "2413"
+    },
+    {
+      "placement": "magic_card_reward",
+      "ad_group": "tool",
+      "ads": "1659",
+      "users": "350"
+    },
+    {
+      "placement": "master_replay",
+      "ad_group": "legacy",
+      "ads": "154",
+      "users": "146"
+    }
+  ],
+  "columns": [
+    {
+      "name": "placement",
+      "type": "string"
+    },
+    {
+      "name": "ad_group",
+      "type": "string"
+    },
+    {
+      "name": "ads",
+      "type": "string"
+    },
+    {
+      "name": "users",
+      "type": "string"
+    }
+  ],
+  "rowCount": 4,
+  "elapsed": 81,
+  "sql": "SELECT placement,ad_group,uniqExact(tuple(openid,impression_id)) ads,uniqExact(openid) users FROM ad_events_v2 FINAL WHERE appid='wx85d24d5dbf72b423' AND occurred_at>='2026-11-16 00:00:00' AND occurred_at<'2026-11-16 11:00:00' AND event_type='completed' AND ingest_verified=1 AND impression_id!=''  AND hex(SHA256(openid)) NOT IN ('2C111186BF7A563FD38435C153E609C64BDA13230050212ED9E8BCCF2EC96602') GROUP BY placement,ad_group LIMIT 10000"
+}

@@ -18,7 +18,7 @@ public static class BoardCameraZoomValidation {
         camera.transform.SetPositionAndRotation(Match3DThemePresentation.SourcePosition, Match3DThemePresentation.SourceRotation);
         camera.orthographicSize = Match3DThemePresentation.Size(9f/16); camera.aspect = 9f/16;
         camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = new Color(.65f,.85f,1);
-        UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Match3D/Scenes/CountrysideStove"));
+        UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Match3D/Scenes/Match3DBoard"));
         new GameObject("Lighting fixture").AddComponent<BoardLighting>().Begin();
         var root = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Match3D/UI/UIRoot"));
         var canvas = root.GetComponent<Canvas>(); canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera; canvas.planeDistance = 1;
@@ -31,6 +31,36 @@ public static class BoardCameraZoomValidation {
         var image = new Texture2D(720,1280,TextureFormat.RGB24,false); image.ReadPixels(new Rect(0,0,720,1280),0,0); image.Apply();
         File.WriteAllBytes("../controls.png",image.EncodeToPNG());
         RenderTexture.active = null; camera.targetTexture = null;
+    }
+    static void PotUnlock(Match3DFlow flow,BoardCameraZoom zoom,Camera camera){
+        Match3DDefaultFont.InitializeFallback();
+        flow.library=ScriptableObject.CreateInstance<Match3DTheme>();
+        Action<bool,string> reply=null;
+        Match3DRewardedVideo.EditorShowOverride=done=>reply=done;
+        Match3DReviveView View()=>((RectTransform)typeof(Match3DFlow).GetField("modal",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(flow)).GetComponent<Match3DReviveView>();
+        void Accept(Match3DReviveView view){view.group.interactable=true;view.revive.onClick.Invoke();}
+        Time.timeScale=.75f;
+        zoom.Step(.2f);
+        Check(!flow.PotZoomUnlocked&&zoom.Zoom==1&&flow.BlocksGameplay&&Time.timeScale==0,"locked button opens paused offer without zooming");
+        var offer=View();flow.ShowPotZoomOffer();Check(View()==offer,"offer is not duplicated");
+        Check(offer.animatedContent.Find("Icon").GetComponent<Image>().sprite.rect.width==96,"production icon is 96 pixels");
+        Accept(offer);reply(false,"cancelled");
+        Check(!flow.PotZoomUnlocked&&zoom.Zoom==1,"incomplete video does not unlock");
+        Accept(offer);reply(true,null);
+        Check(flow.PotZoomUnlocked&&!flow.BlocksGameplay&&Time.timeScale==.75f,"completed video unlocks and restores prior speed");
+        zoom.ProcessContacts(0,default,default,p=>false);zoom.Step(.2f);
+        Check(zoom.Zoom>1&&!flow.BlocksGameplay,"unlocked zoom works without another offer");
+        zoom.ResetView();Set(flow,"<PotZoomUnlocked>k__BackingField",false);
+        zoom.Gesture(camera.pixelRect.center,camera.pixelRect.center,1.2f);offer=View();
+        Check(!flow.PotZoomUnlocked&&zoom.Zoom==1,"locked pinch opens offer without changing scale");
+        offer.group.interactable=true;offer.close.onClick.Invoke();
+        Check(!flow.PotZoomUnlocked&&!flow.BlocksGameplay&&Time.timeScale==.75f,"closing offer does not unlock and resumes");
+        zoom.ProcessContacts(0,default,default,p=>false);flow.ShowPotZoomOffer();Accept(View());var stale=reply;
+        typeof(Match3DFlow).GetMethod("ResetToolOffer",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(flow,null);
+        stale(true,null);Check(!flow.PotZoomUnlocked,"cancelled request ignores stale ad completion");
+        typeof(Match3DFlow).GetMethod("CloseModal",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(flow,new object[]{false});
+        Time.timeScale=1;Match3DRewardedVideo.EditorShowOverride=null;
+        Set(flow,"<PotZoomUnlocked>k__BackingField",true);zoom.ResetView();zoom.ProcessContacts(0,default,default,p=>false);
     }
     static void IncomingTraySizes(Camera camera, BoardCameraZoom zoom, Action fit) {
         Match3DDefaultFont.InitializeFallback();
@@ -78,6 +108,7 @@ public static class BoardCameraZoomValidation {
             new GameObject("Input fixture").AddComponent<InputController>();
             GameManager.Instance.gameStatus = GameManager.GameStatus.PLAY;
             var input = InputController.Instance; input.SendMessage("Awake");
+            PotUnlock(flow,zoom,camera);
             zoom.ProcessContacts(0, default, default, p => false);
             void Fit() { var old = camera.transform.position; float oldSize = camera.orthographicSize; camera.transform.position = origin; camera.orthographicSize = 7; zoom.Apply(camera, old, oldSize, 1f / 60); }
             var midpoint = camera.pixelRect.center + new Vector2(30, 30);

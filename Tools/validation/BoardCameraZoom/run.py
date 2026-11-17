@@ -9,7 +9,7 @@ OUT = ROOT / 'work/board-camera-zoom'
 STAGE = OUT / 'project'
 STAGE.mkdir(parents=True, exist_ok=True)
 for directory in ('Assets', 'Packages', 'ProjectSettings'):
-    subprocess.run(['rsync', '-a', str(ROOT / directory) + '/', str(STAGE / directory) + '/'], check=True)
+    subprocess.run(['rsync', '-a', '--delete', str(ROOT / directory) + '/', str(STAGE / directory) + '/'], check=True)
 # APFS clones speed up compilation without sharing writable files with the open editor.
 if not (STAGE / 'Library').exists() and (ROOT / 'Library').exists():
     subprocess.run(['cp', '-cR', str(ROOT / 'Library'), str(STAGE / 'Library')], check=True)

@@ -92,6 +92,10 @@ public sealed class BoardCameraZoom : MonoBehaviour {
     }
     public void Gesture(Vector2 previous, Vector2 current, float ratio) {
         var camera = Camera.main; if (!camera || !CanInteract || !MotionReady) return;
+        if (!Match3DFlow.Instance.PotZoomUnlocked) {
+            if (Mathf.Abs(ratio - 1) > .005f) { CancelGesture(); Match3DFlow.Instance.ShowPotZoomOffer(); }
+            return;
+        }
         float next = Mathf.Clamp(Zoom * ratio, MinZoom, MaxZoom);
         if (Zoom <= MinZoom && next <= MinZoom) {
             restoring = offset.sqrMagnitude > 0;

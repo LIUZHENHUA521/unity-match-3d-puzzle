@@ -47,6 +47,16 @@ public sealed class Match3DReviveView : MonoBehaviour {
         StyleAcquisitionLabel(revive.transform.Find("Tool ad label").GetComponent<Text>());
         status.text="";status.gameObject.SetActive(false);
     }
+    public void ConfigurePotZoom(Action accept,Action decline){
+        ConfigureTool(0,accept,decline);
+        animatedContent.Find("Tool title").gameObject.SetActive(false);
+        AddToolText("Pot zoom title",animatedContent,new Vector2(0,310),new Vector2(450,76),"自由缩放",42,Color.white);
+        var icon=animatedContent.Find("Icon").GetComponent<Image>();
+        icon.sprite=Resources.Load<Sprite>("Match3D/GameplaySkin/pot-zoom-icon");
+        icon.rectTransform.sizeDelta=new Vector2(150,150);
+        animatedContent.Find("Tool description").GetComponent<Text>().text="观看视频，本局可自由放大缩小";
+        revive.transform.Find("Tool ad label").GetComponent<Text>().text="看视频解锁";
+    }
     void AddToolArtwork(string name,Transform parent,Vector2 position,string asset){
         var sprite=Resources.Load<Sprite>("Match3D/ToolTextSkinPS/"+asset);
         if(!sprite)throw new InvalidOperationException("Missing tool text artwork: "+asset);
@@ -62,9 +72,8 @@ public sealed class Match3DReviveView : MonoBehaviour {
         var text=obj.GetComponent<Text>();text.font=progress.font;text.fontSize=fontSize;text.alignment=TextAnchor.MiddleCenter;text.color=color;text.text=value;text.raycastTarget=false;
     }
     static void StyleAcquisitionLabel(Text text){
-        text.fontStyle=FontStyle.Bold;text.fontSize=32;text.color=Color.white;
-        var outline=text.GetComponent<Outline>();if(!outline)outline=text.gameObject.AddComponent<Outline>();
-        outline.effectColor=new Color32(35,122,195,255);outline.effectDistance=new Vector2(2,-2);outline.useGraphicAlpha=true;
+        text.fontSize=32;
+        Match3DDefaultFont.ApplyPotLabelStyle(text);
     }
     public void ShowAdStatus(string message){if(toolMode){if(Match3DFlow.Instance)Match3DFlow.Instance.ShowTips(message);return;}if(status)status.text=message;}
     public void SetAcquisitionRoute(Match3DRewardAcquisition.Route route){

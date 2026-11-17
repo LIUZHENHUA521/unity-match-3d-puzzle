@@ -71,7 +71,7 @@ public sealed class ComboProbeView : MonoBehaviour {
         Chances = badge.gameObject.AddComponent<ComboProbeChanceFeedback>(); Chances.Initialize(assets, starPositions);
         // Center within the raised tab itself (source texture x=253, y=23.5).
         hintText = Label("Interaction hint", "", panel, new Vector2(253 * 558f / 507, (76 - 23.5f) * 167 / 152), new Vector2(260, 28), 19, Color.white);
-        hintText.fontStyle = FontStyle.Bold;
+        Match3DDefaultFont.ApplyPotLabelStyle(hintText);
         hintText.resizeTextForBestFit = true; hintText.resizeTextMinSize = 15; hintText.resizeTextMaxSize = 19;
         hintText.horizontalOverflow = HorizontalWrapMode.Wrap; hintText.verticalOverflow = VerticalWrapMode.Truncate;
         for (int i = 0; i < 4; i++) {

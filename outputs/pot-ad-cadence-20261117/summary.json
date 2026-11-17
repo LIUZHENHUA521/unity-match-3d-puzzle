@@ -1,0 +1,82 @@
+{
+  "cutoff": "2026-11-17 11:00:00 +08:00",
+  "fetchedAt": "2026-11-17 ~11:30 +08:00",
+  "excludedCurrentTestUsers": 6,
+  "comparison": [
+    {
+      "day": "2026-11-16",
+      "records": 7078,
+      "runs": 2115,
+      "ads": 1916,
+      "ratio": 0.27069793727041536,
+      "perRun": 0.9059101654846335,
+      "stage2": 4963,
+      "ads2": 1916,
+      "versions": {
+        "0.1": 7078
+      },
+      "placements": {
+        "tool_remove": 282,
+        "revive_clear": 625,
+        "tool_magnet": 343,
+        "tool_shuffle": 314,
+        "tool_time": 112,
+        "revive_time": 240
+      },
+      "users": 1008,
+      "status": {
+        "win": 2109,
+        "fail": 4323,
+        "quit": 172,
+        "playing": 474
+      }
+    },
+    {
+      "day": "2026-11-17",
+      "records": 6847,
+      "runs": 1983,
+      "ads": 2510,
+      "ratio": 0.3665839053600117,
+      "perRun": 1.2657589510842158,
+      "stage2": 4906,
+      "ads2": 2509,
+      "versions": {
+        "0.1": 2471,
+        "0.1.94": 4376
+      },
+      "placements": {
+        "revive_clear": 1035,
+        "tool_shuffle": 354,
+        "tool_remove": 426,
+        "tool_magnet": 430,
+        "tool_time": 251,
+        "revive_time": 14
+      },
+      "users": 944,
+      "status": {
+        "win": 1955,
+        "fail": 4292,
+        "playing": 466,
+        "quit": 134
+      }
+    }
+  ],
+  "sensitivity": [
+    {
+      "day": "2026-11-16",
+      "stage2Starts": 4450,
+      "linkedAds": 1740,
+      "ratio": 0.39101123595505616
+    },
+    {
+      "day": "2026-11-17",
+      "stage2Starts": 4256,
+      "linkedAds": 2157,
+      "ratio": 0.5068139097744361
+    }
+  ],
+  "rawCounts": {
+    "records": 28691,
+    "adEvents": 7692
+  }
+}

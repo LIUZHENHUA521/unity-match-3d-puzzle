@@ -34,7 +34,7 @@ mergeInto(LibraryManager.library, {
    var text=function(v,max){return typeof v==='string'&&v.length>0&&v.length<=max&&!/[\u0000-\u001f\u007f]/.test(v);};
    // Validate before the player watches, not after the receipt would be quarantined.
    if(event.schemaVersion!==1||event.eventType!=='completed'||!(/^[a-f0-9]{64}$/).test(event.owner)||!id(event.impressionId)||!id(event.recordId)||!id(event.runId)||[1,2].indexOf(event.stage)<0||
-    ['tool_remove','tool_magnet','tool_shuffle','tool_time','revive_clear','revive_time','pot_master_replay'].indexOf(event.placement)<0||!text(event.adUnitId,128)||!text(event.clientVersion,80)||
+    ['tool_remove','tool_magnet','tool_shuffle','tool_time','revive_clear','revive_time','pot_master_replay','pot_zoom'].indexOf(event.placement)<0||!text(event.adUnitId,128)||!text(event.clientVersion,80)||
     ['ios','android','windows','mac','iOS','Android'].indexOf(event.platform)<0){q.notify('广告记录信息尚未准备好，请重新进入关卡后重试');return false;}
    if(q.items.length>=1000){q.notify('广告记录缓存已满，请联网同步后重试');return false;}
    if(q.items.some(function(x){return x.event.owner===event.owner&&x.event.impressionId===event.impressionId;}))return false;
