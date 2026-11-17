@@ -12,7 +12,7 @@ public static class PotStructurePreview {
     public const int Width=540,Height=960,MaxImageLength=180000;
     public static string Capture(){
         var pile=LayeredItemPile.Instance;
-        var presentation=Match3DFlow.Instance.GetComponent<Match3DThemePresentation>();
+        var presentation=pile?pile.PotStructurePresentation:null;
         if(!pile||!presentation)throw new InvalidOperationException("关卡尚未准备好，无法生成结构图");
         var renderers=pile.PotStructureRenderers.Concat(presentation.PotStructurePanRenderers).Where(r=>r).Distinct().ToArray();
         if(renderers.Length==0)throw new InvalidOperationException("关卡没有可预览的物品");
@@ -37,6 +37,7 @@ public static class PotStructurePreview {
             camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.18f,.20f,.22f,1);
             camera.allowHDR=false;camera.allowMSAA=false;camera.useOcclusionCulling=false;
             Fit(camera,bounds);
+            var light=root.AddComponent<Light>();light.type=LightType.Directional;light.cullingMask=1<<CaptureLayer;light.intensity=.6f;light.shadows=LightShadows.None;
             foreach(var pair in layers)pair.Key.layer=CaptureLayer;
             foreach(var r in renderers)r.enabled=true;
             var shader=Resources.Load<Shader>("PotStructureLines");

@@ -27,9 +27,10 @@ public static class PotStructurePreviewValidation {
         while(!Match3DFlow.Instance||!Match3DFlow.Instance.StartupComplete)yield return null;
         foreach(var service in new MonoBehaviour[]{Match3DGameRecords.Instance,Match3DInvitations.Instance,PotReplayService.Instance})if(service){service.StopAllCoroutines();service.enabled=false;}
         var flow=Match3DFlow.Instance;
+        Match3DModelThemes.TryGet("foodie-party","CountrysideStove",out var profile);int pool=profile.prefabs.Length;
         foreach(int count in new[]{120,180,240}){
             var level=new Match3DDailyLevel{date="2026-11-17",tier="bachelor",version="pot-structure-validation",candidateId="candidate-0123456789abcdef01234567",generatorVersion="daily-v1",modelThemeId="foodie-party",seed=47231,seconds=600,initialCount=count+150,limitHeight=25.5f,layers=new[]{new ChallengeLayer(count,7,14),new ChallengeLayer(75,5,20),new ChallengeLayer(75,5,26)}};
-            Check(level.IsValid(23),"valid generation fixture "+count);
+            Check(level.IsValid(pool),"valid generation fixture "+count);
             flow.PreviewDailyOpening(level,1);while(flow.CreationInProgress)yield return null;
             yield return new WaitForSeconds(5);var first=flow.CaptureDailyOpening();
             flow.PreviewDailyOpening(level,2);while(flow.CreationInProgress)yield return null;
@@ -37,8 +38,10 @@ public static class PotStructurePreviewValidation {
             // Freeze the generated opening exactly as the daily preview does.
             var snapshot=flow.CaptureDailyOpening();
             level.opening=new Match3DDailySnapshot{stages=new[]{first,snapshot}};level.generatorVersion="shared-v2";
-            Check(level.IsValid(23),"valid restored fixture "+count);
+            File.WriteAllText(Output+"/fixture-"+count+".json",JsonUtility.ToJson(level));
+            Check(level.IsValid(pool),"valid restored fixture "+count+" pool="+pool+" first="+first.items.Length+" second="+snapshot.items.Length);
             flow.PreviewDailyOpening(level,2);while(flow.CreationInProgress)yield return null;
+            Check(LayeredItemPile.Instance.PotStructurePresentation.PotStructurePanRenderers.Length>0,"current pan included "+count);
             var renderers=LayeredItemPile.Instance.PotStructureRenderers.ToArray();
             Check(renderers.Any(r=>!r.enabled),"fixture has height-hidden items "+count);
             Check(renderers.All(r=>r.gameObject.activeInHierarchy),"hidden item objects remain active "+count);

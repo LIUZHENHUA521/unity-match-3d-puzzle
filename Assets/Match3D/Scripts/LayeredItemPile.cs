@@ -231,6 +231,7 @@ public sealed class LayeredItemPile : MonoBehaviour {
     // Registered authored renderers, including those hidden by the height window.
     public IEnumerable<Renderer> PotStructureRenderers=>entries.Where(e=>e.body).SelectMany(e=>e.renderers);
     public GameObject PotStructureBoundary=>boundary;
+    public Match3DThemePresentation PotStructurePresentation=>presentation;
 #endif
     public Match3DDailyStage CaptureDailyState(int stage)=>new Match3DDailyStage{stage=stage,touchHeight=touchHeight,maxHeight=maxHeight,threshold=Threshold,physicsThreshold=PhysicsThreshold};
     public bool DailyVisible(Rigidbody body)=>entriesByBody.TryGetValue(body,out var e)&&e.visible;
