@@ -17,7 +17,10 @@ public sealed class Match3DUIView : MonoBehaviour {
     public void Show(string key,bool visible){Get<Transform>(key).gameObject.SetActive(visible);}
     public Button Bind(string key,Action action){
         var button=Get<Button>(key);button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(()=>{Match3DFlow.Instance.HomeClick();action();});return button;
+        AddClickListener(button,action);return button;
+    }
+    public static void AddClickListener(Button button,Action action){
+        button.onClick.AddListener(()=>{Match3DFlow.Instance.HomeClick();action();});
     }
     public static Match3DUIView Load(string name,Transform parent){
         var prefab=Resources.Load<Match3DUIView>("Match3D/UI/"+name);

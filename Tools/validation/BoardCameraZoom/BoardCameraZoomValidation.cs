@@ -43,7 +43,9 @@ public static class BoardCameraZoomValidation {
         zoom.Step(.2f);
         Check(!flow.PotZoomUnlocked&&zoom.Zoom==1&&flow.BlocksGameplay&&Time.timeScale==0,"locked button opens paused offer without zooming");
         var offer=View();flow.ShowPotZoomOffer();Check(View()==offer,"offer is not duplicated");
-        Check(offer.animatedContent.Find("Icon").GetComponent<Image>().sprite.rect.width==96,"production icon is 96 pixels");
+        var icon = offer.animatedContent.Find("Icon").GetComponent<Image>();
+        Check(icon.sprite.texture.width == 256 && icon.sprite.texture.height == 256, "popup loads full 256 pixel icon");
+        Check(icon.rectTransform.sizeDelta == new Vector2(150, 150), "popup icon occupies 150 canvas units");
         Accept(offer);reply(false,"cancelled");
         Check(!flow.PotZoomUnlocked&&zoom.Zoom==1,"incomplete video does not unlock");
         Accept(offer);reply(true,null);

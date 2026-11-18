@@ -96,7 +96,7 @@ checkVersion().then((enable) => {
                     textDuration: 1500,
                     // 文字样式
                     style: {
-                        bottom: 260 * startupScale + startupFooter,
+                        bottom: 272 * startupScale + startupFooter,
                         height: 28 * startupScale,
                         width: 650 * startupScale,
                         lineHeight: 28 * startupScale,
@@ -107,11 +107,11 @@ checkVersion().then((enable) => {
                 // 进度条样式
                 barConfig: {
                     style: {
-                        width: 450 * startupScale,
-                        height: 12 * startupScale,
-                        padding: 1,
+                        width: 240 * startupScale,
+                        height: 24 * startupScale,
+                        padding: 2 * startupScale,
                         bottom: 238 * startupScale + startupFooter,
-                        backgroundColor: '#6296b3',
+                        backgroundColor: '#07C160',
                     },
                 },
                 // 一般不修改，控制icon样式

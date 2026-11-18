@@ -43,7 +43,7 @@ public sealed class Match3DHomeView : MonoBehaviour {
         }
         if(home.signIn){home.signIn.gameObject.SetActive(true);home.signIn.onClick.AddListener(()=>{flow.HomeClick();flow.ShowSignIn();});home.signIn.gameObject.AddComponent<Match3DSignInBadge>();}
         if(home.invite)home.invite.onClick.AddListener(()=>{flow.HomeClick();flow.ShowInvites();});
-        if(home.community)home.community.onClick.AddListener(()=>{flow.HomeClick();Match3DGameCommunity.Open();});
+        if(tab==Tab.Home && home.artwork)home.gameObject.AddComponent<PotBenefits>().Configure(home);
         if(tab==Tab.Home && home.glory)home.glory.onClick.AddListener(()=>{flow.HomeClick();flow.ShowPotGlory();});
         if(tab==Tab.Home && home.sameGames)home.sameGames.onClick.AddListener(()=>{flow.HomeClick();flow.ShowPotSameGames();});
         if(!home.artwork)home.Layout();

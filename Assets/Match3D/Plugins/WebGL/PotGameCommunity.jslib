@@ -1,6 +1,6 @@
 mergeInto(LibraryManager.library, {
     $GooseGameCommunity: { busy: false, manager: null, revision: 0 },
-    GooseGameCommunityOpen__deps: ['$GooseGameCommunity'],
+    GooseGameCommunityOpen__deps: ['$GooseGameCommunity','$PotBenefitsTarget'],
     GooseGameCommunityOpen: function (linkPointer) {
         function notice(message) {
             if (typeof wx !== 'undefined' && typeof wx.showToast === 'function') wx.showToast({ title: message, icon: 'none' });
@@ -37,6 +37,8 @@ mergeInto(LibraryManager.library, {
                         GooseGameCommunity.busy = false;
                     }
                     manager = null;
+                    if (typeof PotBenefitsTarget !== 'undefined' && PotBenefitsTarget.name)
+                        Module.SendMessage(PotBenefitsTarget.name,'OnPotClubClosed','');
                 });
             }
             Promise.resolve(manager.load({ openlink: openlink })).then(function () {

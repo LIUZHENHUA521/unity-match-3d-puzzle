@@ -31,7 +31,13 @@ public sealed class Match3DStartupView : MonoBehaviour {
         shownProgress=Mathf.Max(shownProgress,Mathf.Clamp01(value));
         progress.fillAmount=shownProgress;
         progress.rectTransform.anchorMax=new Vector2(shownProgress,1);
-        progress.transform.parent.gameObject.SetActive(true);status.text=message;retry.gameObject.SetActive(false);
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
+        // The WeChat SDK has already shown launch progress before this handoff.
+        progress.transform.parent.gameObject.SetActive(false);
+#else
+        progress.transform.parent.gameObject.SetActive(true);
+#endif
+        status.text=message;retry.gameObject.SetActive(false);
     }
     public void ShowError(string message,Action onRetry){
         status.text=message;progress.transform.parent.gameObject.SetActive(false);retry.gameObject.SetActive(true);retry.onClick.RemoveAllListeners();

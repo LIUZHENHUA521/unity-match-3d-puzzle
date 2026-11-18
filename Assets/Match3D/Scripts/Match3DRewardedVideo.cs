@@ -12,6 +12,7 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
     public static Action<Action<bool,string>> EditorShareOverride;
 #endif
 #if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
+    [DllImport("__Internal")] static extern void PotAdDiagnosticMark(string request,string phase,string detail);
     [DllImport("__Internal")] static extern void GooseReviveAdShow(string target,string id,string request,string context);
     [DllImport("__Internal")] static extern void GooseReviveAdCancel(string request);
     [DllImport("__Internal")] static extern void GooseRewardShare(string target,string request,float minAwaySeconds);
@@ -73,7 +74,21 @@ public sealed class Match3DRewardedVideo : MonoBehaviour {
     }
     [UnityEngine.Scripting.Preserve] public void OnReviveAdReply(string json){
         Reply reply;try{reply=JsonUtility.FromJson<Reply>(json);}catch{return;}
-        if(reply!=null)Complete(reply.requestId,reply.completed,reply.error);
+        if(reply!=null){
+            TracePotAd(reply.requestId,"unity_reply",requestId==reply.requestId?"matched":"stale");
+            if(callback!=null&&requestId==reply.requestId)StartCoroutine(TracePotAdNextFrame(reply.requestId));
+            try{Complete(reply.requestId,reply.completed,reply.error);TracePotAd(reply.requestId,"unity_callback_returned","");}
+            catch(Exception){TracePotAd(reply.requestId,"unity_callback_failed","");throw;}
+        }
+    }
+    void TracePotAd(string request,string phase,string detail){
+#if UNITY_WEBGL && !UNITY_EDITOR && !DAILY_WEB_PREVIEW
+        try{PotAdDiagnosticMark(request,phase,detail);}catch(Exception){} // Logging is best effort.
+#endif
+    }
+    System.Collections.IEnumerator TracePotAdNextFrame(string request){
+        yield return null;
+        TracePotAd(request,"unity_next_frame","frame="+Time.frameCount+";timeScale="+Time.timeScale+";focused="+Application.isFocused);
     }
     void Complete(string request,bool completed,string error){
         if(callback==null||request!=requestId)return;

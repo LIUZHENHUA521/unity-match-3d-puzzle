@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 // The server is authoritative. PlayerPrefs stores only an unfinished request, never rewards.
 public sealed partial class Match3DInvitations : MonoBehaviour {
-    [Serializable] public class Reply {public Match3DRewardAcquisition.PotRemoteConfiguration potAcquisition;public string token,inviteCode,error,requestId;public int invited;public long createdAt;public int[] inventory;public bool refunded,unlimitedMagnet;public Match3DMail[] mails;public int nextCursor;public bool attention;public Match3DSignInState signIn;public Match3DSignInReceipt signInReceipt;}
+    [Serializable] public class Reply {public PotBenefits.State potBenefits;public Match3DRewardAcquisition.PotRemoteConfiguration potAcquisition;public string token,inviteCode,error,requestId;public int invited;public long createdAt;public int[] inventory;public bool refunded,unlimitedMagnet;public Match3DMail[] mails;public int nextCursor;public bool attention;public Match3DSignInState signIn;public Match3DSignInReceipt signInReceipt;}
     [Serializable] class Bridge {public string code,inviter,error;public bool refresh;}
     [Serializable] class LoginBody {public string code,inviter;}
     [Serializable] class UseBody {public string requestId;public int type;}
@@ -77,7 +77,7 @@ public sealed partial class Match3DInvitations : MonoBehaviour {
                 if(req.result==UnityWebRequest.Result.Success){Reply result=null;try{result=JsonUtility.FromJson<Reply>(req.downloadHandler.text);}catch{}if(result!=null&&result.inventory!=null&&(result.inventory.Length==3||result.inventory.Length==BoardTools.ToolCount)){callback(result);yield break;}}
                 failure=PotRequestFailure(req.result,req.responseCode,req.error);
                 Debug.LogWarning("[PotAccount] route="+route+" status="+req.responseCode+" result="+req.result+" error="+req.error);
-                if(req.responseCode>=400&&req.responseCode<500){if(req.responseCode==401){token=null;State=null;ClearSignIn();Mails.Clear();MailLoaded=false;MailAttention=false;MailChanged?.Invoke();}string error=null;if(route.StartsWith("sign-in/")){try{error=JsonUtility.FromJson<Reply>(req.downloadHandler.text)?.error;}catch{}}SetStatus(!string.IsNullOrEmpty(error)?error:req.responseCode==401?"登录已失效，请刷新重新登录":req.responseCode==410?"邮件已过期":req.responseCode==409?"道具不足或请求已失效，请刷新后重试":"请求失败，请稍后重试");yield break;}
+                if(req.responseCode>=400&&req.responseCode<500){if(req.responseCode==401){token=null;State=null;ClearSignIn();Mails.Clear();MailLoaded=false;MailAttention=false;MailChanged?.Invoke();}string error=null;if(route.StartsWith("sign-in/")||route=="pot-benefits"){try{error=JsonUtility.FromJson<Reply>(req.downloadHandler.text)?.error;}catch{}}SetStatus(!string.IsNullOrEmpty(error)?error:req.responseCode==401?"登录已失效，请刷新重新登录":req.responseCode==410?"邮件已过期":req.responseCode==409?"道具不足或请求已失效，请刷新后重试":"请求失败，请稍后重试");yield break;}
             }
         }
         SetStatus(failure);

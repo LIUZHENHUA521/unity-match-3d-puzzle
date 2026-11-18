@@ -14,7 +14,7 @@
 
 ## 图标
 
-原图：pot-zoom-icon.png。游戏资源：Assets/Match3D/Resources/Match3D/GameplaySkin/pot-zoom-icon.png（96×96，约 12 KB）。通过内置 image_gen 进行裁剪整理，再以 sips 导出项目所需像素尺寸。使用内置 image_gen 生成，透明底，金黄色边框、蓝色镜面和手柄、白色加号、亮面卡通放大镜。
+原图：pot-zoom-icon.png。游戏资源：Assets/Match3D/Resources/Match3D/GameplaySkin/pot-zoom-icon.png（256×256）。从高清原图以 sips 导出。使用内置 image_gen 生成，透明底，金黄色边框、蓝色镜面和手柄、白色加号、亮面卡通放大镜。
 
 生成提示词：Generate a single game power-up icon: a chunky toy magnifying glass with a bold white plus sign in its blue lens, rounded golden yellow rim and short blue handle. Casual mobile puzzle game 3D cartoon render, glossy plastic, simple readable silhouette, front view slightly angled, soft bevels and bright highlights. Match the visual simplicity and polish of a small red-blue toy magnet power-up icon. Centered isolated object filling 80% of square canvas, transparent background, no text, no button frame, no video/ad symbol, no extra objects. This is the zoom power-up icon for Pot match 3D puzzle.
 

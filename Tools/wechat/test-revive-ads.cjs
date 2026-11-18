@@ -1,13 +1,16 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const source=fs.readFileSync('Assets/Match3D/Plugins/WebGL/PotReviveAds.jslib','utf8');
 const flush=()=>new Promise(setImmediate);
-function fixture(){
+function fixture(options={}){
+ const logs=[],hooks={},canvasHooks={};
+ const logger={info:(tag,line)=>{if(options.failLogging)throw Error("logger unavailable");logs.push(JSON.parse(line));}};
  const messages=[],ads=new Map(),timers=new Map();let serial=0,creates=0;
- const context={LibraryManager:{library:{}},mergeInto:Object.assign,UTF8ToString:x=>x,
+ const context={GameGlobal:{realtimeLogManager:logger,logmanager:logger},
+  canvas:{addEventListener:(name,fn)=>{canvasHooks[name]=fn;}},LibraryManager:{library:{}},mergeInto:Object.assign,UTF8ToString:x=>x,
   GooseAdTelemetry:{prepare:()=>true,complete:()=>{},discard:()=>{}},
   Module:{SendMessage:(target,method,value)=>messages.push({target,...JSON.parse(value)})},
   setTimeout:f=>{timers.set(++serial,f);return serial},clearTimeout:id=>timers.delete(id),Promise,
-  wx:{createRewardedVideoAd:({adUnitId})=>{
+  wx:{...Object.fromEntries(['onShow','onHide','onMemoryWarning','onError','onUnhandledRejection'].map(name=>[name,fn=>{(hooks[name]??=[]).push(fn);}])),createRewardedVideoAd:({adUnitId})=>{
    creates++;if(ads.has(adUnitId))return ads.get(adUnitId); // Native singleton survives create calls, even after destroy.
    const close=new Set(),error=new Set();
    const ad={close,error,shows:0,loads:0,destroyed:0,mode:'ok',resolveLoad:null,
@@ -21,7 +24,7 @@ function fixture(){
   }}};
  vm.createContext(context);vm.runInContext(source,context);context.GooseReviveAds=context.LibraryManager.library.$GooseReviveAds;
  const lib=context.LibraryManager.library;
- return {messages,ads,timers,lib,creates:()=>creates,state:context.GooseReviveAds,
+ return {logs,hooks,canvasHooks,messages,ads,timers,lib,creates:()=>creates,state:context.GooseReviveAds,
   async show(request,id='adunit-test',target='tool'){lib.GooseReviveAdShow(target,id,request,JSON.stringify({owner:'test-owner',impressionId:request,adUnitId:id}));await flush();return ads.get(id)}};
 }
 function clean(x,ad){assert.equal(x.state.active,null);assert.equal(ad.close.size,0);assert.equal(ad.error.size,0);assert.equal(x.timers.size,0);assert.equal(ad.destroyed,0)}
@@ -51,5 +54,22 @@ function clean(x,ad){assert.equal(x.state.active,null);assert.equal(ad.close.siz
  x.lib.GooseReviveAdCancel('wrong-id');assert(x.state.active);ad.end({isEnded:true});clean(x,ad);
  const other=await x.show('other','adunit-other');other.end({isEnded:true});clean(x,other);await x.show('original');ad.end({isEnded:true});assert.equal(x.creates(),2);
  x=fixture();ad=await x.show('cancel-after-show');x.lib.GooseReviveAdCancel('cancel-after-show');assert(x.state.active);await x.show('blocked');assert.equal(x.messages.length,1);ad.end({isEnded:true});assert.equal(x.messages.length,1);clean(x,ad);
+ // Diagnostics distinguish native close, bridge delivery, Unity callback and a resumed frame.
+ x=fixture();ad=await x.show('diagnostic');
+ x.hooks.onHide[0]();x.hooks.onShow[0]();x.hooks.onMemoryWarning[0]();
+ x.canvasHooks.webglcontextlost();x.canvasHooks.webglcontextrestored();
+ ad.end({isEnded:true});
+ x.lib.PotAdDiagnosticMark('diagnostic','unity_reply','matched');
+ x.lib.PotAdDiagnosticMark('diagnostic','unity_next_frame','frame=123');
+ for(const event of ['prepared','load_start','load_resolved','show_start','show_resolved','app_hide','app_show','memory_warning','context_lost','context_restored','native_close','finished','unity_dispatch','unity_dispatch_returned','unity_reply','unity_next_frame']){
+  assert(x.logs.some(row=>row.event===event&&row.requestId==='diagnostic'),event);
+ }
+ assert(x.logs.every(row=>!('owner' in row)&&!('token' in row)&&row.elapsedMs>=0));
+ const count=x.logs.length;x.lib.PotAdDiagnosticMark('unrelated','unity_reply','');assert.equal(x.logs.length,count);
+ await x.show('diagnostic-next');ad.end({isEnded:true});assert(Object.values(x.hooks).every(list=>list.length===1));clean(x,ad);
+ // Broken log sinks must not prevent completion or leave a native singleton locked.
+ x=fixture({failLogging:true});ad=await x.show('broken-logger');ad.end({isEnded:true});
+ assert.equal(x.messages[0].completed,true);clean(x,ad);
+ console.log('PASS diagnostic lifecycle correlation; one-time listeners; Unity markers; no credentials; throwing log sinks');
  console.log('PASS repeated watches; shared tool/revive unit; no destroyed singleton reuse; listener cleanup; incomplete/undefined close; duplicate/stale callbacks; load/show/event errors and retry; timeout/cancel followed by new request; busy and separate units');
 })().catch(e=>{console.error(e);process.exit(1)});
