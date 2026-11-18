@@ -111,7 +111,7 @@ public static class WechatReleaseAssets {
         try{
             if(!ImageConversion.LoadImage(cover,File.ReadAllBytes(source)))
                 throw new InvalidOperationException("Cannot decode startup cover");
-            File.WriteAllBytes(target,cover.EncodeToJPG(95));
+            File.WriteAllBytes(target,cover.EncodeToJPG(85));
         }finally{UnityEngine.Object.DestroyImmediate(cover);}
         AssetDatabase.ImportAsset(target);
     }

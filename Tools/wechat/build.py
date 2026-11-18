@@ -87,13 +87,19 @@ for note in list(replica_resources.rglob('README.md')) + [
         note.unlink()
         note.with_name(note.name + '.meta').unlink(missing_ok=True)
 
+# WebGL block compression requires dimensions divisible by four. Both panels
+# use explicit UI rectangles, so rounding a staging dimension preserves layout.
+for name, height, width in [('pot-club', 1024, 620), ('pot-wechat', 776, 688)]:
+    panel = replica_resources / 'PotBenefits' / (name + '.png')
+    subprocess.run(['sips', '-z', str(height), str(width), str(panel)], check=True)
+
 # Quantize only the approved UI skins in the disposable release copy.
 # Keep original dimensions, alpha, sprite metadata and editable source artwork.
 # pngquant rejects images below the quality floor instead of degrading them.
 pngquant = shutil.which('pngquant')
 if not pngquant:
     raise SystemExit('pngquant is required for release UI optimization (brew install pngquant)')
-for skin in ('MailSkinPS', 'ProfileSkinPS', 'PotGlorySkin', 'SignInSkinPS', 'InviteSkinPS'):
+for skin in ('MailSkinPS', 'ProfileSkinPS', 'PotGlorySkin', 'SignInSkinPS', 'InviteSkinPS', 'PotBenefits'):
     for texture in sorted((replica_resources / skin).glob('*.png')):
         result = subprocess.run([pngquant, '--force', '--skip-if-larger', '--quality=90-100',
                                  '--speed=1', '--ext=.png', str(texture)], capture_output=True, text=True)
@@ -181,6 +187,9 @@ for relative in (
     meta = stage / relative
     text = meta.read_text()
     text = re.sub(r'(?m)^(    quality: ).+$', r'\g<1>0.15', text)
+    text = text.replace('forceToMono: 0', 'forceToMono: 1')
+    text = text.replace('sampleRateSetting: 0', 'sampleRateSetting: 2')
+    text = text.replace('sampleRateOverride: 44100', 'sampleRateOverride: 32000')
     meta.write_text(text)
 from pot_obfuscation import prepare, input_hashes, verify
 prepare(ROOT, stage, args.obfuscate)
