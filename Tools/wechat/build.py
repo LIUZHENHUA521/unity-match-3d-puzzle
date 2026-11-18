@@ -151,7 +151,7 @@ for meta in texture_root.glob('*.png.meta'):
 # uncompressed GPU texture in the data package.
 shutil.copy2(replica_resources / 'HomeSkinPS/img_Homepage_bg2.jpg',
              replica_resources / 'HomeBackgroundOriginal.bytes')
-for skin in ('GameplaySkin', 'HomeSkinPS', 'SettingsSkinPS', 'InviteSkinPS'):
+for skin in ('GameplaySkin', 'HomeSkinPS', 'SettingsSkinPS', 'InviteSkinPS', 'PotBenefits'):
     for meta in (replica_resources / skin).glob('*.meta'):
         text = meta.read_text()
         if 'TextureImporter:' not in text:
