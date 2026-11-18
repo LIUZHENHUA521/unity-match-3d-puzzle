@@ -89,7 +89,9 @@ for note in list(replica_resources.rglob('README.md')) + [
 
 # WebGL block compression requires dimensions divisible by four. Both panels
 # use explicit UI rectangles, so rounding a staging dimension preserves layout.
-for name, height, width in [('pot-club', 1024, 620), ('pot-wechat', 776, 688)]:
+for name, height, width in [('pot-club', 1024, 620), ('pot-wechat', 776, 688),
+                            ('pot-club-like-row', 224, 592), ('pot-club-comment-row', 224, 592),
+                            ('pot-club-post-row', 224, 592)]:
     panel = replica_resources / 'PotBenefits' / (name + '.png')
     subprocess.run(['sips', '-z', str(height), str(width), str(panel)], check=True)
 

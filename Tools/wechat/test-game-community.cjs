@@ -42,3 +42,16 @@ test('late completion of a destroyed page cannot show it or unlock a newer reque
  open('target');pages[0].closed();open('target');pages[0].resolve();await flush();
  open('target');assert.equal(pages.length,2);
 });
+test('native foreground and page close both request a benefit refresh',async()=>{
+ let foreground,close;
+ const messages=[];
+ const context={wx:{
+  createPageManager:()=>({on:(name,fn)=>{close=fn;},load:()=>Promise.resolve(),show:()=>Promise.resolve()}),
+  onShow:fn=>{foreground=fn;},offShow:fn=>{assert.equal(fn,foreground);foreground=null;}
+ },LibraryManager:{library:{}},mergeInto:Object.assign,UTF8ToString:s=>s,PotBenefitsTarget:{name:'Home'},
+ Module:{SendMessage:(target,method)=>messages.push([target,method])}};
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../Assets/Match3D/Plugins/WebGL/PotGameCommunity.jslib'),'utf8'),context);
+ const lib=context.LibraryManager.library;context.GooseGameCommunity=lib.$GooseGameCommunity;
+ lib.GooseGameCommunityOpen('club');await flush();foreground();close();
+ assert.equal(foreground,null);assert.deepEqual(messages,[['Home','OnPotClubClosed'],['Home','OnPotClubClosed']]);
+});

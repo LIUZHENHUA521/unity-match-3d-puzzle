@@ -16,7 +16,7 @@ mergeInto(LibraryManager.library,{
   function readClub(){
    try{
     wx.getGameClubData({
-     dataTypeList:[{type:4},{type:5},{type:6}],
+     dataTypeList:[{type:1},{type:4},{type:5},{type:6}],
      success:function(r){
       if(!r||!r.encryptedData||!r.iv){failed('empty');return;}
       result.iv=r.iv;result.encryptedData=r.encryptedData;done();

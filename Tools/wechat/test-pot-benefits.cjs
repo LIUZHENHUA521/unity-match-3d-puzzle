@@ -12,11 +12,11 @@ function read(wx){
  lib.PotReadBenefits('Home',1,9);
  return messages;
 }
-test('wait for privacy consent before reading all three metrics',()=>{
+test('wait for privacy consent before reading membership and daily metrics',()=>{
  let consent,request;
  const messages=read({requirePrivacyAuthorize:o=>{consent=o;},getGameClubData:o=>{request=o;}});
  assert.equal(request,undefined);assert.equal(messages.length,0);
- consent.success();assert.deepEqual(Array.from(request.dataTypeList,x=>x.type),[4,5,6]);
+ consent.success();assert.deepEqual(Array.from(request.dataTypeList,x=>x.type),[1,4,5,6]);
  request.success({encryptedData:'proof',iv:'iv'});
  assert.deepEqual(messages,[{requestId:9,encryptedData:'proof',iv:'iv'}]);
 });

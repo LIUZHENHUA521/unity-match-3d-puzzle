@@ -14,7 +14,12 @@ mergeInto(LibraryManager.library, {
         GooseGameCommunity.busy = true;
         var revision = ++GooseGameCommunity.revision;
         var manager = null;
+        var returnListener = null;
+        function stopListening(){
+            if(returnListener){wx.offShow(returnListener);returnListener=null;}
+        }
         function cleanup() {
+            stopListening();
             GooseGameCommunity.busy = false;
             if (GooseGameCommunity.manager === manager) GooseGameCommunity.manager = null;
             if (manager) { try { manager.destroy(); } catch (e) {} manager = null; }
@@ -30,6 +35,14 @@ mergeInto(LibraryManager.library, {
             if (!manager) {
                 manager = wx.createPageManager();
                 GooseGameCommunity.manager = manager;
+                function refreshBenefits(){
+                    if (typeof PotBenefitsTarget !== 'undefined' && PotBenefitsTarget.name)
+                        Module.SendMessage(PotBenefitsTarget.name,'OnPotClubClosed','');
+                }
+                if (typeof wx.onShow==='function' && typeof wx.offShow==='function'){
+                    returnListener=refreshBenefits;
+                    wx.onShow(returnListener);
+                }
                 manager.on('destroy', function () {
                     if (GooseGameCommunity.manager === manager) {
                         GooseGameCommunity.manager = null;
@@ -37,8 +50,8 @@ mergeInto(LibraryManager.library, {
                         GooseGameCommunity.busy = false;
                     }
                     manager = null;
-                    if (typeof PotBenefitsTarget !== 'undefined' && PotBenefitsTarget.name)
-                        Module.SendMessage(PotBenefitsTarget.name,'OnPotClubClosed','');
+                    stopListening();
+                    refreshBenefits();
                 });
             }
             Promise.resolve(manager.load({ openlink: openlink })).then(function () {
