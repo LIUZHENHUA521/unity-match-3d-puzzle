@@ -32,6 +32,20 @@ public static class WechatReleaseAssets {
             Atlas("PotWechat" + skin, AssetDatabase.FindAssets("t:Texture2D", new[]{destination})
                 .Select(AssetDatabase.GUIDToAssetPath).ToArray());
         }
+        // Crunch retains sprite alpha and reduces the on-disk WebGL data package.
+        foreach (var folder in new[]{"PotBenefits", "ReviveSkinPS", "PotCertificate"}) {
+            foreach (var guid in AssetDatabase.FindAssets("t:Texture2D", new[]{root + folder})) {
+                var importer=(TextureImporter)AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(guid));
+                var settings=importer.GetPlatformTextureSettings("WebGL");
+                settings.overridden=true;
+                settings.maxTextureSize=Math.Min(settings.maxTextureSize,1024);
+                settings.format=TextureImporterFormat.DXT5Crunched;
+                settings.crunchedCompression=true;
+                settings.compressionQuality=75;
+                importer.SetPlatformTextureSettings(settings);
+                importer.SaveAndReimport();
+            }
+        }
         // Home already synchronously replaces this sprite from the original JPEG
         // before its first frame. Keep only a tiny named placeholder in its atlas.
         if(!File.Exists(root+"HomeBackgroundOriginal.bytes"))throw new InvalidOperationException("Missing full-resolution home background");
