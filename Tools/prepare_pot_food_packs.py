@@ -1,6 +1,7 @@
 """Decode purchased static GLBs into deterministic Unity mesh inputs.
 
 Usage: python3 Tools/prepare_pot_food_packs.py /path/to/downloads
+Requires Pillow and NumPy for baked shadow correction.
 Source GLBs are preserved byte-for-byte outside Assets; runtime uses native meshes.
 """
 import hashlib
@@ -9,6 +10,8 @@ from pathlib import Path
 import shutil
 import struct
 import sys
+
+from pot_food_atlas import brighten_atlas
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKS = [('vegetable', '田园菜篮'), ('meat', '肉肉盛宴'), ('grocery', '元气超市'),
@@ -117,11 +120,12 @@ def prepare(source):
             return [struct.unpack_from('<' + fmt * count, data, offset + i * v.get('byteStride', width)) for i in range(a['count'])]
 
         textures = []
+        source_images = {}
         for img in gltf['images']:
             assert img['mimeType'] == 'image/png'
             v = gltf['bufferViews'][img['bufferView']]
             name = img['name'] + '.png'
-            (root / 'Textures' / name).write_bytes(data[v.get('byteOffset', 0):v.get('byteOffset', 0) + v['byteLength']])
+            source_images[name] = data[v.get('byteOffset', 0):v.get('byteOffset', 0) + v['byteLength']]
             textures.append(name)
         mats = []
         for mat in gltf['materials']:
@@ -149,6 +153,9 @@ def prepare(source):
         assert len(models) == 26
         if pack in ('meat', 'sweets'):
             models = [single_food_item(model) for model in models]
+        for name, original in source_images.items():
+            users = [m for m in models if mats[m['material']]['texture'] == name]
+            (root / 'Textures' / name).write_bytes(brighten_atlas(original, users, pack))
         payload = {'id': 'pot-' + pack, 'pack': pack, 'title': title, 'materials': mats, 'models': models}
         (root / 'Editor' / f'pot-{pack}.json').write_text(json.dumps(payload, ensure_ascii=False, separators=(',', ':')))
         manifests.append({'file': path.name, 'sha256': hashlib.sha256(blob).hexdigest(), 'theme': payload['id'], 'title': title,
