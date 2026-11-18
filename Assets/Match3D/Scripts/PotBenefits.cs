@@ -18,7 +18,7 @@ public sealed class PotBenefits : MonoBehaviour {
     bool club,busy;
     readonly bool[] claiming=new bool[4];
     static readonly int[] ClubTasks={5,2,3,4};
-    static readonly string[] ClubTitles={"游戏圈加圈福利","点赞帖子2次","评论帖子2次","发表帖子1次"};
+    static readonly string[] ClubTitles={"游戏圈加圈","点赞帖子2次","评论帖子2次","发表帖子1次"};
     static readonly string[] ClubCards={"club-like-row","club-like-row","club-comment-row","club-post-row"};
     int TaskAt(int row)=>club?ClubTasks[row]:row;
     static int Goal(int task)=>task==2||task==3?2:1;
