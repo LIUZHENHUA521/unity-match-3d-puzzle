@@ -329,7 +329,11 @@ public partial class Match3DFlow : MonoBehaviour {
             ComboProbeController.BeginStage(true,TodaySeed);
             SpawnDailyOpening(prefabs,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);return;
         }
-        var tiles=sourceTutorial?LevelLayoutConfig.GenerateFirstStage(source,sourceRandom):dailyLevel!=null&&!IsPvp?Match3DDailyLevel.Generate(prefabs.Length,dailyLevel.layers,sourceRandom):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
+        var tiles=sourceTutorial?LevelLayoutConfig.GenerateFirstStage(source,sourceRandom):dailyLevel!=null&&!IsPvp?Match3DDailyLevel.Generate(prefabs.Length,dailyLevel.layers,sourceRandom,dailyLevel.potTriples):source!=null?ChallengePlan.GenerateSource(sourceRandom,prefabs.Length,source.layers):ChallengePlan.Generate(TodaySeed,prefabs.Length,new[]{new ChallengeLayer(12,2,.65f)});
+        if(sourceTutorial&&dailyLevel?.potTriples==true){
+            tiles=tiles.GroupBy(tile=>tile.type).SelectMany(group=>group).ToList();
+            for(int i=0;i<tiles.Count;i++)tiles[i].id=i;
+        }
         Spawn(tiles,TodaySeed,dailyLevel!=null&&!IsPvp&&Stage==2?dailyLevel.seconds:source!=null?source.seconds:120,prefabs,sourceRandom,sourceTutorial,reusedPresentation,reusedBoundary);HUD();Music(library.gameMusic);
         if(sourceTutorial)stagePreloader.Begin(CurrentTheme.sourceEnvironment,SourceProfile());
 
@@ -375,7 +379,7 @@ public partial class Match3DFlow : MonoBehaviour {
                 foreach(var tile in group)descriptions.Add(new BoardCreateInfo{tile=tile,position=BoardEnvironment.Position(previousHeight,height,random)});
                 previousHeight=height;
             }
-            descriptions.Sort((a,b)=>a.position.y.CompareTo(b.position.y));
+            if(dailyLevel?.potTriples!=true)descriptions.Sort((a,b)=>a.position.y.CompareTo(b.position.y));
             CreationInProgress=true;int version=++creationVersion;
             sourceCreationSteps=SourceCreationSteps(descriptions,prefabs,random,version);
             sourceCreationRunner=StartCoroutine(RunSourceCreation(version));

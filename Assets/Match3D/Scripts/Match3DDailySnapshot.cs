@@ -58,6 +58,8 @@ public partial class Match3DFlow {
     IEnumerator RestoreDailyItems(Match3DDailyStage state,GameObject[] prefabs,int version,bool animate){
         int batch=0;
         var visible=new List<(Transform target,Vector3 scale)>();
+        var grouped=animate&&dailyLevel.potTriples;
+        var drops=new List<(Rigidbody body,Match3DDailyItem item)>();
         foreach(var item in state.items){
             if(version!=creationVersion)yield break;
             var tile=new ChallengeTile{id=item.id,type=item.type};
@@ -66,10 +68,16 @@ public partial class Match3DFlow {
             pilePhysics.RememberDailyBody(obj.GetComponent<Rigidbody>(),item.dynamic);
             // Register keeps the full authored scale; only presentation is animated.
             // DailyOpeningHeld keeps colliders stationary until the first player action.
-            if(animate&&item.visible){visible.Add((obj.transform,item.scale));obj.transform.localScale=Vector3.zero;}
+            if(grouped){
+                var body=obj.GetComponent<Rigidbody>();
+                layeredPile.RestoreDailyVisibility(body,false);
+                drops.Add((body,item));
+            }
+            else if(animate&&item.visible){visible.Add((obj.transform,item.scale));obj.transform.localScale=Vector3.zero;}
             if(++batch%12==0)yield return null;
         }
-        if(animate){
+        if(grouped)yield return AnimatePotTriples(drops,version);
+        else if(animate){
             visible.Sort((a,b)=>a.target.position.y.CompareTo(b.target.position.y));
             yield return AnimatePotDailyOpening(visible,version);
         }
@@ -78,6 +86,36 @@ public partial class Match3DFlow {
         GameManager.Instance.gameStatus=GameManager.GameStatus.PLAY;
         if(Match3DGameRecords.Instance)Match3DGameRecords.Instance.StartRecord();
         BoosterManager.Instance.BoostersInteractibility(true);
+    }
+    IEnumerator AnimatePotTriples(List<(Rigidbody body,Match3DDailyItem item)> drops,int version){
+        const float fallTime=.18f;
+        float interval=SourceCreateInterval(drops.Count),elapsed=0;
+        int first=0,next=0;
+        var started=new float[drops.Count];
+        float nextGroup=0;
+        while(first<drops.Count){
+            yield return null;
+            if(version!=creationVersion)yield break;
+            if(Time.timeScale<=0)continue;
+            elapsed+=Mathf.Min(Time.deltaTime,Time.fixedDeltaTime*2);
+            if(next<drops.Count&&elapsed>=nextGroup){
+                int end=Mathf.Min(next+3,drops.Count);
+                for(;next<end;next++){
+                    started[next]=elapsed;
+                    layeredPile.RestoreDailyVisibility(drops[next].body,true);
+                }
+                nextGroup=elapsed+interval;
+            }
+            for(int i=first;i<next;i++){
+                var drop=drops[i];
+                float t=Mathf.Clamp01((elapsed-started[i])/fallTime);
+                drop.body.position=drop.item.position+Vector3.up*((1-t*t)*1.5f);
+                if(t>=1){
+                    layeredPile.RestoreDailyVisibility(drop.body,drop.item.visible);
+                    first=i+1;
+                }
+            }
+        }
     }
     IEnumerator AnimatePotDailyOpening(List<(Transform target,Vector3 scale)> visible,int version){
         var growing=new List<(Transform target,Vector3 scale,float started)>();

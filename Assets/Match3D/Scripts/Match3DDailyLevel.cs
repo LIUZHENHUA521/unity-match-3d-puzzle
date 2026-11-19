@@ -8,6 +8,7 @@ public sealed class Match3DDailyLevel {
     public string candidateId;
     public string potVariant;
     public int potBoostCount;
+    public bool potTriples;
     public Match3DDailySnapshot opening;
     public float limitHeight;
     public ChallengeLayer[] layers;
@@ -34,7 +35,7 @@ public sealed class Match3DDailyLevel {
         return true;
     }
     // Positive budgets preserve exact per-layer counts and selected type counts for every valid configuration.
-    public static List<ChallengeTile> Generate(int pool,ChallengeLayer[] layers,IBoardRandom random) {
+    public static List<ChallengeTile> Generate(int pool,ChallengeLayer[] layers,IBoardRandom random,bool grouped=false) {
         var result=new List<ChallengeTile>();
         for(int layer=0;layer<layers.Length;layer++){
             var row=layers[layer];
@@ -45,7 +46,7 @@ public sealed class Match3DDailyLevel {
             for(int i=types.Count-1;i>0;i--){int j=(int)random.Range(0,i+1);int t=types[i];types[i]=types[j];types[j]=t;}
             var items=new List<int>();int groups=row.count/3;
             for(int g=0;g<groups;g++)for(int k=0;k<3;k++)items.Add(types[g%row.types]);
-            for(int i=items.Count-1;i>0;i--){int j=(int)random.Range(0,i+1);int t=items[i];items[i]=items[j];items[j]=t;}
+            if(!grouped)for(int i=items.Count-1;i>0;i--){int j=(int)random.Range(0,i+1);int t=items[i];items[i]=items[j];items[j]=t;}
             foreach(int type in items)result.Add(new ChallengeTile{id=result.Count,type=type,layer=layer,height=row.height});
         }
         return result;
